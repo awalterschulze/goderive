@@ -94,15 +94,54 @@ func deriveEqualPtrToRecursiveType(this, that *RecursiveType) bool {
 			bytes.Equal(this.Bytes, that.Bytes) &&
 			deriveEqualMapOfintToRecursiveType(this.N, that.N)
 }
-func deriveEqualSliceOfuint(this, that []uint) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
+func deriveEqualSliceOfint(this, that []int) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
 			return false
 		}
-	} else if that == nil {
+	}
+	return true
+
+}
+func deriveEqualSliceOfuintptr(this, that []uintptr) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
 		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
+
+}
+func deriveEqualSliceOfPtrToRecursiveType(this, that []*RecursiveType) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i].Equal(that[i])) {
+			return false
+		}
+	}
+	return true
+
+}
+func deriveEqualSliceOfcomplex128(this, that []complex128) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -116,14 +155,68 @@ func deriveEqualSliceOfuint(this, that []uint) bool {
 
 }
 func deriveEqualSliceOfrune(this, that []rune) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
 			return false
 		}
-	} else if that == nil {
+	}
+	return true
+
+}
+func deriveEqualSliceOfuint(this, that []uint) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
 		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
+
+}
+func deriveEqualSliceOfint8(this, that []int8) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
+
+}
+func deriveEqualSliceOfuint32(this, that []uint32) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
+
+}
+func deriveEqualSliceOfuint64(this, that []uint64) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -137,14 +230,8 @@ func deriveEqualSliceOfrune(this, that []rune) bool {
 
 }
 func deriveEqualSliceOfRecursiveType(this, that []RecursiveType) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -157,57 +244,9 @@ func deriveEqualSliceOfRecursiveType(this, that []RecursiveType) bool {
 	return true
 
 }
-func deriveEqualSliceOfcomplex64(this, that []complex64) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-
-}
-func deriveEqualSliceOfstring(this, that []string) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-
-}
 func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -224,15 +263,24 @@ func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
 	return true
 
 }
-func deriveEqualMapOfstringToPtrToRecursiveType(this, that map[string]*RecursiveType) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
+func deriveEqualSliceOfint64(this, that []int64) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
 			return false
 		}
-	} else if that == nil {
-		return false
+	}
+	return true
+
+}
+func deriveEqualMapOfstringToPtrToRecursiveType(this, that map[string]*RecursiveType) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -249,99 +297,9 @@ func deriveEqualMapOfstringToPtrToRecursiveType(this, that map[string]*Recursive
 	return true
 
 }
-func deriveEqualSliceOffloat64(this, that []float64) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-
-}
-func deriveEqualSliceOfint64(this, that []int64) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-
-}
-func deriveEqualSliceOfint8(this, that []int8) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-
-}
-func deriveEqualSliceOfuint64(this, that []uint64) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-
-}
 func deriveEqualMapOfint64Tostring(this, that map[int64]string) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -358,15 +316,9 @@ func deriveEqualMapOfint64Tostring(this, that map[int64]string) bool {
 	return true
 
 }
-func deriveEqualSliceOffloat32(this, that []float32) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
+func deriveEqualSliceOfbool(this, that []bool) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -379,15 +331,9 @@ func deriveEqualSliceOffloat32(this, that []float32) bool {
 	return true
 
 }
-func deriveEqualSliceOfint16(this, that []int16) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
+func deriveEqualSliceOffloat64(this, that []float64) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -401,14 +347,8 @@ func deriveEqualSliceOfint16(this, that []int16) bool {
 
 }
 func deriveEqualSliceOfuint16(this, that []uint16) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -421,36 +361,39 @@ func deriveEqualSliceOfuint16(this, that []uint16) bool {
 	return true
 
 }
-func deriveEqualSliceOfPtrToRecursiveType(this, that []*RecursiveType) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
+func deriveEqualSliceOfint16(this, that []int16) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(this[i].Equal(that[i])) {
+		if !(this[i] == that[i]) {
 			return false
 		}
 	}
 	return true
 
 }
-func deriveEqualSliceOfint(this, that []int) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
+func deriveEqualSliceOfcomplex64(this, that []complex64) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
 			return false
 		}
-	} else if that == nil {
-		return false
+	}
+	return true
+
+}
+func deriveEqualSliceOffloat32(this, that []float32) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -464,14 +407,8 @@ func deriveEqualSliceOfint(this, that []int) bool {
 
 }
 func deriveEqualSliceOfint32(this, that []int32) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
@@ -484,78 +421,9 @@ func deriveEqualSliceOfint32(this, that []int32) bool {
 	return true
 
 }
-func deriveEqualSliceOfuint32(this, that []uint32) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-
-}
-func deriveEqualSliceOfbool(this, that []bool) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-
-}
-func deriveEqualSliceOfcomplex128(this, that []complex128) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-
-}
-func deriveEqualSliceOfuintptr(this, that []uintptr) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
+func deriveEqualSliceOfstring(this, that []string) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false

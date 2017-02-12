@@ -202,14 +202,8 @@ func (p *p) genFunc(typ types.Type) {
 			return
 		}
 	case *types.Slice:
-		p.P("if this == nil {\n")
-		p.P("if that == nil {\n")
-		p.P("return true\n")
-		p.P("} else {\n")
-		p.P("return false\n")
-		p.P("}\n")
-		p.P("} else if that == nil {\n")
-		p.P("return false\n")
+		p.P("if this == nil || that == nil {\n")
+		p.P("return this == nil && that == nil")
 		p.P("}\n")
 		p.P("if len(this) != len(that) {\n")
 		p.P("return false\n")
@@ -228,14 +222,8 @@ func (p *p) genFunc(typ types.Type) {
 	// TODO case *types.Array:
 
 	case *types.Map:
-		p.P("if this == nil {\n")
-		p.P("if that == nil {\n")
-		p.P("return true\n")
-		p.P("} else {\n")
-		p.P("return false\n")
-		p.P("}\n")
-		p.P("} else if that == nil {\n")
-		p.P("return false\n")
+		p.P("if this == nil || that == nil {\n")
+		p.P("return this == nil && that == nil")
 		p.P("}\n")
 		p.P("if len(this) != len(that) {\n")
 		p.P("return false\n")

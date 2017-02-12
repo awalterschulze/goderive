@@ -91,51 +91,55 @@ func main() {
 	}
 	for _, pkgInfo := range program.InitialPackages() {
 		pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())
-		filename := filepath.Join(pkgpath, eqFilename)
 
 		qual := types.RelativeTo(pkgInfo.Pkg)
-		var files []*ast.File
+		var typs []types.Type
 		for i, f := range pkgInfo.Files {
 			_, fname := filepath.Split(program.Fset.File(f.Pos()).Name())
 			if fname == eqFilename {
 				continue
 			}
-			files = append(files, pkgInfo.Files[i])
+			newtyps := findObjectsUsingFunction(pkgInfo, pkgInfo.Files[i], eqFuncPrefix)
+			typs = append(typs, newtyps...)
 		}
-
-		typs := findObjectsUsingFunction(pkgInfo, files, eqFuncPrefix)
 		if len(typs) == 0 {
 			continue
 		}
 
-		os.Remove(filename)
-		f, err := os.Create(filename)
+		f, err := os.Create(filepath.Join(pkgpath, eqFilename))
 		if err != nil {
-			log.Fatalf("unable to create %s, error: %v", filename, err)
+			log.Fatal(err)
 		}
 		defer f.Close()
-		p := &p{w: f, qual: qual, generatedFuncs: make(map[string]bool), funcsToType: make(map[string]types.Type)}
+		generate(f, qual, pkgInfo.Pkg.Name(), typs)
+	}
+}
 
-		p.P("package %s\n", pkgInfo.Pkg.Name())
-		p.P("\n")
-		p.P("import (\n")
-		p.P("\t\"bytes\"\n")
-		p.P(")\n")
-		p.P("\n")
-		p.P("var _ = bytes.MinRead\n")
-		p.P("\n")
-		for i := range typs {
-			p.newFunc(typs[i])
-			p.genFunc(typs[i])
-			p.funcGenerated(typs[i])
+func generate(w io.Writer, qual types.Qualifier, pkgName string, typs []types.Type) {
+	p := &p{
+		w:              w,
+		qual:           qual,
+		generatedFuncs: make(map[string]bool),
+		funcsToType:    make(map[string]types.Type),
+	}
+	p.P("package %s\n", pkgName)
+	p.P("\n")
+	p.P("import (\n")
+	p.P("\t\"bytes\"\n")
+	p.P(")\n")
+	p.P("\n")
+	p.P("var _ = bytes.MinRead\n")
+	p.P("\n")
+	for i := range typs {
+		p.newFunc(typs[i])
+		p.genFunc(typs[i])
+		p.funcGenerated(typs[i])
+	}
+	for name, generated := range p.generatedFuncs {
+		if generated {
+			continue
 		}
-		for name, generated := range p.generatedFuncs {
-			if generated {
-				continue
-			}
-			p.genFunc(p.funcsToType[name])
-		}
-
+		p.genFunc(p.funcsToType[name])
 	}
 }
 
@@ -331,14 +335,12 @@ func (this *findFunction) Visit(node ast.Node) (w ast.Visitor) {
 	return this
 }
 
-func findObjectsUsingFunction(pkgInfo *loader.PackageInfo, files []*ast.File, funcName string) []types.Type {
+func findObjectsUsingFunction(pkgInfo *loader.PackageInfo, f *ast.File, funcName string) []types.Type {
 	var typs []types.Type
-	for _, f := range files {
-		for _, d := range f.Decls {
-			finder := &findFunction{pkgInfo, funcName, nil}
-			ast.Walk(finder, d)
-			typs = append(typs, finder.typs...)
-		}
+	for _, d := range f.Decls {
+		finder := &findFunction{pkgInfo, funcName, nil}
+		ast.Walk(finder, d)
+		typs = append(typs, finder.typs...)
 	}
 	return typs
 }

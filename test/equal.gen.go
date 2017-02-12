@@ -28,6 +28,31 @@ func derivEqualPtrToB(this, that *B) bool {
 			bytes.Equal(this.Bytes, that.Bytes) &&
 			derivEqualMapOfintToB(this.N, that.N)
 }
+func derivEqualMapOfint64Tostring(this, that map[int64]string) bool {
+	if this == nil {
+		if that == nil {
+			return true
+		} else {
+			return false
+		}
+	} else if that == nil {
+		return false
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+
+}
 func derivEqualSliceOfbool(this, that []bool) bool {
 	if this == nil {
 		if that == nil {
@@ -135,31 +160,6 @@ func derivEqualMapOfstringToPtrToB(this, that map[string]*B) bool {
 			return false
 		}
 		if !(v.Equal(thatv)) {
-			return false
-		}
-	}
-	return true
-
-}
-func derivEqualMapOfint64Tostring(this, that map[int64]string) bool {
-	if this == nil {
-		if that == nil {
-			return true
-		} else {
-			return false
-		}
-	} else if that == nil {
-		return false
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
 			return false
 		}
 	}

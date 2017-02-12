@@ -303,33 +303,37 @@ type findFunction struct {
 }
 
 func (this *findFunction) Visit(node ast.Node) (w ast.Visitor) {
-	if call, ok := node.(*ast.CallExpr); ok {
-		if fn, ok := call.Fun.(*ast.Ident); ok {
-			if strings.HasPrefix(fn.Name, this.funcPrefix) {
-				if len(call.Args) != 2 {
-					fmt.Fprintf(os.Stderr, "%s does not have two arguments\n", fn.Name)
-					return this
-				}
-				t0 := this.pkgInfo.TypeOf(call.Args[0])
-				t1 := this.pkgInfo.TypeOf(call.Args[1])
-				if types.Identical(t0, t1) {
-					name := strings.TrimPrefix(fn.Name, this.funcPrefix)
-					qual := types.RelativeTo(this.pkgInfo.Pkg)
-					typeStr := typeName(t0, qual)
-					if typeStr != name {
-						fmt.Fprintf(os.Stderr, "%s's suffix %s does not match the type %s\n",
-							fn.Name, name, typeStr)
-						return this
-					}
-					this.typs = append(this.typs, t0)
-					return this
-				} else {
-					fmt.Fprintf(os.Stderr, "%s has two arguments, but they are of different types %s != %s\n",
-						fn.Name, t0, t1)
-				}
-			}
-		}
+	call, ok := node.(*ast.CallExpr)
+	if !ok {
+		return this
 	}
+	fn, ok := call.Fun.(*ast.Ident)
+	if !ok {
+		return this
+	}
+	if !strings.HasPrefix(fn.Name, this.funcPrefix) {
+		return this
+	}
+	if len(call.Args) != 2 {
+		fmt.Fprintf(os.Stderr, "%s does not have two arguments\n", fn.Name)
+		return this
+	}
+	t0 := this.pkgInfo.TypeOf(call.Args[0])
+	t1 := this.pkgInfo.TypeOf(call.Args[1])
+	if !types.Identical(t0, t1) {
+		fmt.Fprintf(os.Stderr, "%s has two arguments, but they are of different types %s != %s\n",
+			fn.Name, t0, t1)
+		return this
+	}
+	name := strings.TrimPrefix(fn.Name, this.funcPrefix)
+	qual := types.RelativeTo(this.pkgInfo.Pkg)
+	typeStr := typeName(t0, qual)
+	if typeStr != name {
+		fmt.Fprintf(os.Stderr, "%s's suffix %s does not match the type %s\n",
+			fn.Name, name, typeStr)
+		return this
+	}
+	this.typs = append(this.typs, t0)
 	return this
 }
 

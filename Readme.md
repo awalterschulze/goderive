@@ -1,13 +1,13 @@
 # goderive
 
-goderive derives (generates) golang functions:
+goderive parses your go code and generates functions that are derived from the given types. Functions that are currently supported include:
 
   - Equal
   - Compare (TODO)
 
 ## Example
 
-The deriveEqualForPtrToA function will be generated given the following code:
+The `deriveEqualForPtrToA` function will be spotted as a function that needs to generated, because it has a prefix `deriveEqualFor` and specifies the type `PtrToA` in the suffix.
 
 ```go
 package main

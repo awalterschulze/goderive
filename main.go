@@ -94,7 +94,7 @@ func main() {
 			if fname == derivedFilename {
 				continue
 			}
-			newtyps := findObjectsUsingFunction(pkgInfo, pkgInfo.Files[i], eqFuncPrefix)
+			newtyps := findTypesForFuncPrefix(pkgInfo, pkgInfo.Files[i], eqFuncPrefix)
 			typs = append(typs, newtyps...)
 		}
 		if len(typs) == 0 {
@@ -284,13 +284,13 @@ func (p *p) genField(this, that string, fieldType types.Type) (string, error) {
 	}
 }
 
-type findFunction struct {
+type findTypes struct {
 	pkgInfo    *loader.PackageInfo
 	funcPrefix string
 	typs       []types.Type
 }
 
-func (this *findFunction) Visit(node ast.Node) (w ast.Visitor) {
+func (this *findTypes) Visit(node ast.Node) (w ast.Visitor) {
 	call, ok := node.(*ast.CallExpr)
 	if !ok {
 		return this
@@ -317,6 +317,7 @@ func (this *findFunction) Visit(node ast.Node) (w ast.Visitor) {
 	qual := types.RelativeTo(this.pkgInfo.Pkg)
 	typeStr := typeName(t0, qual)
 	if typeStr != name {
+		//TODO think about whether this is really necessary
 		fmt.Fprintf(os.Stderr, "%s's suffix %s does not match the type %s\n",
 			fn.Name, name, typeStr)
 		return this
@@ -325,10 +326,10 @@ func (this *findFunction) Visit(node ast.Node) (w ast.Visitor) {
 	return this
 }
 
-func findObjectsUsingFunction(pkgInfo *loader.PackageInfo, f *ast.File, funcName string) []types.Type {
+func findTypesForFuncPrefix(pkgInfo *loader.PackageInfo, f *ast.File, funcPrefix string) []types.Type {
 	var typs []types.Type
 	for _, d := range f.Decls {
-		finder := &findFunction{pkgInfo, funcName, nil}
+		finder := &findTypes{pkgInfo, funcPrefix, nil}
 		ast.Walk(finder, d)
 		typs = append(typs, finder.typs...)
 	}

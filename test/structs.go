@@ -37,7 +37,7 @@ type A struct {
 }
 
 func (this *A) Equal(that *A) bool {
-	return derivEqualPtrToA(this, that)
+	return deriveEqualPtrToA(this, that)
 }
 
 type B struct {
@@ -58,7 +58,7 @@ func NewRandB() *B {
 }
 
 func (this *B) Equal(that *B) bool {
-	return derivEqualPtrToB(this, that)
+	return deriveEqualPtrToB(this, that)
 }
 
 type DontGenerateEqualMethodForMe struct {

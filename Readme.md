@@ -7,7 +7,7 @@ goderive derives (generates) golang functions:
 
 ## Example
 
-The derivEqualForPtrToA function will be generated given the following code:
+The deriveEqualForPtrToA function will be generated given the following code:
 
 ```go
 package main
@@ -20,7 +20,7 @@ type A struct {
 func main() {
 	a1 := &A{B: []byte("abc")}
 	a2 := &A{B: []byte("cde")}
-	if !derivEqualForPtrToA(a1, a2) {
+	if !deriveEqualForPtrToA(a1, a2) {
 		println("SUCCESS")
 	}
 }

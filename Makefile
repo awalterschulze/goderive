@@ -1,9 +1,7 @@
 .PHONY: test
 test:
 	go install .
-	goderive ./...
-	make gofmt
-	go test -v ./...
+	make -C test test
 
 .PHONY: gofmt
 gofmt:

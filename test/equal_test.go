@@ -18,32 +18,77 @@ import (
 	"testing"
 )
 
-func TestEqualA(t *testing.T) {
-	a := &A{}
-	if !a.Equal(a) {
-		t.Fatal("empty A not equal to itself")
+func TestEqualBuiltInTypes(t *testing.T) {
+	this := &BuiltInTypes{}
+	if !this.Equal(this) {
+		t.Fatal("empty not equal to itself")
 	}
-	a = NewRandA()
-	if !a.Equal(a) {
-		t.Fatal("random A not equal to itself")
+	this = NewRandBuiltInTypes()
+	if !this.Equal(this) {
+		t.Fatal("random not equal to itself")
 	}
-	a2 := NewRandA()
-	if a.Equal(a2) {
-		t.Fatalf("random a %#v equal to another random a %#v", a, a2)
+	that := NewRandBuiltInTypes()
+	if this.Equal(that) {
+		t.Fatalf("random %#v equal to another random %#v", this, that)
 	}
 }
 
-func TestEqualB(t *testing.T) {
-	b := &B{}
-	if !b.Equal(b) {
-		t.Fatal("empty B not equal to itself")
+func TestEqualPtrToBuiltInTypes(t *testing.T) {
+	this := &PtrToBuiltInTypes{}
+	if !this.Equal(this) {
+		t.Fatal("empty not equal to itself")
 	}
-	b = NewRandB()
-	if !b.Equal(b) {
-		t.Fatal("random B not equal to itself")
+	this = NewRandPtrToBuiltInTypes()
+	if !this.Equal(this) {
+		t.Fatal("random not equal to itself")
 	}
-	b2 := NewRandB()
-	if b2.Equal(b) {
-		t.Fatalf("random B %#v equal to another random B %#v", b, b2)
+	that := NewRandPtrToBuiltInTypes()
+	if this.Equal(that) {
+		t.Fatalf("random %#v equal to another random %#v", this, that)
+	}
+}
+
+func TestEqualSliceOfBuiltInTypes(t *testing.T) {
+	this := &SliceOfBuiltInTypes{}
+	if !this.Equal(this) {
+		t.Fatal("empty not equal to itself")
+	}
+	this = NewRandSliceOfBuiltInTypes()
+	if !this.Equal(this) {
+		t.Fatal("random not equal to itself")
+	}
+	that := NewRandSliceOfBuiltInTypes()
+	if this.Equal(that) {
+		t.Fatalf("random %#v equal to another random %#v", this, that)
+	}
+}
+
+func TestEqualSomeComplexTypes(t *testing.T) {
+	this := &SomeComplexTypes{}
+	if !this.Equal(this) {
+		t.Fatal("empty not equal to itself")
+	}
+	this = NewRandSomeComplexTypes()
+	if !this.Equal(this) {
+		t.Fatal("random not equal to itself")
+	}
+	that := NewRandSomeComplexTypes()
+	if this.Equal(that) {
+		t.Fatalf("random %#v equal to another random %#v", this, that)
+	}
+}
+
+func TestEqualRecursiveType(t *testing.T) {
+	this := &RecursiveType{}
+	if !this.Equal(this) {
+		t.Fatal("empty not equal to itself")
+	}
+	this = NewRandRecursiveType()
+	if !this.Equal(this) {
+		t.Fatal("random not equal to itself")
+	}
+	that := NewRandRecursiveType()
+	if this.Equal(that) {
+		t.Fatalf("random %#v equal to another random %#v", this, that)
 	}
 }

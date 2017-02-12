@@ -21,56 +21,158 @@ import (
 	"time"
 )
 
-type A struct {
-	B string
-	C *string
-	D int64
-	E *int64
-	I []bool
-	J []*B
-	K []B
-	L *B
-	M B
-	N map[int]B
-	O map[string]*B
+var r = rand.New(rand.NewSource(time.Now().UnixNano()))
+
+type BuiltInTypes struct {
+	Bool       bool
+	Byte       byte
+	Complex128 complex128
+	Complex64  complex64
+	//Error error
+	Float64 float64
+	Float32 float32
+	Int     int
+	Int16   int16
+	Int32   int32
+	Int64   int64
+	Int8    int8
+	Rune    rune
+	String  string
+	Uint    uint
+	Uint16  uint16
+	Uint32  uint32
+	Uint64  uint64
+	Uint8   uint8
+	UintPtr uintptr
+}
+
+func (this *BuiltInTypes) Equal(that *BuiltInTypes) bool {
+	return deriveEqualPtrToBuiltInTypes(this, that)
+}
+
+var typeOfBuiltInTypes = reflect.TypeOf(new(BuiltInTypes))
+
+func NewRandBuiltInTypes() *BuiltInTypes {
+	v, ok := quick.Value(typeOfBuiltInTypes, r)
+	if !ok {
+		panic("unable to generate value")
+	}
+	return v.Interface().(*BuiltInTypes)
+}
+
+type PtrToBuiltInTypes struct {
+	Bool       *bool
+	Byte       *byte
+	Complex128 *complex128
+	Complex64  *complex64
+	//Error error
+	Float64 *float64
+	Float32 *float32
+	Int     *int
+	Int16   *int16
+	Int32   *int32
+	Int64   *int64
+	Int8    *int8
+	Rune    *rune
+	String  *string
+	Uint    *uint
+	Uint16  *uint16
+	Uint32  *uint32
+	Uint64  *uint64
+	Uint8   *uint8
+	UintPtr *uintptr
+}
+
+func (this *PtrToBuiltInTypes) Equal(that *PtrToBuiltInTypes) bool {
+	return deriveEqualPtrToPtrToBuiltInTypes(this, that)
+}
+
+var typeOfPtrToBuiltInTypes = reflect.TypeOf(new(PtrToBuiltInTypes))
+
+func NewRandPtrToBuiltInTypes() *PtrToBuiltInTypes {
+	v, ok := quick.Value(typeOfPtrToBuiltInTypes, r)
+	if !ok {
+		panic("unable to generate value")
+	}
+	return v.Interface().(*PtrToBuiltInTypes)
+}
+
+type SliceOfBuiltInTypes struct {
+	Bool       []bool
+	Byte       []byte
+	Complex128 []complex128
+	Complex64  []complex64
+	//Error error
+	Float64 []float64
+	Float32 []float32
+	Int     []int
+	Int16   []int16
+	Int32   []int32
+	Int64   []int64
+	Int8    []int8
+	Rune    []rune
+	String  []string
+	Uint    []uint
+	Uint16  []uint16
+	Uint32  []uint32
+	Uint64  []uint64
+	Uint8   []uint8
+	UintPtr []uintptr
+}
+
+func (this *SliceOfBuiltInTypes) Equal(that *SliceOfBuiltInTypes) bool {
+	return deriveEqualPtrToSliceOfBuiltInTypes(this, that)
+}
+
+var typeOfSliceOfBuiltInTypes = reflect.TypeOf(new(SliceOfBuiltInTypes))
+
+func NewRandSliceOfBuiltInTypes() *SliceOfBuiltInTypes {
+	v, ok := quick.Value(typeOfSliceOfBuiltInTypes, r)
+	if !ok {
+		panic("unable to generate value")
+	}
+	return v.Interface().(*SliceOfBuiltInTypes)
+}
+
+type SomeComplexTypes struct {
+	J []*RecursiveType
+	K []RecursiveType
+	L *RecursiveType
+	M RecursiveType
+	N map[int]RecursiveType
+	O map[string]*RecursiveType
 	P map[int64]string
 }
 
-func (this *A) Equal(that *A) bool {
-	return deriveEqualPtrToA(this, that)
+var typeOfSomeComplexTypes = reflect.TypeOf(new(SomeComplexTypes))
+
+func NewRandSomeComplexTypes() *SomeComplexTypes {
+	v, ok := quick.Value(typeOfSomeComplexTypes, r)
+	if !ok {
+		panic("unable to generate value")
+	}
+	return v.Interface().(*SomeComplexTypes)
 }
 
-type B struct {
+func (this *SomeComplexTypes) Equal(that *SomeComplexTypes) bool {
+	return deriveEqualPtrToSomeComplexTypes(this, that)
+}
+
+type RecursiveType struct {
 	Bytes []byte
-	N     map[int]B
+	N     map[int]RecursiveType
 }
 
-var r = rand.New(rand.NewSource(time.Now().UnixNano()))
+var typeOfRecursiveType = reflect.TypeOf(new(RecursiveType))
 
-var typeOfB = reflect.TypeOf(new(B))
-
-func NewRandB() *B {
-	v, ok := quick.Value(typeOfB, r)
+func NewRandRecursiveType() *RecursiveType {
+	v, ok := quick.Value(typeOfRecursiveType, r)
 	if !ok {
 		panic("unable to generate value")
 	}
-	return v.Interface().(*B)
+	return v.Interface().(*RecursiveType)
 }
 
-func (this *B) Equal(that *B) bool {
-	return deriveEqualPtrToB(this, that)
-}
-
-type DontGenerateEqualMethodForMe struct {
-	A string
-}
-
-var typeOfA = reflect.TypeOf(new(A))
-
-func NewRandA() *A {
-	v, ok := quick.Value(typeOfA, r)
-	if !ok {
-		panic("unable to generate value")
-	}
-	return v.Interface().(*A)
+func (this *RecursiveType) Equal(that *RecursiveType) bool {
+	return deriveEqualPtrToRecursiveType(this, that)
 }

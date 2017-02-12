@@ -52,7 +52,7 @@ func (this *BuiltInTypes) Equal(that *BuiltInTypes) bool {
 
 var typeOfBuiltInTypes = reflect.TypeOf(new(BuiltInTypes))
 
-func NewRandBuiltInTypes() *BuiltInTypes {
+func (this *BuiltInTypes) Rand() *BuiltInTypes {
 	v, ok := quick.Value(typeOfBuiltInTypes, r)
 	if !ok {
 		panic("unable to generate value")
@@ -89,7 +89,7 @@ func (this *PtrToBuiltInTypes) Equal(that *PtrToBuiltInTypes) bool {
 
 var typeOfPtrToBuiltInTypes = reflect.TypeOf(new(PtrToBuiltInTypes))
 
-func NewRandPtrToBuiltInTypes() *PtrToBuiltInTypes {
+func (this *PtrToBuiltInTypes) Rand() *PtrToBuiltInTypes {
 	v, ok := quick.Value(typeOfPtrToBuiltInTypes, r)
 	if !ok {
 		panic("unable to generate value")
@@ -126,7 +126,7 @@ func (this *SliceOfBuiltInTypes) Equal(that *SliceOfBuiltInTypes) bool {
 
 var typeOfSliceOfBuiltInTypes = reflect.TypeOf(new(SliceOfBuiltInTypes))
 
-func NewRandSliceOfBuiltInTypes() *SliceOfBuiltInTypes {
+func (this *SliceOfBuiltInTypes) Rand() *SliceOfBuiltInTypes {
 	v, ok := quick.Value(typeOfSliceOfBuiltInTypes, r)
 	if !ok {
 		panic("unable to generate value")
@@ -146,7 +146,7 @@ type SomeComplexTypes struct {
 
 var typeOfSomeComplexTypes = reflect.TypeOf(new(SomeComplexTypes))
 
-func NewRandSomeComplexTypes() *SomeComplexTypes {
+func (this *SomeComplexTypes) Rand() *SomeComplexTypes {
 	v, ok := quick.Value(typeOfSomeComplexTypes, r)
 	if !ok {
 		panic("unable to generate value")
@@ -165,7 +165,7 @@ type RecursiveType struct {
 
 var typeOfRecursiveType = reflect.TypeOf(new(RecursiveType))
 
-func NewRandRecursiveType() *RecursiveType {
+func (this *RecursiveType) Rand() *RecursiveType {
 	v, ok := quick.Value(typeOfRecursiveType, r)
 	if !ok {
 		panic("unable to generate value")

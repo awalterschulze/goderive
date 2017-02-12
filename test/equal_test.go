@@ -15,80 +15,42 @@
 package test
 
 import (
+	"reflect"
 	"testing"
 )
 
-func TestEqualBuiltInTypes(t *testing.T) {
-	this := &BuiltInTypes{}
-	if !this.Equal(this) {
-		t.Fatal("empty not equal to itself")
-	}
-	this = NewRandBuiltInTypes()
-	if !this.Equal(this) {
-		t.Fatal("random not equal to itself")
-	}
-	that := NewRandBuiltInTypes()
-	if this.Equal(that) {
-		t.Fatalf("random %#v equal to another random %#v", this, that)
-	}
+func equal(this, that interface{}) bool {
+	eqMethod := reflect.ValueOf(this).MethodByName("Equal")
+	res := eqMethod.Call([]reflect.Value{reflect.ValueOf(that)})
+	return res[0].Interface().(bool)
 }
 
-func TestEqualPtrToBuiltInTypes(t *testing.T) {
-	this := &PtrToBuiltInTypes{}
-	if !this.Equal(this) {
-		t.Fatal("empty not equal to itself")
-	}
-	this = NewRandPtrToBuiltInTypes()
-	if !this.Equal(this) {
-		t.Fatal("random not equal to itself")
-	}
-	that := NewRandPtrToBuiltInTypes()
-	if this.Equal(that) {
-		t.Fatalf("random %#v equal to another random %#v", this, that)
-	}
+func random(this interface{}) interface{} {
+	return reflect.ValueOf(this).MethodByName("Rand").Call(nil)[0].Interface()
 }
 
-func TestEqualSliceOfBuiltInTypes(t *testing.T) {
-	this := &SliceOfBuiltInTypes{}
-	if !this.Equal(this) {
-		t.Fatal("empty not equal to itself")
+func TestEqual(t *testing.T) {
+	structs := []interface{}{
+		&BuiltInTypes{},
+		&PtrToBuiltInTypes{},
+		&SliceOfBuiltInTypes{},
+		&SomeComplexTypes{},
+		&RecursiveType{},
 	}
-	this = NewRandSliceOfBuiltInTypes()
-	if !this.Equal(this) {
-		t.Fatal("random not equal to itself")
-	}
-	that := NewRandSliceOfBuiltInTypes()
-	if this.Equal(that) {
-		t.Fatalf("random %#v equal to another random %#v", this, that)
-	}
-}
-
-func TestEqualSomeComplexTypes(t *testing.T) {
-	this := &SomeComplexTypes{}
-	if !this.Equal(this) {
-		t.Fatal("empty not equal to itself")
-	}
-	this = NewRandSomeComplexTypes()
-	if !this.Equal(this) {
-		t.Fatal("random not equal to itself")
-	}
-	that := NewRandSomeComplexTypes()
-	if this.Equal(that) {
-		t.Fatalf("random %#v equal to another random %#v", this, that)
-	}
-}
-
-func TestEqualRecursiveType(t *testing.T) {
-	this := &RecursiveType{}
-	if !this.Equal(this) {
-		t.Fatal("empty not equal to itself")
-	}
-	this = NewRandRecursiveType()
-	if !this.Equal(this) {
-		t.Fatal("random not equal to itself")
-	}
-	that := NewRandRecursiveType()
-	if this.Equal(that) {
-		t.Fatalf("random %#v equal to another random %#v", this, that)
+	for _, this := range structs {
+		desc := reflect.TypeOf(this).Elem().Name()
+		t.Run(desc, func(t *testing.T) {
+			if !equal(this, this) {
+				t.Fatal("empty not equal to itself")
+			}
+			this = random(this)
+			if !equal(this, this) {
+				t.Fatal("random not equal to itself")
+			}
+			that := random(this)
+			if equal(this, that) {
+				t.Fatalf("random %#v equal to another random %#v", this, that)
+			}
+		})
 	}
 }

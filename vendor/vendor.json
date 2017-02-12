@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "9fvV44Csmu+K5BpFvEBs2p8alBI=",
+			"path": "github.com/kisielk/gotool",
+			"revision": "0de1eaf82fa3f583ce21fde859f1e7e0c5e9b220",
+			"revisionTime": "2016-11-30T08:01:11Z"
+		},
+		{
+			"checksumSHA1": "SoOfjYDw7R1N1P2aHxIjXYFmWUo=",
+			"path": "golang.org/x/tools/go/ast/astutil",
+			"revision": "44492e23b4afd3e75591994228422613777ee4ee",
+			"revisionTime": "2017-02-09T09:43:25Z"
+		},
+		{
+			"checksumSHA1": "VtflDqIRy6TlpT4Dbwr55lxmsh8=",
+			"path": "golang.org/x/tools/go/buildutil",
+			"revision": "44492e23b4afd3e75591994228422613777ee4ee",
+			"revisionTime": "2017-02-09T09:43:25Z"
+		},
+		{
+			"checksumSHA1": "7lF1vQ7O3i4Lk19amETdLazbDBU=",
+			"path": "golang.org/x/tools/go/loader",
+			"revision": "44492e23b4afd3e75591994228422613777ee4ee",
+			"revisionTime": "2017-02-09T09:43:25Z"
+		}
+	],
+	"rootPath": "github.com/awalterschulze/goderive"
+}

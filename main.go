@@ -57,11 +57,6 @@ type p struct {
 	funcsToType    map[string]types.Type
 }
 
-func (p *p) And(format string, a ...interface{}) {
-	fmt.Fprintf(p.w, "&&\n")
-	fmt.Fprintf(p.w, format, a...)
-}
-
 func (p *p) P(format string, a ...interface{}) {
 	fmt.Fprintf(p.w, format, a...)
 }
@@ -199,7 +194,8 @@ func (p *p) genFunc(typ types.Type) {
 					fmt.Fprintf(os.Stderr, err.Error())
 					return
 				}
-				p.And(fieldStr)
+				p.P("&&\n")
+				p.P(fieldStr)
 			}
 		default:
 			fmt.Fprintf(os.Stderr, "unsupported: pointer is not a named struct, but %#v\n", ref)

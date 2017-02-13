@@ -6,5 +6,7 @@ derived.gen.go:
 test: derived.gen.go gofmt
 	go test -v ./...
 
+.PHONY: gofmt
 gofmt:
-	gofmt -l -s -w .
+	gofmt -d .
+	! gofmt -d . 2>&1 | read

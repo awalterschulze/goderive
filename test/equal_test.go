@@ -15,9 +15,15 @@
 package test
 
 import (
+	"fmt"
+	"math/rand"
 	"reflect"
 	"testing"
+	"testing/quick"
+	"time"
 )
+
+var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 func equal(this, that interface{}) bool {
 	eqMethod := reflect.ValueOf(this).MethodByName("Equal")
@@ -26,7 +32,11 @@ func equal(this, that interface{}) bool {
 }
 
 func random(this interface{}) interface{} {
-	return reflect.ValueOf(this).MethodByName("Rand").Call(nil)[0].Interface()
+	v, ok := quick.Value(reflect.TypeOf(this), r)
+	if !ok {
+		panic(fmt.Sprintf("unable to generate value for type: %T", this))
+	}
+	return v.Interface()
 }
 
 func TestEqual(t *testing.T) {

@@ -1,4 +1,5 @@
-derived.gen.go: structs.go
+.PHONY: derived.gen.go
+derived.gen.go:
 	goderive ./...
 
 .PHONY: test

@@ -118,6 +118,32 @@ func (this *ArrayOfBuiltInTypes) Equal(that *ArrayOfBuiltInTypes) bool {
 	return deriveEqualPtrToArrayOfBuiltInTypes(this, that)
 }
 
+type SliceOfPtrToBuiltInTypes struct {
+	Bool       []*bool
+	Byte       []*byte
+	Complex128 []*complex128
+	Complex64  []*complex64
+	Float64    []*float64
+	Float32    []*float32
+	Int        []*int
+	Int16      []*int16
+	Int32      []*int32
+	Int64      []*int64
+	Int8       []*int8
+	Rune       []*rune
+	String     []*string
+	Uint       []*uint
+	Uint16     []*uint16
+	Uint32     []*uint32
+	Uint64     []*uint64
+	Uint8      []*uint8
+	UintPtr    []*uintptr
+}
+
+func (this *SliceOfPtrToBuiltInTypes) Equal(that *SliceOfPtrToBuiltInTypes) bool {
+	return deriveEqualPtrToSliceOfPtrToBuiltInTypes(this, that)
+}
+
 type SomeComplexTypes struct {
 	J []*RecursiveType
 	K []RecursiveType

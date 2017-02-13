@@ -148,7 +148,7 @@ func equalField(m TypesMap, qual types.Qualifier, this, that string, fieldType t
 		if err != nil {
 			return "", err
 		}
-		return fmt.Sprintf("((%[1]s == nil && %[2]s == nil) || (%[1]s != nil && %[2]s != nil && %[3]s))", this, that, eqStr), nil
+		return fmt.Sprintf("(%[1]s == nil && %[2]s == nil) || (%[1]s != nil && %[2]s != nil && %[3]s)", this, that, eqStr), nil
 	// TODO case *types.Array:
 	// 	p.newFunc(typ)
 	// 	return fmt.Sprintf("%s(%s, %s)", equalFuncName(typ, p.qual), this, that), nil

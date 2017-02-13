@@ -77,6 +77,29 @@ func deriveEqualPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) bool {
 		deriveEqualSliceOfuintptr(this.UintPtr, that.UintPtr)
 }
 
+func deriveEqualPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualSliceOfPtrTobool(this.Bool, that.Bool) &&
+		deriveEqualSliceOfPtrTobyte(this.Byte, that.Byte) &&
+		deriveEqualSliceOfPtrTocomplex128(this.Complex128, that.Complex128) &&
+		deriveEqualSliceOfPtrTocomplex64(this.Complex64, that.Complex64) &&
+		deriveEqualSliceOfPtrTofloat64(this.Float64, that.Float64) &&
+		deriveEqualSliceOfPtrTofloat32(this.Float32, that.Float32) &&
+		deriveEqualSliceOfPtrToint(this.Int, that.Int) &&
+		deriveEqualSliceOfPtrToint16(this.Int16, that.Int16) &&
+		deriveEqualSliceOfPtrToint32(this.Int32, that.Int32) &&
+		deriveEqualSliceOfPtrToint64(this.Int64, that.Int64) &&
+		deriveEqualSliceOfPtrToint8(this.Int8, that.Int8) &&
+		deriveEqualSliceOfPtrTorune(this.Rune, that.Rune) &&
+		deriveEqualSliceOfPtrTostring(this.String, that.String) &&
+		deriveEqualSliceOfPtrTouint(this.Uint, that.Uint) &&
+		deriveEqualSliceOfPtrTouint16(this.Uint16, that.Uint16) &&
+		deriveEqualSliceOfPtrTouint32(this.Uint32, that.Uint32) &&
+		deriveEqualSliceOfPtrTouint64(this.Uint64, that.Uint64) &&
+		deriveEqualSliceOfPtrTouint8(this.Uint8, that.Uint8) &&
+		deriveEqualSliceOfPtrTouintptr(this.UintPtr, that.UintPtr)
+}
+
 func deriveEqualPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Bool == that.Bool &&
@@ -100,27 +123,27 @@ func deriveEqualPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) bool {
 		this.UintPtr == that.UintPtr
 }
 
-func deriveEqualPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) bool {
+func deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		deriveEqualSliceOfPtrTobool(this.Bool, that.Bool) &&
-		deriveEqualSliceOfPtrTobyte(this.Byte, that.Byte) &&
-		deriveEqualSliceOfPtrTocomplex128(this.Complex128, that.Complex128) &&
-		deriveEqualSliceOfPtrTocomplex64(this.Complex64, that.Complex64) &&
-		deriveEqualSliceOfPtrTofloat64(this.Float64, that.Float64) &&
-		deriveEqualSliceOfPtrTofloat32(this.Float32, that.Float32) &&
-		deriveEqualSliceOfPtrToint(this.Int, that.Int) &&
-		deriveEqualSliceOfPtrToint16(this.Int16, that.Int16) &&
-		deriveEqualSliceOfPtrToint32(this.Int32, that.Int32) &&
-		deriveEqualSliceOfPtrToint64(this.Int64, that.Int64) &&
-		deriveEqualSliceOfPtrToint8(this.Int8, that.Int8) &&
-		deriveEqualSliceOfPtrTorune(this.Rune, that.Rune) &&
-		deriveEqualSliceOfPtrTostring(this.String, that.String) &&
-		deriveEqualSliceOfPtrTouint(this.Uint, that.Uint) &&
-		deriveEqualSliceOfPtrTouint16(this.Uint16, that.Uint16) &&
-		deriveEqualSliceOfPtrTouint32(this.Uint32, that.Uint32) &&
-		deriveEqualSliceOfPtrTouint64(this.Uint64, that.Uint64) &&
-		deriveEqualSliceOfPtrTouint8(this.Uint8, that.Uint8) &&
-		deriveEqualSliceOfPtrTouintptr(this.UintPtr, that.UintPtr)
+		deriveEqualArrayOfPtrTobool(this.Bool, that.Bool) &&
+		deriveEqualArrayOfPtrTobyte(this.Byte, that.Byte) &&
+		deriveEqualArrayOfPtrTocomplex128(this.Complex128, that.Complex128) &&
+		deriveEqualArrayOfPtrTocomplex64(this.Complex64, that.Complex64) &&
+		deriveEqualArrayOfPtrTofloat64(this.Float64, that.Float64) &&
+		deriveEqualArrayOfPtrTofloat32(this.Float32, that.Float32) &&
+		deriveEqualArrayOfPtrToint(this.Int, that.Int) &&
+		deriveEqualArrayOfPtrToint16(this.Int16, that.Int16) &&
+		deriveEqualArrayOfPtrToint32(this.Int32, that.Int32) &&
+		deriveEqualArrayOfPtrToint64(this.Int64, that.Int64) &&
+		deriveEqualArrayOfPtrToint8(this.Int8, that.Int8) &&
+		deriveEqualArrayOfPtrTorune(this.Rune, that.Rune) &&
+		deriveEqualArrayOfPtrTostring(this.String, that.String) &&
+		deriveEqualArrayOfPtrTouint(this.Uint, that.Uint) &&
+		deriveEqualArrayOfPtrTouint16(this.Uint16, that.Uint16) &&
+		deriveEqualArrayOfPtrTouint32(this.Uint32, that.Uint32) &&
+		deriveEqualArrayOfPtrTouint64(this.Uint64, that.Uint64) &&
+		deriveEqualArrayOfPtrTouint8(this.Uint8, that.Uint8) &&
+		deriveEqualArrayOfPtrTouintptr(this.UintPtr, that.UintPtr)
 }
 
 func deriveEqualPtrToSomeComplexTypes(this, that *SomeComplexTypes) bool {
@@ -672,6 +695,177 @@ func deriveEqualSliceOfPtrTouintptr(this, that []*uintptr) bool {
 	if len(this) != len(that) {
 		return false
 	}
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTobool(this, that [1]*bool) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTobyte(this, that [2]*byte) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTocomplex128(this, that [3]*complex128) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTocomplex64(this, that [4]*complex64) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTofloat64(this, that [5]*float64) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTofloat32(this, that [6]*float32) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrToint(this, that [7]*int) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrToint16(this, that [8]*int16) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrToint32(this, that [9]*int32) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrToint64(this, that [10]*int64) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrToint8(this, that [11]*int8) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTorune(this, that [12]*rune) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTostring(this, that [13]*string) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTouint(this, that [14]*uint) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTouint16(this, that [15]*uint16) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTouint32(this, that [16]*uint32) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTouint64(this, that [17]*uint64) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTouint8(this, that [18]*uint8) bool {
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualArrayOfPtrTouintptr(this, that [19]*uintptr) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
 			return false

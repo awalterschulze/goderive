@@ -92,8 +92,22 @@ func genEqual(p Printer, m TypesMap, qual types.Qualifier, typ types.Type) {
 		p.Out()
 		p.P("}")
 		p.P("return true")
-	// TODO case *types.Array:
-
+	case *types.Array:
+		p.P("for i := 0; i < len(this); i++ {")
+		p.In()
+		eqStr, err := equalField(m, qual, "this[i]", "that[i]", ttyp.Elem())
+		if err != nil {
+			fmt.Fprintf(os.Stderr, err.Error())
+			return
+		}
+		p.P("if !(%s) {", eqStr)
+		p.In()
+		p.P("return false")
+		p.Out()
+		p.P("}")
+		p.Out()
+		p.P("}")
+		p.P("return true")
 	case *types.Map:
 		p.P("if this == nil || that == nil {")
 		p.In()
@@ -149,9 +163,9 @@ func equalField(m TypesMap, qual types.Qualifier, this, that string, fieldType t
 			return "", err
 		}
 		return fmt.Sprintf("(%[1]s == nil && %[2]s == nil) || (%[1]s != nil && %[2]s != nil && %[3]s)", this, that, eqStr), nil
-	// TODO case *types.Array:
-	// 	p.newFunc(typ)
-	// 	return fmt.Sprintf("%s(%s, %s)", equalFuncName(typ, p.qual), this, that), nil
+	case *types.Array:
+		m.Set(typ, false)
+		return fmt.Sprintf("%s(%s, %s)", equalFuncName(typ, qual), this, that), nil
 	case *types.Slice:
 		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
 			return fmt.Sprintf("bytes.Equal(%s, %s)", this, that), nil

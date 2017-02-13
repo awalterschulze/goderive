@@ -44,6 +44,7 @@ func TestEqual(t *testing.T) {
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
 		&SliceOfBuiltInTypes{},
+		&ArrayOfBuiltInTypes{},
 		&SomeComplexTypes{},
 		&RecursiveType{},
 	}

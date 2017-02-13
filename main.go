@@ -58,7 +58,9 @@ type p struct {
 }
 
 func (p *p) P(format string, a ...interface{}) {
-	fmt.Fprintf(p.w, format, a...)
+	if _, err := fmt.Fprintf(p.w, format, a...); err != nil {
+		panic(err)
+	}
 }
 
 func load(paths ...string) (*loader.Program, error) {

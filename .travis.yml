@@ -1,0 +1,7 @@
+script:
+  - make travis
+
+language: go
+
+go:
+  - 1.7.5

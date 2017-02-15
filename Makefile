@@ -6,3 +6,7 @@ test:
 .PHONY: gofmt
 gofmt:
 	gofmt -l -s -w .
+
+.PHONY: travis
+travis:
+	make test

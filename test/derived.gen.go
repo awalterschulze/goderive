@@ -144,6 +144,13 @@ func deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTyp
 		deriveEqualArrayOfPtrTouintptr(this.UintPtr, that.UintPtr)
 }
 
+func deriveEqualPtrToSliceToSlice(this, that *SliceToSlice) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualSliceOfSliceOfint(this.Ints, that.Ints) &&
+		deriveEqualSliceOfSliceOfstring(this.Strings, that.Strings) &&
+		deriveEqualSliceOfSliceOfPtrToint(this.IntPtrs, that.IntPtrs)
+}
+
 func deriveEqualPtrToName(this, that *Name) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Name == that.Name
@@ -871,6 +878,51 @@ func deriveEqualArrayOfPtrTouint8(this, that [18]*uint8) bool {
 func deriveEqualArrayOfPtrTouintptr(this, that [19]*uintptr) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfSliceOfint(this, that [][]int) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqualSliceOfint(this[i], that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfSliceOfstring(this, that [][]string) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqualSliceOfstring(this[i], that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfSliceOfPtrToint(this, that [][]*int) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqualSliceOfPtrToint(this[i], that[i])) {
 			return false
 		}
 	}

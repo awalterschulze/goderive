@@ -170,6 +170,16 @@ func (this *ArrayOfPtrToBuiltInTypes) Equal(that *ArrayOfPtrToBuiltInTypes) bool
 	return deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that)
 }
 
+type SliceToSlice struct {
+	Ints    [][]int
+	Strings [][]string
+	IntPtrs [][]*int
+}
+
+func (this *SliceToSlice) Equal(that *SliceToSlice) bool {
+	return deriveEqualPtrToSliceToSlice(this, that)
+}
+
 type Name struct {
 	Name string
 }

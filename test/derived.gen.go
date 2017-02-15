@@ -144,14 +144,19 @@ func deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTyp
 		deriveEqualArrayOfPtrTouintptr(this.UintPtr, that.UintPtr)
 }
 
+func deriveEqualPtrToName(this, that *Name) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Name == that.Name
+}
+
 func deriveEqualPtrToSomeComplexTypes(this, that *SomeComplexTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		deriveEqualSliceOfPtrToRecursiveType(this.J, that.J) &&
-		deriveEqualSliceOfRecursiveType(this.K, that.K) &&
+		deriveEqualSliceOfPtrToName(this.J, that.J) &&
+		deriveEqualSliceOfName(this.K, that.K) &&
 		this.L.Equal(that.L) &&
-		this.M.Equal(&that.M) &&
-		deriveEqualMapOfintToRecursiveType(this.N, that.N) &&
-		deriveEqualMapOfstringToPtrToRecursiveType(this.O, that.O) &&
+		this.M == that.M &&
+		deriveEqualMapOfintToName(this.N, that.N) &&
+		deriveEqualMapOfstringToPtrToName(this.O, that.O) &&
 		deriveEqualMapOfint64Tostring(this.P, that.P)
 }
 
@@ -872,7 +877,7 @@ func deriveEqualArrayOfPtrTouintptr(this, that [19]*uintptr) bool {
 	return true
 }
 
-func deriveEqualSliceOfPtrToRecursiveType(this, that []*RecursiveType) bool {
+func deriveEqualSliceOfPtrToName(this, that []*Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -887,7 +892,7 @@ func deriveEqualSliceOfPtrToRecursiveType(this, that []*RecursiveType) bool {
 	return true
 }
 
-func deriveEqualSliceOfRecursiveType(this, that []RecursiveType) bool {
+func deriveEqualSliceOfName(this, that []Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -895,14 +900,14 @@ func deriveEqualSliceOfRecursiveType(this, that []RecursiveType) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(this[i].Equal(&that[i])) {
+		if !(this[i] == that[i]) {
 			return false
 		}
 	}
 	return true
 }
 
-func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
+func deriveEqualMapOfintToName(this, that map[int]Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -914,14 +919,14 @@ func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
 		if !ok {
 			return false
 		}
-		if !(v.Equal(&thatv)) {
+		if !(v == thatv) {
 			return false
 		}
 	}
 	return true
 }
 
-func deriveEqualMapOfstringToPtrToRecursiveType(this, that map[string]*RecursiveType) bool {
+func deriveEqualMapOfstringToPtrToName(this, that map[string]*Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -953,6 +958,25 @@ func deriveEqualMapOfint64Tostring(this, that map[int64]string) bool {
 			return false
 		}
 		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v.Equal(&thatv)) {
 			return false
 		}
 	}

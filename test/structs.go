@@ -170,13 +170,21 @@ func (this *ArrayOfPtrToBuiltInTypes) Equal(that *ArrayOfPtrToBuiltInTypes) bool
 	return deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that)
 }
 
+type Name struct {
+	Name string
+}
+
+func (this *Name) Equal(that *Name) bool {
+	return deriveEqualPtrToName(this, that)
+}
+
 type SomeComplexTypes struct {
-	J []*RecursiveType
-	K []RecursiveType
-	L *RecursiveType
-	M RecursiveType
-	N map[int]RecursiveType
-	O map[string]*RecursiveType
+	J []*Name
+	K []Name
+	L *Name
+	M Name
+	N map[int]Name
+	O map[string]*Name
 	P map[int64]string
 }
 

@@ -18,22 +18,58 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"strings"
+	"unicode"
 )
 
 type Printer interface {
 	P(format string, a ...interface{})
 	In()
 	Out()
+
+	NewImport(path string) Import
 	Flush(pkgName string, w io.Writer) error
 }
 
 type printer struct {
-	w      *bytes.Buffer
-	indent string
+	w       *bytes.Buffer
+	indent  string
+	imports map[string]string
 }
 
 func newPrinter() Printer {
-	return &printer{bytes.NewBuffer(nil), ""}
+	return &printer{bytes.NewBuffer(nil), "", make(map[string]string)}
+}
+
+func badToUnderscore(r rune) rune {
+	if unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_' {
+		return r
+	}
+	return '_'
+}
+
+type Import func() string
+
+func (p *printer) NewImport(path string) Import {
+	return func() string {
+		fullpath := strings.Map(badToUnderscore, path)
+		fullpaths := strings.Split(fullpath, "_")
+		shortpath := fullpaths[len(fullpaths)-1]
+		if _, ok := p.imports[shortpath]; !ok {
+			p.imports[shortpath] = path
+			return shortpath
+		}
+		if p.imports[shortpath] == path {
+			return shortpath
+		}
+		if path2, ok := p.imports[fullpath]; ok {
+			if path2 != path {
+				panic("non unique fullpath: " + path2 + " != " + path)
+			}
+		}
+		p.imports[fullpath] = path
+		return fullpath
+	}
 }
 
 func (p *printer) P(format string, a ...interface{}) {
@@ -58,11 +94,17 @@ func (p *printer) Flush(pkgName string, file io.Writer) error {
 	top.WriteString("\n")
 	top.WriteString("package " + pkgName + "\n")
 	top.WriteString("\n")
-	top.WriteString("import (\n")
-	top.WriteString("\t\"bytes\"\n")
-	top.WriteString(")\n")
-	top.WriteString("\n")
-	top.WriteString("var _ = bytes.MinRead\n")
+	if len(p.imports) > 0 {
+		top.WriteString("import (\n")
+		for qual, path := range p.imports {
+			if qual == path {
+				top.WriteString("\t\"" + path + "\"\n")
+			} else {
+				top.WriteString("\t" + qual + " \"" + path + "\"\n")
+			}
+		}
+		top.WriteString(")\n")
+	}
 	_, err := top.WriteTo(file)
 	if err != nil {
 		return err

@@ -20,17 +20,42 @@ import (
 	"os"
 )
 
-const eqFuncPrefix = "deriveEqual"
-
-func equalFuncName(typ types.Type, qual types.Qualifier) string {
-	return eqFuncPrefix + typeName(typ, qual)
+func newEqual(printer Printer, typesMap TypesMap, qual types.Qualifier) *equal {
+	return &equal{
+		printer:  printer,
+		typesMap: typesMap,
+		qual:     qual,
+		bytesPkg: printer.NewImport("bytes"),
+	}
 }
 
-func genEqual(p Printer, m TypesMap, qual types.Qualifier, typ types.Type) {
+type equal struct {
+	printer  Printer
+	typesMap TypesMap
+	qual     types.Qualifier
+	bytesPkg Import
+}
+
+const eqFuncPrefix = "deriveEqual"
+
+func (this *equal) funcName(typ types.Type) string {
+	return eqFuncPrefix + typeName(typ, this.qual)
+}
+
+func not(s string) string {
+	if s[0] == '(' {
+		return "!" + s
+	}
+	return "!(" + s + ")"
+}
+
+func (this *equal) gen(typ types.Type) {
+	p := this.printer
+	m := this.typesMap
 	m.Set(typ, true)
-	typeStr := types.TypeString(typ, qual)
+	typeStr := types.TypeString(typ, this.qual)
 	p.P("")
-	p.P("func %s(this, that %s) bool {", equalFuncName(typ, qual), typeStr)
+	p.P("func %s(this, that %s) bool {", this.funcName(typ), typeStr)
 	p.In()
 	switch ttyp := typ.(type) {
 	case *types.Pointer:
@@ -48,9 +73,9 @@ func genEqual(p Printer, m TypesMap, qual types.Qualifier, typ types.Type) {
 				field := tttyp.Field(i)
 				fieldType := field.Type()
 				fieldName := field.Name()
-				this := "this." + fieldName
-				that := "that." + fieldName
-				fieldStr, err := equalField(m, qual, this, that, fieldType)
+				thisField := "this." + fieldName
+				thatField := "that." + fieldName
+				fieldStr, err := this.field(thisField, thatField, fieldType)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, err.Error())
 					return
@@ -79,12 +104,12 @@ func genEqual(p Printer, m TypesMap, qual types.Qualifier, typ types.Type) {
 		p.P("}")
 		p.P("for i := 0; i < len(this); i++ {")
 		p.In()
-		eqStr, err := equalField(m, qual, "this[i]", "that[i]", ttyp.Elem())
+		eqStr, err := this.field("this[i]", "that[i]", ttyp.Elem())
 		if err != nil {
 			fmt.Fprintf(os.Stderr, err.Error())
 			return
 		}
-		p.P("if !(%s) {", eqStr)
+		p.P("if %s {", not(eqStr))
 		p.In()
 		p.P("return false")
 		p.Out()
@@ -95,12 +120,12 @@ func genEqual(p Printer, m TypesMap, qual types.Qualifier, typ types.Type) {
 	case *types.Array:
 		p.P("for i := 0; i < len(this); i++ {")
 		p.In()
-		eqStr, err := equalField(m, qual, "this[i]", "that[i]", ttyp.Elem())
+		eqStr, err := this.field("this[i]", "that[i]", ttyp.Elem())
 		if err != nil {
 			fmt.Fprintf(os.Stderr, err.Error())
 			return
 		}
-		p.P("if !(%s) {", eqStr)
+		p.P("if %s {", not(eqStr))
 		p.In()
 		p.P("return false")
 		p.Out()
@@ -127,12 +152,12 @@ func genEqual(p Printer, m TypesMap, qual types.Qualifier, typ types.Type) {
 		p.P("return false")
 		p.Out()
 		p.P("}")
-		eqStr, err := equalField(m, qual, "v", "thatv", ttyp.Elem())
+		eqStr, err := this.field("v", "thatv", ttyp.Elem())
 		if err != nil {
 			fmt.Fprintf(os.Stderr, err.Error())
 			return
 		}
-		p.P("if !(%s) {", eqStr)
+		p.P("if %s {", not(eqStr))
 		p.In()
 		p.P("return false")
 		p.Out()
@@ -148,35 +173,35 @@ func genEqual(p Printer, m TypesMap, qual types.Qualifier, typ types.Type) {
 	p.P("}")
 }
 
-func equalField(m TypesMap, qual types.Qualifier, this, that string, fieldType types.Type) (string, error) {
+func (this *equal) field(thisField, thatField string, fieldType types.Type) (string, error) {
 	if isComparable(fieldType) {
-		return fmt.Sprintf("%s == %s", this, that), nil
+		return fmt.Sprintf("%s == %s", thisField, thatField), nil
 	}
 	switch typ := fieldType.(type) {
 	case *types.Pointer:
 		ref := typ.Elem()
 		if _, ok := ref.(*types.Named); ok {
-			return fmt.Sprintf("%s.Equal(%s)", this, that), nil
+			return fmt.Sprintf("%s.Equal(%s)", thisField, thatField), nil
 		}
-		eqStr, err := equalField(m, qual, "*"+this, "*"+that, ref)
+		eqStr, err := this.field("*"+thisField, "*"+thatField, ref)
 		if err != nil {
 			return "", err
 		}
-		return fmt.Sprintf("(%[1]s == nil && %[2]s == nil) || (%[1]s != nil && %[2]s != nil && %[3]s)", this, that, eqStr), nil
+		return fmt.Sprintf("((%[1]s == nil && %[2]s == nil) || (%[1]s != nil && %[2]s != nil && %[3]s))", thisField, thatField, eqStr), nil
 	case *types.Array:
-		m.Set(typ, false)
-		return fmt.Sprintf("%s(%s, %s)", equalFuncName(typ, qual), this, that), nil
+		this.typesMap.Set(typ, false)
+		return fmt.Sprintf("%s(%s, %s)", this.funcName(typ), thisField, thatField), nil
 	case *types.Slice:
 		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
-			return fmt.Sprintf("bytes.Equal(%s, %s)", this, that), nil
+			return fmt.Sprintf("%s.Equal(%s, %s)", this.bytesPkg(), thisField, thatField), nil
 		}
-		m.Set(typ, false)
-		return fmt.Sprintf("%s(%s, %s)", equalFuncName(typ, qual), this, that), nil
+		this.typesMap.Set(typ, false)
+		return fmt.Sprintf("%s(%s, %s)", this.funcName(typ), thisField, thatField), nil
 	case *types.Map:
-		m.Set(typ, false)
-		return fmt.Sprintf("%s(%s, %s)", equalFuncName(typ, qual), this, that), nil
+		this.typesMap.Set(typ, false)
+		return fmt.Sprintf("%s(%s, %s)", this.funcName(typ), thisField, thatField), nil
 	case *types.Named:
-		return fmt.Sprintf("%s.Equal(&%s)", this, that), nil
+		return fmt.Sprintf("%s.Equal(&%s)", thisField, thatField), nil
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return "", fmt.Errorf("unsupported type %#v", fieldType)
 	}

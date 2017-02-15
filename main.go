@@ -29,17 +29,21 @@ func main() {
 	flag.Parse()
 	paths := gotool.ImportPaths(flag.Args())
 	program, err := load(paths...)
-	derivedFilename := "derived.gen.go"
 	if err != nil {
 		log.Fatal(err) // load error
 	}
+	derivedFilename := "derived.gen.go"
 	for _, pkgInfo := range program.InitialPackages() {
 		pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())
 
 		qual := types.RelativeTo(pkgInfo.Pkg)
 		var typs []types.Type
 		for i, f := range pkgInfo.Files {
-			_, fname := filepath.Split(program.Fset.File(f.Pos()).Name())
+			gotFile := program.Fset.File(f.Pos())
+			if gotFile == nil {
+				continue
+			}
+			_, fname := filepath.Split(gotFile.Name())
 			if fname == derivedFilename {
 				continue
 			}
@@ -62,19 +66,20 @@ func main() {
 func generate(w io.Writer, qual types.Qualifier, pkgName string, typs []types.Type) {
 	p := newPrinter()
 	m := newTypesMap(qual)
+	eq := newEqual(p, m, qual)
 	for _, typ := range typs {
 		m.Set(typ, false)
 	}
 	for _, typ := range typs {
 		m.Set(typ, false)
-		genEqual(p, m, qual, typ)
+		eq.gen(typ)
 		m.Set(typ, true)
 	}
 	for _, typ := range m.List() {
 		if m.Get(typ) {
 			continue
 		}
-		genEqual(p, m, qual, typ)
+		eq.gen(typ)
 		m.Set(typ, true)
 	}
 	p.Flush(pkgName, w)

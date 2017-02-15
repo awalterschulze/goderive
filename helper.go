@@ -54,7 +54,14 @@ func load(paths ...string) (*loader.Program, error) {
 	if len(rest) > 0 {
 		return nil, fmt.Errorf("unhandled extra arguments: %v", rest)
 	}
-	return conf.Load()
+	p, err := conf.Load()
+	if err != nil {
+		return nil, err
+	}
+	if p.Fset == nil {
+		return nil, fmt.Errorf("program == nil")
+	}
+	return p, nil
 }
 
 func typeName(typ types.Type, qual types.Qualifier) string {

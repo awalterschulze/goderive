@@ -54,16 +54,18 @@ func TestEqual(t *testing.T) {
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()
 		t.Run(desc, func(t *testing.T) {
-			if !equal(this, this) {
-				t.Fatal("empty not equal to itself")
-			}
-			this = random(this)
-			if !equal(this, this) {
-				t.Fatal("random not equal to itself")
-			}
-			that := random(this)
-			if equal(this, that) {
-				t.Fatalf("random %#v equal to another random %#v", this, that)
+			for i := 0; i < 100; i++ {
+				if !equal(this, this) {
+					t.Fatal("empty not equal to itself")
+				}
+				this = random(this)
+				if !equal(this, this) {
+					t.Fatal("random not equal to itself")
+				}
+				that := random(this)
+				if equal(this, that) {
+					t.Fatalf("random %#v equal to another random %#v", this, that)
+				}
 			}
 		})
 	}

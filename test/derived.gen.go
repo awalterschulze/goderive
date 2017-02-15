@@ -6,8 +6,6 @@ import (
 	"bytes"
 )
 
-var _ = bytes.MinRead
-
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Bool == that.Bool &&
@@ -33,25 +31,25 @@ func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 
 func deriveEqualPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		(this.Bool == nil && that.Bool == nil) || (this.Bool != nil && that.Bool != nil && *this.Bool == *that.Bool) &&
-		(this.Byte == nil && that.Byte == nil) || (this.Byte != nil && that.Byte != nil && *this.Byte == *that.Byte) &&
-		(this.Complex128 == nil && that.Complex128 == nil) || (this.Complex128 != nil && that.Complex128 != nil && *this.Complex128 == *that.Complex128) &&
-		(this.Complex64 == nil && that.Complex64 == nil) || (this.Complex64 != nil && that.Complex64 != nil && *this.Complex64 == *that.Complex64) &&
-		(this.Float64 == nil && that.Float64 == nil) || (this.Float64 != nil && that.Float64 != nil && *this.Float64 == *that.Float64) &&
-		(this.Float32 == nil && that.Float32 == nil) || (this.Float32 != nil && that.Float32 != nil && *this.Float32 == *that.Float32) &&
-		(this.Int == nil && that.Int == nil) || (this.Int != nil && that.Int != nil && *this.Int == *that.Int) &&
-		(this.Int16 == nil && that.Int16 == nil) || (this.Int16 != nil && that.Int16 != nil && *this.Int16 == *that.Int16) &&
-		(this.Int32 == nil && that.Int32 == nil) || (this.Int32 != nil && that.Int32 != nil && *this.Int32 == *that.Int32) &&
-		(this.Int64 == nil && that.Int64 == nil) || (this.Int64 != nil && that.Int64 != nil && *this.Int64 == *that.Int64) &&
-		(this.Int8 == nil && that.Int8 == nil) || (this.Int8 != nil && that.Int8 != nil && *this.Int8 == *that.Int8) &&
-		(this.Rune == nil && that.Rune == nil) || (this.Rune != nil && that.Rune != nil && *this.Rune == *that.Rune) &&
-		(this.String == nil && that.String == nil) || (this.String != nil && that.String != nil && *this.String == *that.String) &&
-		(this.Uint == nil && that.Uint == nil) || (this.Uint != nil && that.Uint != nil && *this.Uint == *that.Uint) &&
-		(this.Uint16 == nil && that.Uint16 == nil) || (this.Uint16 != nil && that.Uint16 != nil && *this.Uint16 == *that.Uint16) &&
-		(this.Uint32 == nil && that.Uint32 == nil) || (this.Uint32 != nil && that.Uint32 != nil && *this.Uint32 == *that.Uint32) &&
-		(this.Uint64 == nil && that.Uint64 == nil) || (this.Uint64 != nil && that.Uint64 != nil && *this.Uint64 == *that.Uint64) &&
-		(this.Uint8 == nil && that.Uint8 == nil) || (this.Uint8 != nil && that.Uint8 != nil && *this.Uint8 == *that.Uint8) &&
-		(this.UintPtr == nil && that.UintPtr == nil) || (this.UintPtr != nil && that.UintPtr != nil && *this.UintPtr == *that.UintPtr)
+		((this.Bool == nil && that.Bool == nil) || (this.Bool != nil && that.Bool != nil && *this.Bool == *that.Bool)) &&
+		((this.Byte == nil && that.Byte == nil) || (this.Byte != nil && that.Byte != nil && *this.Byte == *that.Byte)) &&
+		((this.Complex128 == nil && that.Complex128 == nil) || (this.Complex128 != nil && that.Complex128 != nil && *this.Complex128 == *that.Complex128)) &&
+		((this.Complex64 == nil && that.Complex64 == nil) || (this.Complex64 != nil && that.Complex64 != nil && *this.Complex64 == *that.Complex64)) &&
+		((this.Float64 == nil && that.Float64 == nil) || (this.Float64 != nil && that.Float64 != nil && *this.Float64 == *that.Float64)) &&
+		((this.Float32 == nil && that.Float32 == nil) || (this.Float32 != nil && that.Float32 != nil && *this.Float32 == *that.Float32)) &&
+		((this.Int == nil && that.Int == nil) || (this.Int != nil && that.Int != nil && *this.Int == *that.Int)) &&
+		((this.Int16 == nil && that.Int16 == nil) || (this.Int16 != nil && that.Int16 != nil && *this.Int16 == *that.Int16)) &&
+		((this.Int32 == nil && that.Int32 == nil) || (this.Int32 != nil && that.Int32 != nil && *this.Int32 == *that.Int32)) &&
+		((this.Int64 == nil && that.Int64 == nil) || (this.Int64 != nil && that.Int64 != nil && *this.Int64 == *that.Int64)) &&
+		((this.Int8 == nil && that.Int8 == nil) || (this.Int8 != nil && that.Int8 != nil && *this.Int8 == *that.Int8)) &&
+		((this.Rune == nil && that.Rune == nil) || (this.Rune != nil && that.Rune != nil && *this.Rune == *that.Rune)) &&
+		((this.String == nil && that.String == nil) || (this.String != nil && that.String != nil && *this.String == *that.String)) &&
+		((this.Uint == nil && that.Uint == nil) || (this.Uint != nil && that.Uint != nil && *this.Uint == *that.Uint)) &&
+		((this.Uint16 == nil && that.Uint16 == nil) || (this.Uint16 != nil && that.Uint16 != nil && *this.Uint16 == *that.Uint16)) &&
+		((this.Uint32 == nil && that.Uint32 == nil) || (this.Uint32 != nil && that.Uint32 != nil && *this.Uint32 == *that.Uint32)) &&
+		((this.Uint64 == nil && that.Uint64 == nil) || (this.Uint64 != nil && that.Uint64 != nil && *this.Uint64 == *that.Uint64)) &&
+		((this.Uint8 == nil && that.Uint8 == nil) || (this.Uint8 != nil && that.Uint8 != nil && *this.Uint8 == *that.Uint8)) &&
+		((this.UintPtr == nil && that.UintPtr == nil) || (this.UintPtr != nil && that.UintPtr != nil && *this.UintPtr == *that.UintPtr))
 }
 
 func deriveEqualPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) bool {

@@ -1,5 +1,7 @@
 # goderive
 
+[![Build Status](https://travis-ci.org/awalterschulze/goderive.svg?branch=master)](https://travis-ci.org/awalterschulze/goderive)
+
 goderive parses your go code and generates functions that are derived from the given types. Functions that are currently supported include:
 
   - Equal

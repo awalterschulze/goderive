@@ -2,6 +2,7 @@
 test:
 	go install .
 	make -C test test
+	make -C example example
 
 .PHONY: gofmt
 gofmt:

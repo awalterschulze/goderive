@@ -170,6 +170,18 @@ func (this *ArrayOfPtrToBuiltInTypes) Equal(that *ArrayOfPtrToBuiltInTypes) bool
 	return deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that)
 }
 
+type MapsOfBuiltInTypes struct {
+	BoolToString          map[bool]string
+	StringToBool          map[string]bool
+	Complex128ToComplex64 map[complex128]complex64
+	Float64ToUint32       map[float64]uint32
+	Uint16ToUint8         map[uint16]uint8
+}
+
+func (this *MapsOfBuiltInTypes) Equal(that *MapsOfBuiltInTypes) bool {
+	return deriveEqualPtrToMapsOfBuiltInTypes(this, that)
+}
+
 type SliceToSlice struct {
 	Ints    [][]int
 	Strings [][]string

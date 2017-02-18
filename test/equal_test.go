@@ -47,6 +47,7 @@ func TestEqual(t *testing.T) {
 		&SliceOfPtrToBuiltInTypes{},
 		&ArrayOfBuiltInTypes{},
 		&ArrayOfPtrToBuiltInTypes{},
+		&MapsOfBuiltInTypes{},
 
 		&SliceToSlice{},
 		&SomeComplexTypes{},

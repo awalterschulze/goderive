@@ -144,6 +144,15 @@ func deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTyp
 		deriveEqualArrayOfPtrTouintptr(this.UintPtr, that.UintPtr)
 }
 
+func deriveEqualPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualMapOfboolTostring(this.BoolToString, that.BoolToString) &&
+		deriveEqualMapOfstringTobool(this.StringToBool, that.StringToBool) &&
+		deriveEqualMapOfcomplex128Tocomplex64(this.Complex128ToComplex64, that.Complex128ToComplex64) &&
+		deriveEqualMapOffloat64Touint32(this.Float64ToUint32, that.Float64ToUint32) &&
+		deriveEqualMapOfuint16Touint8(this.Uint16ToUint8, that.Uint16ToUint8)
+}
+
 func deriveEqualPtrToSliceToSlice(this, that *SliceToSlice) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		deriveEqualSliceOfSliceOfint(this.Ints, that.Ints) &&
@@ -878,6 +887,101 @@ func deriveEqualArrayOfPtrTouint8(this, that [18]*uint8) bool {
 func deriveEqualArrayOfPtrTouintptr(this, that [19]*uintptr) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfboolTostring(this, that map[bool]string) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfstringTobool(this, that map[string]bool) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfcomplex128Tocomplex64(this, that map[complex128]complex64) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOffloat64Touint32(this, that map[float64]uint32) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfuint16Touint8(this, that map[uint16]uint8) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
 			return false
 		}
 	}

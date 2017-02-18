@@ -56,19 +56,10 @@ func TestEqual(t *testing.T) {
 		desc := reflect.TypeOf(this).Elem().Name()
 		t.Run(desc, func(t *testing.T) {
 			for i := 0; i < 100; i++ {
-				if !equal(this, this) {
-					t.Fatal("empty not equal to itself")
-				}
 				this = random(this)
-				if !equal(this, this) {
-					t.Fatal("random not equal to itself")
-				}
 				that := random(this)
-				for reflect.ValueOf(that).IsNil() {
-					that = random(this)
-				}
-				if equal(this, that) {
-					t.Fatalf("random %#v equal to another random %#v", this, that)
+				if want, got := reflect.DeepEqual(this, that), equal(this, that); want != got {
+					t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
 				}
 			}
 		})

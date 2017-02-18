@@ -201,10 +201,10 @@ func (this *Name) Equal(that *Name) bool {
 }
 
 type Structs struct {
-	J []*Name
-	K []Name
-	L *Name
-	M Name
+	Struct             Name
+	PtrToStruct        *Name
+	SliceOfStructs     []Name
+	SliceToPtrOfStruct []*Name
 }
 
 func (this *Structs) Equal(that *Structs) bool {
@@ -230,4 +230,22 @@ type RecursiveType struct {
 
 func (this *RecursiveType) Equal(that *RecursiveType) bool {
 	return deriveEqualPtrToRecursiveType(this, that)
+}
+
+type EmbeddedStruct1 struct {
+	Name
+	*Structs
+}
+
+func (this *EmbeddedStruct1) Equal(that *EmbeddedStruct1) bool {
+	return deriveEqualPtrToEmbeddedStruct1(this, that)
+}
+
+type EmbeddedStruct2 struct {
+	Structs
+	*Name
+}
+
+func (this *EmbeddedStruct2) Equal(that *EmbeddedStruct2) bool {
+	return deriveEqualPtrToEmbeddedStruct2(this, that)
 }

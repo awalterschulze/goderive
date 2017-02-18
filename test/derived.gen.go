@@ -167,10 +167,10 @@ func deriveEqualPtrToName(this, that *Name) bool {
 
 func deriveEqualPtrToStructs(this, that *Structs) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		deriveEqualSliceOfPtrToName(this.J, that.J) &&
-		deriveEqualSliceOfName(this.K, that.K) &&
-		this.L.Equal(that.L) &&
-		this.M == that.M
+		this.Struct == that.Struct &&
+		this.PtrToStruct.Equal(that.PtrToStruct) &&
+		deriveEqualSliceOfName(this.SliceOfStructs, that.SliceOfStructs) &&
+		deriveEqualSliceOfPtrToName(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct)
 }
 
 func deriveEqualPtrToMapWithStructs(this, that *MapWithStructs) bool {
@@ -186,6 +186,18 @@ func deriveEqualPtrToRecursiveType(this, that *RecursiveType) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		bytes.Equal(this.Bytes, that.Bytes) &&
 		deriveEqualMapOfintToRecursiveType(this.N, that.N)
+}
+
+func deriveEqualPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Name == that.Name &&
+		this.Structs.Equal(that.Structs)
+}
+
+func deriveEqualPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Structs.Equal(&that.Structs) &&
+		this.Name.Equal(that.Name)
 }
 
 func deriveEqualSliceOfbool(this, that []bool) bool {
@@ -1039,21 +1051,6 @@ func deriveEqualSliceOfSliceOfPtrToint(this, that [][]*int) bool {
 	return true
 }
 
-func deriveEqualSliceOfPtrToName(this, that []*Name) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i].Equal(that[i])) {
-			return false
-		}
-	}
-	return true
-}
-
 func deriveEqualSliceOfName(this, that []Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -1063,6 +1060,21 @@ func deriveEqualSliceOfName(this, that []Name) bool {
 	}
 	for i := 0; i < len(this); i++ {
 		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfPtrToName(this, that []*Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i].Equal(that[i])) {
 			return false
 		}
 	}

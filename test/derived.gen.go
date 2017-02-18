@@ -200,6 +200,11 @@ func deriveEqualPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) bool {
 		this.Name.Equal(that.Name)
 }
 
+func deriveEqualPtrToUnnamedStruct(this, that *UnnamedStruct) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Unnamed == that.Unnamed
+}
+
 func deriveEqualSliceOfbool(this, that []bool) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil

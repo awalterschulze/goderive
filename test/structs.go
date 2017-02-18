@@ -249,3 +249,13 @@ type EmbeddedStruct2 struct {
 func (this *EmbeddedStruct2) Equal(that *EmbeddedStruct2) bool {
 	return deriveEqualPtrToEmbeddedStruct2(this, that)
 }
+
+type UnnamedStruct struct {
+	Unnamed struct {
+		String string
+	}
+}
+
+func (this *UnnamedStruct) Equal(that *UnnamedStruct) bool {
+	return deriveEqualPtrToUnnamedStruct(this, that)
+}

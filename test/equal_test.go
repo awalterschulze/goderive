@@ -54,6 +54,7 @@ func TestEqual(t *testing.T) {
 		&RecursiveType{},
 		&EmbeddedStruct1{},
 		&EmbeddedStruct2{},
+		&UnnamedStruct{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

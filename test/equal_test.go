@@ -48,9 +48,9 @@ func TestEqual(t *testing.T) {
 		&ArrayOfBuiltInTypes{},
 		&ArrayOfPtrToBuiltInTypes{},
 		&MapsOfBuiltInTypes{},
-
 		&SliceToSlice{},
-		&SomeComplexTypes{},
+		&Structs{},
+		&MapWithStructs{},
 		&RecursiveType{},
 	}
 	for _, this := range structs {
@@ -58,6 +58,9 @@ func TestEqual(t *testing.T) {
 		t.Run(desc, func(t *testing.T) {
 			for i := 0; i < 100; i++ {
 				this = random(this)
+				if want, got := true, equal(this, this); want != got {
+					t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
+				}
 				that := random(this)
 				if want, got := reflect.DeepEqual(this, that), equal(this, that); want != got {
 					t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)

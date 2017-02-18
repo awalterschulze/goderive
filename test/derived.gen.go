@@ -165,15 +165,21 @@ func deriveEqualPtrToName(this, that *Name) bool {
 		this.Name == that.Name
 }
 
-func deriveEqualPtrToSomeComplexTypes(this, that *SomeComplexTypes) bool {
+func deriveEqualPtrToStructs(this, that *Structs) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		deriveEqualSliceOfPtrToName(this.J, that.J) &&
 		deriveEqualSliceOfName(this.K, that.K) &&
 		this.L.Equal(that.L) &&
-		this.M == that.M &&
-		deriveEqualMapOfintToName(this.N, that.N) &&
-		deriveEqualMapOfstringToPtrToName(this.O, that.O) &&
-		deriveEqualMapOfint64Tostring(this.P, that.P)
+		this.M == that.M
+}
+
+func deriveEqualPtrToMapWithStructs(this, that *MapWithStructs) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualMapOfNameTostring(this.NameToString, that.NameToString) &&
+		deriveEqualMapOfstringToName(this.StringToName, that.StringToName) &&
+		deriveEqualMapOfstringToPtrToName(this.StringToPtrToName, that.StringToPtrToName) &&
+		deriveEqualMapOfstringToSliceOfName(this.StringToSliceOfName, that.StringToSliceOfName) &&
+		deriveEqualMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName)
 }
 
 func deriveEqualPtrToRecursiveType(this, that *RecursiveType) bool {
@@ -1063,7 +1069,26 @@ func deriveEqualSliceOfName(this, that []Name) bool {
 	return true
 }
 
-func deriveEqualMapOfintToName(this, that map[int]Name) bool {
+func deriveEqualMapOfNameTostring(this, that map[Name]string) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfstringToName(this, that map[string]Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -1101,7 +1126,7 @@ func deriveEqualMapOfstringToPtrToName(this, that map[string]*Name) bool {
 	return true
 }
 
-func deriveEqualMapOfint64Tostring(this, that map[int64]string) bool {
+func deriveEqualMapOfstringToSliceOfName(this, that map[string][]Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -1113,7 +1138,26 @@ func deriveEqualMapOfint64Tostring(this, that map[int64]string) bool {
 		if !ok {
 			return false
 		}
-		if !(v == thatv) {
+		if !(deriveEqualSliceOfName(v, thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(deriveEqualSliceOfPtrToName(v, thatv)) {
 			return false
 		}
 	}

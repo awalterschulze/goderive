@@ -200,18 +200,27 @@ func (this *Name) Equal(that *Name) bool {
 	return deriveEqualPtrToName(this, that)
 }
 
-type SomeComplexTypes struct {
+type Structs struct {
 	J []*Name
 	K []Name
 	L *Name
 	M Name
-	N map[int]Name
-	O map[string]*Name
-	P map[int64]string
 }
 
-func (this *SomeComplexTypes) Equal(that *SomeComplexTypes) bool {
-	return deriveEqualPtrToSomeComplexTypes(this, that)
+func (this *Structs) Equal(that *Structs) bool {
+	return deriveEqualPtrToStructs(this, that)
+}
+
+type MapWithStructs struct {
+	NameToString             map[Name]string
+	StringToName             map[string]Name
+	StringToPtrToName        map[string]*Name
+	StringToSliceOfName      map[string][]Name
+	StringToSliceOfPtrToName map[string][]*Name
+}
+
+func (this *MapWithStructs) Equal(that *MapWithStructs) bool {
+	return deriveEqualPtrToMapWithStructs(this, that)
 }
 
 type RecursiveType struct {

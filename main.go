@@ -25,6 +25,8 @@ import (
 	"github.com/kisielk/gotool"
 )
 
+const derivedFilename = "derived.gen.go"
+
 func main() {
 	flag.Parse()
 	paths := gotool.ImportPaths(flag.Args())
@@ -32,13 +34,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err) // load error
 	}
-	derivedFilename := "derived.gen.go"
 	for _, pkgInfo := range program.InitialPackages() {
-		pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())
-
 		qual := types.RelativeTo(pkgInfo.Pkg)
+
 		var typs []types.Type
-		for i, f := range pkgInfo.Files {
+		for _, f := range pkgInfo.Files {
 			gotFile := program.Fset.File(f.Pos())
 			if gotFile == nil {
 				continue
@@ -47,18 +47,20 @@ func main() {
 			if fname == derivedFilename {
 				continue
 			}
-			newtyps := findTypesForFuncPrefix(pkgInfo, pkgInfo.Files[i], eqFuncPrefix)
+			newtyps := findEqualFuncs(program, pkgInfo, f)
 			typs = append(typs, newtyps...)
 		}
 		if len(typs) == 0 {
 			continue
 		}
 
+		pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())
 		f, err := os.Create(filepath.Join(pkgpath, derivedFilename))
 		if err != nil {
 			log.Fatal(err)
 		}
 		defer f.Close()
+
 		generate(f, qual, pkgInfo.Pkg.Name(), typs)
 	}
 }

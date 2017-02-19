@@ -19,28 +19,19 @@ import (
 	"go/ast"
 	"go/types"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"golang.org/x/tools/go/loader"
 )
 
-func findTypesForFuncPrefix(pkgInfo *loader.PackageInfo, f *ast.File, funcPrefix string) []types.Type {
-	var typs []types.Type
-	for _, d := range f.Decls {
-		finder := &findTypes{pkgInfo, funcPrefix, nil}
-		ast.Walk(finder, d)
-		typs = append(typs, finder.typs...)
-	}
-	return typs
+type finder struct {
+	program *loader.Program
+	pkgInfo *loader.PackageInfo
+	calls   []*ast.CallExpr
 }
 
-type findTypes struct {
-	pkgInfo    *loader.PackageInfo
-	funcPrefix string
-	typs       []types.Type
-}
-
-func (this *findTypes) Visit(node ast.Node) (w ast.Visitor) {
+func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
 	call, ok := node.(*ast.CallExpr)
 	if !ok {
 		return this
@@ -49,29 +40,65 @@ func (this *findTypes) Visit(node ast.Node) (w ast.Visitor) {
 	if !ok {
 		return this
 	}
-	if !strings.HasPrefix(fn.Name, this.funcPrefix) {
+	def, ok := this.pkgInfo.Uses[fn]
+	if !ok {
+		// undefined function.
+		this.calls = append(this.calls, call)
 		return this
 	}
-	if len(call.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "%s does not have two arguments\n", fn.Name)
+	file := this.program.Fset.File(def.Pos())
+	if file == nil {
+		// probably a builtin function, for example panic.
 		return this
 	}
-	t0 := this.pkgInfo.TypeOf(call.Args[0])
-	t1 := this.pkgInfo.TypeOf(call.Args[1])
-	if !types.Identical(t0, t1) {
-		fmt.Fprintf(os.Stderr, "%s has two arguments, but they are of different types %s != %s\n",
-			fn.Name, t0, t1)
-		return this
+	_, filename := filepath.Split(file.Name())
+	if filename == derivedFilename {
+		// derived function.
+		this.calls = append(this.calls, call)
 	}
-	name := strings.TrimPrefix(fn.Name, this.funcPrefix)
-	qual := types.RelativeTo(this.pkgInfo.Pkg)
-	typeStr := typeName(t0, qual)
-	if typeStr != name {
-		//TODO think about whether this is really necessary
-		fmt.Fprintf(os.Stderr, "%s's suffix %s does not match the type %s\n",
-			fn.Name, name, typeStr)
-		return this
-	}
-	this.typs = append(this.typs, t0)
 	return this
+}
+
+func findUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []*ast.CallExpr {
+	f := &finder{program, pkgInfo, nil}
+	for _, d := range file.Decls {
+		ast.Walk(f, d)
+	}
+	return f.calls
+}
+
+func findEqualFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []types.Type {
+	calls := findUndefinedOrDerivedFuncs(program, pkgInfo, file)
+	var typs []types.Type
+	for _, call := range calls {
+		fn, ok := call.Fun.(*ast.Ident)
+		if !ok {
+			continue
+		}
+		if !strings.HasPrefix(fn.Name, eqFuncPrefix) {
+			continue
+		}
+		if len(call.Args) != 2 {
+			fmt.Fprintf(os.Stderr, "%s does not have two arguments\n", fn.Name)
+			continue
+		}
+		t0 := pkgInfo.TypeOf(call.Args[0])
+		t1 := pkgInfo.TypeOf(call.Args[1])
+		if !types.Identical(t0, t1) {
+			fmt.Fprintf(os.Stderr, "%s has two arguments, but they are of different types %s != %s\n",
+				fn.Name, t0, t1)
+			continue
+		}
+		name := strings.TrimPrefix(fn.Name, eqFuncPrefix)
+		qual := types.RelativeTo(pkgInfo.Pkg)
+		typeStr := typeName(t0, qual)
+		if typeStr != name {
+			//TODO think about whether this is really necessary
+			fmt.Fprintf(os.Stderr, "%s's suffix %s does not match the type %s\n",
+				fn.Name, name, typeStr)
+			continue
+		}
+		typs = append(typs, t0)
+	}
+	return typs
 }

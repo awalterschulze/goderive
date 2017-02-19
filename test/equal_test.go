@@ -39,7 +39,7 @@ func random(this interface{}) interface{} {
 	return v.Interface()
 }
 
-func TestEqual(t *testing.T) {
+func TestEqualStructs(t *testing.T) {
 	structs := []interface{}{
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
@@ -78,4 +78,19 @@ func TestEqual(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestEqualInline(t *testing.T) {
+	t.Run("intslices", func(t *testing.T) {
+		this := random([]int{}).([]int)
+		for i := 0; i < 100; i++ {
+			if want, got := true, deriveEqualSliceOfint(this, this); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
+			}
+			that := random(this).([]int)
+			if want, got := reflect.DeepEqual(this, that), deriveEqualSliceOfint(this, that); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
+			}
+		}
+	})
 }

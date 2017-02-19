@@ -6,6 +6,21 @@ import (
 	"bytes"
 )
 
+func deriveEqualSliceOfint(this, that []int) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Bool == that.Bool &&
@@ -266,21 +281,6 @@ func deriveEqualSliceOffloat64(this, that []float64) bool {
 }
 
 func deriveEqualSliceOffloat32(this, that []float32) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualSliceOfint(this, that []int) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}

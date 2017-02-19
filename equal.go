@@ -263,16 +263,22 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 		}
 		return fmt.Sprintf("((%[1]s == nil && %[2]s == nil) || (%[1]s != nil && %[2]s != nil && %[3]s))", thisField, thatField, eqStr), nil
 	case *types.Array:
-		this.typesMap.Set(typ, false)
+		if !this.typesMap.Get(typ) {
+			this.typesMap.Set(typ, false)
+		}
 		return fmt.Sprintf("%s(%s, %s)", this.funcName(typ), thisField, thatField), nil
 	case *types.Slice:
 		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
 			return fmt.Sprintf("%s.Equal(%s, %s)", this.bytesPkg(), thisField, thatField), nil
 		}
-		this.typesMap.Set(typ, false)
+		if !this.typesMap.Get(typ) {
+			this.typesMap.Set(typ, false)
+		}
 		return fmt.Sprintf("%s(%s, %s)", this.funcName(typ), thisField, thatField), nil
 	case *types.Map:
-		this.typesMap.Set(typ, false)
+		if !this.typesMap.Get(typ) {
+			this.typesMap.Set(typ, false)
+		}
 		return fmt.Sprintf("%s(%s, %s)", this.funcName(typ), thisField, thatField), nil
 	case *types.Named:
 		return fmt.Sprintf("%s.Equal(&%s)", thisField, thatField), nil

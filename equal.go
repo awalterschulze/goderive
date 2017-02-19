@@ -24,29 +24,12 @@ import (
 	"golang.org/x/tools/go/loader"
 )
 
-func generate(p Printer, pkgInfo *loader.PackageInfo, qual types.Qualifier, calls []*ast.CallExpr) {
-	typs := findEqualFuncs(pkgInfo, calls)
-	m := newTypesMap(qual)
-	eq := newEqual(p, m, qual)
-	for _, typ := range typs {
-		m.Set(typ, false)
-	}
-	for _, typ := range typs {
-		m.Set(typ, false)
-		eq.gen(typ)
-		m.Set(typ, true)
-	}
-	for _, typ := range m.List() {
-		if m.Get(typ) {
-			continue
-		}
-		eq.gen(typ)
-		m.Set(typ, true)
-	}
-}
+const eqFuncPrefix = "deriveEqual"
 
-func findEqualFuncs(pkgInfo *loader.PackageInfo, calls []*ast.CallExpr) []types.Type {
-	var typs []types.Type
+func generateEqual(p Printer, pkgInfo *loader.PackageInfo, calls []*ast.CallExpr) {
+	qual := types.RelativeTo(pkgInfo.Pkg)
+	m := newTypesMap(qual)
+
 	for _, call := range calls {
 		fn, ok := call.Fun.(*ast.Ident)
 		if !ok {
@@ -75,17 +58,29 @@ func findEqualFuncs(pkgInfo *loader.PackageInfo, calls []*ast.CallExpr) []types.
 				fn.Name, name, typeStr)
 			continue
 		}
-		typs = append(typs, t0)
+		m.Set(t0, false)
 	}
-	return typs
+
+	eq := newEqual(p, m, qual, eqFuncPrefix)
+
+	for _, typ := range m.List() {
+		eq.genFuncFor(typ)
+	}
+	for _, typ := range m.List() {
+		if m.Get(typ) {
+			continue
+		}
+		eq.genFuncFor(typ)
+	}
 }
 
-func newEqual(printer Printer, typesMap TypesMap, qual types.Qualifier) *equal {
+func newEqual(printer Printer, typesMap TypesMap, qual types.Qualifier, prefix string) *equal {
 	return &equal{
 		printer:  printer,
 		typesMap: typesMap,
 		qual:     qual,
 		bytesPkg: printer.NewImport("bytes"),
+		prefix:   prefix,
 	}
 }
 
@@ -94,22 +89,14 @@ type equal struct {
 	typesMap TypesMap
 	qual     types.Qualifier
 	bytesPkg Import
+	prefix   string
 }
-
-const eqFuncPrefix = "deriveEqual"
 
 func (this *equal) funcName(typ types.Type) string {
 	return eqFuncPrefix + typeName(typ, this.qual)
 }
 
-func not(s string) string {
-	if s[0] == '(' {
-		return "!" + s
-	}
-	return "!(" + s + ")"
-}
-
-func (this *equal) gen(typ types.Type) {
+func (this *equal) genFuncFor(typ types.Type) {
 	p := this.printer
 	m := this.typesMap
 	m.Set(typ, true)
@@ -231,6 +218,13 @@ func (this *equal) gen(typ types.Type) {
 	}
 	p.Out()
 	p.P("}")
+}
+
+func not(s string) string {
+	if s[0] == '(' {
+		return "!" + s
+	}
+	return "!(" + s + ")"
 }
 
 func isComparable(tt types.Type) bool {

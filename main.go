@@ -17,7 +17,6 @@ package main
 import (
 	"flag"
 	"go/ast"
-	"go/types"
 	"log"
 	"os"
 	"path/filepath"
@@ -35,7 +34,6 @@ func main() {
 		log.Fatal(err) // load error
 	}
 	for _, pkgInfo := range program.InitialPackages() {
-		qual := types.RelativeTo(pkgInfo.Pkg)
 
 		var calls []*ast.CallExpr
 		for _, file := range pkgInfo.Files {
@@ -52,7 +50,9 @@ func main() {
 		}
 
 		p := newPrinter(pkgInfo.Pkg.Name())
-		generate(p, pkgInfo, qual, calls)
+
+		generateEqual(p, pkgInfo, calls)
+
 		if p.HasContent() {
 			pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())
 			f, err := os.Create(filepath.Join(pkgpath, derivedFilename))
@@ -64,5 +64,6 @@ func main() {
 			}
 			f.Close()
 		}
+
 	}
 }

@@ -1,5 +1,6 @@
 //go:generate goderive .
 
+// Example: gogenerate shows us how to call goderive using gogenerate instead of using a Makefile.
 package gogenerate
 
 type MyStruct struct {
@@ -8,5 +9,5 @@ type MyStruct struct {
 }
 
 func (this *MyStruct) Equal(that *MyStruct) bool {
-	return deriveEqualPtrToMyStruct(this, that)
+	return deriveEqual(this, that)
 }

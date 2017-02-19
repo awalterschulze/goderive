@@ -51,7 +51,7 @@ func main() {
 
 		p := newPrinter(pkgInfo.Pkg.Name())
 
-		if err := generateEqual(p, pkgInfo, calls); err != nil {
+		if err := generateEqual(p, pkgInfo, *equalPrefix, false, calls); err != nil {
 			log.Fatal(err)
 		}
 

@@ -17,8 +17,6 @@ package main
 import (
 	"fmt"
 	"go/parser"
-	"go/types"
-	"strconv"
 
 	"golang.org/x/tools/go/loader"
 )
@@ -43,19 +41,4 @@ func load(paths ...string) (*loader.Program, error) {
 		return nil, fmt.Errorf("program == nil")
 	}
 	return p, nil
-}
-
-func typeName(typ types.Type, qual types.Qualifier) string {
-	switch t := typ.(type) {
-	case *types.Pointer:
-		return "PtrTo" + typeName(t.Elem(), qual)
-	case *types.Array:
-		sizeStr := strconv.Itoa(int(t.Len()))
-		return "Array" + sizeStr + "Of" + typeName(t.Elem(), qual)
-	case *types.Slice:
-		return "SliceOf" + typeName(t.Elem(), qual)
-	case *types.Map:
-		return "MapOf" + typeName(t.Key(), qual) + "To" + typeName(t.Elem(), qual)
-	}
-	return types.TypeString(typ, qual)
 }

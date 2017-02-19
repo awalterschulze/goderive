@@ -9,7 +9,7 @@ goderive parses your go code and generates functions that are derived from the g
 
 ## Example
 
-The `deriveEqualPtrToA` function will be spotted as a function that needs to generated, because it has a prefix `deriveEqual` and specifies the type `PtrToA` in the suffix.
+The `deriveEqualA` function will be spotted as a function that needs to be generated, because it has a prefix `deriveEqual`.
 
 ```go
 package main
@@ -22,10 +22,11 @@ type A struct {
 func main() {
 	a1 := &A{B: []byte("abc")}
 	a2 := &A{B: []byte("cde")}
-	if !deriveEqualPtrToA(a1, a2) {
+	if !deriveEqualA(a1, a2) {
 		println("SUCCESS")
 	}
 }
 ```
 
 This way only the used functions are generated, keeping generated code to a minimum.
+

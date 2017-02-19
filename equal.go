@@ -15,6 +15,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"go/ast"
 	"go/types"
@@ -23,18 +24,18 @@ import (
 	"golang.org/x/tools/go/loader"
 )
 
-const eqFuncPrefix = "deriveEqual"
+var equalPrefix = flag.String("equalprefix", "deriveEqual", "set the prefix for equal functions that should be derived.")
 
-func generateEqual(p Printer, pkgInfo *loader.PackageInfo, calls []*ast.CallExpr) error {
+func generateEqual(p Printer, pkgInfo *loader.PackageInfo, prefix string, strict bool, calls []*ast.CallExpr) error {
 	qual := types.RelativeTo(pkgInfo.Pkg)
-	m := newTypesMap(qual)
+	typesMap := newTypesMap(qual, prefix)
 
 	for _, call := range calls {
 		fn, ok := call.Fun.(*ast.Ident)
 		if !ok {
 			continue
 		}
-		if !strings.HasPrefix(fn.Name, eqFuncPrefix) {
+		if !strings.HasPrefix(fn.Name, prefix) {
 			continue
 		}
 		if len(call.Args) != 2 {
@@ -46,26 +47,21 @@ func generateEqual(p Printer, pkgInfo *loader.PackageInfo, calls []*ast.CallExpr
 			return fmt.Errorf("%s has two arguments, but they are of different types %s != %s\n",
 				fn.Name, t0, t1)
 		}
-		name := strings.TrimPrefix(fn.Name, eqFuncPrefix)
-		qual := types.RelativeTo(pkgInfo.Pkg)
-		typeStr := typeName(t0, qual)
-		if typeStr != name {
-			//TODO think about whether this is really necessary
-			return fmt.Errorf("%s's suffix %s does not match the type %s\n",
-				fn.Name, name, typeStr)
+
+		if err := typesMap.SetFuncName(t0, fn.Name); err != nil {
+			return err
 		}
-		m.Set(t0, false)
 	}
 
-	eq := newEqual(p, m, qual, eqFuncPrefix)
+	eq := newEqual(p, typesMap, qual, prefix)
 
-	for _, typ := range m.List() {
+	for _, typ := range typesMap.List() {
 		if err := eq.genFuncFor(typ); err != nil {
 			return err
 		}
 	}
-	for _, typ := range m.List() {
-		if m.Get(typ) {
+	for _, typ := range typesMap.List() {
+		if typesMap.IsGenerated(typ) {
 			continue
 		}
 		if err := eq.genFuncFor(typ); err != nil {
@@ -93,17 +89,12 @@ type equal struct {
 	prefix   string
 }
 
-func (this *equal) funcName(typ types.Type) string {
-	return eqFuncPrefix + typeName(typ, this.qual)
-}
-
 func (this *equal) genFuncFor(typ types.Type) error {
 	p := this.printer
-	m := this.typesMap
-	m.Set(typ, true)
+	this.typesMap.Generating(typ)
 	typeStr := types.TypeString(typ, this.qual)
 	p.P("")
-	p.P("func %s(this, that %s) bool {", this.funcName(typ), typeStr)
+	p.P("func %s(this, that %s) bool {", this.typesMap.GetFuncName(typ), typeStr)
 	p.In()
 	switch ttyp := typ.(type) {
 	case *types.Pointer:
@@ -116,10 +107,7 @@ func (this *equal) genFuncFor(typ types.Type) error {
 			}
 			p.P("return " + fieldStr)
 		case *types.Slice, *types.Array, *types.Map:
-			if !this.typesMap.Get(tttyp) {
-				this.typesMap.Set(tttyp, false)
-			}
-			p.P("return (this == nil && that == nil) || (this != nil) && (that != nil) && %s(%s, %s)", this.funcName(tttyp), "*this", "*that")
+			p.P("return (this == nil && that == nil) || (this != nil) && (that != nil) && %s(%s, %s)", this.typesMap.GetFuncName(tttyp), "*this", "*that")
 		case *types.Struct:
 			numFields := tttyp.NumFields()
 			if numFields == 0 {
@@ -270,23 +258,14 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 		}
 		return fmt.Sprintf("((%[1]s == nil && %[2]s == nil) || (%[1]s != nil && %[2]s != nil && %[3]s))", thisField, thatField, eqStr), nil
 	case *types.Array:
-		if !this.typesMap.Get(typ) {
-			this.typesMap.Set(typ, false)
-		}
-		return fmt.Sprintf("%s(%s, %s)", this.funcName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", this.typesMap.GetFuncName(typ), thisField, thatField), nil
 	case *types.Slice:
 		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
 			return fmt.Sprintf("%s.Equal(%s, %s)", this.bytesPkg(), thisField, thatField), nil
 		}
-		if !this.typesMap.Get(typ) {
-			this.typesMap.Set(typ, false)
-		}
-		return fmt.Sprintf("%s(%s, %s)", this.funcName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", this.typesMap.GetFuncName(typ), thisField, thatField), nil
 	case *types.Map:
-		if !this.typesMap.Get(typ) {
-			this.typesMap.Set(typ, false)
-		}
-		return fmt.Sprintf("%s(%s, %s)", this.funcName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", this.typesMap.GetFuncName(typ), thisField, thatField), nil
 	case *types.Named:
 		return fmt.Sprintf("%s.Equal(&%s)", thisField, thatField), nil
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct

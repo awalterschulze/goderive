@@ -109,6 +109,17 @@ func (this *equal) genFuncFor(typ types.Type) error {
 	case *types.Pointer:
 		ref := ttyp.Elem()
 		switch tttyp := ref.Underlying().(type) {
+		case *types.Basic:
+			fieldStr, err := this.field("this", "that", typ)
+			if err != nil {
+				return err
+			}
+			p.P("return " + fieldStr)
+		case *types.Slice:
+			if !this.typesMap.Get(tttyp) {
+				this.typesMap.Set(tttyp, false)
+			}
+			p.P("return (this == nil && that == nil) || (this != nil) && (that != nil) && %s(%s, %s)", this.funcName(tttyp), "*this", "*that")
 		case *types.Struct:
 			numFields := tttyp.NumFields()
 			if numFields == 0 {
@@ -134,12 +145,6 @@ func (this *equal) genFuncFor(typ types.Type) error {
 				}
 			}
 			p.Out()
-		case *types.Basic:
-			fieldStr, err := this.field("this", "that", typ)
-			if err != nil {
-				return err
-			}
-			p.P("return " + fieldStr)
 		default:
 			return fmt.Errorf("unsupported: pointer is not a named struct, but %#v\n", ref)
 		}

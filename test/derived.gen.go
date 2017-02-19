@@ -44,6 +44,10 @@ func deriveEqualPtrToint(this, that *int) bool {
 	return ((this == nil && that == nil) || (this != nil && that != nil && *this == *that))
 }
 
+func deriveEqualPtrToSliceOfint(this, that *[]int) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) && deriveEqualSliceOfint(*this, *that)
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Bool == that.Bool &&

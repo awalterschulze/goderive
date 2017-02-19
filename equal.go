@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"go/ast"
 	"go/types"
-	"os"
 	"strings"
 
 	"golang.org/x/tools/go/loader"
@@ -26,7 +25,7 @@ import (
 
 const eqFuncPrefix = "deriveEqual"
 
-func generateEqual(p Printer, pkgInfo *loader.PackageInfo, calls []*ast.CallExpr) {
+func generateEqual(p Printer, pkgInfo *loader.PackageInfo, calls []*ast.CallExpr) error {
 	qual := types.RelativeTo(pkgInfo.Pkg)
 	m := newTypesMap(qual)
 
@@ -39,24 +38,21 @@ func generateEqual(p Printer, pkgInfo *loader.PackageInfo, calls []*ast.CallExpr
 			continue
 		}
 		if len(call.Args) != 2 {
-			fmt.Fprintf(os.Stderr, "%s does not have two arguments\n", fn.Name)
-			continue
+			return fmt.Errorf("%s does not have two arguments\n", fn.Name)
 		}
 		t0 := pkgInfo.TypeOf(call.Args[0])
 		t1 := pkgInfo.TypeOf(call.Args[1])
 		if !types.Identical(t0, t1) {
-			fmt.Fprintf(os.Stderr, "%s has two arguments, but they are of different types %s != %s\n",
+			return fmt.Errorf("%s has two arguments, but they are of different types %s != %s\n",
 				fn.Name, t0, t1)
-			continue
 		}
 		name := strings.TrimPrefix(fn.Name, eqFuncPrefix)
 		qual := types.RelativeTo(pkgInfo.Pkg)
 		typeStr := typeName(t0, qual)
 		if typeStr != name {
 			//TODO think about whether this is really necessary
-			fmt.Fprintf(os.Stderr, "%s's suffix %s does not match the type %s\n",
+			return fmt.Errorf("%s's suffix %s does not match the type %s\n",
 				fn.Name, name, typeStr)
-			continue
 		}
 		m.Set(t0, false)
 	}
@@ -65,7 +61,7 @@ func generateEqual(p Printer, pkgInfo *loader.PackageInfo, calls []*ast.CallExpr
 
 	for _, typ := range m.List() {
 		if err := eq.genFuncFor(typ); err != nil {
-			fmt.Fprintf(os.Stderr, err.Error())
+			return err
 		}
 	}
 	for _, typ := range m.List() {
@@ -73,9 +69,10 @@ func generateEqual(p Printer, pkgInfo *loader.PackageInfo, calls []*ast.CallExpr
 			continue
 		}
 		if err := eq.genFuncFor(typ); err != nil {
-			fmt.Fprintf(os.Stderr, err.Error())
+			return err
 		}
 	}
+	return nil
 }
 
 func newEqual(printer Printer, typesMap TypesMap, qual types.Qualifier, prefix string) *equal {

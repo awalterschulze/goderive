@@ -51,7 +51,9 @@ func main() {
 
 		p := newPrinter(pkgInfo.Pkg.Name())
 
-		generateEqual(p, pkgInfo, calls)
+		if err := generateEqual(p, pkgInfo, calls); err != nil {
+			log.Fatal(err)
+		}
 
 		if p.HasContent() {
 			pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())

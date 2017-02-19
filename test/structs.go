@@ -192,6 +192,17 @@ func (this *SliceToSlice) Equal(that *SliceToSlice) bool {
 	return deriveEqualPtrToSliceToSlice(this, that)
 }
 
+type PtrTo struct {
+	Basic *int
+	Slice *[]int
+	Array *[4]int
+	Map   *map[int]int
+}
+
+func (this *PtrTo) Equal(that *PtrTo) bool {
+	return deriveEqualPtrToPtrTo(this, that)
+}
+
 type Name struct {
 	Name string
 }

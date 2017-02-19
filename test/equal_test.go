@@ -49,6 +49,7 @@ func TestEqualStructs(t *testing.T) {
 		&ArrayOfPtrToBuiltInTypes{},
 		&MapsOfBuiltInTypes{},
 		&SliceToSlice{},
+		&PtrTo{},
 		&Structs{},
 		&MapWithStructs{},
 		&RecursiveType{},
@@ -127,6 +128,19 @@ func TestEqualInline(t *testing.T) {
 			}
 			that := random(this).(*[]int)
 			if want, got := reflect.DeepEqual(this, that), deriveEqualPtrToSliceOfint(this, that); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
+			}
+		}
+	})
+	t.Run("ptrtoarray", func(t *testing.T) {
+		var intptr *[10]int
+		this := random(intptr).(*[10]int)
+		for i := 0; i < 100; i++ {
+			if want, got := true, deriveEqualPtrToArrayOfint(this, this); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
+			}
+			that := random(this).(*[10]int)
+			if want, got := reflect.DeepEqual(this, that), deriveEqualPtrToArrayOfint(this, that); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
 			}
 		}

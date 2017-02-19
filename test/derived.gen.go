@@ -48,6 +48,10 @@ func deriveEqualPtrToSliceOfint(this, that *[]int) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) && deriveEqualSliceOfint(*this, *that)
 }
 
+func deriveEqualPtrToArrayOfint(this, that *[10]int) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) && deriveEqualArrayOfint(*this, *that)
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Bool == that.Bool &&
@@ -202,6 +206,14 @@ func deriveEqualPtrToSliceToSlice(this, that *SliceToSlice) bool {
 		deriveEqualSliceOfSliceOfPtrToint(this.IntPtrs, that.IntPtrs)
 }
 
+func deriveEqualPtrToPtrTo(this, that *PtrTo) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		((this.Basic == nil && that.Basic == nil) || (this.Basic != nil && that.Basic != nil && *this.Basic == *that.Basic)) &&
+		((this.Slice == nil && that.Slice == nil) || (this.Slice != nil && that.Slice != nil && deriveEqualSliceOfint(*this.Slice, *that.Slice))) &&
+		((this.Array == nil && that.Array == nil) || (this.Array != nil && that.Array != nil && *this.Array == *that.Array)) &&
+		((this.Map == nil && that.Map == nil) || (this.Map != nil && that.Map != nil && deriveEqualMapOfintToint(*this.Map, *that.Map)))
+}
+
 func deriveEqualPtrToName(this, that *Name) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Name == that.Name
@@ -245,6 +257,15 @@ func deriveEqualPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) bool {
 func deriveEqualPtrToUnnamedStruct(this, that *UnnamedStruct) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Unnamed == that.Unnamed
+}
+
+func deriveEqualArrayOfint(this, that [10]int) bool {
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
 }
 
 func deriveEqualSliceOfbool(this, that []bool) bool {

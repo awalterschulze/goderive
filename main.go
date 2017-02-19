@@ -16,13 +16,14 @@ package main
 
 import (
 	"flag"
+	"go/ast"
 	"go/types"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/kisielk/gotool"
+	"golang.org/x/tools/go/loader"
 )
 
 const derivedFilename = "derived.gen.go"
@@ -37,36 +38,38 @@ func main() {
 	for _, pkgInfo := range program.InitialPackages() {
 		qual := types.RelativeTo(pkgInfo.Pkg)
 
-		var typs []types.Type
-		for _, f := range pkgInfo.Files {
-			gotFile := program.Fset.File(f.Pos())
-			if gotFile == nil {
+		var calls []*ast.CallExpr
+		for _, file := range pkgInfo.Files {
+			astFile := program.Fset.File(file.Pos())
+			if astFile == nil {
 				continue
 			}
-			_, fname := filepath.Split(gotFile.Name())
+			_, fname := filepath.Split(astFile.Name())
 			if fname == derivedFilename {
 				continue
 			}
-			newtyps := findEqualFuncs(program, pkgInfo, f)
-			typs = append(typs, newtyps...)
-		}
-		if len(typs) == 0 {
-			continue
+			newcalls := findUndefinedOrDerivedFuncs(program, pkgInfo, file)
+			calls = append(newcalls, calls...)
 		}
 
-		pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())
-		f, err := os.Create(filepath.Join(pkgpath, derivedFilename))
-		if err != nil {
-			log.Fatal(err)
+		p := newPrinter(pkgInfo.Pkg.Name())
+		generate(p, pkgInfo, qual, calls)
+		if p.HasContent() {
+			pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())
+			f, err := os.Create(filepath.Join(pkgpath, derivedFilename))
+			if err != nil {
+				log.Fatal(err)
+			}
+			if err := p.WriteTo(f); err != nil {
+				panic(err)
+			}
+			f.Close()
 		}
-		defer f.Close()
-
-		generate(f, qual, pkgInfo.Pkg.Name(), typs)
 	}
 }
 
-func generate(w io.Writer, qual types.Qualifier, pkgName string, typs []types.Type) {
-	p := newPrinter()
+func generate(p Printer, pkgInfo *loader.PackageInfo, qual types.Qualifier, calls []*ast.CallExpr) {
+	typs := findEqualFuncs(pkgInfo, calls)
 	m := newTypesMap(qual)
 	eq := newEqual(p, m, qual)
 	for _, typ := range typs {
@@ -84,5 +87,4 @@ func generate(w io.Writer, qual types.Qualifier, pkgName string, typs []types.Ty
 		eq.gen(typ)
 		m.Set(typ, true)
 	}
-	p.Flush(pkgName, w)
 }

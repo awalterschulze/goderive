@@ -67,8 +67,7 @@ func findUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.Packag
 	return f.calls
 }
 
-func findEqualFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []types.Type {
-	calls := findUndefinedOrDerivedFuncs(program, pkgInfo, file)
+func findEqualFuncs(pkgInfo *loader.PackageInfo, calls []*ast.CallExpr) []types.Type {
 	var typs []types.Type
 	for _, call := range calls {
 		fn, ok := call.Fun.(*ast.Ident)

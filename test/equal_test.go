@@ -93,4 +93,16 @@ func TestEqualInline(t *testing.T) {
 			}
 		}
 	})
+	t.Run("mapinttoint", func(t *testing.T) {
+		this := random(map[int]int{}).(map[int]int)
+		for i := 0; i < 100; i++ {
+			if want, got := true, deriveEqualMapOfintToint(this, this); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
+			}
+			that := random(this).(map[int]int)
+			if want, got := reflect.DeepEqual(this, that), deriveEqualMapOfintToint(this, that); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
+			}
+		}
+	})
 }

@@ -64,13 +64,17 @@ func generateEqual(p Printer, pkgInfo *loader.PackageInfo, calls []*ast.CallExpr
 	eq := newEqual(p, m, qual, eqFuncPrefix)
 
 	for _, typ := range m.List() {
-		eq.genFuncFor(typ)
+		if err := eq.genFuncFor(typ); err != nil {
+			fmt.Fprintf(os.Stderr, err.Error())
+		}
 	}
 	for _, typ := range m.List() {
 		if m.Get(typ) {
 			continue
 		}
-		eq.genFuncFor(typ)
+		if err := eq.genFuncFor(typ); err != nil {
+			fmt.Fprintf(os.Stderr, err.Error())
+		}
 	}
 }
 
@@ -96,7 +100,7 @@ func (this *equal) funcName(typ types.Type) string {
 	return eqFuncPrefix + typeName(typ, this.qual)
 }
 
-func (this *equal) genFuncFor(typ types.Type) {
+func (this *equal) genFuncFor(typ types.Type) error {
 	p := this.printer
 	m := this.typesMap
 	m.Set(typ, true)
@@ -124,8 +128,7 @@ func (this *equal) genFuncFor(typ types.Type) {
 				thatField := "that." + fieldName
 				fieldStr, err := this.field(thisField, thatField, fieldType)
 				if err != nil {
-					fmt.Fprintf(os.Stderr, err.Error())
-					return
+					return err
 				}
 				if (i + 1) != numFields {
 					p.P(fieldStr + " &&")
@@ -137,13 +140,11 @@ func (this *equal) genFuncFor(typ types.Type) {
 		case *types.Basic:
 			fieldStr, err := this.field("this", "that", typ)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, err.Error())
-				return
+				return err
 			}
 			p.P("return " + fieldStr)
 		default:
-			fmt.Fprintf(os.Stderr, "unsupported: pointer is not a named struct, but %#v\n", ref)
-			return
+			return fmt.Errorf("unsupported: pointer is not a named struct, but %#v\n", ref)
 		}
 	case *types.Slice:
 		p.P("if this == nil || that == nil {")
@@ -160,8 +161,7 @@ func (this *equal) genFuncFor(typ types.Type) {
 		p.In()
 		eqStr, err := this.field("this[i]", "that[i]", ttyp.Elem())
 		if err != nil {
-			fmt.Fprintf(os.Stderr, err.Error())
-			return
+			return err
 		}
 		p.P("if %s {", not(eqStr))
 		p.In()
@@ -176,8 +176,7 @@ func (this *equal) genFuncFor(typ types.Type) {
 		p.In()
 		eqStr, err := this.field("this[i]", "that[i]", ttyp.Elem())
 		if err != nil {
-			fmt.Fprintf(os.Stderr, err.Error())
-			return
+			return err
 		}
 		p.P("if %s {", not(eqStr))
 		p.In()
@@ -208,8 +207,7 @@ func (this *equal) genFuncFor(typ types.Type) {
 		p.P("}")
 		eqStr, err := this.field("v", "thatv", ttyp.Elem())
 		if err != nil {
-			fmt.Fprintf(os.Stderr, err.Error())
-			return
+			return err
 		}
 		p.P("if %s {", not(eqStr))
 		p.In()
@@ -220,11 +218,11 @@ func (this *equal) genFuncFor(typ types.Type) {
 		p.P("}")
 		p.P("return true")
 	default:
-		fmt.Fprintf(os.Stderr, "unsupported type: %#v", typ)
-		return
+		return fmt.Errorf("unsupported type: %#v", typ)
 	}
 	p.Out()
 	p.P("}")
+	return nil
 }
 
 func not(s string) string {

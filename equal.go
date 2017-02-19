@@ -134,6 +134,13 @@ func (this *equal) genFuncFor(typ types.Type) {
 				}
 			}
 			p.Out()
+		case *types.Basic:
+			fieldStr, err := this.field("this", "that", typ)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, err.Error())
+				return
+			}
+			p.P("return " + fieldStr)
 		default:
 			fmt.Fprintf(os.Stderr, "unsupported: pointer is not a named struct, but %#v\n", ref)
 			return

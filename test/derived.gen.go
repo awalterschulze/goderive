@@ -40,6 +40,10 @@ func deriveEqualMapOfintToint(this, that map[int]int) bool {
 	return true
 }
 
+func deriveEqualPtrToint(this, that *int) bool {
+	return ((this == nil && that == nil) || (this != nil && that != nil && *this == *that))
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Bool == that.Bool &&

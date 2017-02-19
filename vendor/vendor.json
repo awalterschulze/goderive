@@ -25,6 +25,12 @@
 			"path": "golang.org/x/tools/go/loader",
 			"revision": "44492e23b4afd3e75591994228422613777ee4ee",
 			"revisionTime": "2017-02-09T09:43:25Z"
+		},
+		{
+			"checksumSHA1": "QKvPv3TJ+ZnOLkUeUkT8Wm8eCV0=",
+			"path": "golang.org/x/tools/go/types/typeutil",
+			"revision": "8e779ee0a4509783f6940db32d1a4e8df910cc8b",
+			"revisionTime": "2017-02-14T15:12:52Z"
 		}
 	],
 	"rootPath": "github.com/awalterschulze/goderive"

@@ -52,6 +52,10 @@ func deriveEqualPtrToArrayOfint(this, that *[10]int) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) && deriveEqualArrayOfint(*this, *that)
 }
 
+func deriveEqualPtrToMapOfintToint(this, that *map[int]int) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) && deriveEqualMapOfintToint(*this, *that)
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Bool == that.Bool &&

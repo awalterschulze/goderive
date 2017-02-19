@@ -115,7 +115,7 @@ func (this *equal) genFuncFor(typ types.Type) error {
 				return err
 			}
 			p.P("return " + fieldStr)
-		case *types.Slice, *types.Array:
+		case *types.Slice, *types.Array, *types.Map:
 			if !this.typesMap.Get(tttyp) {
 				this.typesMap.Set(tttyp, false)
 			}

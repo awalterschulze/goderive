@@ -145,4 +145,17 @@ func TestEqualInline(t *testing.T) {
 			}
 		}
 	})
+	t.Run("ptrtomap", func(t *testing.T) {
+		var intptr *map[int]int
+		this := random(intptr).(*map[int]int)
+		for i := 0; i < 100; i++ {
+			if want, got := true, deriveEqualPtrToMapOfintToint(this, this); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
+			}
+			that := random(this).(*map[int]int)
+			if want, got := reflect.DeepEqual(this, that), deriveEqualPtrToMapOfintToint(this, that); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
+			}
+		}
+	})
 }

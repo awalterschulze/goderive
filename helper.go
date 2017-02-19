@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"go/parser"
 	"go/types"
+	"strconv"
 
 	"golang.org/x/tools/go/loader"
 )
@@ -49,7 +50,8 @@ func typeName(typ types.Type, qual types.Qualifier) string {
 	case *types.Pointer:
 		return "PtrTo" + typeName(t.Elem(), qual)
 	case *types.Array:
-		return "ArrayOf" + typeName(t.Elem(), qual)
+		sizeStr := strconv.Itoa(int(t.Len()))
+		return "Array" + sizeStr + "Of" + typeName(t.Elem(), qual)
 	case *types.Slice:
 		return "SliceOf" + typeName(t.Elem(), qual)
 	case *types.Map:

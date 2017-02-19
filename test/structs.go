@@ -138,6 +138,8 @@ type ArrayOfBuiltInTypes struct {
 	Uint64     [17]uint64
 	Uint8      [18]uint8
 	UintPtr    [19]uintptr
+
+	AnotherBoolOfDifferentSize [10]bool
 }
 
 func (this *ArrayOfBuiltInTypes) Equal(that *ArrayOfBuiltInTypes) bool {
@@ -164,6 +166,8 @@ type ArrayOfPtrToBuiltInTypes struct {
 	Uint64     [17]*uint64
 	Uint8      [18]*uint8
 	UintPtr    [19]*uintptr
+
+	AnotherBoolOfDifferentSize [10]*bool
 }
 
 func (this *ArrayOfPtrToBuiltInTypes) Equal(that *ArrayOfPtrToBuiltInTypes) bool {

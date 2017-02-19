@@ -136,11 +136,11 @@ func TestEqualInline(t *testing.T) {
 		var intptr *[10]int
 		this := random(intptr).(*[10]int)
 		for i := 0; i < 100; i++ {
-			if want, got := true, deriveEqualPtrToArrayOfint(this, this); want != got {
+			if want, got := true, deriveEqualPtrToArray10Ofint(this, this); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
 			}
 			that := random(this).(*[10]int)
-			if want, got := reflect.DeepEqual(this, that), deriveEqualPtrToArrayOfint(this, that); want != got {
+			if want, got := reflect.DeepEqual(this, that), deriveEqualPtrToArray10Ofint(this, that); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
 			}
 		}

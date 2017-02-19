@@ -13,5 +13,5 @@ type MyStruct struct {
 }
 
 func (this *MyStruct) Equal(that *MyStruct) bool {
-	return eqPtrToMyStruct(this, that)
+	return eq(this, that)
 }

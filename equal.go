@@ -16,9 +16,69 @@ package main
 
 import (
 	"fmt"
+	"go/ast"
 	"go/types"
 	"os"
+	"strings"
+
+	"golang.org/x/tools/go/loader"
 )
+
+func generate(p Printer, pkgInfo *loader.PackageInfo, qual types.Qualifier, calls []*ast.CallExpr) {
+	typs := findEqualFuncs(pkgInfo, calls)
+	m := newTypesMap(qual)
+	eq := newEqual(p, m, qual)
+	for _, typ := range typs {
+		m.Set(typ, false)
+	}
+	for _, typ := range typs {
+		m.Set(typ, false)
+		eq.gen(typ)
+		m.Set(typ, true)
+	}
+	for _, typ := range m.List() {
+		if m.Get(typ) {
+			continue
+		}
+		eq.gen(typ)
+		m.Set(typ, true)
+	}
+}
+
+func findEqualFuncs(pkgInfo *loader.PackageInfo, calls []*ast.CallExpr) []types.Type {
+	var typs []types.Type
+	for _, call := range calls {
+		fn, ok := call.Fun.(*ast.Ident)
+		if !ok {
+			continue
+		}
+		if !strings.HasPrefix(fn.Name, eqFuncPrefix) {
+			continue
+		}
+		if len(call.Args) != 2 {
+			fmt.Fprintf(os.Stderr, "%s does not have two arguments\n", fn.Name)
+			continue
+		}
+		t0 := pkgInfo.TypeOf(call.Args[0])
+		t1 := pkgInfo.TypeOf(call.Args[1])
+		if !types.Identical(t0, t1) {
+			fmt.Fprintf(os.Stderr, "%s has two arguments, but they are of different types %s != %s\n",
+				fn.Name, t0, t1)
+			continue
+		}
+		name := strings.TrimPrefix(fn.Name, eqFuncPrefix)
+		qual := types.RelativeTo(pkgInfo.Pkg)
+		typeStr := typeName(t0, qual)
+		if typeStr != name {
+			//TODO think about whether this is really necessary
+			fmt.Fprintf(os.Stderr, "%s's suffix %s does not match the type %s\n",
+				fn.Name, name, typeStr)
+			continue
+		}
+		typs = append(typs, t0)
+	}
+	return typs
+}
 
 func newEqual(printer Printer, typesMap TypesMap, qual types.Qualifier) *equal {
 	return &equal{
@@ -171,6 +231,26 @@ func (this *equal) gen(typ types.Type) {
 	}
 	p.Out()
 	p.P("}")
+}
+
+func isComparable(tt types.Type) bool {
+	t := tt.Underlying()
+	switch typ := t.(type) {
+	case *types.Basic:
+		return typ.Kind() != types.UntypedNil
+	case *types.Struct:
+		for i := 0; i < typ.NumFields(); i++ {
+			f := typ.Field(i)
+			ft := f.Type()
+			if !isComparable(ft) {
+				return false
+			}
+		}
+		return true
+	case *types.Array:
+		return isComparable(typ.Elem())
+	}
+	return false
 }
 
 func (this *equal) field(thisField, thatField string, fieldType types.Type) (string, error) {

@@ -22,26 +22,6 @@ import (
 	"golang.org/x/tools/go/loader"
 )
 
-func isComparable(tt types.Type) bool {
-	t := tt.Underlying()
-	switch typ := t.(type) {
-	case *types.Basic:
-		return typ.Kind() != types.UntypedNil
-	case *types.Struct:
-		for i := 0; i < typ.NumFields(); i++ {
-			f := typ.Field(i)
-			ft := f.Type()
-			if !isComparable(ft) {
-				return false
-			}
-		}
-		return true
-	case *types.Array:
-		return isComparable(typ.Elem())
-	}
-	return false
-}
-
 func load(paths ...string) (*loader.Program, error) {
 	conf := loader.Config{
 		ParserMode:  parser.ParseComments,

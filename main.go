@@ -23,7 +23,6 @@ import (
 	"path/filepath"
 
 	"github.com/kisielk/gotool"
-	"golang.org/x/tools/go/loader"
 )
 
 const derivedFilename = "derived.gen.go"
@@ -65,26 +64,5 @@ func main() {
 			}
 			f.Close()
 		}
-	}
-}
-
-func generate(p Printer, pkgInfo *loader.PackageInfo, qual types.Qualifier, calls []*ast.CallExpr) {
-	typs := findEqualFuncs(pkgInfo, calls)
-	m := newTypesMap(qual)
-	eq := newEqual(p, m, qual)
-	for _, typ := range typs {
-		m.Set(typ, false)
-	}
-	for _, typ := range typs {
-		m.Set(typ, false)
-		eq.gen(typ)
-		m.Set(typ, true)
-	}
-	for _, typ := range m.List() {
-		if m.Get(typ) {
-			continue
-		}
-		eq.gen(typ)
-		m.Set(typ, true)
 	}
 }

@@ -15,12 +15,8 @@
 package main
 
 import (
-	"fmt"
 	"go/ast"
-	"go/types"
-	"os"
 	"path/filepath"
-	"strings"
 
 	"golang.org/x/tools/go/loader"
 )
@@ -65,39 +61,4 @@ func findUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.Packag
 		ast.Walk(f, d)
 	}
 	return f.calls
-}
-
-func findEqualFuncs(pkgInfo *loader.PackageInfo, calls []*ast.CallExpr) []types.Type {
-	var typs []types.Type
-	for _, call := range calls {
-		fn, ok := call.Fun.(*ast.Ident)
-		if !ok {
-			continue
-		}
-		if !strings.HasPrefix(fn.Name, eqFuncPrefix) {
-			continue
-		}
-		if len(call.Args) != 2 {
-			fmt.Fprintf(os.Stderr, "%s does not have two arguments\n", fn.Name)
-			continue
-		}
-		t0 := pkgInfo.TypeOf(call.Args[0])
-		t1 := pkgInfo.TypeOf(call.Args[1])
-		if !types.Identical(t0, t1) {
-			fmt.Fprintf(os.Stderr, "%s has two arguments, but they are of different types %s != %s\n",
-				fn.Name, t0, t1)
-			continue
-		}
-		name := strings.TrimPrefix(fn.Name, eqFuncPrefix)
-		qual := types.RelativeTo(pkgInfo.Pkg)
-		typeStr := typeName(t0, qual)
-		if typeStr != name {
-			//TODO think about whether this is really necessary
-			fmt.Fprintf(os.Stderr, "%s's suffix %s does not match the type %s\n",
-				fn.Name, name, typeStr)
-			continue
-		}
-		typs = append(typs, t0)
-	}
-	return typs
 }

@@ -2,31 +2,39 @@
 
 [![Build Status](https://travis-ci.org/awalterschulze/goderive.svg?branch=master)](https://travis-ci.org/awalterschulze/goderive)
 
-goderive parses your go code and generates functions that are derived from the given types. Functions that are currently supported include:
+goderive parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. Functions that are currently supported include:
 
   - Equal
   - Compare (TODO)
 
-## Example
+Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.
 
-The `deriveEqualA` function will be spotted as a function that needs to be generated, because it has a prefix `deriveEqual`.
+Distinguishing between which function (Equal, Compare, ...) should be derived is done using a customizable prefix, see command line flags.
+
+## Example: Equal
+
+In the followign code the `deriveEqual` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveEqual`.
 
 ```go
 package main
 
-type A struct {
-	B []byte
-	// ... lots of other fields
+type MyStruct struct {
+	Int64  int64
+	String string
 }
 
-func main() {
-	a1 := &A{B: []byte("abc")}
-	a2 := &A{B: []byte("cde")}
-	if !deriveEqualA(a1, a2) {
-		println("SUCCESS")
-	}
+func (this *MyStruct) Equal(that *MyStruct) bool {
+	return deriveEqual(this, that)
 }
 ```
 
-This way only the used functions are generated, keeping generated code to a minimum.
+goderive will then generate the following code in a `derived.gen.go` file in the same package:
+
+```go
+func deriveEqual(this, that *MyStruct) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Int64 == that.Int64 &&
+		this.String == that.String
+}
+```
 

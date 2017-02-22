@@ -4,6 +4,7 @@ package test
 
 import (
 	"bytes"
+	"strings"
 )
 
 func deriveEqualSliceOfint(this, that []int) bool {
@@ -1261,4 +1262,586 @@ func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
 		}
 	}
 	return true
+}
+
+func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareBuiltInTypes(*this, *that)
+}
+
+func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparePtrToBuiltInTypes_(*this, *that)
+}
+
+func deriveCompareBuiltInTypes(this, that BuiltInTypes) int {
+	if c := deriveComparebool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveComparebyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveComparecomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveComparecomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveComparefloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveComparefloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveComparerune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := strings.Compare(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareuintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveComparePtrToBuiltInTypes_(this, that PtrToBuiltInTypes) int {
+	if c := deriveComparePtrTobool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTobyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTofloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTofloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTorune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTostring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveComparebool(this, that bool) int {
+	if this == that {
+		return 0
+	}
+	if that {
+		return -1
+	}
+	return 1
+}
+
+func deriveComparebyte(this, that byte) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveComparecomplex128(this, that complex128) int {
+	return 0 //TODO
+}
+
+func deriveComparecomplex64(this, that complex64) int {
+	return 0 //TODO
+}
+
+func deriveComparefloat64(this, that float64) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveComparefloat32(this, that float32) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareint(this, that int) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareint16(this, that int16) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareint32(this, that int32) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareint64(this, that int64) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareint8(this, that int8) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveComparerune(this, that rune) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareuint(this, that uint) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareuint16(this, that uint16) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareuint32(this, that uint32) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareuint64(this, that uint64) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareuint8(this, that uint8) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareuintptr(this, that uintptr) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveComparePtrTobool(this, that *bool) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparebool(*this, *that)
+}
+
+func deriveComparePtrTobyte(this, that *byte) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparebyte(*this, *that)
+}
+
+func deriveComparePtrTocomplex128(this, that *complex128) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparecomplex128(*this, *that)
+}
+
+func deriveComparePtrTocomplex64(this, that *complex64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparecomplex64(*this, *that)
+}
+
+func deriveComparePtrTofloat64(this, that *float64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparefloat64(*this, *that)
+}
+
+func deriveComparePtrTofloat32(this, that *float32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparefloat32(*this, *that)
+}
+
+func deriveComparePtrToint(this, that *int) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareint(*this, *that)
+}
+
+func deriveComparePtrToint16(this, that *int16) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareint16(*this, *that)
+}
+
+func deriveComparePtrToint32(this, that *int32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareint32(*this, *that)
+}
+
+func deriveComparePtrToint64(this, that *int64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareint64(*this, *that)
+}
+
+func deriveComparePtrToint8(this, that *int8) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareint8(*this, *that)
+}
+
+func deriveComparePtrTorune(this, that *rune) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparerune(*this, *that)
+}
+
+func deriveComparePtrTostring(this, that *string) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparestring(*this, *that)
+}
+
+func deriveComparePtrTouint(this, that *uint) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareuint(*this, *that)
+}
+
+func deriveComparePtrTouint16(this, that *uint16) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareuint16(*this, *that)
+}
+
+func deriveComparePtrTouint32(this, that *uint32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareuint32(*this, *that)
+}
+
+func deriveComparePtrTouint64(this, that *uint64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareuint64(*this, *that)
+}
+
+func deriveComparePtrTouint8(this, that *uint8) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareuint8(*this, *that)
+}
+
+func deriveComparePtrTouintptr(this, that *uintptr) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareuintptr(*this, *that)
+}
+
+func deriveComparestring(this, that string) int {
+	return strings.Compare(this, that)
 }

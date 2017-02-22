@@ -54,6 +54,9 @@ func main() {
 		if err := generateEqual(p, pkgInfo, *equalPrefix, false, calls); err != nil {
 			log.Fatal(err)
 		}
+		if err := generateCompare(p, pkgInfo, *comparePrefix, false, calls); err != nil {
+			log.Fatal(err)
+		}
 
 		if p.HasContent() {
 			pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())

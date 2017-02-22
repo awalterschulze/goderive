@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"sort"
 	"strings"
 	"unicode"
 )
@@ -104,7 +105,15 @@ func (p *printer) WriteTo(file io.Writer) error {
 	if len(p.imports) > 0 {
 		top.WriteString("\n")
 		top.WriteString("import (\n")
+		paths := make([]string, 0, len(p.imports))
+		pathToQual := make(map[string]string, len(p.imports))
 		for qual, path := range p.imports {
+			pathToQual[path] = qual
+			paths = append(paths, path)
+		}
+		sort.Strings(paths)
+		for _, path := range paths {
+			qual := pathToQual[path]
 			if qual == path {
 				top.WriteString("\t\"" + path + "\"\n")
 			} else {

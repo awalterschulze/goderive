@@ -26,8 +26,8 @@ import (
 var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 func equal(this, that interface{}) bool {
-	eqMethod := reflect.ValueOf(this).MethodByName("Equal")
-	res := eqMethod.Call([]reflect.Value{reflect.ValueOf(that)})
+	method := reflect.ValueOf(this).MethodByName("Equal")
+	res := method.Call([]reflect.Value{reflect.ValueOf(that)})
 	return res[0].Interface().(bool)
 }
 

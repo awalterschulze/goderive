@@ -24,7 +24,7 @@ import (
 	"golang.org/x/tools/go/loader"
 )
 
-var equalPrefix = flag.String("equalprefix", "deriveEqual", "set the prefix for equal functions that should be derived.")
+var equalPrefix = flag.String("equal.prefix", "deriveEqual", "set the prefix for equal functions that should be derived.")
 
 func generateEqual(p Printer, pkgInfo *loader.PackageInfo, prefix string, strict bool, calls []*ast.CallExpr) error {
 	qual := types.RelativeTo(pkgInfo.Pkg)
@@ -222,7 +222,7 @@ func not(s string) string {
 	return "!(" + s + ")"
 }
 
-func isComparable(tt types.Type) bool {
+func canEqual(tt types.Type) bool {
 	t := tt.Underlying()
 	switch typ := t.(type) {
 	case *types.Basic:
@@ -231,19 +231,19 @@ func isComparable(tt types.Type) bool {
 		for i := 0; i < typ.NumFields(); i++ {
 			f := typ.Field(i)
 			ft := f.Type()
-			if !isComparable(ft) {
+			if !canEqual(ft) {
 				return false
 			}
 		}
 		return true
 	case *types.Array:
-		return isComparable(typ.Elem())
+		return canEqual(typ.Elem())
 	}
 	return false
 }
 
 func (this *equal) field(thisField, thatField string, fieldType types.Type) (string, error) {
-	if isComparable(fieldType) {
+	if canEqual(fieldType) {
 		return fmt.Sprintf("%s == %s", thisField, thatField), nil
 	}
 	switch typ := fieldType.(type) {

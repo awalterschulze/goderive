@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"go/types"
 	"strconv"
+	"strings"
 )
 
 type TypesMap interface {
@@ -105,7 +106,7 @@ func (this *typesMap) nameOf(typ types.Type) string {
 }
 
 func (this *typesMap) funcOf(typ types.Type) string {
-	return this.prefix + typeName(typ, this.qual)
+	return this.prefix + strings.Replace(typeName(typ, this.qual), "$", "", -1)
 }
 
 func typeName(typ types.Type, qual types.Qualifier) string {
@@ -120,5 +121,6 @@ func typeName(typ types.Type, qual types.Qualifier) string {
 	case *types.Map:
 		return "MapOf" + typeName(t.Key(), qual) + "To" + typeName(t.Elem(), qual)
 	}
-	return types.TypeString(typ, qual)
+	// The dollar helps to make sure that typenames cannot be faked by the user.
+	return "$" + types.TypeString(typ, qual)
 }

@@ -5,6 +5,7 @@
 goderive parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. Functions that are currently supported include:
 
   - Equal
+  - SortedMapKeys (TODO)
   - Compare (TODO)
 
 Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.

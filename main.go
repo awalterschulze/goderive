@@ -27,6 +27,7 @@ import (
 const derivedFilename = "derived.gen.go"
 
 func main() {
+	log.SetFlags(0)
 	flag.Parse()
 	paths := gotool.ImportPaths(flag.Args())
 	program, err := load(paths...)

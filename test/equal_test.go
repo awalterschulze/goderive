@@ -82,9 +82,9 @@ func TestEqualStructs(t *testing.T) {
 }
 
 func TestEqualInline(t *testing.T) {
-	t.Run("intslices", func(t *testing.T) {
-		this := random([]int{}).([]int)
-		for i := 0; i < 100; i++ {
+	for i := 0; i < 100; i++ {
+		t.Run("intslices", func(t *testing.T) {
+			this := random([]int{}).([]int)
 			if want, got := true, deriveEqualSliceOfint(this, this); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
 			}
@@ -92,11 +92,9 @@ func TestEqualInline(t *testing.T) {
 			if want, got := reflect.DeepEqual(this, that), deriveEqualSliceOfint(this, that); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
 			}
-		}
-	})
-	t.Run("mapinttoint", func(t *testing.T) {
-		this := random(map[int]int{}).(map[int]int)
-		for i := 0; i < 100; i++ {
+		})
+		t.Run("mapinttoint", func(t *testing.T) {
+			this := random(map[int]int{}).(map[int]int)
 			if want, got := true, deriveEqualMapOfintToint(this, this); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
 			}
@@ -104,12 +102,10 @@ func TestEqualInline(t *testing.T) {
 			if want, got := reflect.DeepEqual(this, that), deriveEqualMapOfintToint(this, that); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
 			}
-		}
-	})
-	t.Run("intptr", func(t *testing.T) {
-		var intptr *int
-		this := random(intptr).(*int)
-		for i := 0; i < 100; i++ {
+		})
+		t.Run("intptr", func(t *testing.T) {
+			var intptr *int
+			this := random(intptr).(*int)
 			if want, got := true, deriveEqualPtrToint(this, this); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
 			}
@@ -117,12 +113,10 @@ func TestEqualInline(t *testing.T) {
 			if want, got := reflect.DeepEqual(this, that), deriveEqualPtrToint(this, that); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
 			}
-		}
-	})
-	t.Run("ptrtoslice", func(t *testing.T) {
-		var intptr *[]int
-		this := random(intptr).(*[]int)
-		for i := 0; i < 100; i++ {
+		})
+		t.Run("ptrtoslice", func(t *testing.T) {
+			var intptr *[]int
+			this := random(intptr).(*[]int)
 			if want, got := true, deriveEqualPtrToSliceOfint(this, this); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
 			}
@@ -130,12 +124,10 @@ func TestEqualInline(t *testing.T) {
 			if want, got := reflect.DeepEqual(this, that), deriveEqualPtrToSliceOfint(this, that); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
 			}
-		}
-	})
-	t.Run("ptrtoarray", func(t *testing.T) {
-		var intptr *[10]int
-		this := random(intptr).(*[10]int)
-		for i := 0; i < 100; i++ {
+		})
+		t.Run("ptrtoarray", func(t *testing.T) {
+			var intptr *[10]int
+			this := random(intptr).(*[10]int)
 			if want, got := true, deriveEqualPtrToArray10Ofint(this, this); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
 			}
@@ -143,12 +135,10 @@ func TestEqualInline(t *testing.T) {
 			if want, got := reflect.DeepEqual(this, that), deriveEqualPtrToArray10Ofint(this, that); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
 			}
-		}
-	})
-	t.Run("ptrtomap", func(t *testing.T) {
-		var intptr *map[int]int
-		this := random(intptr).(*map[int]int)
-		for i := 0; i < 100; i++ {
+		})
+		t.Run("ptrtomap", func(t *testing.T) {
+			var intptr *map[int]int
+			this := random(intptr).(*map[int]int)
 			if want, got := true, deriveEqualPtrToMapOfintToint(this, this); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
 			}
@@ -156,6 +146,17 @@ func TestEqualInline(t *testing.T) {
 			if want, got := reflect.DeepEqual(this, that), deriveEqualPtrToMapOfintToint(this, that); want != got {
 				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
 			}
-		}
-	})
+		})
+		t.Run("structnoptr", func(t *testing.T) {
+			var strct BuiltInTypes
+			this := random(strct).(BuiltInTypes)
+			if want, got := true, deriveEqual1(this, this); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n", want, got, this)
+			}
+			that := random(strct).(BuiltInTypes)
+			if want, got := reflect.DeepEqual(this, that), deriveEqual1(this, that); want != got {
+				t.Fatalf("want %v got %v\n this = %#v\n that = %#v", want, got, this, that)
+			}
+		})
+	}
 }

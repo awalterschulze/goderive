@@ -12,9 +12,13 @@ Functions which have been previously derived will be regenerated to keep them up
 
 Distinguishing between which function (Equal, Compare, ...) should be derived is done using a customizable prefix, see command line flags.
 
-## Example: Equal
+## Equal
 
-In the followign code the `deriveEqual` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveEqual`.
+The `derivEqual` function is a faster alternative to `reflect.DeepEqual`.
+
+### Example
+
+In the following code the `deriveEqual` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveEqual`.
 
 ```go
 package main
@@ -36,6 +40,47 @@ func deriveEqual(this, that *MyStruct) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Int64 == that.Int64 &&
 		this.String == that.String
+}
+```
+
+### Unsupported Types
+
+  - Chan
+  - Interface
+  - Unnamed Structs, which are not comparable with `==`
+
+## SortedMapKeys
+
+The `deriveSortedKeys` function is useful deterministically ranging over maps.
+
+### Example
+
+In the following code the `deriveSortedKeys` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveSortedKeys`.
+
+```go
+func main() {
+	m := map[int]string{
+		1: "a",
+		3: "c",
+		2: "b",
+	}
+	for k, v := range deriveSortedKeys(m) {
+		fmt.Printf("%d", k)
+	}
+	// print 123
+}
+```
+
+goderive will then generate the following code in a `derived.gen.go` file in the same package:
+
+```go
+func deriveSortedKeys(m map[int]int) []int {
+	var keys []int
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+	return keys
 }
 ```
 

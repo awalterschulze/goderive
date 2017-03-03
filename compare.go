@@ -53,7 +53,7 @@ func generateCompare(p Printer, pkgInfo *loader.PackageInfo, prefix string, stri
 		}
 	}
 
-	eq := newCompare(p, typesMap, qual, prefix)
+	eq := newCompare(p, typesMap, qual)
 
 	moreToGenerate := true
 	for moreToGenerate {
@@ -71,14 +71,13 @@ func generateCompare(p Printer, pkgInfo *loader.PackageInfo, prefix string, stri
 	return nil
 }
 
-func newCompare(printer Printer, typesMap TypesMap, qual types.Qualifier, prefix string) *compare {
+func newCompare(printer Printer, typesMap TypesMap, qual types.Qualifier) *compare {
 	return &compare{
 		printer:    printer,
 		typesMap:   typesMap,
 		qual:       qual,
 		bytesPkg:   printer.NewImport("bytes"),
 		stringsPkg: printer.NewImport("strings"),
-		prefix:     prefix,
 	}
 }
 
@@ -88,7 +87,6 @@ type compare struct {
 	qual       types.Qualifier
 	bytesPkg   Import
 	stringsPkg Import
-	prefix     string
 }
 
 func (this *compare) genFuncFor(typ types.Type) error {

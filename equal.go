@@ -53,7 +53,7 @@ func generateEqual(p Printer, pkgInfo *loader.PackageInfo, prefix string, strict
 		}
 	}
 
-	eq := newEqual(p, typesMap, qual, prefix)
+	eq := newEqual(p, typesMap, qual)
 
 	for _, typ := range typesMap.List() {
 		if err := eq.genFuncFor(typ); err != nil {
@@ -71,13 +71,12 @@ func generateEqual(p Printer, pkgInfo *loader.PackageInfo, prefix string, strict
 	return nil
 }
 
-func newEqual(printer Printer, typesMap TypesMap, qual types.Qualifier, prefix string) *equal {
+func newEqual(printer Printer, typesMap TypesMap, qual types.Qualifier) *equal {
 	return &equal{
 		printer:  printer,
 		typesMap: typesMap,
 		qual:     qual,
 		bytesPkg: printer.NewImport("bytes"),
-		prefix:   prefix,
 	}
 }
 
@@ -86,7 +85,6 @@ type equal struct {
 	typesMap TypesMap
 	qual     types.Qualifier
 	bytesPkg Import
-	prefix   string
 }
 
 func (this *equal) genFuncFor(typ types.Type) error {

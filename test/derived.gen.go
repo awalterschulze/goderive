@@ -4,6 +4,7 @@ package test
 
 import (
 	"bytes"
+	"sort"
 	"strings"
 )
 
@@ -1284,6 +1285,24 @@ func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
 		}
 	}
 	return true
+}
+
+func deriveSortedKeysForMapStringToString(m map[string]string) []string {
+	var keys []string
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+	return keys
+}
+
+func deriveSortedKeysForMapIntToInt64(m map[int]int64) []int {
+	var keys []int
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+	return keys
 }
 
 func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {

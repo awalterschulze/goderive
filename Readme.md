@@ -51,7 +51,7 @@ func deriveEqual(this, that *MyStruct) bool {
 
 ## SortedMapKeys (Alpha)
 
-The `deriveSortedKeys` function is useful deterministically ranging over maps.
+The `deriveSortedKeys` function is useful for deterministically ranging over maps.
 
 ### Example
 
@@ -91,3 +91,6 @@ func deriveSortedKeys(m map[int]int) []int {
   - bools
   - optimize strings and ints
   - more tests
+  - update readme example
+  - add example to example package
+

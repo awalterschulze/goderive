@@ -49,7 +49,7 @@ func deriveEqual(this, that *MyStruct) bool {
   - Interface
   - Unnamed Structs, which are not comparable with `==`
 
-## SortedMapKeys
+## SortedMapKeys (Alpha)
 
 The `deriveSortedKeys` function is useful deterministically ranging over maps.
 
@@ -84,3 +84,10 @@ func deriveSortedKeys(m map[int]int) []int {
 }
 ```
 
+### TODO
+
+  - complex64, complex128
+  - structs
+  - bools
+  - optimize strings and ints
+  - more tests

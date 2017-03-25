@@ -52,28 +52,31 @@ func main() {
 
 		p := newPrinter(pkgInfo.Pkg.Name())
 
-		equal, err := newEqual(pkgInfo, *equalPrefix, calls)
+		equal, err := newEqual(p, pkgInfo, *equalPrefix, calls)
 		if err != nil {
 			log.Fatal(err)
 		}
-		if err := equal.Generate(p); err != nil {
+		sortedKeys, err := newSortedKeys(p, pkgInfo, *sortedKeysPrefix, calls)
+		if err != nil {
+			log.Fatal(err)
+		}
+		compare, err := newCompare(p, pkgInfo, *comparePrefix, calls)
+		if err != nil {
 			log.Fatal(err)
 		}
 
-		sortedKeys, err := newSortedKeys(pkgInfo, *sortedKeysPrefix, calls)
-		if err != nil {
-			log.Fatal(err)
-		}
-		if err := sortedKeys.Generate(p); err != nil {
-			log.Fatal(err)
-		}
-
-		compare, err := newCompare(pkgInfo, *comparePrefix, calls)
-		if err != nil {
-			log.Fatal(err)
-		}
-		if err := compare.Generate(p); err != nil {
-			log.Fatal(err)
+		alldone := false
+		for !alldone {
+			if err := equal.Generate(); err != nil {
+				log.Fatal(err)
+			}
+			if err := sortedKeys.Generate(); err != nil {
+				log.Fatal(err)
+			}
+			if err := compare.Generate(); err != nil {
+				log.Fatal(err)
+			}
+			alldone = equal.Done() && sortedKeys.Done() && compare.Done()
 		}
 
 		if p.HasContent() {

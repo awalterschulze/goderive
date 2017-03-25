@@ -29,10 +29,11 @@ var equalPrefix = flag.String("equal.prefix", "deriveEqual", "set the prefix for
 type equal struct {
 	TypesMap
 	qual     types.Qualifier
+	printer  Printer
 	bytesPkg Import
 }
 
-func newEqual(pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*equal, error) {
+func newEqual(p Printer, pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*equal, error) {
 	qual := types.RelativeTo(pkgInfo.Pkg)
 	typesMap := newTypesMap(qual, prefix)
 
@@ -62,27 +63,27 @@ func newEqual(pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr)
 	return &equal{
 		TypesMap: typesMap,
 		qual:     qual,
+		printer:  p,
+		bytesPkg: p.NewImport("bytes"),
 	}, nil
 }
 
-func (this *equal) Generate(p Printer) error {
-	if this.bytesPkg == nil {
-		this.bytesPkg = p.NewImport("bytes")
-	}
+func (this *equal) Generate() error {
 	for _, typ := range this.ToGenerate() {
-		if err := this.genFuncFor(p, typ); err != nil {
+		if err := this.genFuncFor(typ); err != nil {
 			return err
 		}
 	}
 	for _, typ := range this.ToGenerate() {
-		if err := this.genFuncFor(p, typ); err != nil {
+		if err := this.genFuncFor(typ); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (this *equal) genFuncFor(p Printer, typ types.Type) error {
+func (this *equal) genFuncFor(typ types.Type) error {
+	p := this.printer
 	this.Generating(typ)
 	typeStr := types.TypeString(typ, this.qual)
 	p.P("")

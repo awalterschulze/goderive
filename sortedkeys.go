@@ -15,10 +15,11 @@ var sortedKeysPrefix = flag.String("sortedkeys.prefix", "deriveSortedKeys", "set
 type sortedKeys struct {
 	TypesMap
 	qual    types.Qualifier
+	printer Printer
 	sortPkg Import
 }
 
-func newSortedKeys(pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*sortedKeys, error) {
+func newSortedKeys(p Printer, pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*sortedKeys, error) {
 	qual := types.RelativeTo(pkgInfo.Pkg)
 	typesMap := newTypesMap(qual, prefix)
 	for _, call := range calls {
@@ -40,26 +41,26 @@ func newSortedKeys(pkgInfo *loader.PackageInfo, prefix string, calls []*ast.Call
 	return &sortedKeys{
 		TypesMap: typesMap,
 		qual:     qual,
+		printer:  p,
+		sortPkg:  p.NewImport("sort"),
 	}, nil
 }
 
-func (this *sortedKeys) Generate(p Printer) error {
-	if this.sortPkg == nil {
-		this.sortPkg = p.NewImport("sort")
-	}
+func (this *sortedKeys) Generate() error {
 	for _, typ := range this.ToGenerate() {
 		mapType, ok := typ.(*types.Map)
 		if !ok {
 			return fmt.Errorf("%s, an argument to %s, is not of type map", this.GetFuncName(typ), typ)
 		}
-		if err := this.genFuncFor(p, mapType); err != nil {
+		if err := this.genFuncFor(mapType); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (this *sortedKeys) genFuncFor(p Printer, typ *types.Map) error {
+func (this *sortedKeys) genFuncFor(typ *types.Map) error {
+	p := this.printer
 	this.Generating(typ)
 	typeStr := types.TypeString(typ, this.qual)
 	keyType := typ.Key()

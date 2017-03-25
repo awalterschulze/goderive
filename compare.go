@@ -29,11 +29,12 @@ var comparePrefix = flag.String("compare.prefix", "deriveCompare", "set the pref
 type compare struct {
 	TypesMap
 	qual       types.Qualifier
+	printer    Printer
 	bytesPkg   Import
 	stringsPkg Import
 }
 
-func newCompare(pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*compare, error) {
+func newCompare(p Printer, pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*compare, error) {
 	qual := types.RelativeTo(pkgInfo.Pkg)
 	typesMap := newTypesMap(qual, prefix)
 
@@ -60,32 +61,25 @@ func newCompare(pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExp
 		}
 	}
 	return &compare{
-		TypesMap: typesMap,
-		qual:     qual,
+		TypesMap:   typesMap,
+		qual:       qual,
+		printer:    p,
+		bytesPkg:   p.NewImport("bytes"),
+		stringsPkg: p.NewImport("strings"),
 	}, nil
 }
 
-func (this *compare) Generate(p Printer) error {
-	if this.bytesPkg == nil {
-		this.bytesPkg = p.NewImport("bytes")
-	}
-	if this.stringsPkg == nil {
-		this.stringsPkg = p.NewImport("strings")
-	}
-	moreToGenerate := true
-	for moreToGenerate {
-		moreToGenerate = false
-		for _, typ := range this.ToGenerate() {
-			moreToGenerate = true
-			if err := this.genFuncFor(p, typ); err != nil {
-				return err
-			}
+func (this *compare) Generate() error {
+	for _, typ := range this.ToGenerate() {
+		if err := this.genFuncFor(typ); err != nil {
+			return err
 		}
 	}
 	return nil
 }
 
-func (this *compare) genFuncFor(p Printer, typ types.Type) error {
+func (this *compare) genFuncFor(typ types.Type) error {
+	p := this.printer
 	this.Generating(typ)
 	typeStr := types.TypeString(typ, this.qual)
 	p.P("")

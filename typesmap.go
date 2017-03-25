@@ -26,6 +26,7 @@ type TypesMap interface {
 	GetFuncName(typ types.Type) string
 	Generating(typ types.Type)
 	ToGenerate() []types.Type
+	Done() bool
 }
 
 type typesMap struct {
@@ -104,6 +105,15 @@ func (this *typesMap) ToGenerate() []types.Type {
 		}
 	}
 	return typs
+}
+
+func (this *typesMap) Done() bool {
+	for _, typ := range this.typs {
+		if !this.isGenerated(typ) {
+			return false
+		}
+	}
+	return true
 }
 
 func (this *typesMap) nameOf(typ types.Type) string {

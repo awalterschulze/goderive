@@ -12,10 +12,15 @@ import (
 
 var sortedKeysPrefix = flag.String("sortedkeys.prefix", "deriveSortedKeys", "set the prefix for sorted keys functions that should be derived.")
 
-func generateSortedKeys(p Printer, pkgInfo *loader.PackageInfo, prefix string, strict bool, calls []*ast.CallExpr) error {
+type sortedKeys struct {
+	TypesMap
+	qual    types.Qualifier
+	sortPkg Import
+}
+
+func newSortedKeys(pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*sortedKeys, error) {
 	qual := types.RelativeTo(pkgInfo.Pkg)
 	typesMap := newTypesMap(qual, prefix)
-
 	for _, call := range calls {
 		fn, ok := call.Fun.(*ast.Ident)
 		if !ok {
@@ -25,52 +30,42 @@ func generateSortedKeys(p Printer, pkgInfo *loader.PackageInfo, prefix string, s
 			continue
 		}
 		if len(call.Args) != 1 {
-			return fmt.Errorf("%s does not have one argument\n", fn.Name)
+			return nil, fmt.Errorf("%s does not have one argument\n", fn.Name)
 		}
 		typ := pkgInfo.TypeOf(call.Args[0])
 		if err := typesMap.SetFuncName(typ, fn.Name); err != nil {
-			return err
+			return nil, err
 		}
 	}
+	return &sortedKeys{
+		TypesMap: typesMap,
+		qual:     qual,
+	}, nil
+}
 
-	sortedKeys := newSortedKeys(p, typesMap, qual)
-
-	for _, typ := range typesMap.List() {
+func (this *sortedKeys) Generate(p Printer) error {
+	if this.sortPkg == nil {
+		this.sortPkg = p.NewImport("sort")
+	}
+	for _, typ := range this.ToGenerate() {
 		mapType, ok := typ.(*types.Map)
 		if !ok {
-			return fmt.Errorf("%s, an argument to %s, is not of type map", typesMap.GetFuncName(typ), typ)
+			return fmt.Errorf("%s, an argument to %s, is not of type map", this.GetFuncName(typ), typ)
 		}
-		if err := sortedKeys.genFuncFor(mapType); err != nil {
+		if err := this.genFuncFor(p, mapType); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-type sortedKeys struct {
-	printer  Printer
-	typesMap TypesMap
-	qual     types.Qualifier
-	sortPkg  Import
-}
-
-func newSortedKeys(printer Printer, typesMap TypesMap, qual types.Qualifier) *sortedKeys {
-	return &sortedKeys{
-		printer:  printer,
-		typesMap: typesMap,
-		qual:     qual,
-		sortPkg:  printer.NewImport("sort"),
-	}
-}
-
-func (this *sortedKeys) genFuncFor(typ *types.Map) error {
-	p := this.printer
-	this.typesMap.Generating(typ)
+func (this *sortedKeys) genFuncFor(p Printer, typ *types.Map) error {
+	this.Generating(typ)
 	typeStr := types.TypeString(typ, this.qual)
 	keyType := typ.Key()
 	keyTypeStr := types.TypeString(keyType, this.qual)
 	p.P("")
-	p.P("func %s(m %s) []%s {", this.typesMap.GetFuncName(typ), typeStr, keyTypeStr)
+	p.P("func %s(m %s) []%s {", this.GetFuncName(typ), typeStr, keyTypeStr)
 	p.In()
 	p.P("var keys []%s", keyTypeStr)
 	p.P("for key, _ := range m {")

@@ -26,7 +26,14 @@ import (
 
 var comparePrefix = flag.String("compare.prefix", "deriveCompare", "set the prefix for compare functions that should be derived.")
 
-func generateCompare(p Printer, pkgInfo *loader.PackageInfo, prefix string, strict bool, calls []*ast.CallExpr) error {
+type compare struct {
+	TypesMap
+	qual       types.Qualifier
+	bytesPkg   Import
+	stringsPkg Import
+}
+
+func newCompare(pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*compare, error) {
 	qual := types.RelativeTo(pkgInfo.Pkg)
 	typesMap := newTypesMap(qual, prefix)
 
@@ -39,31 +46,38 @@ func generateCompare(p Printer, pkgInfo *loader.PackageInfo, prefix string, stri
 			continue
 		}
 		if len(call.Args) != 2 {
-			return fmt.Errorf("%s does not have two arguments\n", fn.Name)
+			return nil, fmt.Errorf("%s does not have two arguments\n", fn.Name)
 		}
 		t0 := pkgInfo.TypeOf(call.Args[0])
 		t1 := pkgInfo.TypeOf(call.Args[1])
 		if !types.Identical(t0, t1) {
-			return fmt.Errorf("%s has two arguments, but they are of different types %s != %s\n",
+			return nil, fmt.Errorf("%s has two arguments, but they are of different types %s != %s\n",
 				fn.Name, t0, t1)
 		}
 
 		if err := typesMap.SetFuncName(t0, fn.Name); err != nil {
-			return err
+			return nil, err
 		}
 	}
+	return &compare{
+		TypesMap: typesMap,
+		qual:     qual,
+	}, nil
+}
 
-	eq := newCompare(p, typesMap, qual)
-
+func (this *compare) Generate(p Printer) error {
+	if this.bytesPkg == nil {
+		this.bytesPkg = p.NewImport("bytes")
+	}
+	if this.stringsPkg == nil {
+		this.stringsPkg = p.NewImport("strings")
+	}
 	moreToGenerate := true
 	for moreToGenerate {
 		moreToGenerate = false
-		for _, typ := range typesMap.List() {
-			if typesMap.IsGenerated(typ) {
-				continue
-			}
+		for _, typ := range this.ToGenerate() {
 			moreToGenerate = true
-			if err := eq.genFuncFor(typ); err != nil {
+			if err := this.genFuncFor(p, typ); err != nil {
 				return err
 			}
 		}
@@ -71,30 +85,11 @@ func generateCompare(p Printer, pkgInfo *loader.PackageInfo, prefix string, stri
 	return nil
 }
 
-func newCompare(printer Printer, typesMap TypesMap, qual types.Qualifier) *compare {
-	return &compare{
-		printer:    printer,
-		typesMap:   typesMap,
-		qual:       qual,
-		bytesPkg:   printer.NewImport("bytes"),
-		stringsPkg: printer.NewImport("strings"),
-	}
-}
-
-type compare struct {
-	printer    Printer
-	typesMap   TypesMap
-	qual       types.Qualifier
-	bytesPkg   Import
-	stringsPkg Import
-}
-
-func (this *compare) genFuncFor(typ types.Type) error {
-	p := this.printer
-	this.typesMap.Generating(typ)
+func (this *compare) genFuncFor(p Printer, typ types.Type) error {
+	this.Generating(typ)
 	typeStr := types.TypeString(typ, this.qual)
 	p.P("")
-	p.P("func %s(this, that %s) int {", this.typesMap.GetFuncName(typ), typeStr)
+	p.P("func %s(this, that %s) int {", this.GetFuncName(typ), typeStr)
 	p.In()
 	switch ttyp := typ.Underlying().(type) {
 	case *types.Pointer:
@@ -114,7 +109,7 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.Out()
 		p.P("}")
 		ref := ttyp.Elem()
-		p.P("return %s(*this, *that)", this.typesMap.GetFuncName(ref))
+		p.P("return %s(*this, *that)", this.GetFuncName(ref))
 	case *types.Basic:
 		switch ttyp.Kind() {
 		case types.String:
@@ -294,20 +289,20 @@ func (this *compare) field(thisField, thatField string, fieldType types.Type) (s
 		if typ.Kind() == types.String {
 			return fmt.Sprintf("%s.Compare(%s, %s)", this.stringsPkg(), thisField, thatField), nil
 		}
-		return fmt.Sprintf("%s(%s, %s)", this.typesMap.GetFuncName(fieldType), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(fieldType), thisField, thatField), nil
 	case *types.Pointer:
 		ref := typ.Elem()
 		if _, ok := ref.(*types.Named); ok {
 			return fmt.Sprintf("%s.Compare(%s)", thisField, thatField), nil
 		}
-		return fmt.Sprintf("%s(%s, %s)", this.typesMap.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 	case *types.Array, *types.Map:
-		return fmt.Sprintf("%s(%s, %s)", this.typesMap.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 	case *types.Slice:
 		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
 			return fmt.Sprintf("%s.Compare(%s, %s)", this.bytesPkg(), thisField, thatField), nil
 		}
-		return fmt.Sprintf("%s(%s, %s)", this.typesMap.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 	case *types.Named:
 		return fmt.Sprintf("%s.Compare(&%s)", thisField, thatField), nil
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct

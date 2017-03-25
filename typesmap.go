@@ -25,8 +25,7 @@ type TypesMap interface {
 	SetFuncName(typ types.Type, name string) error
 	GetFuncName(typ types.Type) string
 	Generating(typ types.Type)
-	IsGenerated(typ types.Type) bool
-	List() []types.Type
+	ToGenerate() []types.Type
 }
 
 type typesMap struct {
@@ -92,13 +91,19 @@ func (this *typesMap) Generating(typ types.Type) {
 	this.generated[name] = true
 }
 
-func (this *typesMap) IsGenerated(typ types.Type) bool {
+func (this *typesMap) isGenerated(typ types.Type) bool {
 	name := this.nameOf(typ)
 	return this.generated[name]
 }
 
-func (this *typesMap) List() []types.Type {
-	return this.typs
+func (this *typesMap) ToGenerate() []types.Type {
+	typs := make([]types.Type, 0, len(this.typs))
+	for i, typ := range this.typs {
+		if !this.isGenerated(typ) {
+			typs = append(typs, this.typs[i])
+		}
+	}
+	return typs
 }
 
 func (this *typesMap) nameOf(typ types.Type) string {

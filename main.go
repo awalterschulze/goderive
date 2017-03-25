@@ -52,13 +52,27 @@ func main() {
 
 		p := newPrinter(pkgInfo.Pkg.Name())
 
-		if err := generateEqual(p, pkgInfo, *equalPrefix, false, calls); err != nil {
+		equal, err := newEqual(pkgInfo, *equalPrefix, calls)
+		if err != nil {
 			log.Fatal(err)
 		}
-		if err := generateSortedKeys(p, pkgInfo, *sortedKeysPrefix, false, calls); err != nil {
+		if err := equal.Generate(p); err != nil {
 			log.Fatal(err)
 		}
-		if err := generateCompare(p, pkgInfo, *comparePrefix, false, calls); err != nil {
+
+		sortedKeys, err := newSortedKeys(pkgInfo, *sortedKeysPrefix, calls)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if err := sortedKeys.Generate(p); err != nil {
+			log.Fatal(err)
+		}
+
+		compare, err := newCompare(pkgInfo, *comparePrefix, calls)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if err := compare.Generate(p); err != nil {
 			log.Fatal(err)
 		}
 

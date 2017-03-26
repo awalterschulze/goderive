@@ -220,6 +220,12 @@ func deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTyp
 		deriveEqualArray10OfPtrTobool(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize)
 }
 
+func deriveEqualPtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualMapOfstringTouint32(this.StringToUint32, that.StringToUint32) &&
+		deriveEqualMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64)
+}
+
 func deriveEqualPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		deriveEqualMapOfboolTostring(this.BoolToString, that.BoolToString) &&
@@ -1003,6 +1009,44 @@ func deriveEqualArray10OfPtrTobool(this, that [10]*bool) bool {
 	return true
 }
 
+func deriveEqualMapOfstringTouint32(this, that map[string]uint32) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfuint8Toint64(this, that map[uint8]int64) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
 func deriveEqualMapOfboolTostring(this, that map[bool]string) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -1331,6 +1375,19 @@ func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
 	return deriveComparePtrToBuiltInTypes_(*this, *that)
 }
 
+func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareMapsOfSimplerBuiltInTypes(*this, *that)
+}
+
 func deriveCompareBuiltInTypes(this, that BuiltInTypes) int {
 	if c := deriveComparebool(this.Bool, that.Bool); c != 0 {
 		return c
@@ -1448,6 +1505,16 @@ func deriveComparePtrToBuiltInTypes_(this, that PtrToBuiltInTypes) int {
 		return c
 	}
 	if c := deriveComparePtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareMapsOfSimplerBuiltInTypes(this, that MapsOfSimplerBuiltInTypes) int {
+	if c := deriveCompareMapOfstringTouint32(this.StringToUint32, that.StringToUint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64); c != 0 {
 		return c
 	}
 	return 0
@@ -1881,6 +1948,90 @@ func deriveComparePtrTouintptr(this, that *uintptr) int {
 		return 1
 	}
 	return deriveCompareuintptr(*this, *that)
+}
+
+func deriveCompareMapOfstringTouint32(this, that map[string]uint32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedKeysMapOfstringTouint32(this)
+	thatkeys := deriveSortedKeysMapOfstringTouint32(that)
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			if c := deriveCompareuint32(this[thiskey], that[thatkey]); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfuint8Toint64(this, that map[uint8]int64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedKeysMapOfuint8Toint64(this)
+	thatkeys := deriveSortedKeysMapOfuint8Toint64(that)
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			if c := deriveCompareint64(this[thiskey], that[thatkey]); c != 0 {
+				return c
+			}
+		} else {
+			if c := deriveCompareuint8(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveSortedKeysMapOfstringTouint32(m map[string]uint32) []string {
+	var keys []string
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+	return keys
+}
+
+func deriveSortedKeysMapOfuint8Toint64(m map[uint8]int64) []uint8 {
+	var keys []uint8
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+	return keys
 }
 
 func deriveComparestring(this, that string) int {

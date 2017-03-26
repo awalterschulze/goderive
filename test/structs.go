@@ -182,6 +182,19 @@ func (this *ArrayOfPtrToBuiltInTypes) Equal(that *ArrayOfPtrToBuiltInTypes) bool
 	return deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that)
 }
 
+type MapsOfSimplerBuiltInTypes struct {
+	StringToUint32 map[string]uint32
+	Uint64ToInt64  map[uint8]int64
+}
+
+func (this *MapsOfSimplerBuiltInTypes) Equal(that *MapsOfSimplerBuiltInTypes) bool {
+	return deriveEqualPtrToMapsOfSimplerBuiltInTypes(this, that)
+}
+
+func (this *MapsOfSimplerBuiltInTypes) Compare(that *MapsOfSimplerBuiltInTypes) int {
+	return deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that)
+}
+
 type MapsOfBuiltInTypes struct {
 	BoolToString          map[bool]string
 	StringToBool          map[string]bool

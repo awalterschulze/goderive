@@ -32,6 +32,7 @@ type compare struct {
 	printer    Printer
 	bytesPkg   Import
 	stringsPkg Import
+	sortedKeys Plugin
 }
 
 func newCompare(p Printer, pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*compare, error) {
@@ -76,6 +77,10 @@ func (this *compare) Generate() error {
 		}
 	}
 	return nil
+}
+
+func (this *compare) SetSortedKeys(sortedKeys Plugin) {
+	this.sortedKeys = sortedKeys
 }
 
 func (this *compare) genFuncFor(typ types.Type) error {
@@ -222,53 +227,65 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.Out()
 		p.P("}")
 		p.P("return 0")
-	// case *types.Map:
-	// 	p.P("if this == nil {")
-	// 	p.In()
-	// 	p.P("if that == nil {")
-	// 	p.In()
-	// 	p.P("return 0")
-	// 	p.Out()
-	// 	p.P("}")
-	// 	p.P("return -1")
-	// 	p.Out()
-	// 	p.P("}")
-	// 	p.P("if that == nil {")
-	// 	p.In()
-	// 	p.P("return 1")
-	// 	p.Out()
-	// 	p.P("}")
-	// 	p.P("if len(this) != len(that) {")
-	// 	p.In()
-	// 	p.P("if len(this) < len(that) {")
-	// 	p.In()
-	// 	p.P("return -1")
-	// 	p.Out()
-	// 	p.P("}")
-	// 	p.P("return 1")
-	// 	p.Out()
-	// 	p.P("}")
-	// 	p.P("for k, v := range this {")
-	// 	p.In()
-	// 	p.P("thatv, ok := that[k]")
-	// 	p.P("if !ok {")
-	// 	p.In()
-	// 	p.P("return false")
-	// 	p.Out()
-	// 	p.P("}")
-	// 	cmpStr, err := this.field("v", "thatv", ttyp.Elem())
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// 	p.P("if %s {", cmpStr)
-	// 	p.In()
-	// 	p.P("return false")
-	// 	p.Out()
-	// 	p.P("}")
-	// 	p.Out()
-	// 	p.P("}")
-	// 	p.P("return true")
-	// TODO create sorted map keys plugin
+	case *types.Map:
+		p.P("if this == nil {")
+		p.In()
+		p.P("if that == nil {")
+		p.In()
+		p.P("return 0")
+		p.Out()
+		p.P("}")
+		p.P("return -1")
+		p.Out()
+		p.P("}")
+		p.P("if that == nil {")
+		p.In()
+		p.P("return 1")
+		p.Out()
+		p.P("}")
+		p.P("if len(this) != len(that) {")
+		p.In()
+		p.P("if len(this) < len(that) {")
+		p.In()
+		p.P("return -1")
+		p.Out()
+		p.P("}")
+		p.P("return 1")
+		p.Out()
+		p.P("}")
+		p.P("thiskeys := %s(this)", this.sortedKeys.GetFuncName(typ))
+		p.P("thatkeys := %s(that)", this.sortedKeys.GetFuncName(typ))
+		p.P("for i, thiskey := range thiskeys {")
+		p.In()
+		p.P("thatkey := thatkeys[i]")
+		p.P("if thiskey == thatkey {")
+		p.In()
+		cmpStr, err := this.field("this[thiskey]", "that[thatkey]", ttyp.Elem())
+		if err != nil {
+			return err
+		}
+		p.P("if c := %s; c != 0 {", cmpStr)
+		p.In()
+		p.P(`return c`)
+		p.Out()
+		p.P(`}`)
+		p.Out()
+		p.P(`} else {`)
+		p.In()
+		cmpStr2, err := this.field("thiskey", "thatkey", ttyp.Key())
+		if err != nil {
+			return err
+		}
+		p.P("if c := %s; c != 0 {", cmpStr2)
+		p.In()
+		p.P(`return c`)
+		p.Out()
+		p.P(`}`)
+		p.Out()
+		p.P(`}`)
+		p.Out()
+		p.P(`}`)
+		p.P(`return 0`)
 	default:
 		return fmt.Errorf("unsupported compare type: %#v", typ)
 	}

@@ -29,6 +29,7 @@ func TestCompareStructs(t *testing.T) {
 	structs := []interface{}{
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
+		&MapsOfSimplerBuiltInTypes{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

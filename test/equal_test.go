@@ -33,6 +33,7 @@ func TestEqualStructs(t *testing.T) {
 		&SliceOfPtrToBuiltInTypes{},
 		&ArrayOfBuiltInTypes{},
 		&ArrayOfPtrToBuiltInTypes{},
+		&MapsOfSimplerBuiltInTypes{},
 		&MapsOfBuiltInTypes{},
 		&SliceToSlice{},
 		&PtrTo{},

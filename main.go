@@ -64,6 +64,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		compare.SetSortedKeys(sortedKeys)
 
 		alldone := false
 		for !alldone {

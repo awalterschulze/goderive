@@ -29,6 +29,10 @@ type TypesMap interface {
 	Done() bool
 }
 
+type Plugin interface {
+	GetFuncName(typ types.Type) string
+}
+
 type typesMap struct {
 	qual      types.Qualifier
 	prefix    string

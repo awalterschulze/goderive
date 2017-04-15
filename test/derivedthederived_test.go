@@ -14,6 +14,9 @@
 
 package test
 
+import "testing"
+import "reflect"
+
 type DeriveTheDerived struct {
 	Field int
 }
@@ -23,4 +26,20 @@ func inefficientEqual(this, that *DeriveTheDerived) bool {
 		deriveCompareDeriveTheDerived(this, that),
 		-1*deriveCompareDeriveTheDerived(this, that),
 	)
+}
+
+func TestInefficientEqual(t *testing.T) {
+	this := random(&DeriveTheDerived{}).(*DeriveTheDerived)
+	if !inefficientEqual(this, this) {
+		t.Fatal("not equal")
+	}
+}
+
+func TestFmapKeys(t *testing.T) {
+	m := map[int]string{1: "a", 2: "b", 3: "c"}
+	got := deriveFmapForKeys(func(i int) string { return m[i] }, deriveSortedKeysForFmap(m))
+	want := []string{"a", "b", "c"}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("got %#v != want %#v", got, want)
+	}
 }

@@ -115,6 +115,47 @@ func deriveEqual1(this, that BuiltInTypes) bool {
 		this.UintPtr == that.UintPtr
 }
 
+func deriveFmapForKeys(f func(int) string, list []int) []string {
+	out := make([]string, len(list))
+	for i, elem := range list {
+		out[i] = f(elem)
+	}
+	return out
+}
+
+func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
+	return this == that
+}
+
+func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareDeriveTheDerived_(*this, *that)
+}
+
+func deriveCompareDeriveTheDerived_(this, that DeriveTheDerived) int {
+	if c := deriveCompareint(this.Field, that.Field); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveSortedKeysForFmap(m map[int]string) []int {
+	var keys []int
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
+	return keys
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Bool == that.Bool &&
@@ -136,6 +177,17 @@ func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 		this.Uint64 == that.Uint64 &&
 		this.Uint8 == that.Uint8 &&
 		this.UintPtr == that.UintPtr
+}
+
+func deriveCompareint(this, that int) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
 }
 
 func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
@@ -1142,17 +1194,6 @@ func deriveComparefloat32(this, that float32) int {
 	return 0
 }
 
-func deriveCompareint(this, that int) int {
-	if this != that {
-		if this < that {
-			return -1
-		} else {
-			return 1
-		}
-	}
-	return 0
-}
-
 func deriveCompareint16(this, that int16) int {
 	if this != that {
 		if this < that {
@@ -1701,10 +1742,6 @@ func deriveEqualPtrToUnnamedStruct(this, that *UnnamedStruct) bool {
 		this.Unnamed == that.Unnamed
 }
 
-func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
-	return this == that
-}
-
 func deriveComparePtrTobool(this, that *bool) int {
 	if this == nil {
 		if that == nil {
@@ -1962,19 +1999,6 @@ func deriveCompareMapsOfSimplerBuiltInTypes(this, that MapsOfSimplerBuiltInTypes
 	return 0
 }
 
-func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
-	}
-	if that == nil {
-		return 1
-	}
-	return deriveCompareDeriveTheDerived_(*this, *that)
-}
-
 func deriveComparestring(this, that string) int {
 	return strings.Compare(this, that)
 }
@@ -2041,13 +2065,6 @@ func deriveCompareMapOfuint8Toint64(this, that map[uint8]int64) int {
 				return c
 			}
 		}
-	}
-	return 0
-}
-
-func deriveCompareDeriveTheDerived_(this, that DeriveTheDerived) int {
-	if c := deriveCompareint(this.Field, that.Field); c != 0 {
-		return c
 	}
 	return 0
 }

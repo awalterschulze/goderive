@@ -33,13 +33,12 @@ type fmap struct {
 	bytesPkg Import
 }
 
-func newFmap(p Printer, qual types.Qualifier, typesMap TypesMap) (*fmap, error) {
+func newFmap(p Printer, qual types.Qualifier, typesMap TypesMap) *fmap {
 	return &fmap{
 		TypesMap: typesMap,
 		qual:     qual,
 		printer:  p,
-		bytesPkg: p.NewImport("bytes"),
-	}, nil
+	}
 }
 
 func (this *fmap) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {

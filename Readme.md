@@ -5,9 +5,10 @@
 goderive parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. Functions that are currently supported include:
 
   - Equal
-  - SortedMapKeys (requires go1.8)
+  - SortedMapKeys
   - Compare (TODO)
-  - Fmap (Experimental)
+  - Fmap
+  - Join
 
 Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.
 
@@ -52,9 +53,10 @@ func deriveEqual(this, that *MyStruct) bool {
   - Struct without an Equal method
   - Unnamed Structs, which are not comparable with `==`
 
-## SortedMapKeys (Alpha)
+## SortedMapKeys
 
 The `deriveSortedKeys` function is useful for deterministically ranging over maps.
+This feature requires Go 1.8
 
 ### Example
 
@@ -97,7 +99,7 @@ func deriveSortedKeys(m map[int]int) []int {
   - update readme example
   - add example to example package
 
-## Fmap (Experimental)
+## Fmap
 
 The `deriveFmap` function applies a given function to each element of a list, returning a list of results in the same order.
 
@@ -132,3 +134,45 @@ func deriveFmap(f func(int) int, list []int) []int {
 
   - currently only slices are supported, think about supporting other types and not just slices
   - think about functions without a return type
+
+## Join
+
+The `deriveJoin` function applies a given joins a slice of slices into a single slice.
+
+### Example
+
+In the following code the `deriveJoin` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveJoin`.
+
+```go
+func main() {
+	ss := []string{"a,b", "c,d"}
+	split := func(s string) []string {
+		return strings.Split(s, ",")
+	}
+	list := deriveJoin(deriveFmap(split, ss))
+	for _, e := range list {
+		fmt.Printf("%s", list)
+	}
+	// print abcd
+}
+```
+
+goderive will then generate the following code in a `derived.gen.go` file in the same package:
+
+```go
+func deriveJoin(list [][]string) []string {
+	if list == nil {
+		return nil
+	}
+	res := []string{}
+	for _, elem := range list {
+		res = append(res, elem...)
+	}
+	return res
+}
+```
+
+### TODO
+
+  - currently only slices are supported, think about supporting other types and not just slices
+  - what about []string and not just [][]string as in the current example.

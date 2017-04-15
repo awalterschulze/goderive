@@ -20,14 +20,14 @@ type sortedKeys struct {
 	compare TypesMap
 }
 
-func newSortedKeys(p Printer, qual types.Qualifier, typesMap TypesMap, compare TypesMap) (*sortedKeys, error) {
+func newSortedKeys(p Printer, qual types.Qualifier, typesMap TypesMap, compare TypesMap) *sortedKeys {
 	return &sortedKeys{
 		TypesMap: typesMap,
 		qual:     qual,
 		printer:  p,
 		sortPkg:  p.NewImport("sort"),
 		compare:  compare,
-	}, nil
+	}
 }
 
 func (this *sortedKeys) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {

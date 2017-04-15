@@ -33,13 +33,13 @@ type equal struct {
 	bytesPkg Import
 }
 
-func newEqual(p Printer, qual types.Qualifier, typesMap TypesMap) (*equal, error) {
+func newEqual(p Printer, qual types.Qualifier, typesMap TypesMap) *equal {
 	return &equal{
 		TypesMap: typesMap,
 		qual:     qual,
 		printer:  p,
 		bytesPkg: p.NewImport("bytes"),
-	}, nil
+	}
 }
 
 func (this *equal) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {

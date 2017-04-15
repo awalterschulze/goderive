@@ -34,6 +34,36 @@ func deriveFmap(f func(int) int, list []int) []int {
 	return out
 }
 
+func deriveJoin(list [][]int) []int {
+	if list == nil {
+		return nil
+	}
+	res := []int{}
+	for _, elem := range list {
+		res = append(res, elem...)
+	}
+	return res
+}
+
+func deriveJoinSS(list [][]string) []string {
+	if list == nil {
+		return nil
+	}
+	res := []string{}
+	for _, elem := range list {
+		res = append(res, elem...)
+	}
+	return res
+}
+
+func deriveFmapSS(f func(string) []string, list []string) [][]string {
+	out := make([][]string, len(list))
+	for i, elem := range list {
+		out[i] = f(elem)
+	}
+	return out
+}
+
 func deriveEqualSliceOfint(this, that []int) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -115,14 +145,6 @@ func deriveEqual1(this, that BuiltInTypes) bool {
 		this.UintPtr == that.UintPtr
 }
 
-func deriveFmapForKeys(f func(int) string, list []int) []string {
-	out := make([]string, len(list))
-	for i, elem := range list {
-		out[i] = f(elem)
-	}
-	return out
-}
-
 func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
 	return this == that
 }
@@ -145,6 +167,14 @@ func deriveCompareDeriveTheDerived_(this, that DeriveTheDerived) int {
 		return c
 	}
 	return 0
+}
+
+func deriveFmapForKeys(f func(int) string, list []int) []string {
+	out := make([]string, len(list))
+	for i, elem := range list {
+		out[i] = f(elem)
+	}
+	return out
 }
 
 func deriveSortedKeysForFmap(m map[int]string) []int {

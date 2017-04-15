@@ -35,7 +35,7 @@ type compare struct {
 	sortedKeys Plugin
 }
 
-func newCompare(p Printer, qual types.Qualifier, typesMap TypesMap, sortedKeys TypesMap) (*compare, error) {
+func newCompare(p Printer, qual types.Qualifier, typesMap TypesMap, sortedKeys TypesMap) *compare {
 	return &compare{
 		TypesMap:   typesMap,
 		qual:       qual,
@@ -43,7 +43,7 @@ func newCompare(p Printer, qual types.Qualifier, typesMap TypesMap, sortedKeys T
 		bytesPkg:   p.NewImport("bytes"),
 		stringsPkg: p.NewImport("strings"),
 		sortedKeys: sortedKeys,
-	}, nil
+	}
 }
 
 func (this *compare) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {

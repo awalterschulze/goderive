@@ -71,23 +71,13 @@ func main() {
 			sortedKeysTypesMap := newTypesMap(qual, *sortedKeysPrefix)
 			compareTypesMap := newTypesMap(qual, *comparePrefix)
 			fmapTypesMap := newTypesMap(qual, *fmapPrefix)
+			joinTypesMap := newTypesMap(qual, *joinPrefix)
 
-			equal, err := newEqual(p, qual, equalTypesMap)
-			if err != nil {
-				log.Fatal(err)
-			}
-			sortedKeys, err := newSortedKeys(p, qual, sortedKeysTypesMap, compareTypesMap)
-			if err != nil {
-				log.Fatal(err)
-			}
-			compare, err := newCompare(p, qual, compareTypesMap, sortedKeysTypesMap)
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmap, err := newFmap(p, qual, fmapTypesMap)
-			if err != nil {
-				log.Fatal(err)
-			}
+			equal := newEqual(p, qual, equalTypesMap)
+			sortedKeys := newSortedKeys(p, qual, sortedKeysTypesMap, compareTypesMap)
+			compare := newCompare(p, qual, compareTypesMap, sortedKeysTypesMap)
+			fmap := newFmap(p, qual, fmapTypesMap)
+			join := newJoin(p, qual, joinTypesMap)
 
 			alldone := false
 			for !alldone {
@@ -108,6 +98,11 @@ func main() {
 						continue
 					}
 					if generated, err := fmap.Generate(pkgInfo, *fmapPrefix, call); err != nil {
+						log.Fatal(err)
+					} else if generated {
+						continue
+					}
+					if generated, err := join.Generate(pkgInfo, *joinPrefix, call); err != nil {
 						log.Fatal(err)
 					} else if generated {
 						continue

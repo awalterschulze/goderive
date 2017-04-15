@@ -7,6 +7,7 @@ goderive parses your go code for functions which are not implemented and then ge
   - Equal
   - SortedMapKeys (requires go1.8)
   - Compare (TODO)
+  - Fmap (Experimental)
 
 Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.
 
@@ -47,6 +48,8 @@ func deriveEqual(this, that *MyStruct) bool {
 
   - Chan
   - Interface
+  - Function
+  - Struct without an Equal method
   - Unnamed Structs, which are not comparable with `==`
 
 ## SortedMapKeys (Alpha)
@@ -94,3 +97,38 @@ func deriveSortedKeys(m map[int]int) []int {
   - update readme example
   - add example to example package
 
+## Fmap (Experimental)
+
+The `deriveFmap` function applies a given function to each element of a list, returning a list of results in the same order.
+
+### Example
+
+In the following code the `deriveFmap` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveFmap`.
+
+```go
+func main() {
+	list := []int{1, 2, 3}
+	list = deriveFmap(func(i int) int { return i+1 }, list)
+	for _, e := range list {
+		fmt.Printf("%d", list)
+	}
+	// print 234
+}
+```
+
+goderive will then generate the following code in a `derived.gen.go` file in the same package:
+
+```go
+func deriveFmap(f func(int) int, list []int) []int {
+	out := make([]int, len(list))
+	for i, elem := range list {
+		out[i] = f(elem)
+	}
+	return out
+}
+```
+
+### TODO
+
+  - currently only slices are supported, think about supporting other types and not just slices
+  - think about functions without a return type

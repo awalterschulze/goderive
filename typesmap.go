@@ -22,110 +22,114 @@ import (
 )
 
 type TypesMap interface {
-	SetFuncName(typ types.Type, name string) error
-	GetFuncName(typ types.Type) string
-	Generating(typ types.Type)
-	ToGenerate() []types.Type
+	SetFuncName(name string, typs ...types.Type) error
+	GetFuncName(typs ...types.Type) string
+	Generating(typs ...types.Type)
+	ToGenerate() [][]types.Type
 	Done() bool
 }
 
 type Plugin interface {
-	GetFuncName(typ types.Type) string
+	GetFuncName(typs ...types.Type) string
 }
 
 type typesMap struct {
-	qual      types.Qualifier
-	prefix    string
-	generated map[string]bool
-	funcToTyp map[string]string
-	typToFunc map[string]string
-	typs      []types.Type
+	qual       types.Qualifier
+	prefix     string
+	generated  map[string]bool
+	funcToTyps map[string]string
+	typsToFunc map[string]string
+	typss      [][]types.Type
 }
 
 func newTypesMap(qual types.Qualifier, prefix string) TypesMap {
 	return &typesMap{
-		qual:      qual,
-		prefix:    prefix,
-		generated: make(map[string]bool),
-		funcToTyp: make(map[string]string),
-		typToFunc: make(map[string]string),
-		typs:      nil,
+		qual:       qual,
+		prefix:     prefix,
+		generated:  make(map[string]bool),
+		funcToTyps: make(map[string]string),
+		typsToFunc: make(map[string]string),
+		typss:      nil,
 	}
 }
 
-func (this *typesMap) SetFuncName(typ types.Type, funcName string) error {
-	typName := this.nameOf(typ)
-	if fName, ok := this.typToFunc[typName]; ok {
+func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) error {
+	typsName := this.nameOf(typs)
+	if fName, ok := this.typsToFunc[typsName]; ok {
 		if fName == funcName {
 			return nil
 		}
-		return fmt.Errorf("ambigious function names for type %s = (%s | %s)", typ, fName, funcName)
+		return fmt.Errorf("ambigious function names for type %s = (%s | %s)", typs, fName, funcName)
 	}
-	if tName, ok := this.funcToTyp[funcName]; ok {
-		if tName == typName {
+	if tName, ok := this.funcToTyps[funcName]; ok {
+		if tName == typsName {
 			return nil
 		}
-		return fmt.Errorf("duplicate function name %s = (%s | %s)", funcName, tName, typName)
+		return fmt.Errorf("duplicate function name %s = (%s | %s)", funcName, tName, typsName)
 	}
-	if _, ok := this.generated[typName]; !ok {
-		this.generated[typName] = false
+	if _, ok := this.generated[typsName]; !ok {
+		this.generated[typsName] = false
 	}
-	this.typToFunc[typName] = funcName
-	this.funcToTyp[funcName] = typName
-	this.typs = append(this.typs, typ)
+	this.typsToFunc[typsName] = funcName
+	this.funcToTyps[funcName] = typsName
+	this.typss = append(this.typss, typs)
 	return nil
 }
 
-func (this *typesMap) GetFuncName(typ types.Type) string {
-	name := this.nameOf(typ)
-	if f, ok := this.typToFunc[name]; ok {
+func (this *typesMap) GetFuncName(typs ...types.Type) string {
+	name := this.nameOf(typs)
+	if f, ok := this.typsToFunc[name]; ok {
 		return f
 	}
-	funcName := this.funcOf(typ)
-	_, exists := this.funcToTyp[funcName]
+	funcName := this.funcOf(typs)
+	_, exists := this.funcToTyps[funcName]
 	for exists {
 		funcName += "_"
-		_, exists = this.funcToTyp[funcName]
+		_, exists = this.funcToTyps[funcName]
 	}
-	this.SetFuncName(typ, funcName)
+	this.SetFuncName(funcName, typs...)
 	return funcName
 }
 
-func (this *typesMap) Generating(typ types.Type) {
-	name := this.nameOf(typ)
+func (this *typesMap) Generating(typs ...types.Type) {
+	name := this.nameOf(typs)
 	this.generated[name] = true
 }
 
-func (this *typesMap) isGenerated(typ types.Type) bool {
-	name := this.nameOf(typ)
+func (this *typesMap) isGenerated(typs []types.Type) bool {
+	name := this.nameOf(typs)
 	return this.generated[name]
 }
 
-func (this *typesMap) ToGenerate() []types.Type {
-	typs := make([]types.Type, 0, len(this.typs))
-	for i, typ := range this.typs {
-		if !this.isGenerated(typ) {
-			typs = append(typs, this.typs[i])
+func (this *typesMap) ToGenerate() [][]types.Type {
+	typss := make([][]types.Type, 0, len(this.typss))
+	for i, typs := range this.typss {
+		if !this.isGenerated(typs) {
+			typss = append(typss, this.typss[i])
 		}
 	}
-	return typs
+	return typss
 }
 
 func (this *typesMap) Done() bool {
-	for _, typ := range this.typs {
-		if !this.isGenerated(typ) {
+	for _, typs := range this.typss {
+		if !this.isGenerated(typs) {
 			return false
 		}
 	}
 	return true
 }
 
-func (this *typesMap) nameOf(typ types.Type) string {
-	return typeName(typ, this.qual)
+func (this *typesMap) nameOf(typs []types.Type) string {
+	ss := make([]string, len(typs))
+	for i, typ := range typs {
+		ss[i] = typeName(typ, this.qual)
+	}
+	return strings.Join(ss, ",")
 }
 
-func (this *typesMap) funcOf(typ types.Type) string {
-	return this.prefix + strings.Replace(typeName(typ, this.qual), "$", "", -1)
+func (this *typesMap) funcOf(typs []types.Type) string {
+	return this.prefix + strings.Replace(this.nameOf(typs), "$", "", -1)
 }
 
 func typeName(typ types.Type, qual types.Qualifier) string {

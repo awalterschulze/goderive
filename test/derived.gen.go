@@ -26,6 +26,14 @@ func deriveSortedKeysForMapIntToInt64(m map[int]int64) []int {
 	return keys
 }
 
+func deriveFmap(f func(int) int, list []int) []int {
+	out := make([]int, len(list))
+	for i, elem := range list {
+		out[i] = f(elem)
+	}
+	return out
+}
+
 func deriveEqualSliceOfint(this, that []int) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil

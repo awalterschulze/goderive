@@ -70,11 +70,11 @@ func (this *compare) Generate(pkgInfo *loader.PackageInfo, prefix string, call *
 			fn.Name, t0, t1)
 	}
 
-	if err := this.SetFuncName(t0, fn.Name); err != nil {
+	if err := this.SetFuncName(fn.Name, t0); err != nil {
 		return false, err
 	}
-	for _, typ := range this.ToGenerate() {
-		if err := this.genFuncFor(typ); err != nil {
+	for _, typs := range this.ToGenerate() {
+		if err := this.genFuncFor(typs[0]); err != nil {
 			return false, err
 		}
 	}

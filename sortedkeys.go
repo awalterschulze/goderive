@@ -42,11 +42,12 @@ func (this *sortedKeys) Generate(pkgInfo *loader.PackageInfo, prefix string, cal
 		return false, fmt.Errorf("%s does not have one argument", fn.Name)
 	}
 	typ := pkgInfo.TypeOf(call.Args[0])
-	if err := this.SetFuncName(typ, fn.Name); err != nil {
+	if err := this.SetFuncName(fn.Name, typ); err != nil {
 		return false, err
 	}
 
-	for _, typ := range this.ToGenerate() {
+	for _, typs := range this.ToGenerate() {
+		typ := typs[0]
 		mapType, ok := typ.(*types.Map)
 		if !ok {
 			return false, fmt.Errorf("%s, an argument to %s, is not of type map", this.GetFuncName(typ), typ)

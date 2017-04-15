@@ -70,6 +70,7 @@ func main() {
 			equalTypesMap := newTypesMap(qual, *equalPrefix)
 			sortedKeysTypesMap := newTypesMap(qual, *sortedKeysPrefix)
 			compareTypesMap := newTypesMap(qual, *comparePrefix)
+			fmapTypesMap := newTypesMap(qual, *fmapPrefix)
 
 			equal, err := newEqual(p, qual, equalTypesMap)
 			if err != nil {
@@ -80,6 +81,10 @@ func main() {
 				log.Fatal(err)
 			}
 			compare, err := newCompare(p, qual, compareTypesMap, sortedKeysTypesMap)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmap, err := newFmap(p, qual, fmapTypesMap)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -102,6 +107,11 @@ func main() {
 					} else if generated {
 						continue
 					}
+					if generated, err := fmap.Generate(pkgInfo, *fmapPrefix, call); err != nil {
+						log.Fatal(err)
+					} else if generated {
+						continue
+					}
 					notgenerated = append(notgenerated, call)
 				}
 				alldone = equal.Done() && sortedKeys.Done() && compare.Done()
@@ -109,7 +119,9 @@ func main() {
 
 			if len(notgenerated) > 0 {
 				if ungenerated == len(notgenerated) {
-					log.Fatalf("cannot generate %v", notgenerated)
+					for _, c := range notgenerated {
+						log.Fatalf("cannot generate %s", types.ExprString(c))
+					}
 				}
 			}
 			ungenerated = len(notgenerated)

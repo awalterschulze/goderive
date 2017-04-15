@@ -17,6 +17,7 @@ package main
 import (
 	"flag"
 	"go/ast"
+	"go/types"
 	"log"
 	"os"
 	"path/filepath"
@@ -30,67 +31,100 @@ func main() {
 	log.SetFlags(0)
 	flag.Parse()
 	paths := gotool.ImportPaths(flag.Args())
+
 	program, err := load(paths...)
 	if err != nil {
-		log.Fatal(err) // load error
+		log.Fatal(err)
 	}
 	for _, pkgInfo := range program.InitialPackages() {
-
-		var calls []*ast.CallExpr
-		for _, file := range pkgInfo.Files {
-			astFile := program.Fset.File(file.Pos())
-			if astFile == nil {
-				continue
+		path := pkgInfo.Pkg.Path()
+		ungenerated := -1
+		for ungenerated != 0 {
+			thisprogram := program
+			if ungenerated > 0 {
+				// reload path with newly generated code, with the hope that some types are now inferable.
+				thisprogram, err = load(path)
+				if err != nil {
+					log.Fatal(err)
+				}
+				pkgInfo = thisprogram.Package(path)
 			}
-			_, fname := filepath.Split(astFile.Name())
-			if fname == derivedFilename {
-				continue
+			var notgenerated []*ast.CallExpr
+			var calls []*ast.CallExpr
+			for _, file := range pkgInfo.Files {
+				astFile := thisprogram.Fset.File(file.Pos())
+				if astFile == nil {
+					continue
+				}
+				_, fname := filepath.Split(astFile.Name())
+				if fname == derivedFilename {
+					continue
+				}
+				newcalls := findUndefinedOrDerivedFuncs(thisprogram, pkgInfo, file)
+				calls = append(newcalls, calls...)
 			}
-			newcalls := findUndefinedOrDerivedFuncs(program, pkgInfo, file)
-			calls = append(newcalls, calls...)
-		}
+			qual := types.RelativeTo(pkgInfo.Pkg)
 
-		p := newPrinter(pkgInfo.Pkg.Name())
+			p := newPrinter(pkgInfo.Pkg.Name())
 
-		equal, err := newEqual(p, pkgInfo, *equalPrefix, calls)
-		if err != nil {
-			log.Fatal(err)
-		}
-		sortedKeys, err := newSortedKeys(p, pkgInfo, *sortedKeysPrefix, calls)
-		if err != nil {
-			log.Fatal(err)
-		}
-		compare, err := newCompare(p, pkgInfo, *comparePrefix, calls)
-		if err != nil {
-			log.Fatal(err)
-		}
-		compare.SetSortedKeys(sortedKeys)
+			equalTypesMap := newTypesMap(qual, *equalPrefix)
+			sortedKeysTypesMap := newTypesMap(qual, *sortedKeysPrefix)
+			compareTypesMap := newTypesMap(qual, *comparePrefix)
 
-		alldone := false
-		for !alldone {
-			if err := equal.Generate(); err != nil {
-				log.Fatal(err)
-			}
-			if err := sortedKeys.Generate(); err != nil {
-				log.Fatal(err)
-			}
-			if err := compare.Generate(); err != nil {
-				log.Fatal(err)
-			}
-			alldone = equal.Done() && sortedKeys.Done() && compare.Done()
-		}
-
-		if p.HasContent() {
-			pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())
-			f, err := os.Create(filepath.Join(pkgpath, derivedFilename))
+			equal, err := newEqual(p, qual, equalTypesMap)
 			if err != nil {
 				log.Fatal(err)
 			}
-			if err := p.WriteTo(f); err != nil {
-				panic(err)
+			sortedKeys, err := newSortedKeys(p, qual, sortedKeysTypesMap, compareTypesMap)
+			if err != nil {
+				log.Fatal(err)
 			}
-			f.Close()
-		}
+			compare, err := newCompare(p, qual, compareTypesMap, sortedKeysTypesMap)
+			if err != nil {
+				log.Fatal(err)
+			}
 
+			alldone := false
+			for !alldone {
+				for _, call := range calls {
+					if generated, err := equal.Generate(pkgInfo, *equalPrefix, call); err != nil {
+						log.Fatal(err)
+					} else if generated {
+						continue
+					}
+					if generated, err := sortedKeys.Generate(pkgInfo, *sortedKeysPrefix, call); err != nil {
+						log.Fatal(err)
+					} else if generated {
+						continue
+					}
+					if generated, err := compare.Generate(pkgInfo, *comparePrefix, call); err != nil {
+						log.Fatal(err)
+					} else if generated {
+						continue
+					}
+					notgenerated = append(notgenerated, call)
+				}
+				alldone = equal.Done() && sortedKeys.Done() && compare.Done()
+			}
+
+			if len(notgenerated) > 0 {
+				if ungenerated == len(notgenerated) {
+					log.Fatalf("cannot generate %v", notgenerated)
+				}
+			}
+			ungenerated = len(notgenerated)
+
+			if p.HasContent() {
+				pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())
+				f, err := os.Create(filepath.Join(pkgpath, derivedFilename))
+				if err != nil {
+					log.Fatal(err)
+				}
+				if err := p.WriteTo(f); err != nil {
+					panic(err)
+				}
+				f.Close()
+			}
+		}
 	}
 }

@@ -33,33 +33,7 @@ type equal struct {
 	bytesPkg Import
 }
 
-func newEqual(p Printer, pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*equal, error) {
-	qual := types.RelativeTo(pkgInfo.Pkg)
-	typesMap := newTypesMap(qual, prefix)
-
-	for _, call := range calls {
-		fn, ok := call.Fun.(*ast.Ident)
-		if !ok {
-			continue
-		}
-		if !strings.HasPrefix(fn.Name, prefix) {
-			continue
-		}
-		if len(call.Args) != 2 {
-			return nil, fmt.Errorf("%s does not have two arguments\n", fn.Name)
-		}
-		t0 := pkgInfo.TypeOf(call.Args[0])
-		t1 := pkgInfo.TypeOf(call.Args[1])
-		if !types.Identical(t0, t1) {
-			return nil, fmt.Errorf("%s has two arguments, but they are of different types %s != %s\n",
-				fn.Name, t0, t1)
-		}
-
-		if err := typesMap.SetFuncName(t0, fn.Name); err != nil {
-			return nil, err
-		}
-	}
-
+func newEqual(p Printer, qual types.Qualifier, typesMap TypesMap) (*equal, error) {
 	return &equal{
 		TypesMap: typesMap,
 		qual:     qual,
@@ -68,18 +42,44 @@ func newEqual(p Printer, pkgInfo *loader.PackageInfo, prefix string, calls []*as
 	}, nil
 }
 
-func (this *equal) Generate() error {
+func (this *equal) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {
+	fn, ok := call.Fun.(*ast.Ident)
+	if !ok {
+		return false, nil
+	}
+	if !strings.HasPrefix(fn.Name, prefix) {
+		return false, nil
+	}
+	if len(call.Args) != 2 {
+		return false, fmt.Errorf("%s does not have two arguments", fn.Name)
+	}
+	t0 := pkgInfo.TypeOf(call.Args[0])
+	t1 := pkgInfo.TypeOf(call.Args[1])
+	if t0 == nil {
+		return false, nil
+	}
+	if t1 == nil {
+		return false, nil
+	}
+	if !types.Identical(t0, t1) {
+		return false, fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
+			fn.Name, t0, t1)
+	}
+
+	if err := this.SetFuncName(t0, fn.Name); err != nil {
+		return false, err
+	}
 	for _, typ := range this.ToGenerate() {
 		if err := this.genFuncFor(typ); err != nil {
-			return err
+			return false, err
 		}
 	}
 	for _, typ := range this.ToGenerate() {
 		if err := this.genFuncFor(typ); err != nil {
-			return err
+			return false, err
 		}
 	}
-	return nil
+	return true, nil
 }
 
 func (this *equal) genFuncFor(typ types.Type) error {
@@ -91,6 +91,12 @@ func (this *equal) genFuncFor(typ types.Type) error {
 	p.In()
 	typ = typ.Underlying()
 	switch ttyp := typ.(type) {
+	case *types.Basic:
+		fieldStr, err := this.field("this", "that", typ)
+		if err != nil {
+			return err
+		}
+		p.P("return " + fieldStr)
 	case *types.Pointer:
 		ref := ttyp.Elem()
 		switch tttyp := ref.Underlying().(type) {
@@ -128,7 +134,7 @@ func (this *equal) genFuncFor(typ types.Type) error {
 			}
 			p.Out()
 		default:
-			return fmt.Errorf("unsupported: pointer is not a named struct, but %#v\n", ref)
+			return fmt.Errorf("unsupported: pointer is not a named struct, but %#v", ref)
 		}
 	case *types.Struct:
 		numFields := ttyp.NumFields()

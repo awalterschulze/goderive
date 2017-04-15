@@ -22,9 +22,10 @@ import (
 )
 
 type finder struct {
-	program *loader.Program
-	pkgInfo *loader.PackageInfo
-	calls   []*ast.CallExpr
+	program   *loader.Program
+	pkgInfo   *loader.PackageInfo
+	undefined []*ast.CallExpr
+	derived   []*ast.CallExpr
 }
 
 func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
@@ -38,8 +39,7 @@ func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
 	}
 	def, ok := this.pkgInfo.Uses[fn]
 	if !ok {
-		// undefined function.
-		this.calls = append(this.calls, call)
+		this.undefined = append(this.undefined, call)
 		return this
 	}
 	file := this.program.Fset.File(def.Pos())
@@ -49,16 +49,15 @@ func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
 	}
 	_, filename := filepath.Split(file.Name())
 	if filename == derivedFilename {
-		// derived function.
-		this.calls = append(this.calls, call)
+		this.derived = append(this.derived, call)
 	}
 	return this
 }
 
 func findUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []*ast.CallExpr {
-	f := &finder{program, pkgInfo, nil}
+	f := &finder{program, pkgInfo, nil, nil}
 	for _, d := range file.Decls {
 		ast.Walk(f, d)
 	}
-	return f.calls
+	return append(f.undefined, f.derived...)
 }

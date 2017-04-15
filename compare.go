@@ -35,52 +35,50 @@ type compare struct {
 	sortedKeys Plugin
 }
 
-func newCompare(p Printer, pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*compare, error) {
-	qual := types.RelativeTo(pkgInfo.Pkg)
-	typesMap := newTypesMap(qual, prefix)
-
-	for _, call := range calls {
-		fn, ok := call.Fun.(*ast.Ident)
-		if !ok {
-			continue
-		}
-		if !strings.HasPrefix(fn.Name, prefix) {
-			continue
-		}
-		if len(call.Args) != 2 {
-			return nil, fmt.Errorf("%s does not have two arguments\n", fn.Name)
-		}
-		t0 := pkgInfo.TypeOf(call.Args[0])
-		t1 := pkgInfo.TypeOf(call.Args[1])
-		if !types.Identical(t0, t1) {
-			return nil, fmt.Errorf("%s has two arguments, but they are of different types %s != %s\n",
-				fn.Name, t0, t1)
-		}
-
-		if err := typesMap.SetFuncName(t0, fn.Name); err != nil {
-			return nil, err
-		}
-	}
+func newCompare(p Printer, qual types.Qualifier, typesMap TypesMap, sortedKeys TypesMap) (*compare, error) {
 	return &compare{
 		TypesMap:   typesMap,
 		qual:       qual,
 		printer:    p,
 		bytesPkg:   p.NewImport("bytes"),
 		stringsPkg: p.NewImport("strings"),
+		sortedKeys: sortedKeys,
 	}, nil
 }
 
-func (this *compare) Generate() error {
+func (this *compare) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {
+	fn, ok := call.Fun.(*ast.Ident)
+	if !ok {
+		return false, nil
+	}
+	if !strings.HasPrefix(fn.Name, prefix) {
+		return false, nil
+	}
+	if len(call.Args) != 2 {
+		return false, fmt.Errorf("%s does not have two arguments", fn.Name)
+	}
+	t0 := pkgInfo.TypeOf(call.Args[0])
+	t1 := pkgInfo.TypeOf(call.Args[1])
+	if t0 == nil {
+		return false, nil
+	}
+	if t1 == nil {
+		return false, nil
+	}
+	if !types.Identical(t0, t1) {
+		return false, fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
+			fn.Name, t0, t1)
+	}
+
+	if err := this.SetFuncName(t0, fn.Name); err != nil {
+		return false, err
+	}
 	for _, typ := range this.ToGenerate() {
 		if err := this.genFuncFor(typ); err != nil {
-			return err
+			return false, err
 		}
 	}
-	return nil
-}
-
-func (this *compare) SetSortedKeys(sortedKeys Plugin) {
-	this.sortedKeys = sortedKeys
+	return true, nil
 }
 
 func (this *compare) genFuncFor(typ types.Type) error {

@@ -17,46 +17,45 @@ type sortedKeys struct {
 	qual    types.Qualifier
 	printer Printer
 	sortPkg Import
+	compare TypesMap
 }
 
-func newSortedKeys(p Printer, pkgInfo *loader.PackageInfo, prefix string, calls []*ast.CallExpr) (*sortedKeys, error) {
-	qual := types.RelativeTo(pkgInfo.Pkg)
-	typesMap := newTypesMap(qual, prefix)
-	for _, call := range calls {
-		fn, ok := call.Fun.(*ast.Ident)
-		if !ok {
-			continue
-		}
-		if !strings.HasPrefix(fn.Name, prefix) {
-			continue
-		}
-		if len(call.Args) != 1 {
-			return nil, fmt.Errorf("%s does not have one argument\n", fn.Name)
-		}
-		typ := pkgInfo.TypeOf(call.Args[0])
-		if err := typesMap.SetFuncName(typ, fn.Name); err != nil {
-			return nil, err
-		}
-	}
+func newSortedKeys(p Printer, qual types.Qualifier, typesMap TypesMap, compare TypesMap) (*sortedKeys, error) {
 	return &sortedKeys{
 		TypesMap: typesMap,
 		qual:     qual,
 		printer:  p,
 		sortPkg:  p.NewImport("sort"),
+		compare:  compare,
 	}, nil
 }
 
-func (this *sortedKeys) Generate() error {
+func (this *sortedKeys) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {
+	fn, ok := call.Fun.(*ast.Ident)
+	if !ok {
+		return false, nil
+	}
+	if !strings.HasPrefix(fn.Name, prefix) {
+		return false, nil
+	}
+	if len(call.Args) != 1 {
+		return false, fmt.Errorf("%s does not have one argument", fn.Name)
+	}
+	typ := pkgInfo.TypeOf(call.Args[0])
+	if err := this.SetFuncName(typ, fn.Name); err != nil {
+		return false, err
+	}
+
 	for _, typ := range this.ToGenerate() {
 		mapType, ok := typ.(*types.Map)
 		if !ok {
-			return fmt.Errorf("%s, an argument to %s, is not of type map", this.GetFuncName(typ), typ)
+			return false, fmt.Errorf("%s, an argument to %s, is not of type map", this.GetFuncName(typ), typ)
 		}
 		if err := this.genFuncFor(mapType); err != nil {
-			return err
+			return false, err
 		}
 	}
-	return nil
+	return true, nil
 }
 
 func (this *sortedKeys) genFuncFor(typ *types.Map) error {

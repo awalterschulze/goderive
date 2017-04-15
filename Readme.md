@@ -6,7 +6,7 @@ goderive parses your go code for functions which are not implemented and then ge
 
   - Equal
   - SortedMapKeys
-  - Compare (TODO)
+  - Compare
   - Fmap
   - Join
 
@@ -16,7 +16,7 @@ Distinguishing between which function (Equal, Compare, ...) should be derived is
 
 ## Equal
 
-The `derivEqual` function is a faster alternative to `reflect.DeepEqual`.
+The `deriveEqual` function is a faster alternative to `reflect.DeepEqual`.
 
 ### Example
 
@@ -98,6 +98,31 @@ func deriveSortedKeys(m map[int]int) []int {
   - more tests
   - update readme example
   - add example to example package
+
+## Compare
+
+The `deriveCompare` function is a maintainable way to implement Less functions.
+
+### Example
+
+In the following code the `deriveCompare` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveCompare`.
+
+```go
+package main
+
+type MyStruct struct {
+	Int64  int64
+	String string
+}
+
+func (this *MyStruct) Less(that *MyStruct) bool {
+	return deriveCompare(this, that) < 0
+}
+```
+
+## TODO
+
+  - Support more types
 
 ## Fmap
 

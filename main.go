@@ -22,10 +22,18 @@ import (
 	"os"
 	"path/filepath"
 
+	"golang.org/x/tools/go/loader"
+
 	"github.com/kisielk/gotool"
 )
 
 const derivedFilename = "derived.gen.go"
+
+type Generator interface {
+	TypesMap
+	Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error)
+	Generate() error
+}
 
 func main() {
 	log.SetFlags(0)
@@ -74,68 +82,29 @@ func main() {
 			fmapTypesMap := newTypesMap(qual, *fmapPrefix)
 			joinTypesMap := newTypesMap(qual, *joinPrefix)
 
-			equal := newEqual(equalTypesMap, qual, *equalPrefix, p)
-			keys := newKeys(keysTypesMap, qual, *keysPrefix, p)
-			compare := newCompare(compareTypesMap, qual, *comparePrefix, p, keysTypesMap, sortedTypesMap)
-			sorted := newSorted(sortedTypesMap, qual, *sortedPrefix, p, compareTypesMap)
-			fmap := newFmap(fmapTypesMap, qual, *fmapPrefix, p)
-			join := newJoin(joinTypesMap, qual, *joinPrefix, p)
-
-			for _, call := range calls {
-				if generated, err := equal.Add(pkgInfo, call); err != nil {
-					log.Fatal("equal:" + err.Error())
-				} else if generated {
-					continue
-				}
-				if generated, err := keys.Add(pkgInfo, call); err != nil {
-					log.Fatal("keys:" + err.Error())
-				} else if generated {
-					continue
-				}
-				if generated, err := compare.Add(pkgInfo, call); err != nil {
-					log.Fatal("compare:" + err.Error())
-				} else if generated {
-					continue
-				}
-				if generated, err := sorted.Add(pkgInfo, call); err != nil {
-					log.Fatal("sorted:" + err.Error())
-				} else if generated {
-					continue
-				}
-				if generated, err := fmap.Add(pkgInfo, call); err != nil {
-					log.Fatal("fmap:" + err.Error())
-				} else if generated {
-					continue
-				}
-				if generated, err := join.Add(pkgInfo, call); err != nil {
-					log.Fatal("join:" + err.Error())
-				} else if generated {
-					continue
-				}
-				notgenerated = append(notgenerated, call)
+			generators := []Generator{
+				newEqual(equalTypesMap, qual, *equalPrefix, p),
+				newKeys(keysTypesMap, qual, *keysPrefix, p),
+				newCompare(compareTypesMap, qual, *comparePrefix, p, keysTypesMap, sortedTypesMap),
+				newSorted(sortedTypesMap, qual, *sortedPrefix, p, compareTypesMap),
+				newFmap(fmapTypesMap, qual, *fmapPrefix, p),
+				newJoin(joinTypesMap, qual, *joinPrefix, p),
 			}
 
-			alldone := false
-			for !alldone {
-				if err := equal.Generate(); err != nil {
-					log.Fatal(err)
+			var err error
+			for _, call := range calls {
+				generated := false
+				for _, gen := range generators {
+					generated, err = gen.Add(pkgInfo, call)
+					if err != nil {
+						log.Fatal("equal:" + err.Error())
+					} else if generated {
+						break
+					}
 				}
-				if err := keys.Generate(); err != nil {
-					log.Fatal(err)
+				if !generated {
+					notgenerated = append(notgenerated, call)
 				}
-				if err := compare.Generate(); err != nil {
-					log.Fatal(err)
-				}
-				if err := sorted.Generate(); err != nil {
-					log.Fatal(err)
-				}
-				if err := fmap.Generate(); err != nil {
-					log.Fatal(err)
-				}
-				if err := join.Generate(); err != nil {
-					log.Fatal(err)
-				}
-				alldone = equal.Done() && keys.Done() && compare.Done() && sorted.Done() && fmap.Done() && join.Done()
 			}
 
 			if len(notgenerated) > 0 {
@@ -148,6 +117,22 @@ func main() {
 			ungenerated = len(notgenerated)
 			for _, c := range notgenerated {
 				log.Printf("could not yet generate: %s", types.ExprString(c))
+			}
+
+			alldone := false
+			for !alldone {
+				for _, gen := range generators {
+					if err := gen.Generate(); err != nil {
+						log.Fatal(err)
+					}
+				}
+				alldone = true
+				for _, gen := range generators {
+					if !gen.Done() {
+						alldone = false
+						break
+					}
+				}
 			}
 
 			if p.HasContent() {

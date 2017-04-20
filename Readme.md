@@ -4,7 +4,10 @@
 
 goderive parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. Functions that are currently supported include:
 
-  - Equal
+  - [Equal](https://github.com/awalterschulze/goderive#equal)
+
+More functions are in the works:
+
   - SortedMapKeys
   - Compare
   - Fmap

@@ -8,7 +8,8 @@ goderive parses your go code for functions which are not implemented and then ge
 
 More functions are in the works:
 
-  - SortedMapKeys
+  - Keys
+  - Sorted
   - Compare
   - Fmap
   - Join
@@ -56,41 +57,14 @@ func deriveEqual(this, that *MyStruct) bool {
   - Struct without an Equal method
   - Unnamed Structs, which are not comparable with `==`
 
-## SortedMapKeys
+## Keys
 
-The `deriveSortedKeys` function is useful for deterministically ranging over maps.
+The `deriveKeys` function returns a map's keys as a slice.
+
+## Sorted
+
+The `deriveSorted` function is useful for deterministically ranging over maps when used with `deriveKeys`.
 This feature requires Go 1.8
-
-### Example
-
-In the following code the `deriveSortedKeys` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveSortedKeys`.
-
-```go
-func main() {
-	m := map[int]string{
-		1: "a",
-		3: "c",
-		2: "b",
-	}
-	for k, v := range deriveSortedKeys(m) {
-		fmt.Printf("%d", k)
-	}
-	// print 123
-}
-```
-
-goderive will then generate the following code in a `derived.gen.go` file in the same package:
-
-```go
-func deriveSortedKeys(m map[int]int) []int {
-	var keys []int
-	for key, _ := range m {
-		keys = append(keys, key)
-	}
-	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
-	return keys
-}
-```
 
 ### TODO
 

@@ -29,25 +29,27 @@ var equalPrefix = flag.String("equal.prefix", "deriveEqual", "set the prefix for
 type equal struct {
 	TypesMap
 	qual     types.Qualifier
+	prefix   string
 	printer  Printer
 	bytesPkg Import
 }
 
-func newEqual(p Printer, qual types.Qualifier, typesMap TypesMap) *equal {
+func newEqual(typesMap TypesMap, qual types.Qualifier, prefix string, p Printer) *equal {
 	return &equal{
 		TypesMap: typesMap,
 		qual:     qual,
+		prefix:   prefix,
 		printer:  p,
 		bytesPkg: p.NewImport("bytes"),
 	}
 }
 
-func (this *equal) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {
+func (this *equal) Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error) {
 	fn, ok := call.Fun.(*ast.Ident)
 	if !ok {
 		return false, nil
 	}
-	if !strings.HasPrefix(fn.Name, prefix) {
+	if !strings.HasPrefix(fn.Name, this.prefix) {
 		return false, nil
 	}
 	if len(call.Args) != 2 {
@@ -69,17 +71,21 @@ func (this *equal) Generate(pkgInfo *loader.PackageInfo, prefix string, call *as
 	if err := this.SetFuncName(fn.Name, t0); err != nil {
 		return false, err
 	}
-	for _, typs := range this.ToGenerate() {
-		if err := this.genFuncFor(typs[0]); err != nil {
-			return false, err
-		}
-	}
-	for _, typs := range this.ToGenerate() {
-		if err := this.genFuncFor(typs[0]); err != nil {
-			return false, err
-		}
-	}
 	return true, nil
+}
+
+func (this *equal) Generate() error {
+	for _, typs := range this.ToGenerate() {
+		if err := this.genFuncFor(typs[0]); err != nil {
+			return err
+		}
+	}
+	for _, typs := range this.ToGenerate() {
+		if err := this.genFuncFor(typs[0]); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (this *equal) genFuncFor(typ types.Type) error {

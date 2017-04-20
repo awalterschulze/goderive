@@ -37,7 +37,7 @@ func TestInefficientEqual(t *testing.T) {
 
 func TestFmapKeys(t *testing.T) {
 	m := map[int]string{1: "a", 2: "b", 3: "c"}
-	got := deriveFmapForKeys(func(i int) string { return m[i] }, deriveSortedKeysForFmap(m))
+	got := deriveFmapForKeys(func(i int) string { return m[i] }, deriveSortedInts(deriveKeysForFmap(m)))
 	want := []string{"a", "b", "c"}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("got %#v != want %#v", got, want)

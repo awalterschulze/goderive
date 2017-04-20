@@ -29,29 +29,33 @@ var comparePrefix = flag.String("compare.prefix", "deriveCompare", "set the pref
 type compare struct {
 	TypesMap
 	qual       types.Qualifier
+	prefix     string
 	printer    Printer
 	bytesPkg   Import
 	stringsPkg Import
-	sortedKeys Plugin
+	keys       Plugin
+	sorted     Plugin
 }
 
-func newCompare(p Printer, qual types.Qualifier, typesMap TypesMap, sortedKeys TypesMap) *compare {
+func newCompare(typesMap TypesMap, qual types.Qualifier, prefix string, p Printer, keys, sorted Plugin) *compare {
 	return &compare{
 		TypesMap:   typesMap,
 		qual:       qual,
+		prefix:     prefix,
 		printer:    p,
 		bytesPkg:   p.NewImport("bytes"),
 		stringsPkg: p.NewImport("strings"),
-		sortedKeys: sortedKeys,
+		keys:       keys,
+		sorted:     sorted,
 	}
 }
 
-func (this *compare) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {
+func (this *compare) Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error) {
 	fn, ok := call.Fun.(*ast.Ident)
 	if !ok {
 		return false, nil
 	}
-	if !strings.HasPrefix(fn.Name, prefix) {
+	if !strings.HasPrefix(fn.Name, this.prefix) {
 		return false, nil
 	}
 	if len(call.Args) != 2 {
@@ -73,12 +77,16 @@ func (this *compare) Generate(pkgInfo *loader.PackageInfo, prefix string, call *
 	if err := this.SetFuncName(fn.Name, t0); err != nil {
 		return false, err
 	}
+	return true, nil
+}
+
+func (this *compare) Generate() error {
 	for _, typs := range this.ToGenerate() {
 		if err := this.genFuncFor(typs[0]); err != nil {
-			return false, err
+			return err
 		}
 	}
-	return true, nil
+	return nil
 }
 
 func (this *compare) genFuncFor(typ types.Type) error {
@@ -251,8 +259,8 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.P("return 1")
 		p.Out()
 		p.P("}")
-		p.P("thiskeys := %s(this)", this.sortedKeys.GetFuncName(typ))
-		p.P("thatkeys := %s(that)", this.sortedKeys.GetFuncName(typ))
+		p.P("thiskeys := %s(%s(this))", this.sorted.GetFuncName(types.NewSlice(ttyp.Key())), this.keys.GetFuncName(typ))
+		p.P("thatkeys := %s(%s(that))", this.sorted.GetFuncName(types.NewSlice(ttyp.Key())), this.keys.GetFuncName(typ))
 		p.P("for i, thiskey := range thiskeys {")
 		p.In()
 		p.P("thatkey := thatkeys[i]")

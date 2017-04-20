@@ -29,24 +29,26 @@ var joinPrefix = flag.String("join.prefix", "deriveJoin", "set the prefix for jo
 type join struct {
 	TypesMap
 	qual     types.Qualifier
+	prefix   string
 	printer  Printer
 	bytesPkg Import
 }
 
-func newJoin(p Printer, qual types.Qualifier, typesMap TypesMap) *join {
+func newJoin(typesMap TypesMap, qual types.Qualifier, prefix string, p Printer) *join {
 	return &join{
 		TypesMap: typesMap,
 		qual:     qual,
+		prefix:   prefix,
 		printer:  p,
 	}
 }
 
-func (this *join) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {
+func (this *join) Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error) {
 	fn, ok := call.Fun.(*ast.Ident)
 	if !ok {
 		return false, nil
 	}
-	if !strings.HasPrefix(fn.Name, prefix) {
+	if !strings.HasPrefix(fn.Name, this.prefix) {
 		return false, nil
 	}
 	if len(call.Args) != 1 {
@@ -68,12 +70,16 @@ func (this *join) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast
 	if err := this.SetFuncName(fn.Name, elemType); err != nil {
 		return false, err
 	}
+	return true, nil
+}
+
+func (this *join) Generate() error {
 	for _, typs := range this.ToGenerate() {
 		if err := this.genFuncFor(typs[0]); err != nil {
-			return false, err
+			return err
 		}
 	}
-	return true, nil
+	return nil
 }
 
 func (this *join) genFuncFor(typ types.Type) error {

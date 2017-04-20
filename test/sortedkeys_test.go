@@ -22,7 +22,7 @@ import (
 func TestSortedMapKeysStrings(t *testing.T) {
 	var m map[string]string
 	m = random(m).(map[string]string)
-	keys := deriveSortedKeysForMapStringToString(m)
+	keys := deriveSortedStrings(deriveKeysForMapStringToString(m))
 	if len(keys) != len(m) {
 		t.Fatalf("length of keys: want %d got %d", len(m), len(keys))
 	}
@@ -39,7 +39,7 @@ func TestSortedMapKeysStrings(t *testing.T) {
 func TestSortedMapKeysInt(t *testing.T) {
 	var m map[int]int64
 	m = random(m).(map[int]int64)
-	keys := deriveSortedKeysForMapIntToInt64(m)
+	keys := deriveSortedInts(deriveKeysForMapIntToInt64(m))
 	if len(keys) != len(m) {
 		t.Fatalf("length of keys: want %d got %d", len(m), len(keys))
 	}

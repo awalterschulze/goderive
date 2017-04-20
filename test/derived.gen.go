@@ -8,62 +8,6 @@ import (
 	"strings"
 )
 
-func deriveSortedKeysForMapStringToString(m map[string]string) []string {
-	var keys []string
-	for key, _ := range m {
-		keys = append(keys, key)
-	}
-	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
-	return keys
-}
-
-func deriveSortedKeysForMapIntToInt64(m map[int]int64) []int {
-	var keys []int
-	for key, _ := range m {
-		keys = append(keys, key)
-	}
-	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
-	return keys
-}
-
-func deriveFmap(f func(int) int, list []int) []int {
-	out := make([]int, len(list))
-	for i, elem := range list {
-		out[i] = f(elem)
-	}
-	return out
-}
-
-func deriveJoin(list [][]int) []int {
-	if list == nil {
-		return nil
-	}
-	res := []int{}
-	for _, elem := range list {
-		res = append(res, elem...)
-	}
-	return res
-}
-
-func deriveJoinSS(list [][]string) []string {
-	if list == nil {
-		return nil
-	}
-	res := []string{}
-	for _, elem := range list {
-		res = append(res, elem...)
-	}
-	return res
-}
-
-func deriveFmapSS(f func(string) []string, list []string) [][]string {
-	out := make([][]string, len(list))
-	for i, elem := range list {
-		out[i] = f(elem)
-	}
-	return out
-}
-
 func deriveEqualSliceOfint(this, that []int) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -110,15 +54,6 @@ func deriveEqualPtrToArray10Ofint(this, that *[10]int) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) && deriveEqualArray10Ofint(*this, *that)
 }
 
-func deriveEqualArray10Ofint(this, that [10]int) bool {
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-}
-
 func deriveEqualPtrToMapOfintToint(this, that *map[int]int) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) && deriveEqualMapOfintToint(*this, *that)
 }
@@ -149,43 +84,6 @@ func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
 	return this == that
 }
 
-func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
-	}
-	if that == nil {
-		return 1
-	}
-	return deriveCompareDeriveTheDerived_(*this, *that)
-}
-
-func deriveCompareDeriveTheDerived_(this, that DeriveTheDerived) int {
-	if c := deriveCompareint(this.Field, that.Field); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveFmapForKeys(f func(int) string, list []int) []string {
-	out := make([]string, len(list))
-	for i, elem := range list {
-		out[i] = f(elem)
-	}
-	return out
-}
-
-func deriveSortedKeysForFmap(m map[int]string) []int {
-	var keys []int
-	for key, _ := range m {
-		keys = append(keys, key)
-	}
-	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
-	return keys
-}
-
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Bool == that.Bool &&
@@ -207,30 +105,6 @@ func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 		this.Uint64 == that.Uint64 &&
 		this.Uint8 == that.Uint8 &&
 		this.UintPtr == that.UintPtr
-}
-
-func deriveCompareint(this, that int) int {
-	if this != that {
-		if this < that {
-			return -1
-		} else {
-			return 1
-		}
-	}
-	return 0
-}
-
-func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
-	}
-	if that == nil {
-		return 1
-	}
-	return deriveCompareBuiltInTypes(*this, *that)
 }
 
 func deriveEqualPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) bool {
@@ -256,80 +130,6 @@ func deriveEqualPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) bool {
 		((this.UintPtr == nil && that.UintPtr == nil) || (this.UintPtr != nil && that.UintPtr != nil && *this.UintPtr == *that.UintPtr))
 }
 
-func deriveCompareBuiltInTypes(this, that BuiltInTypes) int {
-	if c := deriveComparebool(this.Bool, that.Bool); c != 0 {
-		return c
-	}
-	if c := deriveComparebyte(this.Byte, that.Byte); c != 0 {
-		return c
-	}
-	if c := deriveComparecomplex128(this.Complex128, that.Complex128); c != 0 {
-		return c
-	}
-	if c := deriveComparecomplex64(this.Complex64, that.Complex64); c != 0 {
-		return c
-	}
-	if c := deriveComparefloat64(this.Float64, that.Float64); c != 0 {
-		return c
-	}
-	if c := deriveComparefloat32(this.Float32, that.Float32); c != 0 {
-		return c
-	}
-	if c := deriveCompareint(this.Int, that.Int); c != 0 {
-		return c
-	}
-	if c := deriveCompareint16(this.Int16, that.Int16); c != 0 {
-		return c
-	}
-	if c := deriveCompareint32(this.Int32, that.Int32); c != 0 {
-		return c
-	}
-	if c := deriveCompareint64(this.Int64, that.Int64); c != 0 {
-		return c
-	}
-	if c := deriveCompareint8(this.Int8, that.Int8); c != 0 {
-		return c
-	}
-	if c := deriveComparerune(this.Rune, that.Rune); c != 0 {
-		return c
-	}
-	if c := strings.Compare(this.String, that.String); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint(this.Uint, that.Uint); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint16(this.Uint16, that.Uint16); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint32(this.Uint32, that.Uint32); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint64(this.Uint64, that.Uint64); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint8(this.Uint8, that.Uint8); c != 0 {
-		return c
-	}
-	if c := deriveCompareuintptr(this.UintPtr, that.UintPtr); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
-	}
-	if that == nil {
-		return 1
-	}
-	return deriveComparePtrToBuiltInTypes_(*this, *that)
-}
-
 func deriveEqualPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		deriveEqualSliceOfbool(this.Bool, that.Bool) &&
@@ -351,6 +151,161 @@ func deriveEqualPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) bool {
 		deriveEqualSliceOfuint64(this.Uint64, that.Uint64) &&
 		bytes.Equal(this.Uint8, that.Uint8) &&
 		deriveEqualSliceOfuintptr(this.UintPtr, that.UintPtr)
+}
+
+func deriveEqualPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualSliceOfPtrTobool(this.Bool, that.Bool) &&
+		deriveEqualSliceOfPtrTobyte(this.Byte, that.Byte) &&
+		deriveEqualSliceOfPtrTocomplex128(this.Complex128, that.Complex128) &&
+		deriveEqualSliceOfPtrTocomplex64(this.Complex64, that.Complex64) &&
+		deriveEqualSliceOfPtrTofloat64(this.Float64, that.Float64) &&
+		deriveEqualSliceOfPtrTofloat32(this.Float32, that.Float32) &&
+		deriveEqualSliceOfPtrToint(this.Int, that.Int) &&
+		deriveEqualSliceOfPtrToint16(this.Int16, that.Int16) &&
+		deriveEqualSliceOfPtrToint32(this.Int32, that.Int32) &&
+		deriveEqualSliceOfPtrToint64(this.Int64, that.Int64) &&
+		deriveEqualSliceOfPtrToint8(this.Int8, that.Int8) &&
+		deriveEqualSliceOfPtrTorune(this.Rune, that.Rune) &&
+		deriveEqualSliceOfPtrTostring(this.String, that.String) &&
+		deriveEqualSliceOfPtrTouint(this.Uint, that.Uint) &&
+		deriveEqualSliceOfPtrTouint16(this.Uint16, that.Uint16) &&
+		deriveEqualSliceOfPtrTouint32(this.Uint32, that.Uint32) &&
+		deriveEqualSliceOfPtrTouint64(this.Uint64, that.Uint64) &&
+		deriveEqualSliceOfPtrTouint8(this.Uint8, that.Uint8) &&
+		deriveEqualSliceOfPtrTouintptr(this.UintPtr, that.UintPtr)
+}
+
+func deriveEqualPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Bool == that.Bool &&
+		this.Byte == that.Byte &&
+		this.Complex128 == that.Complex128 &&
+		this.Complex64 == that.Complex64 &&
+		this.Float64 == that.Float64 &&
+		this.Float32 == that.Float32 &&
+		this.Int == that.Int &&
+		this.Int16 == that.Int16 &&
+		this.Int32 == that.Int32 &&
+		this.Int64 == that.Int64 &&
+		this.Int8 == that.Int8 &&
+		this.Rune == that.Rune &&
+		this.String == that.String &&
+		this.Uint == that.Uint &&
+		this.Uint16 == that.Uint16 &&
+		this.Uint32 == that.Uint32 &&
+		this.Uint64 == that.Uint64 &&
+		this.Uint8 == that.Uint8 &&
+		this.UintPtr == that.UintPtr &&
+		this.AnotherBoolOfDifferentSize == that.AnotherBoolOfDifferentSize
+}
+
+func deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualArray1OfPtrTobool(this.Bool, that.Bool) &&
+		deriveEqualArray2OfPtrTobyte(this.Byte, that.Byte) &&
+		deriveEqualArray3OfPtrTocomplex128(this.Complex128, that.Complex128) &&
+		deriveEqualArray4OfPtrTocomplex64(this.Complex64, that.Complex64) &&
+		deriveEqualArray5OfPtrTofloat64(this.Float64, that.Float64) &&
+		deriveEqualArray6OfPtrTofloat32(this.Float32, that.Float32) &&
+		deriveEqualArray7OfPtrToint(this.Int, that.Int) &&
+		deriveEqualArray8OfPtrToint16(this.Int16, that.Int16) &&
+		deriveEqualArray9OfPtrToint32(this.Int32, that.Int32) &&
+		deriveEqualArray10OfPtrToint64(this.Int64, that.Int64) &&
+		deriveEqualArray11OfPtrToint8(this.Int8, that.Int8) &&
+		deriveEqualArray12OfPtrTorune(this.Rune, that.Rune) &&
+		deriveEqualArray13OfPtrTostring(this.String, that.String) &&
+		deriveEqualArray14OfPtrTouint(this.Uint, that.Uint) &&
+		deriveEqualArray15OfPtrTouint16(this.Uint16, that.Uint16) &&
+		deriveEqualArray16OfPtrTouint32(this.Uint32, that.Uint32) &&
+		deriveEqualArray17OfPtrTouint64(this.Uint64, that.Uint64) &&
+		deriveEqualArray18OfPtrTouint8(this.Uint8, that.Uint8) &&
+		deriveEqualArray19OfPtrTouintptr(this.UintPtr, that.UintPtr) &&
+		deriveEqualArray10OfPtrTobool(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize)
+}
+
+func deriveEqualPtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualMapOfstringTouint32(this.StringToUint32, that.StringToUint32) &&
+		deriveEqualMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64)
+}
+
+func deriveEqualPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualMapOfboolTostring(this.BoolToString, that.BoolToString) &&
+		deriveEqualMapOfstringTobool(this.StringToBool, that.StringToBool) &&
+		deriveEqualMapOfcomplex128Tocomplex64(this.Complex128ToComplex64, that.Complex128ToComplex64) &&
+		deriveEqualMapOffloat64Touint32(this.Float64ToUint32, that.Float64ToUint32) &&
+		deriveEqualMapOfuint16Touint8(this.Uint16ToUint8, that.Uint16ToUint8)
+}
+
+func deriveEqualPtrToSliceToSlice(this, that *SliceToSlice) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualSliceOfSliceOfint(this.Ints, that.Ints) &&
+		deriveEqualSliceOfSliceOfstring(this.Strings, that.Strings) &&
+		deriveEqualSliceOfSliceOfPtrToint(this.IntPtrs, that.IntPtrs)
+}
+
+func deriveEqualPtrToPtrTo(this, that *PtrTo) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		((this.Basic == nil && that.Basic == nil) || (this.Basic != nil && that.Basic != nil && *this.Basic == *that.Basic)) &&
+		((this.Slice == nil && that.Slice == nil) || (this.Slice != nil && that.Slice != nil && deriveEqualSliceOfint(*this.Slice, *that.Slice))) &&
+		((this.Array == nil && that.Array == nil) || (this.Array != nil && that.Array != nil && *this.Array == *that.Array)) &&
+		((this.Map == nil && that.Map == nil) || (this.Map != nil && that.Map != nil && deriveEqualMapOfintToint(*this.Map, *that.Map)))
+}
+
+func deriveEqualPtrToName(this, that *Name) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Name == that.Name
+}
+
+func deriveEqualPtrToStructs(this, that *Structs) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Struct == that.Struct &&
+		this.PtrToStruct.Equal(that.PtrToStruct) &&
+		deriveEqualSliceOfName(this.SliceOfStructs, that.SliceOfStructs) &&
+		deriveEqualSliceOfPtrToName(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct)
+}
+
+func deriveEqualPtrToMapWithStructs(this, that *MapWithStructs) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualMapOfNameTostring(this.NameToString, that.NameToString) &&
+		deriveEqualMapOfstringToName(this.StringToName, that.StringToName) &&
+		deriveEqualMapOfstringToPtrToName(this.StringToPtrToName, that.StringToPtrToName) &&
+		deriveEqualMapOfstringToSliceOfName(this.StringToSliceOfName, that.StringToSliceOfName) &&
+		deriveEqualMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName)
+}
+
+func deriveEqualPtrToRecursiveType(this, that *RecursiveType) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		bytes.Equal(this.Bytes, that.Bytes) &&
+		deriveEqualMapOfintToRecursiveType(this.N, that.N)
+}
+
+func deriveEqualPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Name == that.Name &&
+		this.Structs.Equal(that.Structs)
+}
+
+func deriveEqualPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Structs.Equal(&that.Structs) &&
+		this.Name.Equal(that.Name)
+}
+
+func deriveEqualPtrToUnnamedStruct(this, that *UnnamedStruct) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Unnamed == that.Unnamed
+}
+
+func deriveEqualArray10Ofint(this, that [10]int) bool {
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
 }
 
 func deriveEqualSliceOfbool(this, that []bool) bool {
@@ -591,29 +546,6 @@ func deriveEqualSliceOfuintptr(this, that []uintptr) bool {
 		}
 	}
 	return true
-}
-
-func deriveEqualPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		deriveEqualSliceOfPtrTobool(this.Bool, that.Bool) &&
-		deriveEqualSliceOfPtrTobyte(this.Byte, that.Byte) &&
-		deriveEqualSliceOfPtrTocomplex128(this.Complex128, that.Complex128) &&
-		deriveEqualSliceOfPtrTocomplex64(this.Complex64, that.Complex64) &&
-		deriveEqualSliceOfPtrTofloat64(this.Float64, that.Float64) &&
-		deriveEqualSliceOfPtrTofloat32(this.Float32, that.Float32) &&
-		deriveEqualSliceOfPtrToint(this.Int, that.Int) &&
-		deriveEqualSliceOfPtrToint16(this.Int16, that.Int16) &&
-		deriveEqualSliceOfPtrToint32(this.Int32, that.Int32) &&
-		deriveEqualSliceOfPtrToint64(this.Int64, that.Int64) &&
-		deriveEqualSliceOfPtrToint8(this.Int8, that.Int8) &&
-		deriveEqualSliceOfPtrTorune(this.Rune, that.Rune) &&
-		deriveEqualSliceOfPtrTostring(this.String, that.String) &&
-		deriveEqualSliceOfPtrTouint(this.Uint, that.Uint) &&
-		deriveEqualSliceOfPtrTouint16(this.Uint16, that.Uint16) &&
-		deriveEqualSliceOfPtrTouint32(this.Uint32, that.Uint32) &&
-		deriveEqualSliceOfPtrTouint64(this.Uint64, that.Uint64) &&
-		deriveEqualSliceOfPtrTouint8(this.Uint8, that.Uint8) &&
-		deriveEqualSliceOfPtrTouintptr(this.UintPtr, that.UintPtr)
 }
 
 func deriveEqualSliceOfPtrTobool(this, that []*bool) bool {
@@ -901,54 +833,6 @@ func deriveEqualSliceOfPtrTouintptr(this, that []*uintptr) bool {
 	return true
 }
 
-func deriveEqualPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		this.Bool == that.Bool &&
-		this.Byte == that.Byte &&
-		this.Complex128 == that.Complex128 &&
-		this.Complex64 == that.Complex64 &&
-		this.Float64 == that.Float64 &&
-		this.Float32 == that.Float32 &&
-		this.Int == that.Int &&
-		this.Int16 == that.Int16 &&
-		this.Int32 == that.Int32 &&
-		this.Int64 == that.Int64 &&
-		this.Int8 == that.Int8 &&
-		this.Rune == that.Rune &&
-		this.String == that.String &&
-		this.Uint == that.Uint &&
-		this.Uint16 == that.Uint16 &&
-		this.Uint32 == that.Uint32 &&
-		this.Uint64 == that.Uint64 &&
-		this.Uint8 == that.Uint8 &&
-		this.UintPtr == that.UintPtr &&
-		this.AnotherBoolOfDifferentSize == that.AnotherBoolOfDifferentSize
-}
-
-func deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		deriveEqualArray1OfPtrTobool(this.Bool, that.Bool) &&
-		deriveEqualArray2OfPtrTobyte(this.Byte, that.Byte) &&
-		deriveEqualArray3OfPtrTocomplex128(this.Complex128, that.Complex128) &&
-		deriveEqualArray4OfPtrTocomplex64(this.Complex64, that.Complex64) &&
-		deriveEqualArray5OfPtrTofloat64(this.Float64, that.Float64) &&
-		deriveEqualArray6OfPtrTofloat32(this.Float32, that.Float32) &&
-		deriveEqualArray7OfPtrToint(this.Int, that.Int) &&
-		deriveEqualArray8OfPtrToint16(this.Int16, that.Int16) &&
-		deriveEqualArray9OfPtrToint32(this.Int32, that.Int32) &&
-		deriveEqualArray10OfPtrToint64(this.Int64, that.Int64) &&
-		deriveEqualArray11OfPtrToint8(this.Int8, that.Int8) &&
-		deriveEqualArray12OfPtrTorune(this.Rune, that.Rune) &&
-		deriveEqualArray13OfPtrTostring(this.String, that.String) &&
-		deriveEqualArray14OfPtrTouint(this.Uint, that.Uint) &&
-		deriveEqualArray15OfPtrTouint16(this.Uint16, that.Uint16) &&
-		deriveEqualArray16OfPtrTouint32(this.Uint32, that.Uint32) &&
-		deriveEqualArray17OfPtrTouint64(this.Uint64, that.Uint64) &&
-		deriveEqualArray18OfPtrTouint8(this.Uint8, that.Uint8) &&
-		deriveEqualArray19OfPtrTouintptr(this.UintPtr, that.UintPtr) &&
-		deriveEqualArray10OfPtrTobool(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize)
-}
-
 func deriveEqualArray1OfPtrTobool(this, that [1]*bool) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *this[i] == *that[i])) {
@@ -1129,12 +1013,6 @@ func deriveEqualArray10OfPtrTobool(this, that [10]*bool) bool {
 	return true
 }
 
-func deriveEqualPtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		deriveEqualMapOfstringTouint32(this.StringToUint32, that.StringToUint32) &&
-		deriveEqualMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64)
-}
-
 func deriveEqualMapOfstringTouint32(this, that map[string]uint32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -1171,6 +1049,572 @@ func deriveEqualMapOfuint8Toint64(this, that map[uint8]int64) bool {
 		}
 	}
 	return true
+}
+
+func deriveEqualMapOfboolTostring(this, that map[bool]string) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfstringTobool(this, that map[string]bool) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfcomplex128Tocomplex64(this, that map[complex128]complex64) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOffloat64Touint32(this, that map[float64]uint32) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfuint16Touint8(this, that map[uint16]uint8) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfSliceOfint(this, that [][]int) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqualSliceOfint(this[i], that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfSliceOfstring(this, that [][]string) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqualSliceOfstring(this[i], that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfSliceOfPtrToint(this, that [][]*int) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqualSliceOfPtrToint(this[i], that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfName(this, that []Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfPtrToName(this, that []*Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i].Equal(that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfNameTostring(this, that map[Name]string) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfstringToName(this, that map[string]Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfstringToPtrToName(this, that map[string]*Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v.Equal(thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfstringToSliceOfName(this, that map[string][]Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(deriveEqualSliceOfName(v, thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(deriveEqualSliceOfPtrToName(v, thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v.Equal(&thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveKeysForMapStringToString(m map[string]string) []string {
+	keys := make([]string, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysForMapIntToInt64(m map[int]int64) []int {
+	keys := make([]int, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysForFmap(m map[int]string) []int {
+	keys := make([]int, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareDeriveTheDerived_(*this, *that)
+}
+
+func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareBuiltInTypes(*this, *that)
+}
+
+func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparePtrToBuiltInTypes_(*this, *that)
+}
+
+func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareMapsOfSimplerBuiltInTypes(*this, *that)
+}
+
+func deriveSortedStrings(s []string) []string {
+	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+	return s
+}
+
+func deriveSortedInts(s []int) []int {
+	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+	return s
+}
+
+func deriveFmap(f func(int) int, list []int) []int {
+	out := make([]int, len(list))
+	for i, elem := range list {
+		out[i] = f(elem)
+	}
+	return out
+}
+
+func deriveFmapSS(f func(string) []string, list []string) [][]string {
+	out := make([][]string, len(list))
+	for i, elem := range list {
+		out[i] = f(elem)
+	}
+	return out
+}
+
+func deriveFmapForKeys(f func(int) string, list []int) []string {
+	out := make([]string, len(list))
+	for i, elem := range list {
+		out[i] = f(elem)
+	}
+	return out
+}
+
+func deriveJoin(list [][]int) []int {
+	if list == nil {
+		return nil
+	}
+	res := []int{}
+	for _, elem := range list {
+		res = append(res, elem...)
+	}
+	return res
+}
+
+func deriveJoinSS(list [][]string) []string {
+	if list == nil {
+		return nil
+	}
+	res := []string{}
+	for _, elem := range list {
+		res = append(res, elem...)
+	}
+	return res
+}
+
+func deriveCompareDeriveTheDerived_(this, that DeriveTheDerived) int {
+	if c := deriveCompareint(this.Field, that.Field); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareBuiltInTypes(this, that BuiltInTypes) int {
+	if c := deriveComparebool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveComparebyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveComparecomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveComparecomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveComparefloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveComparefloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveComparerune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := strings.Compare(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareuintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveComparePtrToBuiltInTypes_(this, that PtrToBuiltInTypes) int {
+	if c := deriveComparePtrTobool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTobyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTofloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTofloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTorune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTostring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareMapsOfSimplerBuiltInTypes(this, that MapsOfSimplerBuiltInTypes) int {
+	if c := deriveCompareMapOfstringTouint32(this.StringToUint32, that.StringToUint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareint(this, that int) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
 }
 
 func deriveComparebool(this, that bool) int {
@@ -1343,433 +1787,6 @@ func deriveCompareuintptr(this, that uintptr) int {
 		}
 	}
 	return 0
-}
-
-func deriveComparePtrToBuiltInTypes_(this, that PtrToBuiltInTypes) int {
-	if c := deriveComparePtrTobool(this.Bool, that.Bool); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTobyte(this.Byte, that.Byte); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTofloat64(this.Float64, that.Float64); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTofloat32(this.Float32, that.Float32); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint(this.Int, that.Int); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint16(this.Int16, that.Int16); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint32(this.Int32, that.Int32); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint64(this.Int64, that.Int64); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint8(this.Int8, that.Int8); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTorune(this.Rune, that.Rune); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTostring(this.String, that.String); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint(this.Uint, that.Uint); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint16(this.Uint16, that.Uint16); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint32(this.Uint32, that.Uint32); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint64(this.Uint64, that.Uint64); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint8(this.Uint8, that.Uint8); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
-	}
-	if that == nil {
-		return 1
-	}
-	return deriveCompareMapsOfSimplerBuiltInTypes(*this, *that)
-}
-
-func deriveEqualPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		deriveEqualMapOfboolTostring(this.BoolToString, that.BoolToString) &&
-		deriveEqualMapOfstringTobool(this.StringToBool, that.StringToBool) &&
-		deriveEqualMapOfcomplex128Tocomplex64(this.Complex128ToComplex64, that.Complex128ToComplex64) &&
-		deriveEqualMapOffloat64Touint32(this.Float64ToUint32, that.Float64ToUint32) &&
-		deriveEqualMapOfuint16Touint8(this.Uint16ToUint8, that.Uint16ToUint8)
-}
-
-func deriveEqualMapOfboolTostring(this, that map[bool]string) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualMapOfstringTobool(this, that map[string]bool) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualMapOfcomplex128Tocomplex64(this, that map[complex128]complex64) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualMapOffloat64Touint32(this, that map[float64]uint32) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualMapOfuint16Touint8(this, that map[uint16]uint8) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualPtrToSliceToSlice(this, that *SliceToSlice) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		deriveEqualSliceOfSliceOfint(this.Ints, that.Ints) &&
-		deriveEqualSliceOfSliceOfstring(this.Strings, that.Strings) &&
-		deriveEqualSliceOfSliceOfPtrToint(this.IntPtrs, that.IntPtrs)
-}
-
-func deriveEqualSliceOfSliceOfint(this, that [][]int) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(deriveEqualSliceOfint(this[i], that[i])) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualSliceOfSliceOfstring(this, that [][]string) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(deriveEqualSliceOfstring(this[i], that[i])) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualSliceOfSliceOfPtrToint(this, that [][]*int) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(deriveEqualSliceOfPtrToint(this[i], that[i])) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualPtrToPtrTo(this, that *PtrTo) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		((this.Basic == nil && that.Basic == nil) || (this.Basic != nil && that.Basic != nil && *this.Basic == *that.Basic)) &&
-		((this.Slice == nil && that.Slice == nil) || (this.Slice != nil && that.Slice != nil && deriveEqualSliceOfint(*this.Slice, *that.Slice))) &&
-		((this.Array == nil && that.Array == nil) || (this.Array != nil && that.Array != nil && *this.Array == *that.Array)) &&
-		((this.Map == nil && that.Map == nil) || (this.Map != nil && that.Map != nil && deriveEqualMapOfintToint(*this.Map, *that.Map)))
-}
-
-func deriveEqualPtrToName(this, that *Name) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		this.Name == that.Name
-}
-
-func deriveEqualPtrToStructs(this, that *Structs) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		this.Struct == that.Struct &&
-		this.PtrToStruct.Equal(that.PtrToStruct) &&
-		deriveEqualSliceOfName(this.SliceOfStructs, that.SliceOfStructs) &&
-		deriveEqualSliceOfPtrToName(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct)
-}
-
-func deriveEqualSliceOfName(this, that []Name) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualSliceOfPtrToName(this, that []*Name) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i].Equal(that[i])) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualPtrToMapWithStructs(this, that *MapWithStructs) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		deriveEqualMapOfNameTostring(this.NameToString, that.NameToString) &&
-		deriveEqualMapOfstringToName(this.StringToName, that.StringToName) &&
-		deriveEqualMapOfstringToPtrToName(this.StringToPtrToName, that.StringToPtrToName) &&
-		deriveEqualMapOfstringToSliceOfName(this.StringToSliceOfName, that.StringToSliceOfName) &&
-		deriveEqualMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName)
-}
-
-func deriveEqualMapOfNameTostring(this, that map[Name]string) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualMapOfstringToName(this, that map[string]Name) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualMapOfstringToPtrToName(this, that map[string]*Name) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v.Equal(thatv)) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualMapOfstringToSliceOfName(this, that map[string][]Name) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(deriveEqualSliceOfName(v, thatv)) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(deriveEqualSliceOfPtrToName(v, thatv)) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualPtrToRecursiveType(this, that *RecursiveType) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		bytes.Equal(this.Bytes, that.Bytes) &&
-		deriveEqualMapOfintToRecursiveType(this.N, that.N)
-}
-
-func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v.Equal(&thatv)) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		this.Name == that.Name &&
-		this.Structs.Equal(that.Structs)
-}
-
-func deriveEqualPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		this.Structs.Equal(&that.Structs) &&
-		this.Name.Equal(that.Name)
-}
-
-func deriveEqualPtrToUnnamedStruct(this, that *UnnamedStruct) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		this.Unnamed == that.Unnamed
 }
 
 func deriveComparePtrTobool(this, that *bool) int {
@@ -2019,20 +2036,6 @@ func deriveComparePtrTouintptr(this, that *uintptr) int {
 	return deriveCompareuintptr(*this, *that)
 }
 
-func deriveCompareMapsOfSimplerBuiltInTypes(this, that MapsOfSimplerBuiltInTypes) int {
-	if c := deriveCompareMapOfstringTouint32(this.StringToUint32, that.StringToUint32); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveComparestring(this, that string) int {
-	return strings.Compare(this, that)
-}
-
 func deriveCompareMapOfstringTouint32(this, that map[string]uint32) int {
 	if this == nil {
 		if that == nil {
@@ -2049,8 +2052,8 @@ func deriveCompareMapOfstringTouint32(this, that map[string]uint32) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedKeysMapOfstringTouint32(this)
-	thatkeys := deriveSortedKeysMapOfstringTouint32(that)
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringTouint32(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringTouint32(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -2082,8 +2085,8 @@ func deriveCompareMapOfuint8Toint64(this, that map[uint8]int64) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedKeysMapOfuint8Toint64(this)
-	thatkeys := deriveSortedKeysMapOfuint8Toint64(that)
+	thiskeys := deriveSortedSliceOfuint8(deriveKeysMapOfuint8Toint64(this))
+	thatkeys := deriveSortedSliceOfuint8(deriveKeysMapOfuint8Toint64(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -2099,20 +2102,27 @@ func deriveCompareMapOfuint8Toint64(this, that map[uint8]int64) int {
 	return 0
 }
 
-func deriveSortedKeysMapOfstringTouint32(m map[string]uint32) []string {
-	var keys []string
+func deriveSortedSliceOfuint8(s []uint8) []uint8 {
+	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+	return s
+}
+
+func deriveKeysMapOfstringTouint32(m map[string]uint32) []string {
+	keys := make([]string, 0, len(m))
 	for key, _ := range m {
 		keys = append(keys, key)
 	}
-	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
 	return keys
 }
 
-func deriveSortedKeysMapOfuint8Toint64(m map[uint8]int64) []uint8 {
-	var keys []uint8
+func deriveKeysMapOfuint8Toint64(m map[uint8]int64) []uint8 {
+	keys := make([]uint8, 0, len(m))
 	for key, _ := range m {
 		keys = append(keys, key)
 	}
-	sort.Slice(keys, func(i, j int) bool { return keys[i] < keys[j] })
 	return keys
+}
+
+func deriveComparestring(this, that string) int {
+	return strings.Compare(this, that)
 }

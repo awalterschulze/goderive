@@ -68,48 +68,74 @@ func main() {
 			p := newPrinter(pkgInfo.Pkg.Name())
 
 			equalTypesMap := newTypesMap(qual, *equalPrefix)
-			sortedKeysTypesMap := newTypesMap(qual, *sortedKeysPrefix)
+			keysTypesMap := newTypesMap(qual, *keysPrefix)
+			sortedTypesMap := newTypesMap(qual, *sortedPrefix)
 			compareTypesMap := newTypesMap(qual, *comparePrefix)
 			fmapTypesMap := newTypesMap(qual, *fmapPrefix)
 			joinTypesMap := newTypesMap(qual, *joinPrefix)
 
-			equal := newEqual(p, qual, equalTypesMap)
-			sortedKeys := newSortedKeys(p, qual, sortedKeysTypesMap, compareTypesMap)
-			compare := newCompare(p, qual, compareTypesMap, sortedKeysTypesMap)
-			fmap := newFmap(p, qual, fmapTypesMap)
-			join := newJoin(p, qual, joinTypesMap)
+			equal := newEqual(equalTypesMap, qual, *equalPrefix, p)
+			keys := newKeys(keysTypesMap, qual, *keysPrefix, p)
+			compare := newCompare(compareTypesMap, qual, *comparePrefix, p, keysTypesMap, sortedTypesMap)
+			sorted := newSorted(sortedTypesMap, qual, *sortedPrefix, p, compareTypesMap)
+			fmap := newFmap(fmapTypesMap, qual, *fmapPrefix, p)
+			join := newJoin(joinTypesMap, qual, *joinPrefix, p)
+
+			for _, call := range calls {
+				if generated, err := equal.Add(pkgInfo, call); err != nil {
+					log.Fatal("equal:" + err.Error())
+				} else if generated {
+					continue
+				}
+				if generated, err := keys.Add(pkgInfo, call); err != nil {
+					log.Fatal("keys:" + err.Error())
+				} else if generated {
+					continue
+				}
+				if generated, err := compare.Add(pkgInfo, call); err != nil {
+					log.Fatal("compare:" + err.Error())
+				} else if generated {
+					continue
+				}
+				if generated, err := sorted.Add(pkgInfo, call); err != nil {
+					log.Fatal("sorted:" + err.Error())
+				} else if generated {
+					continue
+				}
+				if generated, err := fmap.Add(pkgInfo, call); err != nil {
+					log.Fatal("fmap:" + err.Error())
+				} else if generated {
+					continue
+				}
+				if generated, err := join.Add(pkgInfo, call); err != nil {
+					log.Fatal("join:" + err.Error())
+				} else if generated {
+					continue
+				}
+				notgenerated = append(notgenerated, call)
+			}
 
 			alldone := false
 			for !alldone {
-				for _, call := range calls {
-					if generated, err := equal.Generate(pkgInfo, *equalPrefix, call); err != nil {
-						log.Fatal(err)
-					} else if generated {
-						continue
-					}
-					if generated, err := sortedKeys.Generate(pkgInfo, *sortedKeysPrefix, call); err != nil {
-						log.Fatal(err)
-					} else if generated {
-						continue
-					}
-					if generated, err := compare.Generate(pkgInfo, *comparePrefix, call); err != nil {
-						log.Fatal(err)
-					} else if generated {
-						continue
-					}
-					if generated, err := fmap.Generate(pkgInfo, *fmapPrefix, call); err != nil {
-						log.Fatal(err)
-					} else if generated {
-						continue
-					}
-					if generated, err := join.Generate(pkgInfo, *joinPrefix, call); err != nil {
-						log.Fatal(err)
-					} else if generated {
-						continue
-					}
-					notgenerated = append(notgenerated, call)
+				if err := equal.Generate(); err != nil {
+					log.Fatal(err)
 				}
-				alldone = equal.Done() && sortedKeys.Done() && compare.Done()
+				if err := keys.Generate(); err != nil {
+					log.Fatal(err)
+				}
+				if err := compare.Generate(); err != nil {
+					log.Fatal(err)
+				}
+				if err := sorted.Generate(); err != nil {
+					log.Fatal(err)
+				}
+				if err := fmap.Generate(); err != nil {
+					log.Fatal(err)
+				}
+				if err := join.Generate(); err != nil {
+					log.Fatal(err)
+				}
+				alldone = equal.Done() && keys.Done() && compare.Done() && sorted.Done() && fmap.Done() && join.Done()
 			}
 
 			if len(notgenerated) > 0 {
@@ -120,6 +146,9 @@ func main() {
 				}
 			}
 			ungenerated = len(notgenerated)
+			for _, c := range notgenerated {
+				log.Printf("could not yet generate: %s", types.ExprString(c))
+			}
 
 			if p.HasContent() {
 				pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkgInfo.Pkg.Path())

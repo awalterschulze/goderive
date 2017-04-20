@@ -29,24 +29,26 @@ var fmapPrefix = flag.String("fmap.prefix", "deriveFmap", "set the prefix for fm
 type fmap struct {
 	TypesMap
 	qual     types.Qualifier
+	prefix   string
 	printer  Printer
 	bytesPkg Import
 }
 
-func newFmap(p Printer, qual types.Qualifier, typesMap TypesMap) *fmap {
+func newFmap(typesMap TypesMap, qual types.Qualifier, prefix string, p Printer) *fmap {
 	return &fmap{
 		TypesMap: typesMap,
 		qual:     qual,
+		prefix:   prefix,
 		printer:  p,
 	}
 }
 
-func (this *fmap) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast.CallExpr) (bool, error) {
+func (this *fmap) Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error) {
 	fn, ok := call.Fun.(*ast.Ident)
 	if !ok {
 		return false, nil
 	}
-	if !strings.HasPrefix(fn.Name, prefix) {
+	if !strings.HasPrefix(fn.Name, this.prefix) {
 		return false, nil
 	}
 	if len(call.Args) != 2 {
@@ -86,12 +88,16 @@ func (this *fmap) Generate(pkgInfo *loader.PackageInfo, prefix string, call *ast
 	if err := this.SetFuncName(fn.Name, inTyp, outTyp); err != nil {
 		return false, err
 	}
+	return true, nil
+}
+
+func (this *fmap) Generate() error {
 	for _, typs := range this.ToGenerate() {
 		if err := this.genFuncFor(typs[0], typs[1]); err != nil {
-			return false, err
+			return err
 		}
 	}
-	return true, nil
+	return nil
 }
 
 func (this *fmap) genFuncFor(in, out types.Type) error {

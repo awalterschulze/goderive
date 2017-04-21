@@ -1,3 +1,4 @@
+.PHONY: example
 example:
 	go install github.com/awalterschulze/goderive
 	goderive --equal.prefix="eq" ./...

@@ -22,7 +22,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-
 	"strings"
 
 	"github.com/kisielk/gotool"
@@ -102,32 +101,37 @@ func main() {
 						notgenerated = append(notgenerated, call.call)
 						continue
 					}
-					generated := false
-					for _, gen := range generators {
-						if !strings.HasPrefix(call.name, gen.Prefix()) {
-							continue
-						}
-						name, err := gen.Add(call.name, call.args)
-						if err != nil {
-							log.Fatalf("%s: %v", gen.Name(), err)
-						}
-						if name != call.name {
-							if !*autoname && !*dedup {
-								panic("unreachable: function names cannot be changed if it is not allowed by the user")
+					generated := func() bool {
+						for _, gen := range generators {
+							if !strings.HasPrefix(call.name, gen.Prefix()) {
+								continue
 							}
-							changed = true
-							log.Printf("changing function call name from %s to %s", call.name, name)
-							call.call.Fun = ast.NewIdent(name)
+							name, err := gen.Add(call.name, call.args)
+							if err != nil {
+								log.Fatalf("%s: %v", gen.Name(), err)
+							}
+							if name != call.name {
+								if !*autoname && !*dedup {
+									panic("unreachable: function names cannot be changed if it is not allowed by the user")
+								}
+								changed = true
+								log.Printf("changing function call name from %s to %s", call.name, name)
+								call.call.Fun = ast.NewIdent(name)
+							}
+							return true
 						}
-						generated = true
-						break
-					}
+						return false
+					}()
 					if !generated {
 						notgenerated = append(notgenerated, call.call)
 					}
 				}
 				if changed {
-					f, err := os.OpenFile(fullpath, os.O_WRONLY, 0644)
+					info, err := os.Stat(fullpath)
+					if err != nil {
+						log.Fatalf("stat %s: %v", fullpath, err)
+					}
+					f, err := os.OpenFile(fullpath, os.O_WRONLY, info.Mode())
 					if err != nil {
 						log.Fatalf("opening %s: %v", fullpath, err)
 					}
@@ -156,13 +160,14 @@ func main() {
 						log.Fatal(gen.Name() + ":" + err.Error())
 					}
 				}
-				alldone = true
-				for _, gen := range generators {
-					if !gen.Done() {
-						alldone = false
-						break
+				alldone = func() bool {
+					for _, gen := range generators {
+						if !gen.Done() {
+							return false
+						}
 					}
-				}
+					return true
+				}()
 			}
 
 			if p.HasContent() {
@@ -172,7 +177,7 @@ func main() {
 					log.Fatal(err)
 				}
 				if err := p.WriteTo(f); err != nil {
-					panic(err)
+					log.Fatal(err)
 				}
 				f.Close()
 			}

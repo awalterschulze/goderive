@@ -3,50 +3,32 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go/ast"
 	"go/types"
-	"strings"
-
-	"golang.org/x/tools/go/loader"
 )
 
 var keysPrefix = flag.String("keys.prefix", "deriveKeys", "set the prefix for keys functions that should be derived.")
 
 type keys struct {
 	TypesMap
-	qual    types.Qualifier
-	prefix  string
 	printer Printer
 }
 
-func newKeys(typesMap TypesMap, qual types.Qualifier, prefix string, p Printer) *keys {
+func newKeys(typesMap TypesMap, p Printer) *keys {
 	return &keys{
 		TypesMap: typesMap,
-		qual:     qual,
-		prefix:   prefix,
 		printer:  p,
 	}
 }
 
-func (this *keys) Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error) {
-	fn, ok := call.Fun.(*ast.Ident)
-	if !ok {
-		return false, nil
+func (this *keys) Name() string {
+	return "keys"
+}
+
+func (this *keys) Add(name string, typs []types.Type) (string, error) {
+	if len(typs) != 1 {
+		return "", fmt.Errorf("%s does not have one argument", name)
 	}
-	if !strings.HasPrefix(fn.Name, this.prefix) {
-		return false, nil
-	}
-	if len(call.Args) != 1 {
-		return false, fmt.Errorf("%s does not have one argument", fn.Name)
-	}
-	typ := pkgInfo.TypeOf(call.Args[0])
-	if typ == nil {
-		return false, nil
-	}
-	if err := this.SetFuncName(fn.Name, typ); err != nil {
-		return false, err
-	}
-	return true, nil
+	return this.SetFuncName(name, typs[0])
 }
 
 func (this *keys) Generate() error {
@@ -66,9 +48,9 @@ func (this *keys) Generate() error {
 func (this *keys) genFuncFor(typ *types.Map) error {
 	p := this.printer
 	this.Generating(typ)
-	typeStr := types.TypeString(typ, this.qual)
+	typeStr := this.TypeString(typ)
 	keyType := typ.Key()
-	keyTypeStr := types.TypeString(keyType, this.qual)
+	keyTypeStr := this.TypeString(keyType)
 	p.P("")
 	p.P("func %s(m %s) []%s {", this.GetFuncName(typ), typeStr, keyTypeStr)
 	p.In()

@@ -17,78 +17,56 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go/ast"
 	"go/types"
-	"strings"
-
-	"golang.org/x/tools/go/loader"
 )
 
 var fmapPrefix = flag.String("fmap.prefix", "deriveFmap", "set the prefix for fmap functions that should be derived.")
 
 type fmap struct {
 	TypesMap
-	qual     types.Qualifier
-	prefix   string
 	printer  Printer
 	bytesPkg Import
 }
 
-func newFmap(typesMap TypesMap, qual types.Qualifier, prefix string, p Printer) *fmap {
+func newFmap(typesMap TypesMap, p Printer) *fmap {
 	return &fmap{
 		TypesMap: typesMap,
-		qual:     qual,
-		prefix:   prefix,
 		printer:  p,
 	}
 }
 
-func (this *fmap) Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error) {
-	fn, ok := call.Fun.(*ast.Ident)
+func (this *fmap) Name() string {
+	return "fmap"
+}
+
+func (this *fmap) Add(name string, typs []types.Type) (string, error) {
+	if len(typs) != 2 {
+		return "", fmt.Errorf("%s does not have two arguments", name)
+	}
+	sliceTyp, ok := typs[1].(*types.Slice)
 	if !ok {
-		return false, nil
+		return "", fmt.Errorf("%s, the second argument, %s, is not of type slice", name, this.TypeString(typs[1]))
 	}
-	if !strings.HasPrefix(fn.Name, this.prefix) {
-		return false, nil
-	}
-	if len(call.Args) != 2 {
-		return false, fmt.Errorf("%s does not have two arguments", fn.Name)
-	}
-	t0 := pkgInfo.TypeOf(call.Args[0])
-	t1 := pkgInfo.TypeOf(call.Args[1])
-	if t0 == nil {
-		return false, nil
-	}
-	if t1 == nil {
-		return false, nil
-	}
-	sliceTyp, ok := t1.(*types.Slice)
+	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return false, fmt.Errorf("%s, the second argument, %s, is not of type slice", fn.Name, t1)
-	}
-	sig, ok := t0.(*types.Signature)
-	if !ok {
-		return false, fmt.Errorf("%s, the second argument, %s, is not of type function", fn.Name, t0)
+		return "", fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() != 1 {
-		return false, fmt.Errorf("%s, the second argument is a function, but wanted a function with one argument", fn.Name)
+		return "", fmt.Errorf("%s, the second argument is a function, but wanted a function with one argument", name)
 	}
 	elemTyp := sliceTyp.Elem()
 	inTyp := params.At(0).Type()
 	if !types.Identical(inTyp, elemTyp) {
-		return false, fmt.Errorf("%s the function input type and slice element type are different %s != %s",
-			fn.Name, inTyp, elemTyp)
+		return "", fmt.Errorf("%s the function input type and slice element type are different %s != %s",
+			name, inTyp, elemTyp)
 	}
 	res := sig.Results()
 	if res.Len() != 1 {
-		return false, fmt.Errorf("%s, the function argument does not have a single result, but has %d resulting parameters", fn.Name, res.Len())
+		return "", fmt.Errorf("%s, the function argument does not have a single result, but has %d resulting parameters", name, res.Len())
 	}
 	outTyp := res.At(0).Type()
-	if err := this.SetFuncName(fn.Name, inTyp, outTyp); err != nil {
-		return false, err
-	}
-	return true, nil
+	return this.SetFuncName(name, inTyp, outTyp)
 }
 
 func (this *fmap) Generate() error {
@@ -103,8 +81,8 @@ func (this *fmap) Generate() error {
 func (this *fmap) genFuncFor(in, out types.Type) error {
 	p := this.printer
 	this.Generating(in, out)
-	inStr := types.TypeString(in, this.qual)
-	outStr := types.TypeString(out, this.qual)
+	inStr := this.TypeString(in)
+	outStr := this.TypeString(out)
 	p.P("")
 	p.P("func %s(f func(%s) %s, list []%s) []%s {", this.GetFuncName(in, out), inStr, outStr, inStr, outStr)
 	p.In()

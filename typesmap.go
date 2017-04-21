@@ -22,10 +22,12 @@ import (
 )
 
 type TypesMap interface {
-	SetFuncName(name string, typs ...types.Type) error
+	SetFuncName(name string, typs ...types.Type) (newName string, err error)
 	GetFuncName(typs ...types.Type) string
 	Generating(typs ...types.Type)
 	ToGenerate() [][]types.Type
+	Prefix() string
+	TypeString(typ types.Type) string
 	Done() bool
 }
 
@@ -40,9 +42,11 @@ type typesMap struct {
 	funcToTyps map[string]string
 	typsToFunc map[string]string
 	typss      [][]types.Type
+	autoname   bool
+	dedup      bool
 }
 
-func newTypesMap(qual types.Qualifier, prefix string) TypesMap {
+func newTypesMap(qual types.Qualifier, prefix string, autoname bool, dedup bool) TypesMap {
 	return &typesMap{
 		qual:       qual,
 		prefix:     prefix,
@@ -50,22 +54,38 @@ func newTypesMap(qual types.Qualifier, prefix string) TypesMap {
 		funcToTyps: make(map[string]string),
 		typsToFunc: make(map[string]string),
 		typss:      nil,
+		autoname:   autoname,
+		dedup:      dedup,
 	}
 }
 
-func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) error {
+func (this *typesMap) Prefix() string {
+	return this.prefix
+}
+
+func (this *typesMap) TypeString(typ types.Type) string {
+	return types.TypeString(typ, this.qual)
+}
+
+func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, error) {
 	typsName := this.nameOf(typs)
 	if fName, ok := this.typsToFunc[typsName]; ok {
 		if fName == funcName {
-			return nil
+			return funcName, nil
 		}
-		return fmt.Errorf("ambigious function names for type %s = (%s | %s)", typs, fName, funcName)
+		if this.dedup {
+			return fName, nil
+		}
+		return "", fmt.Errorf("ambigious function names for type %s = (%s | %s)", typs, fName, funcName)
 	}
 	if tName, ok := this.funcToTyps[funcName]; ok {
 		if tName == typsName {
-			return nil
+			return funcName, nil
 		}
-		return fmt.Errorf("duplicate function name %s = (%s | %s)", funcName, tName, typsName)
+		if this.autoname {
+			return this.GetFuncName(typs...), nil
+		}
+		return "", fmt.Errorf("duplicate function name %s = (%s | %s)", funcName, tName, typsName)
 	}
 	if _, ok := this.generated[typsName]; !ok {
 		this.generated[typsName] = false
@@ -73,7 +93,7 @@ func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) error {
 	this.typsToFunc[typsName] = funcName
 	this.funcToTyps[funcName] = typsName
 	this.typss = append(this.typss, typs)
-	return nil
+	return funcName, nil
 }
 
 func (this *typesMap) GetFuncName(typs ...types.Type) string {

@@ -16,6 +16,7 @@ package main
 
 import (
 	"go/ast"
+	"go/types"
 	"path/filepath"
 
 	"golang.org/x/tools/go/loader"
@@ -54,10 +55,50 @@ func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
 	return this
 }
 
-func findUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []*ast.CallExpr {
+func findUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []*Call {
 	f := &finder{program, pkgInfo, nil, nil}
 	for _, d := range file.Decls {
 		ast.Walk(f, d)
 	}
-	return append(f.undefined, f.derived...)
+	callExprs := append(f.undefined, f.derived...)
+	calls := make([]*Call, len(callExprs))
+	for i := range callExprs {
+		calls[i] = newCall(pkgInfo, callExprs[i])
+	}
+	return calls
+}
+
+type Call struct {
+	call *ast.CallExpr
+	name string
+	args []types.Type
+}
+
+func newCall(pkgInfo *loader.PackageInfo, call *ast.CallExpr) *Call {
+	fn, ok := call.Fun.(*ast.Ident)
+	if !ok {
+		panic("unreachable, finder has already eliminated this option")
+	}
+	name := fn.Name
+	typs := getInputTypes(pkgInfo, call)
+	return &Call{call, name, typs}
+}
+
+// argTypes returns the argument types of a function call.
+func getInputTypes(pkgInfo *loader.PackageInfo, call *ast.CallExpr) []types.Type {
+	typs := make([]types.Type, len(call.Args))
+	for i, a := range call.Args {
+		typs[i] = pkgInfo.TypeOf(a)
+	}
+	return typs
+}
+
+// hasUndefined returns whether the call has undefined arguments
+func (this *Call) hasUndefined() bool {
+	for i := range this.args {
+		if this.args[i] == nil {
+			return true
+		}
+	}
+	return false
 }

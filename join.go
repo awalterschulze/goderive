@@ -17,60 +17,42 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go/ast"
 	"go/types"
-	"strings"
-
-	"golang.org/x/tools/go/loader"
 )
 
 var joinPrefix = flag.String("join.prefix", "deriveJoin", "set the prefix for join functions that should be derived.")
 
 type join struct {
 	TypesMap
-	qual     types.Qualifier
-	prefix   string
 	printer  Printer
 	bytesPkg Import
 }
 
-func newJoin(typesMap TypesMap, qual types.Qualifier, prefix string, p Printer) *join {
+func newJoin(typesMap TypesMap, p Printer) *join {
 	return &join{
 		TypesMap: typesMap,
-		qual:     qual,
-		prefix:   prefix,
 		printer:  p,
 	}
 }
 
-func (this *join) Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error) {
-	fn, ok := call.Fun.(*ast.Ident)
+func (this *join) Name() string {
+	return "join"
+}
+
+func (this *join) Add(name string, typs []types.Type) (string, error) {
+	if len(typs) != 1 {
+		return "", fmt.Errorf("%s does not have one argument", name)
+	}
+	sliceTyp, ok := typs[0].(*types.Slice)
 	if !ok {
-		return false, nil
-	}
-	if !strings.HasPrefix(fn.Name, this.prefix) {
-		return false, nil
-	}
-	if len(call.Args) != 1 {
-		return false, fmt.Errorf("%s does not have one argument", fn.Name)
-	}
-	t0 := pkgInfo.TypeOf(call.Args[0])
-	if t0 == nil {
-		return false, nil
-	}
-	sliceTyp, ok := t0.(*types.Slice)
-	if !ok {
-		return false, fmt.Errorf("%s, the argument, %s, is not of type slice", fn.Name, t0)
+		return "", fmt.Errorf("%s, the argument, %s, is not of type slice", name, typs[0])
 	}
 	sliceOfSliceTyp, ok := sliceTyp.Elem().(*types.Slice)
 	if !ok {
-		return false, fmt.Errorf("%s, the argument, %s, is not of type slice of slice", fn.Name, t0)
+		return "", fmt.Errorf("%s, the argument, %s, is not of type slice of slice", name, typs[0])
 	}
 	elemType := sliceOfSliceTyp.Elem()
-	if err := this.SetFuncName(fn.Name, elemType); err != nil {
-		return false, err
-	}
-	return true, nil
+	return this.SetFuncName(name, elemType)
 }
 
 func (this *join) Generate() error {
@@ -85,7 +67,7 @@ func (this *join) Generate() error {
 func (this *join) genFuncFor(typ types.Type) error {
 	p := this.printer
 	this.Generating(typ)
-	typStr := types.TypeString(typ, this.qual)
+	typStr := this.TypeString(typ)
 	p.P("")
 	p.P("func %s(list [][]%s) []%s {", this.GetFuncName(typ), typStr, typStr)
 	p.In()

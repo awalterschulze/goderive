@@ -17,21 +17,26 @@ package main
 import (
 	"flag"
 	"go/ast"
+	"go/format"
 	"go/types"
 	"log"
 	"os"
 	"path/filepath"
 
-	"golang.org/x/tools/go/loader"
+	"strings"
 
 	"github.com/kisielk/gotool"
 )
+
+var autoname = flag.Bool("autoname", false, "rename functions that are conflicting with other functions")
+var dedup = flag.Bool("dedup", false, "rename functions to functions that are duplicates")
 
 const derivedFilename = "derived.gen.go"
 
 type Generator interface {
 	TypesMap
-	Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error)
+	Add(name string, typs []types.Type) (string, error)
+	Name() string
 	Generate() error
 }
 
@@ -57,53 +62,78 @@ func main() {
 				}
 				pkgInfo = thisprogram.Package(path)
 			}
+
+			qual := types.RelativeTo(pkgInfo.Pkg)
+
+			p := newPrinter(pkgInfo.Pkg.Name())
+
+			equalTypesMap := newTypesMap(qual, *equalPrefix, *autoname, *dedup)
+			keysTypesMap := newTypesMap(qual, *keysPrefix, *autoname, *dedup)
+			sortedTypesMap := newTypesMap(qual, *sortedPrefix, *autoname, *dedup)
+			compareTypesMap := newTypesMap(qual, *comparePrefix, *autoname, *dedup)
+			fmapTypesMap := newTypesMap(qual, *fmapPrefix, *autoname, *dedup)
+			joinTypesMap := newTypesMap(qual, *joinPrefix, *autoname, *dedup)
+
+			generators := []Generator{
+				newEqual(equalTypesMap, p),
+				newKeys(keysTypesMap, p),
+				newCompare(compareTypesMap, p, keysTypesMap, sortedTypesMap),
+				newSorted(sortedTypesMap, p, compareTypesMap),
+				newFmap(fmapTypesMap, p),
+				newJoin(joinTypesMap, p),
+			}
+
 			var notgenerated []*ast.CallExpr
-			var calls []*ast.CallExpr
 			for _, file := range pkgInfo.Files {
 				astFile := thisprogram.Fset.File(file.Pos())
 				if astFile == nil {
 					continue
 				}
-				_, fname := filepath.Split(astFile.Name())
+				fullpath := astFile.Name()
+				_, fname := filepath.Split(fullpath)
 				if fname == derivedFilename {
 					continue
 				}
-				newcalls := findUndefinedOrDerivedFuncs(thisprogram, pkgInfo, file)
-				calls = append(newcalls, calls...)
-			}
-			qual := types.RelativeTo(pkgInfo.Pkg)
 
-			p := newPrinter(pkgInfo.Pkg.Name())
-
-			equalTypesMap := newTypesMap(qual, *equalPrefix)
-			keysTypesMap := newTypesMap(qual, *keysPrefix)
-			sortedTypesMap := newTypesMap(qual, *sortedPrefix)
-			compareTypesMap := newTypesMap(qual, *comparePrefix)
-			fmapTypesMap := newTypesMap(qual, *fmapPrefix)
-			joinTypesMap := newTypesMap(qual, *joinPrefix)
-
-			generators := []Generator{
-				newEqual(equalTypesMap, qual, *equalPrefix, p),
-				newKeys(keysTypesMap, qual, *keysPrefix, p),
-				newCompare(compareTypesMap, qual, *comparePrefix, p, keysTypesMap, sortedTypesMap),
-				newSorted(sortedTypesMap, qual, *sortedPrefix, p, compareTypesMap),
-				newFmap(fmapTypesMap, qual, *fmapPrefix, p),
-				newJoin(joinTypesMap, qual, *joinPrefix, p),
-			}
-
-			var err error
-			for _, call := range calls {
-				generated := false
-				for _, gen := range generators {
-					generated, err = gen.Add(pkgInfo, call)
-					if err != nil {
-						log.Fatal("equal:" + err.Error())
-					} else if generated {
+				calls := findUndefinedOrDerivedFuncs(thisprogram, pkgInfo, file)
+				changed := false
+				for _, call := range calls {
+					if call.hasUndefined() {
+						notgenerated = append(notgenerated, call.call)
+						continue
+					}
+					generated := false
+					for _, gen := range generators {
+						if !strings.HasPrefix(call.name, gen.Prefix()) {
+							continue
+						}
+						name, err := gen.Add(call.name, call.args)
+						if err != nil {
+							log.Fatalf("%s: %v", gen.Name(), err)
+						}
+						if name != call.name {
+							if !*autoname && !*dedup {
+								panic("unreachable: function names cannot be changed if it is not allowed by the user")
+							}
+							changed = true
+							log.Printf("changing function call name from %s to %s", call.name, name)
+							call.call.Fun = ast.NewIdent(name)
+						}
+						generated = true
 						break
 					}
+					if !generated {
+						notgenerated = append(notgenerated, call.call)
+					}
 				}
-				if !generated {
-					notgenerated = append(notgenerated, call)
+				if changed {
+					f, err := os.OpenFile(fullpath, os.O_WRONLY, 0644)
+					if err != nil {
+						log.Fatalf("opening %s: %v", fullpath, err)
+					}
+					if err := format.Node(f, thisprogram.Fset, file); err != nil {
+						log.Fatalf("formatting %s: %v", fullpath, err)
+					}
 				}
 			}
 
@@ -123,7 +153,7 @@ func main() {
 			for !alldone {
 				for _, gen := range generators {
 					if err := gen.Generate(); err != nil {
-						log.Fatal(err)
+						log.Fatal(gen.Name() + ":" + err.Error())
 					}
 				}
 				alldone = true

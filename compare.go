@@ -17,19 +17,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go/ast"
 	"go/types"
-	"strings"
-
-	"golang.org/x/tools/go/loader"
 )
 
 var comparePrefix = flag.String("compare.prefix", "deriveCompare", "set the prefix for compare functions that should be derived.")
 
 type compare struct {
 	TypesMap
-	qual       types.Qualifier
-	prefix     string
 	printer    Printer
 	bytesPkg   Import
 	stringsPkg Import
@@ -37,11 +31,9 @@ type compare struct {
 	sorted     Plugin
 }
 
-func newCompare(typesMap TypesMap, qual types.Qualifier, prefix string, p Printer, keys, sorted Plugin) *compare {
+func newCompare(typesMap TypesMap, p Printer, keys, sorted Plugin) *compare {
 	return &compare{
 		TypesMap:   typesMap,
-		qual:       qual,
-		prefix:     prefix,
 		printer:    p,
 		bytesPkg:   p.NewImport("bytes"),
 		stringsPkg: p.NewImport("strings"),
@@ -50,34 +42,19 @@ func newCompare(typesMap TypesMap, qual types.Qualifier, prefix string, p Printe
 	}
 }
 
-func (this *compare) Add(pkgInfo *loader.PackageInfo, call *ast.CallExpr) (bool, error) {
-	fn, ok := call.Fun.(*ast.Ident)
-	if !ok {
-		return false, nil
-	}
-	if !strings.HasPrefix(fn.Name, this.prefix) {
-		return false, nil
-	}
-	if len(call.Args) != 2 {
-		return false, fmt.Errorf("%s does not have two arguments", fn.Name)
-	}
-	t0 := pkgInfo.TypeOf(call.Args[0])
-	t1 := pkgInfo.TypeOf(call.Args[1])
-	if t0 == nil {
-		return false, nil
-	}
-	if t1 == nil {
-		return false, nil
-	}
-	if !types.Identical(t0, t1) {
-		return false, fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
-			fn.Name, t0, t1)
-	}
+func (this *compare) Name() string {
+	return "compare"
+}
 
-	if err := this.SetFuncName(fn.Name, t0); err != nil {
-		return false, err
+func (this *compare) Add(name string, typs []types.Type) (string, error) {
+	if len(typs) != 2 {
+		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
-	return true, nil
+	if !types.Identical(typs[0], typs[1]) {
+		return "", fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
+			name, this.TypeString(typs[0]), this.TypeString(typs[1]))
+	}
+	return this.SetFuncName(name, typs[0])
 }
 
 func (this *compare) Generate() error {
@@ -92,7 +69,7 @@ func (this *compare) Generate() error {
 func (this *compare) genFuncFor(typ types.Type) error {
 	p := this.printer
 	this.Generating(typ)
-	typeStr := types.TypeString(typ, this.qual)
+	typeStr := this.TypeString(typ)
 	p.P("")
 	p.P("func %s(this, that %s) int {", this.GetFuncName(typ), typeStr)
 	p.In()

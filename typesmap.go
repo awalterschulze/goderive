@@ -85,7 +85,7 @@ func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, 
 		if this.autoname {
 			return this.GetFuncName(typs...), nil
 		}
-		return "", fmt.Errorf("duplicate function name %s = (%s | %s)", funcName, tName, typsName)
+		return "", fmt.Errorf("conflicting function names %s = (%s | %s)", funcName, tName, typsName)
 	}
 	if _, ok := this.generated[typsName]; !ok {
 		this.generated[typsName] = false

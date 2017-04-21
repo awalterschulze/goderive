@@ -1,0 +1,13 @@
+package duperror
+
+type A struct {
+	Name string
+}
+
+func (this *A) Equal(that *A) bool {
+	return deriveEqualA(this, that)
+}
+
+func (this *A) Equivalent(that *A) bool {
+	return deriveEqualAA(this, that)
+}

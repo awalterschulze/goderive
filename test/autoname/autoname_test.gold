@@ -1,0 +1,44 @@
+package autoname
+
+import (
+	"reflect"
+	"testing"
+)
+
+type A struct {
+	Name string
+}
+
+func (this *A) Equal(that *A) bool {
+	return deriveEqual(this, that)
+}
+
+type B struct {
+	Name string
+}
+
+func (this *B) Equal(that *B) bool {
+	return deriveEqual(this, that)
+}
+
+func TestEqualA(t *testing.T) {
+	this := &A{Name: "A"}
+	that := &A{Name: "B"}
+	if !reflect.DeepEqual(this, this) {
+		t.Fatal("expected equal")
+	}
+	if reflect.DeepEqual(this, that) {
+		t.Fatal("expected not equal")
+	}
+}
+
+func TestEqualB(t *testing.T) {
+	this := &B{Name: "A"}
+	that := &B{Name: "B"}
+	if !reflect.DeepEqual(this, this) {
+		t.Fatal("expected equal")
+	}
+	if reflect.DeepEqual(this, that) {
+		t.Fatal("expected not equal")
+	}
+}

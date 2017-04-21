@@ -1,0 +1,17 @@
+package nameerror
+
+type A struct {
+	Name string
+}
+
+func (this *A) Equal(that *A) bool {
+	return deriveEqual(this, that)
+}
+
+type B struct {
+	Name string
+}
+
+func (this *B) Equal(that *B) bool {
+	return deriveEqual(this, that)
+}

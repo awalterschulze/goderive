@@ -54,29 +54,31 @@ func (this *sorted) genFuncFor(typ *types.Slice) error {
 	this.Generating(typ)
 	typeStr := this.TypeString(typ)
 	p.P("")
-	p.P("func %s(s %s) %s {", this.GetFuncName(typ), typeStr, typeStr)
+	p.P("func %s(src %s) %s {", this.GetFuncName(typ), typeStr, typeStr)
 	p.In()
+	p.P("dst := make(%s, len(src))", typeStr)
+	p.P("copy(dst, src)")
 	etyp := typ.Elem()
 	switch ttyp := etyp.Underlying().(type) {
 	case *types.Basic:
 		switch ttyp.Kind() {
 		case types.String:
-			p.P(this.sortPkg() + ".Strings(s)")
+			p.P(this.sortPkg() + ".Strings(dst)")
 		case types.Float64:
-			p.P(this.sortPkg() + ".Float64s(s)")
+			p.P(this.sortPkg() + ".Float64s(dst)")
 		case types.Int:
-			p.P(this.sortPkg() + ".Ints(s)")
+			p.P(this.sortPkg() + ".Ints(dst)")
 		case types.Complex64, types.Complex128, types.Bool:
-			p.P(this.sortPkg() + ".Slice(s, func(i, j int) bool { return " + this.compare.GetFuncName(ttyp) + "(s[i], s[j]) < 0 })")
+			p.P(this.sortPkg() + ".Slice(dst, func(i, j int) bool { return " + this.compare.GetFuncName(ttyp) + "(dst[i], dst[j]) < 0 })")
 		default:
-			p.P(this.sortPkg() + ".Slice(s, func(i, j int) bool { return s[i] < s[j] })")
+			p.P(this.sortPkg() + ".Slice(dst, func(i, j int) bool { return dst[i] < dst[j] })")
 		}
 	case *types.Pointer, *types.Struct, *types.Slice, *types.Array, *types.Map:
-		p.P(this.sortPkg() + ".Slice(s, func(i, j int) bool { return " + this.compare.GetFuncName(etyp) + "(s[i], s[j]) < 0 })")
+		p.P(this.sortPkg() + ".Slice(dst, func(i, j int) bool { return " + this.compare.GetFuncName(etyp) + "(dst[i], dst[j]) < 0 })")
 	default:
 		return fmt.Errorf("unsupported compare type: %s", this.TypeString(typ))
 	}
-	p.P("return s")
+	p.P("return dst")
 	p.Out()
 	p.P("}")
 	return nil

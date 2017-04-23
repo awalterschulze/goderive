@@ -1612,14 +1612,18 @@ func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 	return deriveCompareDeriveTheDerived_(*this, *that)
 }
 
-func deriveSortedInts(s []int) []int {
-	sort.Ints(s)
-	return s
+func deriveSortedInts(src []int) []int {
+	dst := make([]int, len(src))
+	copy(dst, src)
+	sort.Ints(dst)
+	return dst
 }
 
-func deriveSortedStrings(s []string) []string {
-	sort.Strings(s)
-	return s
+func deriveSortedStrings(src []string) []string {
+	dst := make([]string, len(src))
+	copy(dst, src)
+	sort.Strings(dst)
+	return dst
 }
 
 func deriveFmapForKeys(f func(int) string, list []int) []string {
@@ -4677,34 +4681,46 @@ func deriveCompareMapOfintToRecursiveType(this, that map[int]RecursiveType) int 
 	return 0
 }
 
-func deriveSortedSliceOfuint8(s []uint8) []uint8 {
-	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
-	return s
+func deriveSortedSliceOfuint8(src []uint8) []uint8 {
+	dst := make([]uint8, len(src))
+	copy(dst, src)
+	sort.Slice(dst, func(i, j int) bool { return dst[i] < dst[j] })
+	return dst
 }
 
-func deriveSortedSliceOfbool(s []bool) []bool {
-	sort.Slice(s, func(i, j int) bool { return deriveComparebool(s[i], s[j]) < 0 })
-	return s
+func deriveSortedSliceOfbool(src []bool) []bool {
+	dst := make([]bool, len(src))
+	copy(dst, src)
+	sort.Slice(dst, func(i, j int) bool { return deriveComparebool(dst[i], dst[j]) < 0 })
+	return dst
 }
 
-func deriveSortedSliceOfcomplex128(s []complex128) []complex128 {
-	sort.Slice(s, func(i, j int) bool { return deriveCompareComplex64(s[i], s[j]) < 0 })
-	return s
+func deriveSortedSliceOfcomplex128(src []complex128) []complex128 {
+	dst := make([]complex128, len(src))
+	copy(dst, src)
+	sort.Slice(dst, func(i, j int) bool { return deriveCompareComplex64(dst[i], dst[j]) < 0 })
+	return dst
 }
 
-func deriveSortedSliceOffloat64(s []float64) []float64 {
-	sort.Float64s(s)
-	return s
+func deriveSortedSliceOffloat64(src []float64) []float64 {
+	dst := make([]float64, len(src))
+	copy(dst, src)
+	sort.Float64s(dst)
+	return dst
 }
 
-func deriveSortedSliceOfuint16(s []uint16) []uint16 {
-	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
-	return s
+func deriveSortedSliceOfuint16(src []uint16) []uint16 {
+	dst := make([]uint16, len(src))
+	copy(dst, src)
+	sort.Slice(dst, func(i, j int) bool { return dst[i] < dst[j] })
+	return dst
 }
 
-func deriveSortedSliceOfName(s []Name) []Name {
-	sort.Slice(s, func(i, j int) bool { return deriveCompareName(s[i], s[j]) < 0 })
-	return s
+func deriveSortedSliceOfName(src []Name) []Name {
+	dst := make([]Name, len(src))
+	copy(dst, src)
+	sort.Slice(dst, func(i, j int) bool { return deriveCompareName(dst[i], dst[j]) < 0 })
+	return dst
 }
 
 func deriveKeysMapOfstringTouint32(m map[string]uint32) []string {

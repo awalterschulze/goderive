@@ -1654,7 +1654,11 @@ func deriveJoin(list [][]int) []int {
 	if list == nil {
 		return nil
 	}
-	res := []int{}
+	l := 0
+	for _, elem := range list {
+		l += len(elem)
+	}
+	res := make([]int, 0, l)
 	for _, elem := range list {
 		res = append(res, elem...)
 	}
@@ -1665,7 +1669,11 @@ func deriveJoinSS(list [][]string) []string {
 	if list == nil {
 		return nil
 	}
-	res := []string{}
+	l := 0
+	for _, elem := range list {
+		l += len(elem)
+	}
+	res := make([]string, 0, l)
 	for _, elem := range list {
 		res = append(res, elem...)
 	}

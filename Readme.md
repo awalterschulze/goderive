@@ -99,6 +99,8 @@ The `deriveKeys` function returns a map's keys as a slice.
 
 The `deriveSorted` function is useful for deterministically ranging over maps when used with `deriveKeys`.
 This feature requires Go 1.8
+derivedSorted does create a copy of its input, so that it does not mutate its input.
+This does sacrifice some efficiency.
 
 ### TODO
 
@@ -110,35 +112,7 @@ This feature requires Go 1.8
 
 The `deriveFmap` function applies a given function to each element of a list, returning a list of results in the same order.
 
-### Example
-
-In the following code the `deriveFmap` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveFmap`.
-
-```go
-func main() {
-	list := []int{1, 2, 3}
-	list = deriveFmap(func(i int) int { return i+1 }, list)
-	for _, e := range list {
-		fmt.Printf("%d", list)
-	}
-	// print 234
-}
-```
-
-goderive will then generate the following code in a `derived.gen.go` file in the same package:
-
-```go
-func deriveFmap(f func(int) int, list []int) []int {
-	out := make([]int, len(list))
-	for i, elem := range list {
-		out[i] = f(elem)
-	}
-	return out
-}
-```
-
-### TODO
-
+TODO:
   - currently only slices are supported, think about supporting other types and not just slices
   - think about functions without a return type
 
@@ -146,40 +120,6 @@ func deriveFmap(f func(int) int, list []int) []int {
 
 The `deriveJoin` function applies a given joins a slice of slices into a single slice.
 
-### Example
-
-In the following code the `deriveJoin` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveJoin`.
-
-```go
-func main() {
-	ss := []string{"a,b", "c,d"}
-	split := func(s string) []string {
-		return strings.Split(s, ",")
-	}
-	list := deriveJoin(deriveFmap(split, ss))
-	for _, e := range list {
-		fmt.Printf("%s", list)
-	}
-	// print abcd
-}
-```
-
-goderive will then generate the following code in a `derived.gen.go` file in the same package:
-
-```go
-func deriveJoin(list [][]string) []string {
-	if list == nil {
-		return nil
-	}
-	res := []string{}
-	for _, elem := range list {
-		res = append(res, elem...)
-	}
-	return res
-}
-```
-
-### TODO
-
+TODO:
   - currently only slices are supported, think about supporting other types and not just slices
   - what about []string and not just [][]string as in the current example.

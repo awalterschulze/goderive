@@ -64,3 +64,31 @@ func TestCompareStructs(t *testing.T) {
 		})
 	}
 }
+
+func TestCompareComplex32(t *testing.T) {
+	this := complex(float32(1.0), float32(-1.0))
+	that := complex(float32(1.0), float32(1.0))
+	if c := deriveCompareComplex32(this, this); c != 0 {
+		t.Fatalf("compare: got %d want %d", c, 0)
+	}
+	if c := deriveCompareComplex32(this, that); c != -1 {
+		t.Fatalf("compare: got %d want %d", c, -1)
+	}
+	if c := deriveCompareComplex32(that, this); c != 1 {
+		t.Fatalf("compare: got %d want %d", c, 1)
+	}
+}
+
+func TestCompareComplex64(t *testing.T) {
+	this := complex(float64(1.0), float64(-1.0))
+	that := complex(float64(1.0), float64(1.0))
+	if c := deriveCompareComplex64(this, this); c != 0 {
+		t.Fatalf("compare: got %d want %d", c, 0)
+	}
+	if c := deriveCompareComplex64(this, that); c != -1 {
+		t.Fatalf("compare: got %d want %d", c, -1)
+	}
+	if c := deriveCompareComplex64(that, this); c != 1 {
+		t.Fatalf("compare: got %d want %d", c, 1)
+	}
+}

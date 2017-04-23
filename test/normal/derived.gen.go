@@ -1398,6 +1398,38 @@ func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltI
 	return deriveCompareMapsOfSimplerBuiltInTypes(*this, *that)
 }
 
+func deriveCompareComplex32(this, that complex64) int {
+	if thisr, thatr := real(this), real(that); thisr == thatr {
+		if thisi, thati := imag(this), imag(that); thisi == thati {
+			return 0
+		} else if thisi < thati {
+			return -1
+		} else {
+			return 1
+		}
+	} else if thisr < thatr {
+		return -1
+	} else {
+		return 1
+	}
+}
+
+func deriveCompareComplex64(this, that complex128) int {
+	if thisr, thatr := real(this), real(that); thisr == thatr {
+		if thisi, thati := imag(this), imag(that); thisi == thati {
+			return 0
+		} else if thisi < thati {
+			return -1
+		} else {
+			return 1
+		}
+	} else if thisr < thatr {
+		return -1
+	} else {
+		return 1
+	}
+}
+
 func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 	if this == nil {
 		if that == nil {
@@ -1474,10 +1506,10 @@ func deriveCompareBuiltInTypes(this, that BuiltInTypes) int {
 	if c := deriveComparebyte(this.Byte, that.Byte); c != 0 {
 		return c
 	}
-	if c := deriveComparecomplex128(this.Complex128, that.Complex128); c != 0 {
+	if c := deriveCompareComplex64(this.Complex128, that.Complex128); c != 0 {
 		return c
 	}
-	if c := deriveComparecomplex64(this.Complex64, that.Complex64); c != 0 {
+	if c := deriveCompareComplex32(this.Complex64, that.Complex64); c != 0 {
 		return c
 	}
 	if c := deriveComparefloat64(this.Float64, that.Float64); c != 0 {
@@ -1625,14 +1657,6 @@ func deriveComparebyte(this, that byte) int {
 		}
 	}
 	return 0
-}
-
-func deriveComparecomplex128(this, that complex128) int {
-	return 0 //TODO
-}
-
-func deriveComparecomplex64(this, that complex64) int {
-	return 0 //TODO
 }
 
 func deriveComparefloat64(this, that float64) int {
@@ -1825,7 +1849,7 @@ func deriveComparePtrTocomplex128(this, that *complex128) int {
 	if that == nil {
 		return 1
 	}
-	return deriveComparecomplex128(*this, *that)
+	return deriveCompareComplex64(*this, *that)
 }
 
 func deriveComparePtrTocomplex64(this, that *complex64) int {
@@ -1838,7 +1862,7 @@ func deriveComparePtrTocomplex64(this, that *complex64) int {
 	if that == nil {
 		return 1
 	}
-	return deriveComparecomplex64(*this, *that)
+	return deriveCompareComplex32(*this, *that)
 }
 
 func deriveComparePtrTofloat64(this, that *float64) int {

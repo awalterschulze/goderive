@@ -69,7 +69,6 @@ func TestEqualStructs(t *testing.T) {
 }
 
 func TestEqualInline(t *testing.T) {
-
 	t.Run("intslices", func(t *testing.T) {
 		for i := 0; i < 100; i++ {
 			this := random([]int{}).([]int)

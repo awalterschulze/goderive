@@ -267,7 +267,9 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.P("thatkey := thatkeys[i]")
 		p.P("if thiskey == thatkey {")
 		p.In()
-		cmpStr, err := this.field("this[thiskey]", "that[thatkey]", ttyp.Elem())
+		p.P("thisvalue := this[thiskey]")
+		p.P("thatvalue := that[thatkey]")
+		cmpStr, err := this.field("thisvalue", "thatvalue", ttyp.Elem())
 		if err != nil {
 			return err
 		}

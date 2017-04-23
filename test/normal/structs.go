@@ -237,6 +237,10 @@ func (this *SliceToSlice) Equal(that *SliceToSlice) bool {
 	return deriveEqualPtrToSliceToSlice(this, that)
 }
 
+func (this *SliceToSlice) Compare(that *SliceToSlice) int {
+	return deriveComparePtrToSliceToSlice(this, that)
+}
+
 type PtrTo struct {
 	Basic *int
 	Slice *[]int
@@ -248,12 +252,20 @@ func (this *PtrTo) Equal(that *PtrTo) bool {
 	return deriveEqualPtrToPtrTo(this, that)
 }
 
+func (this *PtrTo) Compare(that *PtrTo) int {
+	return deriveComparePtrToPtrTo(this, that)
+}
+
 type Name struct {
 	Name string
 }
 
 func (this *Name) Equal(that *Name) bool {
 	return deriveEqualPtrToName(this, that)
+}
+
+func (this *Name) Compare(that *Name) int {
+	return deriveComparePtrToName(this, that)
 }
 
 type Structs struct {
@@ -267,6 +279,10 @@ func (this *Structs) Equal(that *Structs) bool {
 	return deriveEqualPtrToStructs(this, that)
 }
 
+func (this *Structs) Compare(that *Structs) int {
+	return deriveComparePtrToStructs(this, that)
+}
+
 type MapWithStructs struct {
 	NameToString             map[Name]string
 	StringToName             map[string]Name
@@ -277,6 +293,10 @@ type MapWithStructs struct {
 
 func (this *MapWithStructs) Equal(that *MapWithStructs) bool {
 	return deriveEqualPtrToMapWithStructs(this, that)
+}
+
+func (this *MapWithStructs) Compare(that *MapWithStructs) int {
+	return deriveComparePtrToMapWithStructs(this, that)
 }
 
 type RecursiveType struct {

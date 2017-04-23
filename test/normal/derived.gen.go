@@ -1463,6 +1463,71 @@ func deriveComparePtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) int {
 	return deriveCompareMapsOfBuiltInTypes(*this, *that)
 }
 
+func deriveComparePtrToSliceToSlice(this, that *SliceToSlice) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareSliceToSlice(*this, *that)
+}
+
+func deriveComparePtrToPtrTo(this, that *PtrTo) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparePtrTo(*this, *that)
+}
+
+func deriveComparePtrToName(this, that *Name) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareName(*this, *that)
+}
+
+func deriveComparePtrToStructs(this, that *Structs) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareStructs(*this, *that)
+}
+
+func deriveComparePtrToMapWithStructs(this, that *MapWithStructs) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareMapWithStructs(*this, *that)
+}
+
 func deriveCompareComplex32(this, that complex64) int {
 	if thisr, thatr := real(this), real(that); thisr == thatr {
 		if thisi, thati := imag(this), imag(that); thisi == thati {
@@ -1960,6 +2025,77 @@ func deriveCompareMapsOfBuiltInTypes(this, that MapsOfBuiltInTypes) int {
 		return c
 	}
 	if c := deriveCompareMapOfuint16Touint8(this.Uint16ToUint8, that.Uint16ToUint8); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareSliceToSlice(this, that SliceToSlice) int {
+	if c := deriveCompareSliceOfSliceOfint(this.Ints, that.Ints); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfSliceOfstring(this.Strings, that.Strings); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfSliceOfPtrToint(this.IntPtrs, that.IntPtrs); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveComparePtrTo(this, that PtrTo) int {
+	if c := deriveComparePtrToint(this.Basic, that.Basic); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToSliceOfint(this.Slice, that.Slice); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToArray4Ofint(this.Array, that.Array); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToMapOfintToint(this.Map, that.Map); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareName(this, that Name) int {
+	if c := strings.Compare(this.Name, that.Name); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareStructs(this, that Structs) int {
+	if c := this.Struct.Compare(&that.Struct); c != 0 {
+		return c
+	}
+	if c := this.PtrToStruct.Compare(that.PtrToStruct); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfName(this.SliceOfStructs, that.SliceOfStructs); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToName(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareMapWithStructs(this, that MapWithStructs) int {
+	if c := deriveCompareMapOfNameTostring(this.NameToString, that.NameToString); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringToName(this.StringToName, that.StringToName); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringToPtrToName(this.StringToPtrToName, that.StringToPtrToName); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringToSliceOfName(this.StringToSliceOfName, that.StringToSliceOfName); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName); c != 0 {
 		return c
 	}
 	return 0
@@ -3879,7 +4015,9 @@ func deriveCompareMapOfstringTouint32(this, that map[string]uint32) int {
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
-			if c := deriveCompareuint32(this[thiskey], that[thatkey]); c != 0 {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompareuint32(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -3912,7 +4050,9 @@ func deriveCompareMapOfuint8Toint64(this, that map[uint8]int64) int {
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
-			if c := deriveCompareint64(this[thiskey], that[thatkey]); c != 0 {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompareint64(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -3945,7 +4085,9 @@ func deriveCompareMapOfboolTostring(this, that map[bool]string) int {
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
-			if c := strings.Compare(this[thiskey], that[thatkey]); c != 0 {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := strings.Compare(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -3978,7 +4120,9 @@ func deriveCompareMapOfstringTobool(this, that map[string]bool) int {
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
-			if c := deriveComparebool(this[thiskey], that[thatkey]); c != 0 {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveComparebool(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -4011,7 +4155,9 @@ func deriveCompareMapOfcomplex128Tocomplex64(this, that map[complex128]complex64
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
-			if c := deriveCompareComplex32(this[thiskey], that[thatkey]); c != 0 {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompareComplex32(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -4044,7 +4190,9 @@ func deriveCompareMapOffloat64Touint32(this, that map[float64]uint32) int {
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
-			if c := deriveCompareuint32(this[thiskey], that[thatkey]); c != 0 {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompareuint32(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -4077,11 +4225,347 @@ func deriveCompareMapOfuint16Touint8(this, that map[uint16]uint8) int {
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
-			if c := deriveCompareuint8(this[thiskey], that[thatkey]); c != 0 {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompareuint8(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
 			if c := deriveCompareuint16(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfSliceOfint(this, that [][]int) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareSliceOfint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfSliceOfstring(this, that [][]string) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareSliceOfstring(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfSliceOfPtrToint(this, that [][]*int) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareSliceOfPtrToint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveComparePtrToSliceOfint(this, that *[]int) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareSliceOfint(*this, *that)
+}
+
+func deriveComparePtrToArray4Ofint(this, that *[4]int) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareArray4Ofint(*this, *that)
+}
+
+func deriveComparePtrToMapOfintToint(this, that *map[int]int) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareMapOfintToint(*this, *that)
+}
+
+func deriveCompareSliceOfName(this, that []Name) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := this[i].Compare(&that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrToName(this, that []*Name) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := this[i].Compare(that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfNameTostring(this, that map[Name]string) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedSliceOfName(deriveKeysMapOfNameTostring(this))
+	thatkeys := deriveSortedSliceOfName(deriveKeysMapOfNameTostring(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := strings.Compare(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := thiskey.Compare(&thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfstringToName(this, that map[string]Name) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringToName(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringToName(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := thisvalue.Compare(&thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfstringToPtrToName(this, that map[string]*Name) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringToPtrToName(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringToPtrToName(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := thisvalue.Compare(thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfstringToSliceOfName(this, that map[string][]Name) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringToSliceOfName(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringToSliceOfName(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompareSliceOfName(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringToSliceOfPtrToName(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringToSliceOfPtrToName(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompareSliceOfPtrToName(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
 				return c
 			}
 		}
@@ -4111,6 +4595,11 @@ func deriveSortedSliceOffloat64(s []float64) []float64 {
 
 func deriveSortedSliceOfuint16(s []uint16) []uint16 {
 	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+	return s
+}
+
+func deriveSortedSliceOfName(s []Name) []Name {
+	sort.Slice(s, func(i, j int) bool { return deriveCompareName(s[i], s[j]) < 0 })
 	return s
 }
 
@@ -4170,6 +4659,104 @@ func deriveKeysMapOfuint16Touint8(m map[uint16]uint8) []uint16 {
 	return keys
 }
 
+func deriveKeysMapOfNameTostring(m map[Name]string) []Name {
+	keys := make([]Name, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfstringToName(m map[string]Name) []string {
+	keys := make([]string, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfstringToPtrToName(m map[string]*Name) []string {
+	keys := make([]string, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfstringToSliceOfName(m map[string][]Name) []string {
+	keys := make([]string, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfstringToSliceOfPtrToName(m map[string][]*Name) []string {
+	keys := make([]string, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
 func deriveComparestring(this, that string) int {
 	return strings.Compare(this, that)
+}
+
+func deriveCompareArray4Ofint(this, that [4]int) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfintToint(this, that map[int]int) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedInts(deriveKeysMapOfintToint(this))
+	thatkeys := deriveSortedInts(deriveKeysMapOfintToint(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompareint(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := deriveCompareint(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveKeysMapOfintToint(m map[int]int) []int {
+	keys := make([]int, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
 }

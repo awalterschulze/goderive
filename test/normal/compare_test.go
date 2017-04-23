@@ -34,6 +34,10 @@ func TestCompareStructs(t *testing.T) {
 		&ArrayOfBuiltInTypes{},
 		&ArrayOfPtrToBuiltInTypes{},
 		&MapsOfBuiltInTypes{},
+		&SliceToSlice{},
+		&PtrTo{},
+		&Structs{},
+		&MapWithStructs{},
 
 		&MapsOfSimplerBuiltInTypes{},
 	}

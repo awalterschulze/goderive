@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/awalterschulze/goderive.svg?branch=master)](https://travis-ci.org/awalterschulze/goderive)
 
-goderive parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. Functions that are currently supported include:
+`goderive` parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. 
+
+Functions that are currently supported include:
 
   - [Equal](https://github.com/awalterschulze/goderive#equal)
   - [Compare](https://github.com/awalterschulze/goderive#compare)
@@ -16,7 +18,10 @@ More functions are in the works:
 
 Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.
 
-Distinguishing between which function (Equal, Compare, ...) should be derived is done using a customizable prefix, see command line flags.
+Distinguishing between which function (`Equal`, `Compare`, ...) should be derived is done using a customizable prefix, see command line flags.
+
+Let `goderive` edit your function names in your source code, by enabling `autoname` and `dedup` using the command line flags.
+These flags respectively makes sure than your functions have unique names and that you don't generate multiple functions that do the same thing.
 
 ## Equal
 

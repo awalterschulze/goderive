@@ -74,7 +74,7 @@ func (this *sorted) genFuncFor(typ *types.Slice) error {
 	case *types.Pointer, *types.Struct, *types.Slice, *types.Array, *types.Map:
 		p.P(this.sortPkg() + ".Slice(s, func(i, j int) bool { return " + this.compare.GetFuncName(etyp) + "(s[i], s[j]) < 0 })")
 	default:
-		return fmt.Errorf("unsupported compare type: %#v", typ)
+		return fmt.Errorf("unsupported compare type: %s", this.TypeString(typ))
 	}
 	p.P("return s")
 	p.Out()

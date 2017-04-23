@@ -1450,6 +1450,19 @@ func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltI
 	return deriveCompareMapsOfSimplerBuiltInTypes(*this, *that)
 }
 
+func deriveComparePtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareMapsOfBuiltInTypes(*this, *that)
+}
+
 func deriveCompareComplex32(this, that complex64) int {
 	if thisr, thatr := real(this), real(that); thisr == thatr {
 		if thisi, thati := imag(this), imag(that); thisi == thati {
@@ -1496,12 +1509,12 @@ func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 }
 
 func deriveSortedInts(s []int) []int {
-	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+	sort.Ints(s)
 	return s
 }
 
 func deriveSortedStrings(s []string) []string {
-	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+	sort.Strings(s)
 	return s
 }
 
@@ -1928,6 +1941,25 @@ func deriveCompareMapsOfSimplerBuiltInTypes(this, that MapsOfSimplerBuiltInTypes
 		return c
 	}
 	if c := deriveCompareMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareMapsOfBuiltInTypes(this, that MapsOfBuiltInTypes) int {
+	if c := deriveCompareMapOfboolTostring(this.BoolToString, that.BoolToString); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringTobool(this.StringToBool, that.StringToBool); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfcomplex128Tocomplex64(this.Complex128ToComplex64, that.Complex128ToComplex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOffloat64Touint32(this.Float64ToUint32, that.Float64ToUint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfuint16Touint8(this.Uint16ToUint8, that.Uint16ToUint8); c != 0 {
 		return c
 	}
 	return 0
@@ -3892,7 +3924,192 @@ func deriveCompareMapOfuint8Toint64(this, that map[uint8]int64) int {
 	return 0
 }
 
+func deriveCompareMapOfboolTostring(this, that map[bool]string) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedSliceOfbool(deriveKeysMapOfboolTostring(this))
+	thatkeys := deriveSortedSliceOfbool(deriveKeysMapOfboolTostring(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			if c := strings.Compare(this[thiskey], that[thatkey]); c != 0 {
+				return c
+			}
+		} else {
+			if c := deriveComparebool(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfstringTobool(this, that map[string]bool) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringTobool(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringTobool(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			if c := deriveComparebool(this[thiskey], that[thatkey]); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfcomplex128Tocomplex64(this, that map[complex128]complex64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedSliceOfcomplex128(deriveKeysMapOfcomplex128Tocomplex64(this))
+	thatkeys := deriveSortedSliceOfcomplex128(deriveKeysMapOfcomplex128Tocomplex64(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			if c := deriveCompareComplex32(this[thiskey], that[thatkey]); c != 0 {
+				return c
+			}
+		} else {
+			if c := deriveCompareComplex64(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOffloat64Touint32(this, that map[float64]uint32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedSliceOffloat64(deriveKeysMapOffloat64Touint32(this))
+	thatkeys := deriveSortedSliceOffloat64(deriveKeysMapOffloat64Touint32(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			if c := deriveCompareuint32(this[thiskey], that[thatkey]); c != 0 {
+				return c
+			}
+		} else {
+			if c := deriveComparefloat64(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfuint16Touint8(this, that map[uint16]uint8) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedSliceOfuint16(deriveKeysMapOfuint16Touint8(this))
+	thatkeys := deriveSortedSliceOfuint16(deriveKeysMapOfuint16Touint8(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			if c := deriveCompareuint8(this[thiskey], that[thatkey]); c != 0 {
+				return c
+			}
+		} else {
+			if c := deriveCompareuint16(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
 func deriveSortedSliceOfuint8(s []uint8) []uint8 {
+	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+	return s
+}
+
+func deriveSortedSliceOfbool(s []bool) []bool {
+	sort.Slice(s, func(i, j int) bool { return deriveComparebool(s[i], s[j]) < 0 })
+	return s
+}
+
+func deriveSortedSliceOfcomplex128(s []complex128) []complex128 {
+	sort.Slice(s, func(i, j int) bool { return deriveCompareComplex64(s[i], s[j]) < 0 })
+	return s
+}
+
+func deriveSortedSliceOffloat64(s []float64) []float64 {
+	sort.Float64s(s)
+	return s
+}
+
+func deriveSortedSliceOfuint16(s []uint16) []uint16 {
 	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
 	return s
 }
@@ -3907,6 +4124,46 @@ func deriveKeysMapOfstringTouint32(m map[string]uint32) []string {
 
 func deriveKeysMapOfuint8Toint64(m map[uint8]int64) []uint8 {
 	keys := make([]uint8, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfboolTostring(m map[bool]string) []bool {
+	keys := make([]bool, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfstringTobool(m map[string]bool) []string {
+	keys := make([]string, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfcomplex128Tocomplex64(m map[complex128]complex64) []complex128 {
+	keys := make([]complex128, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOffloat64Touint32(m map[float64]uint32) []float64 {
+	keys := make([]float64, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfuint16Touint8(m map[uint16]uint8) []uint16 {
+	keys := make([]uint16, 0, len(m))
 	for key, _ := range m {
 		keys = append(keys, key)
 	}

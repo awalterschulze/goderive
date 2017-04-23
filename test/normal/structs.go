@@ -223,6 +223,10 @@ func (this *MapsOfBuiltInTypes) Equal(that *MapsOfBuiltInTypes) bool {
 	return deriveEqualPtrToMapsOfBuiltInTypes(this, that)
 }
 
+func (this *MapsOfBuiltInTypes) Compare(that *MapsOfBuiltInTypes) int {
+	return deriveComparePtrToMapsOfBuiltInTypes(this, that)
+}
+
 type SliceToSlice struct {
 	Ints    [][]int
 	Strings [][]string

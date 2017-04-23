@@ -68,10 +68,6 @@ This feature requires Go 1.8
 
 ### TODO
 
-  - complex64, complex128
-  - structs
-  - bools
-  - optimize strings and ints
   - more tests
   - update readme example
   - add example to example package

@@ -56,7 +56,26 @@ func (this *sorted) genFuncFor(typ *types.Slice) error {
 	p.P("")
 	p.P("func %s(s %s) %s {", this.GetFuncName(typ), typeStr, typeStr)
 	p.In()
-	p.P(this.sortPkg() + ".Slice(s, func(i, j int) bool { return s[i] < s[j] })")
+	etyp := typ.Elem()
+	switch ttyp := etyp.Underlying().(type) {
+	case *types.Basic:
+		switch ttyp.Kind() {
+		case types.String:
+			p.P(this.sortPkg() + ".Strings(s)")
+		case types.Float64:
+			p.P(this.sortPkg() + ".Float64s(s)")
+		case types.Int:
+			p.P(this.sortPkg() + ".Ints(s)")
+		case types.Complex64, types.Complex128, types.Bool:
+			p.P(this.sortPkg() + ".Slice(s, func(i, j int) bool { return " + this.compare.GetFuncName(ttyp) + "(s[i], s[j]) < 0 })")
+		default:
+			p.P(this.sortPkg() + ".Slice(s, func(i, j int) bool { return s[i] < s[j] })")
+		}
+	case *types.Pointer, *types.Struct, *types.Slice, *types.Array, *types.Map:
+		p.P(this.sortPkg() + ".Slice(s, func(i, j int) bool { return " + this.compare.GetFuncName(ttyp) + "(s[i], s[j]) < 0 })")
+	default:
+		return fmt.Errorf("unsupported compare type: %#v", typ)
+	}
 	p.P("return s")
 	p.Out()
 	p.P("}")

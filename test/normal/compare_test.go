@@ -33,6 +33,7 @@ func TestCompareStructs(t *testing.T) {
 		&SliceOfPtrToBuiltInTypes{},
 		&ArrayOfBuiltInTypes{},
 		&ArrayOfPtrToBuiltInTypes{},
+		&MapsOfBuiltInTypes{},
 
 		&MapsOfSimplerBuiltInTypes{},
 	}

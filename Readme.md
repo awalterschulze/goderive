@@ -8,11 +8,11 @@ Functions that are currently supported include:
 
   - [Equal](https://github.com/awalterschulze/goderive#equal)
   - [Compare](https://github.com/awalterschulze/goderive#compare)
+  - [Keys](https://github.com/awalterschulze/goderive#keys)
+  - [Sorted](https://github.com/awalterschulze/goderive#sorted)
 
 More functions are in the works:
 
-  - Keys
-  - Sorted
   - Fmap
   - Join
 
@@ -99,14 +99,9 @@ The `deriveKeys` function returns a map's keys as a slice.
 
 The `deriveSorted` function is useful for deterministically ranging over maps when used with `deriveKeys`.
 This feature requires Go 1.8
-derivedSorted does create a copy of its input, so that it does not mutate its input.
+deriveSorted does create a copy of its input, so that it does not mutate its input.
 This does sacrifice some efficiency.
-
-### TODO
-
-  - more tests
-  - update readme example
-  - add example to example package
+deriveSorted supports only the types that deriveCompare supports, since it uses it for sorting.
 
 ## Fmap
 

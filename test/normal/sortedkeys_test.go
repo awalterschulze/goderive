@@ -15,6 +15,7 @@
 package test
 
 import (
+	"reflect"
 	"sort"
 	"testing"
 )
@@ -50,5 +51,27 @@ func TestSortedMapKeysInt(t *testing.T) {
 	}
 	if !sort.IntsAreSorted(keys) {
 		t.Fatalf("keys are not sorted %v", keys)
+	}
+}
+
+func TestSortedMapKeysInt64s(t *testing.T) {
+	var m map[int64]int64
+	m = random(m).(map[int64]int64)
+	keys := deriveSortedInt64s(deriveKeysForMapInt64ToInt64(m))
+	if len(keys) != len(m) {
+		t.Fatalf("length of keys: want %d got %d", len(m), len(keys))
+	}
+	for _, key := range keys {
+		if _, ok := m[key]; !ok {
+			t.Fatalf("key %v does not exist in %#v", key, m)
+		}
+	}
+	want := []int64{}
+	for k := range m {
+		want = append(want, k)
+	}
+	sort.Slice(want, func(i, j int) bool { return want[i] < want[j] })
+	if !reflect.DeepEqual(keys, want) {
+		t.Fatalf("want %v got %d", want, keys)
 	}
 }

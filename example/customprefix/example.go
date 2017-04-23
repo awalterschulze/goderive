@@ -2,7 +2,7 @@
 // have to start with default "deriveEqual" prefix.
 // in the Makefile we can see the goderive command being called:
 //
-//   goderive --equalprefix="eq" ./...
+//   goderive --equal.prefix="eq" ./...
 //
 // This sets the new prefix to "eq".
 package customprefix

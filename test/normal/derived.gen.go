@@ -1359,6 +1359,14 @@ func deriveKeysForMapIntToInt64(m map[int]int64) []int {
 	return keys
 }
 
+func deriveKeysForMapInt64ToInt64(m map[int64]int64) []int64 {
+	keys := make([]int64, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
 func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -1623,6 +1631,13 @@ func deriveSortedStrings(src []string) []string {
 	dst := make([]string, len(src))
 	copy(dst, src)
 	sort.Strings(dst)
+	return dst
+}
+
+func deriveSortedInt64s(src []int64) []int64 {
+	dst := make([]int64, len(src))
+	copy(dst, src)
+	sort.Slice(dst, func(i, j int) bool { return dst[i] < dst[j] })
 	return dst
 }
 

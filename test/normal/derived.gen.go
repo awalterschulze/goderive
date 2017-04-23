@@ -1385,6 +1385,58 @@ func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
 	return deriveComparePtrToBuiltInTypes_(*this, *that)
 }
 
+func deriveComparePtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareSliceOfBuiltInTypes(*this, *that)
+}
+
+func deriveComparePtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareSliceOfPtrToBuiltInTypes(*this, *that)
+}
+
+func deriveComparePtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareArrayOfBuiltInTypes(*this, *that)
+}
+
+func deriveComparePtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareArrayOfPtrToBuiltInTypes(*this, *that)
+}
+
 func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -1616,6 +1668,256 @@ func deriveComparePtrToBuiltInTypes_(this, that PtrToBuiltInTypes) int {
 		return c
 	}
 	if c := deriveComparePtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareSliceOfBuiltInTypes(this, that SliceOfBuiltInTypes) int {
+	if c := deriveCompareSliceOfbool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := bytes.Compare(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfcomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfcomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOffloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOffloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfrune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfstring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := bytes.Compare(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrToBuiltInTypes(this, that SliceOfPtrToBuiltInTypes) int {
+	if c := deriveCompareSliceOfPtrTobool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTobyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTofloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTofloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTorune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTostring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareArrayOfBuiltInTypes(this, that ArrayOfBuiltInTypes) int {
+	if c := deriveCompareArray1Ofbool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray2Ofbyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray3Ofcomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray4Ofcomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray5Offloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray6Offloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray7Ofint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray8Ofint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray9Ofint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray10Ofint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray11Ofint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray12Ofrune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray13Ofstring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray14Ofuint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray15Ofuint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray16Ofuint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray17Ofuint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray18Ofuint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray19Ofuintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray10Ofbool(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareArrayOfPtrToBuiltInTypes(this, that ArrayOfPtrToBuiltInTypes) int {
+	if c := deriveCompareArray1OfPtrTobool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray2OfPtrTobyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray3OfPtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray4OfPtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray5OfPtrTofloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray6OfPtrTofloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray7OfPtrToint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray8OfPtrToint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray9OfPtrToint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray10OfPtrToint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray11OfPtrToint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray12OfPtrTorune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray13OfPtrTostring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray14OfPtrTouint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray15OfPtrTouint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray16OfPtrTouint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray17OfPtrTouint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray18OfPtrTouint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray19OfPtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray10OfPtrTobool(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize); c != 0 {
 		return c
 	}
 	return 0
@@ -2058,6 +2360,1470 @@ func deriveComparePtrTouintptr(this, that *uintptr) int {
 		return 1
 	}
 	return deriveCompareuintptr(*this, *that)
+}
+
+func deriveCompareSliceOfbool(this, that []bool) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparebool(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfcomplex128(this, that []complex128) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareComplex64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfcomplex64(this, that []complex64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareComplex32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOffloat64(this, that []float64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparefloat64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOffloat32(this, that []float32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparefloat32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfint(this, that []int) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfint16(this, that []int16) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint16(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfint32(this, that []int32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfint64(this, that []int64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfint8(this, that []int8) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint8(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfrune(this, that []rune) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparerune(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfstring(this, that []string) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := strings.Compare(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfuint(this, that []uint) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfuint16(this, that []uint16) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuint16(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfuint32(this, that []uint32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuint32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfuint64(this, that []uint64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuint64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfuintptr(this, that []uintptr) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuintptr(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTobool(this, that []*bool) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTobool(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTobyte(this, that []*byte) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTobyte(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTocomplex128(this, that []*complex128) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTocomplex128(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTocomplex64(this, that []*complex64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTocomplex64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTofloat64(this, that []*float64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTofloat64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTofloat32(this, that []*float32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTofloat32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrToint(this, that []*int) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrToint16(this, that []*int16) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint16(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrToint32(this, that []*int32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrToint64(this, that []*int64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrToint8(this, that []*int8) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint8(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTorune(this, that []*rune) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTorune(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTostring(this, that []*string) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTostring(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTouint(this, that []*uint) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTouint16(this, that []*uint16) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint16(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTouint32(this, that []*uint32) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTouint64(this, that []*uint64) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTouint8(this, that []*uint8) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint8(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTouintptr(this, that []*uintptr) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouintptr(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray1Ofbool(this, that [1]bool) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparebool(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray2Ofbyte(this, that [2]byte) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparebyte(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray3Ofcomplex128(this, that [3]complex128) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareComplex64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray4Ofcomplex64(this, that [4]complex64) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareComplex32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray5Offloat64(this, that [5]float64) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparefloat64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray6Offloat32(this, that [6]float32) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparefloat32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray7Ofint(this, that [7]int) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray8Ofint16(this, that [8]int16) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint16(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray9Ofint32(this, that [9]int32) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray10Ofint64(this, that [10]int64) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray11Ofint8(this, that [11]int8) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint8(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray12Ofrune(this, that [12]rune) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparerune(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray13Ofstring(this, that [13]string) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := strings.Compare(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray14Ofuint(this, that [14]uint) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray15Ofuint16(this, that [15]uint16) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuint16(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray16Ofuint32(this, that [16]uint32) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuint32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray17Ofuint64(this, that [17]uint64) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuint64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray18Ofuint8(this, that [18]uint8) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuint8(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray19Ofuintptr(this, that [19]uintptr) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareuintptr(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray10Ofbool(this, that [10]bool) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparebool(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray1OfPtrTobool(this, that [1]*bool) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTobool(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray2OfPtrTobyte(this, that [2]*byte) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTobyte(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray3OfPtrTocomplex128(this, that [3]*complex128) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTocomplex128(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray4OfPtrTocomplex64(this, that [4]*complex64) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTocomplex64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray5OfPtrTofloat64(this, that [5]*float64) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTofloat64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray6OfPtrTofloat32(this, that [6]*float32) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTofloat32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray7OfPtrToint(this, that [7]*int) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray8OfPtrToint16(this, that [8]*int16) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint16(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray9OfPtrToint32(this, that [9]*int32) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray10OfPtrToint64(this, that [10]*int64) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray11OfPtrToint8(this, that [11]*int8) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToint8(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray12OfPtrTorune(this, that [12]*rune) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTorune(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray13OfPtrTostring(this, that [13]*string) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTostring(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray14OfPtrTouint(this, that [14]*uint) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray15OfPtrTouint16(this, that [15]*uint16) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint16(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray16OfPtrTouint32(this, that [16]*uint32) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint32(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray17OfPtrTouint64(this, that [17]*uint64) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint64(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray18OfPtrTouint8(this, that [18]*uint8) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouint8(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray19OfPtrTouintptr(this, that [19]*uintptr) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTouintptr(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareArray10OfPtrTobool(this, that [10]*bool) int {
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTobool(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
 }
 
 func deriveCompareMapOfstringTouint32(this, that map[string]uint32) int {

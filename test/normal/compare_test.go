@@ -29,6 +29,11 @@ func TestCompareStructs(t *testing.T) {
 	structs := []interface{}{
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
+		&SliceOfBuiltInTypes{},
+		&SliceOfPtrToBuiltInTypes{},
+		&ArrayOfBuiltInTypes{},
+		&ArrayOfPtrToBuiltInTypes{},
+
 		&MapsOfSimplerBuiltInTypes{},
 	}
 	for _, this := range structs {

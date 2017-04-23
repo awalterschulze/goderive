@@ -5,12 +5,12 @@
 goderive parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. Functions that are currently supported include:
 
   - [Equal](https://github.com/awalterschulze/goderive#equal)
+  - [Compare](https://github.com/awalterschulze/goderive#compare)
 
 More functions are in the works:
 
   - Keys
   - Sorted
-  - Compare
   - Fmap
   - Join
 
@@ -57,21 +57,6 @@ func deriveEqual(this, that *MyStruct) bool {
   - Struct without an Equal method
   - Unnamed Structs, which are not comparable with `==`
 
-## Keys
-
-The `deriveKeys` function returns a map's keys as a slice.
-
-## Sorted
-
-The `deriveSorted` function is useful for deterministically ranging over maps when used with `deriveKeys`.
-This feature requires Go 1.8
-
-### TODO
-
-  - more tests
-  - update readme example
-  - add example to example package
-
 ## Compare
 
 The `deriveCompare` function is a maintainable way to implement Less functions.
@@ -93,9 +78,28 @@ func (this *MyStruct) Less(that *MyStruct) bool {
 }
 ```
 
-## TODO
+### Unsupported Types
 
-  - Support more types
+  - Chan
+  - Interface
+  - Function
+  - Struct without a Compare method
+  - Unnamed Structs
+
+## Keys
+
+The `deriveKeys` function returns a map's keys as a slice.
+
+## Sorted
+
+The `deriveSorted` function is useful for deterministically ranging over maps when used with `deriveKeys`.
+This feature requires Go 1.8
+
+### TODO
+
+  - more tests
+  - update readme example
+  - add example to example package
 
 ## Fmap
 

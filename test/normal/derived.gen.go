@@ -1359,45 +1359,6 @@ func deriveKeysForMapIntToInt64(m map[int]int64) []int {
 	return keys
 }
 
-func deriveComparePtrToRecursiveType(this, that *RecursiveType) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
-	}
-	if that == nil {
-		return 1
-	}
-	return deriveCompareRecursiveType(*this, *that)
-}
-
-func deriveComparePtrToEmbeddedStruct1(this, that *EmbeddedStruct1) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
-	}
-	if that == nil {
-		return 1
-	}
-	return deriveCompareEmbeddedStruct1(*this, *that)
-}
-
-func deriveComparePtrToEmbeddedStruct2(this, that *EmbeddedStruct2) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
-	}
-	if that == nil {
-		return 1
-	}
-	return deriveCompareEmbeddedStruct2(*this, *that)
-}
-
 func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -1567,6 +1528,45 @@ func deriveComparePtrToMapWithStructs(this, that *MapWithStructs) int {
 	return deriveCompareMapWithStructs(*this, *that)
 }
 
+func deriveComparePtrToRecursiveType(this, that *RecursiveType) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareRecursiveType(*this, *that)
+}
+
+func deriveComparePtrToEmbeddedStruct1(this, that *EmbeddedStruct1) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareEmbeddedStruct1(*this, *that)
+}
+
+func deriveComparePtrToEmbeddedStruct2(this, that *EmbeddedStruct2) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareEmbeddedStruct2(*this, *that)
+}
+
 func deriveCompareComplex32(this, that complex64) int {
 	if thisr, thatr := real(this), real(that); thisr == thatr {
 		if thisi, thati := imag(this), imag(that); thisi == thati {
@@ -1666,36 +1666,6 @@ func deriveJoinSS(list [][]string) []string {
 		res = append(res, elem...)
 	}
 	return res
-}
-
-func deriveCompareRecursiveType(this, that RecursiveType) int {
-	if c := bytes.Compare(this.Bytes, that.Bytes); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfintToRecursiveType(this.N, that.N); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareEmbeddedStruct1(this, that EmbeddedStruct1) int {
-	if c := this.Name.Compare(&that.Name); c != 0 {
-		return c
-	}
-	if c := this.Structs.Compare(that.Structs); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareEmbeddedStruct2(this, that EmbeddedStruct2) int {
-	if c := this.Structs.Compare(&that.Structs); c != 0 {
-		return c
-	}
-	if c := this.Name.Compare(that.Name); c != 0 {
-		return c
-	}
-	return 0
 }
 
 func deriveCompareBuiltInTypes(this, that BuiltInTypes) int {
@@ -2170,44 +2140,39 @@ func deriveCompareMapWithStructs(this, that MapWithStructs) int {
 	return 0
 }
 
-func deriveCompareDeriveTheDerived_(this, that DeriveTheDerived) int {
-	if c := deriveCompareint(this.Field, that.Field); c != 0 {
+func deriveCompareRecursiveType(this, that RecursiveType) int {
+	if c := bytes.Compare(this.Bytes, that.Bytes); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfintToRecursiveType(this.N, that.N); c != 0 {
 		return c
 	}
 	return 0
 }
 
-func deriveCompareMapOfintToRecursiveType(this, that map[int]RecursiveType) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
+func deriveCompareEmbeddedStruct1(this, that EmbeddedStruct1) int {
+	if c := this.Name.Compare(&that.Name); c != 0 {
+		return c
 	}
-	if that == nil {
-		return 1
+	if c := this.Structs.Compare(that.Structs); c != 0 {
+		return c
 	}
-	if len(this) != len(that) {
-		if len(this) < len(that) {
-			return -1
-		}
-		return 1
+	return 0
+}
+
+func deriveCompareEmbeddedStruct2(this, that EmbeddedStruct2) int {
+	if c := this.Structs.Compare(&that.Structs); c != 0 {
+		return c
 	}
-	thiskeys := deriveSortedInts(deriveKeysMapOfintToRecursiveType(this))
-	thatkeys := deriveSortedInts(deriveKeysMapOfintToRecursiveType(that))
-	for i, thiskey := range thiskeys {
-		thatkey := thatkeys[i]
-		if thiskey == thatkey {
-			thisvalue := this[thiskey]
-			thatvalue := that[thatkey]
-			if c := thisvalue.Compare(&thatvalue); c != 0 {
-				return c
-			}
-		} else {
-			if c := deriveCompareint(thiskey, thatkey); c != 0 {
-				return c
-			}
-		}
+	if c := this.Name.Compare(that.Name); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareDeriveTheDerived_(this, that DeriveTheDerived) int {
+	if c := deriveCompareint(this.Field, that.Field); c != 0 {
+		return c
 	}
 	return 0
 }
@@ -4677,6 +4642,41 @@ func deriveCompareMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) i
 	return 0
 }
 
+func deriveCompareMapOfintToRecursiveType(this, that map[int]RecursiveType) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedInts(deriveKeysMapOfintToRecursiveType(this))
+	thatkeys := deriveSortedInts(deriveKeysMapOfintToRecursiveType(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := thisvalue.Compare(&thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := deriveCompareint(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
 func deriveSortedSliceOfuint8(s []uint8) []uint8 {
 	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
 	return s
@@ -4705,14 +4705,6 @@ func deriveSortedSliceOfuint16(s []uint16) []uint16 {
 func deriveSortedSliceOfName(s []Name) []Name {
 	sort.Slice(s, func(i, j int) bool { return deriveCompareName(s[i], s[j]) < 0 })
 	return s
-}
-
-func deriveKeysMapOfintToRecursiveType(m map[int]RecursiveType) []int {
-	keys := make([]int, 0, len(m))
-	for key, _ := range m {
-		keys = append(keys, key)
-	}
-	return keys
 }
 
 func deriveKeysMapOfstringTouint32(m map[string]uint32) []string {
@@ -4805,6 +4797,14 @@ func deriveKeysMapOfstringToSliceOfName(m map[string][]Name) []string {
 
 func deriveKeysMapOfstringToSliceOfPtrToName(m map[string][]*Name) []string {
 	keys := make([]string, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfintToRecursiveType(m map[int]RecursiveType) []int {
+	keys := make([]int, 0, len(m))
 	for key, _ := range m {
 		keys = append(keys, key)
 	}

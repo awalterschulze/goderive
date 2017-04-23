@@ -347,7 +347,3 @@ type UnnamedStruct struct {
 func (this *UnnamedStruct) Equal(that *UnnamedStruct) bool {
 	return deriveEqualPtrToUnnamedStruct(this, that)
 }
-
-// func (this *UnnamedStruct) Compare(that *UnnamedStruct) int {
-// 	return deriveComparePtrToUnnamedStruct(this, that)
-// }

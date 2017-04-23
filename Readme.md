@@ -97,11 +97,12 @@ The `deriveKeys` function returns a map's keys as a slice.
 
 ## Sorted
 
-The `deriveSorted` function is useful for deterministically ranging over maps when used with `deriveKeys`.
 This feature requires Go 1.8
-deriveSorted does create a copy of its input, so that it does not mutate its input.
-This does sacrifice some efficiency.
-deriveSorted supports only the types that deriveCompare supports, since it uses it for sorting.
+
+The `deriveSorted` function is useful for deterministically ranging over maps when used with `deriveKeys`.
+`deriveSorted` sacrifices efficiency for immutability by creating a copy of its input.
+
+`deriveSorted` supports only the types that `deriveCompare` supports, since it uses it for sorting.
 
 ## Fmap
 

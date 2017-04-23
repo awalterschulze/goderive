@@ -308,6 +308,10 @@ func (this *RecursiveType) Equal(that *RecursiveType) bool {
 	return deriveEqualPtrToRecursiveType(this, that)
 }
 
+func (this *RecursiveType) Compare(that *RecursiveType) int {
+	return deriveComparePtrToRecursiveType(this, that)
+}
+
 type EmbeddedStruct1 struct {
 	Name
 	*Structs
@@ -315,6 +319,10 @@ type EmbeddedStruct1 struct {
 
 func (this *EmbeddedStruct1) Equal(that *EmbeddedStruct1) bool {
 	return deriveEqualPtrToEmbeddedStruct1(this, that)
+}
+
+func (this *EmbeddedStruct1) Compare(that *EmbeddedStruct1) int {
+	return deriveComparePtrToEmbeddedStruct1(this, that)
 }
 
 type EmbeddedStruct2 struct {
@@ -326,6 +334,10 @@ func (this *EmbeddedStruct2) Equal(that *EmbeddedStruct2) bool {
 	return deriveEqualPtrToEmbeddedStruct2(this, that)
 }
 
+func (this *EmbeddedStruct2) Compare(that *EmbeddedStruct2) int {
+	return deriveComparePtrToEmbeddedStruct2(this, that)
+}
+
 type UnnamedStruct struct {
 	Unnamed struct {
 		String string
@@ -335,3 +347,7 @@ type UnnamedStruct struct {
 func (this *UnnamedStruct) Equal(that *UnnamedStruct) bool {
 	return deriveEqualPtrToUnnamedStruct(this, that)
 }
+
+// func (this *UnnamedStruct) Compare(that *UnnamedStruct) int {
+// 	return deriveComparePtrToUnnamedStruct(this, that)
+// }

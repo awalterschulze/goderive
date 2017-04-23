@@ -296,7 +296,7 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.P(`}`)
 		p.P(`return 0`)
 	default:
-		return fmt.Errorf("unsupported compare type: %#v", typ)
+		return fmt.Errorf("unsupported compare type: %s", this.TypeString(typ))
 	}
 	p.Out()
 	p.P("}")
@@ -326,6 +326,6 @@ func (this *compare) field(thisField, thatField string, fieldType types.Type) (s
 	case *types.Named:
 		return fmt.Sprintf("%s.Compare(&%s)", thisField, thatField), nil
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
-		return "", fmt.Errorf("unsupported field type %#v", fieldType)
+		return "", fmt.Errorf("unsupported field type %s", this.TypeString(fieldType))
 	}
 }

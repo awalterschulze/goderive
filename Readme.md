@@ -59,7 +59,6 @@ func deriveEqual(this, that *MyStruct) bool {
   - Chan
   - Interface
   - Function
-  - Struct without an Equal method
   - Unnamed Structs, which are not comparable with `==`
 
 ## Compare

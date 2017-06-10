@@ -3,7 +3,10 @@
 package customprefix
 
 func eq(this, that *MyStruct) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		this.Int64 == that.Int64 &&
+	return (this == nil && that == nil) || this != nil && that != nil && eqMyStruct(*this, *that)
+}
+
+func eqMyStruct(this, that MyStruct) bool {
+	return this.Int64 == that.Int64 &&
 		this.String == that.String
 }

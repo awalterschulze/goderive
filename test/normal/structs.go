@@ -371,3 +371,11 @@ type StructWithStructWithFromAnotherPackage struct {
 func (this *StructWithStructWithFromAnotherPackage) Equal(that *StructWithStructWithFromAnotherPackage) bool {
 	return deriveEqualPtrToStructWithStructWithFromAnotherPackage(this, that)
 }
+
+type FieldWithStructWithPrivateFields struct {
+	A *extra.PrivateFieldAndNoEqualMethod
+}
+
+func (this *FieldWithStructWithPrivateFields) Equal(that *FieldWithStructWithPrivateFields) bool {
+	return deriveEqualPtrToFieldWithStructWithPrivateFields(this, that)
+}

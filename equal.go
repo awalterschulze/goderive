@@ -24,15 +24,19 @@ var equalPrefix = flag.String("equal.prefix", "deriveEqual", "set the prefix for
 
 type equal struct {
 	TypesMap
-	printer  Printer
-	bytesPkg Import
+	printer    Printer
+	bytesPkg   Import
+	reflectPkg Import
+	unsafePkg  Import
 }
 
 func newEqual(typesMap TypesMap, p Printer) *equal {
 	return &equal{
-		TypesMap: typesMap,
-		printer:  p,
-		bytesPkg: p.NewImport("bytes"),
+		TypesMap:   typesMap,
+		printer:    p,
+		bytesPkg:   p.NewImport("bytes"),
+		reflectPkg: p.NewImport("reflect"),
+		unsafePkg:  p.NewImport("unsafe"),
 	}
 }
 
@@ -82,59 +86,31 @@ func (this *equal) genFuncFor(typ types.Type) error {
 		p.P("return " + fieldStr)
 	case *types.Pointer:
 		ref := ttyp.Elem()
-		switch tttyp := ref.Underlying().(type) {
-		case *types.Basic:
-			fieldStr, err := this.field("this", "that", typ)
-			if err != nil {
-				return err
-			}
-			p.P("return " + fieldStr)
-		case *types.Slice, *types.Array, *types.Map:
-			p.P("return (this == nil && that == nil) || (this != nil) && (that != nil) && %s(%s, %s)", this.GetFuncName(tttyp), "*this", "*that")
-		case *types.Struct:
-			numFields := tttyp.NumFields()
-			if numFields == 0 {
-				p.P("return (this == nil && that == nil) || (this != nil) && (that != nil)")
-			} else {
-				p.P("return (this == nil && that == nil) || (this != nil) && (that != nil) &&")
-			}
-			p.In()
-			for i := 0; i < numFields; i++ {
-				field := tttyp.Field(i)
-				fieldType := field.Type()
-				fieldName := field.Name()
-				thisField := "this." + fieldName
-				thatField := "that." + fieldName
-				fieldStr, err := this.field(thisField, thatField, fieldType)
-				if err != nil {
-					return err
-				}
-				if (i + 1) != numFields {
-					p.P(fieldStr + " &&")
-				} else {
-					p.P(fieldStr)
-				}
-			}
-			p.Out()
-		default:
-			return fmt.Errorf("unsupported: pointer is not a named struct, but %#v", ref)
-		}
+		p.P("return (this == nil && that == nil) || this != nil && that != nil && %s(*this, *that)", this.GetFuncName(ref))
 	case *types.Struct:
-		numFields := ttyp.NumFields()
-		if numFields == 0 {
+		named := Fields(this.TypesMap, ttyp)
+		if named.Reflect {
+			p.P(`thisv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&this))`)
+			p.P(`thatv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&that))`)
+		}
+		if len(named.Fields) == 0 {
 			p.P("return true")
 		}
-		for i := 0; i < numFields; i++ {
-			field := ttyp.Field(i)
-			fieldType := field.Type()
-			fieldName := field.Name()
-			thisField := "this." + fieldName
-			thatField := "that." + fieldName
+		for i, field := range named.Fields {
+			fieldType := field.Type
+			var thisField, thatField string
+			if !field.Private() {
+				thisField = field.Name("this", nil)
+				thatField = field.Name("that", nil)
+			} else {
+				thisField = field.Name("thisv", this.unsafePkg)
+				thatField = field.Name("thatv", this.unsafePkg)
+			}
 			fieldStr, err := this.field(thisField, thatField, fieldType)
 			if err != nil {
 				return err
 			}
-			if (i + 1) != numFields {
+			if (i + 1) != len(named.Fields) {
 				fieldStr += " &&"
 			}
 			if i == 0 {

@@ -165,5 +165,5 @@ func typeName(typ types.Type, qual types.Qualifier) string {
 		return "MapOf" + typeName(t.Key(), qual) + "To" + typeName(t.Elem(), qual)
 	}
 	// The dollar helps to make sure that typenames cannot be faked by the user.
-	return "$" + types.TypeString(typ, qual)
+	return "$" + strings.Replace(types.TypeString(typ, qual), ".", "_", -1)
 }

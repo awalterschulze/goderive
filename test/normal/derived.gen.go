@@ -4,6 +4,7 @@ package test
 
 import (
 	"bytes"
+	extra "github.com/awalterschulze/goderive/test/extra"
 	"sort"
 	"strings"
 )
@@ -226,6 +227,12 @@ func deriveEqualPtrToUnnamedStruct(this, that *UnnamedStruct) bool {
 func deriveEqualPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		deriveEqualPtrToStructWithoutEqualMethod(this.A, that.A) &&
+		this.B == that.B
+}
+
+func deriveEqualPtrToStructWithStructWithFromAnotherPackage(this, that *StructWithStructWithFromAnotherPackage) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualPtrToextra_StructWithoutEqualMethod(this.A, that.A) &&
 		this.B == that.B
 }
 
@@ -1335,6 +1342,11 @@ func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
 func deriveEqualPtrToStructWithoutEqualMethod(this, that *StructWithoutEqualMethod) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
 		this.Num == that.Num
+}
+
+func deriveEqualPtrToextra_StructWithoutEqualMethod(this, that *extra.StructWithoutEqualMethod) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Number == that.Number
 }
 
 func deriveEqualArray10Ofint(this, that [10]int) bool {

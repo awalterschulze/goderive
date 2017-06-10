@@ -62,16 +62,15 @@ func main() {
 				pkgInfo = thisprogram.Package(path)
 			}
 
-			qual := types.RelativeTo(pkgInfo.Pkg)
-
 			p := newPrinter(pkgInfo.Pkg.Name())
+			quals := newQualifiers(p, pkgInfo.Pkg)
 
-			equalTypesMap := newTypesMap(qual, *equalPrefix, *autoname, *dedup)
-			keysTypesMap := newTypesMap(qual, *keysPrefix, *autoname, *dedup)
-			sortedTypesMap := newTypesMap(qual, *sortedPrefix, *autoname, *dedup)
-			compareTypesMap := newTypesMap(qual, *comparePrefix, *autoname, *dedup)
-			fmapTypesMap := newTypesMap(qual, *fmapPrefix, *autoname, *dedup)
-			joinTypesMap := newTypesMap(qual, *joinPrefix, *autoname, *dedup)
+			equalTypesMap := newTypesMap(quals, *equalPrefix, *autoname, *dedup)
+			keysTypesMap := newTypesMap(quals, *keysPrefix, *autoname, *dedup)
+			sortedTypesMap := newTypesMap(quals, *sortedPrefix, *autoname, *dedup)
+			compareTypesMap := newTypesMap(quals, *comparePrefix, *autoname, *dedup)
+			fmapTypesMap := newTypesMap(quals, *fmapPrefix, *autoname, *dedup)
+			joinTypesMap := newTypesMap(quals, *joinPrefix, *autoname, *dedup)
 
 			generators := []Generator{
 				newEqual(equalTypesMap, p),

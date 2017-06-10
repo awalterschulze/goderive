@@ -14,6 +14,8 @@
 
 package test
 
+import "github.com/awalterschulze/goderive/test/extra"
+
 type BuiltInTypes struct {
 	Bool       bool
 	Byte       byte
@@ -359,4 +361,13 @@ func (this *StructWithStructFieldWithoutEqualMethod) Equal(that *StructWithStruc
 
 type StructWithoutEqualMethod struct {
 	Num int64
+}
+
+type StructWithStructWithFromAnotherPackage struct {
+	A *extra.StructWithoutEqualMethod
+	B extra.StructWithoutEqualMethod
+}
+
+func (this *StructWithStructWithFromAnotherPackage) Equal(that *StructWithStructWithFromAnotherPackage) bool {
+	return deriveEqualPtrToStructWithStructWithFromAnotherPackage(this, that)
 }

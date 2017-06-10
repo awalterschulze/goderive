@@ -14,6 +14,7 @@ type PrivateFieldAndNoEqualMethod struct {
 	numbers   []int64
 	ptr       *int64
 	numberpts []*int64
+	strct     *StructWithoutEqualMethod
 }
 
 func (this *PrivateFieldAndNoEqualMethod) Generate(rand *rand.Rand, size int) reflect.Value {
@@ -43,5 +44,13 @@ func (this *PrivateFieldAndNoEqualMethod) Generate(rand *rand.Rand, size int) re
 		n := rand.Int63()
 		this.numberpts[i] = &n
 	}
+	if size == 4 {
+		return reflect.ValueOf(this)
+	}
+	this.strct = &StructWithoutEqualMethod{}
+	if size == 5 {
+		return reflect.ValueOf(this)
+	}
+	this.strct.Number = rand.Int63()
 	return reflect.ValueOf(this)
 }

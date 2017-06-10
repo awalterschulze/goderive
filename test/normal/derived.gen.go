@@ -1779,7 +1779,8 @@ func deriveEqualextra_PrivateFieldAndNoEqualMethod(this, that extra.PrivateField
 	return *(*int64)(unsafe.Pointer(thisv.FieldByName("number").UnsafeAddr())) == *(*int64)(unsafe.Pointer(thatv.FieldByName("number").UnsafeAddr())) &&
 		deriveEqualSliceOfint64(*(*[]int64)(unsafe.Pointer(thisv.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(thatv.FieldByName("numbers").UnsafeAddr()))) &&
 		((*(**int64)(unsafe.Pointer(thisv.FieldByName("ptr").UnsafeAddr())) == nil && *(**int64)(unsafe.Pointer(thatv.FieldByName("ptr").UnsafeAddr())) == nil) || (*(**int64)(unsafe.Pointer(thisv.FieldByName("ptr").UnsafeAddr())) != nil && *(**int64)(unsafe.Pointer(thatv.FieldByName("ptr").UnsafeAddr())) != nil && **(**int64)(unsafe.Pointer(thisv.FieldByName("ptr").UnsafeAddr())) == **(**int64)(unsafe.Pointer(thatv.FieldByName("ptr").UnsafeAddr())))) &&
-		deriveEqualSliceOfPtrToint64(*(*[]*int64)(unsafe.Pointer(thisv.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(thatv.FieldByName("numberpts").UnsafeAddr())))
+		deriveEqualSliceOfPtrToint64(*(*[]*int64)(unsafe.Pointer(thisv.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(thatv.FieldByName("numberpts").UnsafeAddr()))) &&
+		deriveEqualPtrToextra_StructWithoutEqualMethod(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr())))
 }
 
 func deriveCompareBuiltInTypes(this, that BuiltInTypes) int {

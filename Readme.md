@@ -35,8 +35,8 @@ In the following code the `deriveEqual` function will be spotted as a function t
 package main
 
 type MyStruct struct {
-	Int64  int64
-	String string
+	Int64     int64
+	StringPtr *string
 }
 
 func (this *MyStruct) Equal(that *MyStruct) bool {
@@ -48,9 +48,12 @@ goderive will then generate the following code in a `derived.gen.go` file in the
 
 ```go
 func deriveEqual(this, that *MyStruct) bool {
-	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
-		this.Int64 == that.Int64 &&
-		this.String == that.String
+	return (this == nil && that == nil) || this != nil && that != nil && deriveEqualMyStruct(*this, *that)
+}
+
+func deriveEqualMyStruct(this, that MyStruct) bool {
+	return this.Int64 == that.Int64 &&
+		((this.StringPtr == nil && that.StringPtr == nil) || (this.StringPtr != nil && that.StringPtr != nil && *this.StringPtr == *that.StringPtr))
 }
 ```
 

@@ -7,5 +7,6 @@ func eq(this, that *MyStruct) bool {
 }
 
 func eqMyStruct(this, that MyStruct) bool {
-	return this == that
+	return this.Int64 == that.Int64 &&
+		((this.StringPtr == nil && that.StringPtr == nil) || (this.StringPtr != nil && that.StringPtr != nil && *this.StringPtr == *that.StringPtr))
 }

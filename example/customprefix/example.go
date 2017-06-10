@@ -8,8 +8,8 @@
 package customprefix
 
 type MyStruct struct {
-	Int64  int64
-	String string
+	Int64     int64
+	StringPtr *string
 }
 
 func (this *MyStruct) Equal(that *MyStruct) bool {

@@ -1469,7 +1469,64 @@ func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareBuiltInTypes(*this, *that)
+	if c := deriveComparebool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveComparebyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveCompareComplex64(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareComplex32(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveComparefloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveComparefloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveComparerune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := strings.Compare(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareuintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
@@ -1482,7 +1539,64 @@ func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
 	if that == nil {
 		return 1
 	}
-	return deriveComparePtrToBuiltInTypes_(*this, *that)
+	if c := deriveComparePtrTobool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTobyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTofloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTofloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTorune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTostring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) int {
@@ -1495,7 +1609,64 @@ func deriveComparePtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) int 
 	if that == nil {
 		return 1
 	}
-	return deriveCompareSliceOfBuiltInTypes(*this, *that)
+	if c := deriveCompareSliceOfbool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := bytes.Compare(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfcomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfcomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOffloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOffloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfrune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfstring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := bytes.Compare(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfuintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) int {
@@ -1508,7 +1679,64 @@ func deriveComparePtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInT
 	if that == nil {
 		return 1
 	}
-	return deriveCompareSliceOfPtrToBuiltInTypes(*this, *that)
+	if c := deriveCompareSliceOfPtrTobool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTobyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTofloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTofloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTorune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTostring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) int {
@@ -1521,7 +1749,67 @@ func deriveComparePtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) int 
 	if that == nil {
 		return 1
 	}
-	return deriveCompareArrayOfBuiltInTypes(*this, *that)
+	if c := deriveCompareArray1Ofbool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray2Ofbyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray3Ofcomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray4Ofcomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray5Offloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray6Offloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray7Ofint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray8Ofint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray9Ofint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray10Ofint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray11Ofint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray12Ofrune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray13Ofstring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray14Ofuint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray15Ofuint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray16Ofuint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray17Ofuint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray18Ofuint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray19Ofuintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray10Ofbool(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) int {
@@ -1534,7 +1822,67 @@ func deriveComparePtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInT
 	if that == nil {
 		return 1
 	}
-	return deriveCompareArrayOfPtrToBuiltInTypes(*this, *that)
+	if c := deriveCompareArray1OfPtrTobool(this.Bool, that.Bool); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray2OfPtrTobyte(this.Byte, that.Byte); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray3OfPtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray4OfPtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray5OfPtrTofloat64(this.Float64, that.Float64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray6OfPtrTofloat32(this.Float32, that.Float32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray7OfPtrToint(this.Int, that.Int); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray8OfPtrToint16(this.Int16, that.Int16); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray9OfPtrToint32(this.Int32, that.Int32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray10OfPtrToint64(this.Int64, that.Int64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray11OfPtrToint8(this.Int8, that.Int8); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray12OfPtrTorune(this.Rune, that.Rune); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray13OfPtrTostring(this.String, that.String); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray14OfPtrTouint(this.Uint, that.Uint); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray15OfPtrTouint16(this.Uint16, that.Uint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray16OfPtrTouint32(this.Uint32, that.Uint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray17OfPtrTouint64(this.Uint64, that.Uint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray18OfPtrTouint8(this.Uint8, that.Uint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray19OfPtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
+		return c
+	}
+	if c := deriveCompareArray10OfPtrTobool(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) int {
@@ -1547,7 +1895,13 @@ func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltI
 	if that == nil {
 		return 1
 	}
-	return deriveCompareMapsOfSimplerBuiltInTypes(*this, *that)
+	if c := deriveCompareMapOfstringTouint32(this.StringToUint32, that.StringToUint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) int {
@@ -1560,7 +1914,22 @@ func deriveComparePtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareMapsOfBuiltInTypes(*this, *that)
+	if c := deriveCompareMapOfboolTostring(this.BoolToString, that.BoolToString); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringTobool(this.StringToBool, that.StringToBool); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfcomplex128Tocomplex64(this.Complex128ToComplex64, that.Complex128ToComplex64); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOffloat64Touint32(this.Float64ToUint32, that.Float64ToUint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfuint16Touint8(this.Uint16ToUint8, that.Uint16ToUint8); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToSliceToSlice(this, that *SliceToSlice) int {
@@ -1573,7 +1942,16 @@ func deriveComparePtrToSliceToSlice(this, that *SliceToSlice) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareSliceToSlice(*this, *that)
+	if c := deriveCompareSliceOfSliceOfint(this.Ints, that.Ints); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfSliceOfstring(this.Strings, that.Strings); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfSliceOfPtrToint(this.IntPtrs, that.IntPtrs); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToPtrTo(this, that *PtrTo) int {
@@ -1586,7 +1964,19 @@ func deriveComparePtrToPtrTo(this, that *PtrTo) int {
 	if that == nil {
 		return 1
 	}
-	return deriveComparePtrTo(*this, *that)
+	if c := deriveComparePtrToint(this.Basic, that.Basic); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToSliceOfint(this.Slice, that.Slice); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToArray4Ofint(this.Array, that.Array); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToMapOfintToint(this.Map, that.Map); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToName(this, that *Name) int {
@@ -1599,7 +1989,10 @@ func deriveComparePtrToName(this, that *Name) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareName(*this, *that)
+	if c := strings.Compare(this.Name, that.Name); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToStructs(this, that *Structs) int {
@@ -1612,7 +2005,19 @@ func deriveComparePtrToStructs(this, that *Structs) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareStructs(*this, *that)
+	if c := this.Struct.Compare(&that.Struct); c != 0 {
+		return c
+	}
+	if c := this.PtrToStruct.Compare(that.PtrToStruct); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfName(this.SliceOfStructs, that.SliceOfStructs); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToName(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToMapWithStructs(this, that *MapWithStructs) int {
@@ -1625,7 +2030,22 @@ func deriveComparePtrToMapWithStructs(this, that *MapWithStructs) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareMapWithStructs(*this, *that)
+	if c := deriveCompareMapOfNameTostring(this.NameToString, that.NameToString); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringToName(this.StringToName, that.StringToName); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringToPtrToName(this.StringToPtrToName, that.StringToPtrToName); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringToSliceOfName(this.StringToSliceOfName, that.StringToSliceOfName); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToRecursiveType(this, that *RecursiveType) int {
@@ -1638,7 +2058,13 @@ func deriveComparePtrToRecursiveType(this, that *RecursiveType) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareRecursiveType(*this, *that)
+	if c := bytes.Compare(this.Bytes, that.Bytes); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfintToRecursiveType(this.N, that.N); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToEmbeddedStruct1(this, that *EmbeddedStruct1) int {
@@ -1651,7 +2077,13 @@ func deriveComparePtrToEmbeddedStruct1(this, that *EmbeddedStruct1) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareEmbeddedStruct1(*this, *that)
+	if c := this.Name.Compare(&that.Name); c != 0 {
+		return c
+	}
+	if c := this.Structs.Compare(that.Structs); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToEmbeddedStruct2(this, that *EmbeddedStruct2) int {
@@ -1664,7 +2096,13 @@ func deriveComparePtrToEmbeddedStruct2(this, that *EmbeddedStruct2) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareEmbeddedStruct2(*this, *that)
+	if c := this.Structs.Compare(&that.Structs); c != 0 {
+		return c
+	}
+	if c := this.Name.Compare(that.Name); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) int {
@@ -1677,7 +2115,13 @@ func deriveComparePtrToStructWithStructFieldWithoutEqualMethod(this, that *Struc
 	if that == nil {
 		return 1
 	}
-	return deriveCompareStructWithStructFieldWithoutEqualMethod(*this, *that)
+	if c := deriveComparePtrToStructWithoutEqualMethod(this.A, that.A); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToStructWithoutEqualMethod(&this.B, &that.B); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToStructWithStructWithFromAnotherPackage(this, that *StructWithStructWithFromAnotherPackage) int {
@@ -1690,7 +2134,13 @@ func deriveComparePtrToStructWithStructWithFromAnotherPackage(this, that *Struct
 	if that == nil {
 		return 1
 	}
-	return deriveCompareStructWithStructWithFromAnotherPackage(*this, *that)
+	if c := deriveComparePtrToextra_StructWithoutEqualMethod(this.A, that.A); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToextra_StructWithoutEqualMethod(&this.B, &that.B); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveComparePtrToFieldWithStructWithPrivateFields(this, that *FieldWithStructWithPrivateFields) int {
@@ -1703,7 +2153,10 @@ func deriveComparePtrToFieldWithStructWithPrivateFields(this, that *FieldWithStr
 	if that == nil {
 		return 1
 	}
-	return deriveCompareFieldWithStructWithPrivateFields(*this, *that)
+	if c := deriveComparePtrToextra_PrivateFieldAndNoEqualMethod(this.A, that.A); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveCompareComplex32(this, that complex64) int {
@@ -1748,7 +2201,10 @@ func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompareDeriveTheDerived_(*this, *that)
+	if c := deriveCompareint(this.Field, that.Field); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveSortedInts(src []int) []int {
@@ -1824,542 +2280,6 @@ func deriveJoinSS(list [][]string) []string {
 		res = append(res, elem...)
 	}
 	return res
-}
-
-func deriveCompareBuiltInTypes(this, that BuiltInTypes) int {
-	if c := deriveComparebool(this.Bool, that.Bool); c != 0 {
-		return c
-	}
-	if c := deriveComparebyte(this.Byte, that.Byte); c != 0 {
-		return c
-	}
-	if c := deriveCompareComplex64(this.Complex128, that.Complex128); c != 0 {
-		return c
-	}
-	if c := deriveCompareComplex32(this.Complex64, that.Complex64); c != 0 {
-		return c
-	}
-	if c := deriveComparefloat64(this.Float64, that.Float64); c != 0 {
-		return c
-	}
-	if c := deriveComparefloat32(this.Float32, that.Float32); c != 0 {
-		return c
-	}
-	if c := deriveCompareint(this.Int, that.Int); c != 0 {
-		return c
-	}
-	if c := deriveCompareint16(this.Int16, that.Int16); c != 0 {
-		return c
-	}
-	if c := deriveCompareint32(this.Int32, that.Int32); c != 0 {
-		return c
-	}
-	if c := deriveCompareint64(this.Int64, that.Int64); c != 0 {
-		return c
-	}
-	if c := deriveCompareint8(this.Int8, that.Int8); c != 0 {
-		return c
-	}
-	if c := deriveComparerune(this.Rune, that.Rune); c != 0 {
-		return c
-	}
-	if c := strings.Compare(this.String, that.String); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint(this.Uint, that.Uint); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint16(this.Uint16, that.Uint16); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint32(this.Uint32, that.Uint32); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint64(this.Uint64, that.Uint64); c != 0 {
-		return c
-	}
-	if c := deriveCompareuint8(this.Uint8, that.Uint8); c != 0 {
-		return c
-	}
-	if c := deriveCompareuintptr(this.UintPtr, that.UintPtr); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveComparePtrToBuiltInTypes_(this, that PtrToBuiltInTypes) int {
-	if c := deriveComparePtrTobool(this.Bool, that.Bool); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTobyte(this.Byte, that.Byte); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTofloat64(this.Float64, that.Float64); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTofloat32(this.Float32, that.Float32); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint(this.Int, that.Int); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint16(this.Int16, that.Int16); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint32(this.Int32, that.Int32); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint64(this.Int64, that.Int64); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint8(this.Int8, that.Int8); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTorune(this.Rune, that.Rune); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTostring(this.String, that.String); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint(this.Uint, that.Uint); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint16(this.Uint16, that.Uint16); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint32(this.Uint32, that.Uint32); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint64(this.Uint64, that.Uint64); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouint8(this.Uint8, that.Uint8); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareSliceOfBuiltInTypes(this, that SliceOfBuiltInTypes) int {
-	if c := deriveCompareSliceOfbool(this.Bool, that.Bool); c != 0 {
-		return c
-	}
-	if c := bytes.Compare(this.Byte, that.Byte); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfcomplex128(this.Complex128, that.Complex128); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfcomplex64(this.Complex64, that.Complex64); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOffloat64(this.Float64, that.Float64); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOffloat32(this.Float32, that.Float32); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfint(this.Int, that.Int); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfint16(this.Int16, that.Int16); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfint32(this.Int32, that.Int32); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfint64(this.Int64, that.Int64); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfint8(this.Int8, that.Int8); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfrune(this.Rune, that.Rune); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfstring(this.String, that.String); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfuint(this.Uint, that.Uint); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfuint16(this.Uint16, that.Uint16); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfuint32(this.Uint32, that.Uint32); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfuint64(this.Uint64, that.Uint64); c != 0 {
-		return c
-	}
-	if c := bytes.Compare(this.Uint8, that.Uint8); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfuintptr(this.UintPtr, that.UintPtr); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareSliceOfPtrToBuiltInTypes(this, that SliceOfPtrToBuiltInTypes) int {
-	if c := deriveCompareSliceOfPtrTobool(this.Bool, that.Bool); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTobyte(this.Byte, that.Byte); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTofloat64(this.Float64, that.Float64); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTofloat32(this.Float32, that.Float32); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrToint(this.Int, that.Int); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrToint16(this.Int16, that.Int16); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrToint32(this.Int32, that.Int32); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrToint64(this.Int64, that.Int64); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrToint8(this.Int8, that.Int8); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTorune(this.Rune, that.Rune); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTostring(this.String, that.String); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTouint(this.Uint, that.Uint); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTouint16(this.Uint16, that.Uint16); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTouint32(this.Uint32, that.Uint32); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTouint64(this.Uint64, that.Uint64); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTouint8(this.Uint8, that.Uint8); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareArrayOfBuiltInTypes(this, that ArrayOfBuiltInTypes) int {
-	if c := deriveCompareArray1Ofbool(this.Bool, that.Bool); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray2Ofbyte(this.Byte, that.Byte); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray3Ofcomplex128(this.Complex128, that.Complex128); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray4Ofcomplex64(this.Complex64, that.Complex64); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray5Offloat64(this.Float64, that.Float64); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray6Offloat32(this.Float32, that.Float32); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray7Ofint(this.Int, that.Int); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray8Ofint16(this.Int16, that.Int16); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray9Ofint32(this.Int32, that.Int32); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray10Ofint64(this.Int64, that.Int64); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray11Ofint8(this.Int8, that.Int8); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray12Ofrune(this.Rune, that.Rune); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray13Ofstring(this.String, that.String); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray14Ofuint(this.Uint, that.Uint); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray15Ofuint16(this.Uint16, that.Uint16); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray16Ofuint32(this.Uint32, that.Uint32); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray17Ofuint64(this.Uint64, that.Uint64); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray18Ofuint8(this.Uint8, that.Uint8); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray19Ofuintptr(this.UintPtr, that.UintPtr); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray10Ofbool(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareArrayOfPtrToBuiltInTypes(this, that ArrayOfPtrToBuiltInTypes) int {
-	if c := deriveCompareArray1OfPtrTobool(this.Bool, that.Bool); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray2OfPtrTobyte(this.Byte, that.Byte); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray3OfPtrTocomplex128(this.Complex128, that.Complex128); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray4OfPtrTocomplex64(this.Complex64, that.Complex64); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray5OfPtrTofloat64(this.Float64, that.Float64); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray6OfPtrTofloat32(this.Float32, that.Float32); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray7OfPtrToint(this.Int, that.Int); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray8OfPtrToint16(this.Int16, that.Int16); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray9OfPtrToint32(this.Int32, that.Int32); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray10OfPtrToint64(this.Int64, that.Int64); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray11OfPtrToint8(this.Int8, that.Int8); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray12OfPtrTorune(this.Rune, that.Rune); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray13OfPtrTostring(this.String, that.String); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray14OfPtrTouint(this.Uint, that.Uint); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray15OfPtrTouint16(this.Uint16, that.Uint16); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray16OfPtrTouint32(this.Uint32, that.Uint32); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray17OfPtrTouint64(this.Uint64, that.Uint64); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray18OfPtrTouint8(this.Uint8, that.Uint8); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray19OfPtrTouintptr(this.UintPtr, that.UintPtr); c != 0 {
-		return c
-	}
-	if c := deriveCompareArray10OfPtrTobool(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareMapsOfSimplerBuiltInTypes(this, that MapsOfSimplerBuiltInTypes) int {
-	if c := deriveCompareMapOfstringTouint32(this.StringToUint32, that.StringToUint32); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareMapsOfBuiltInTypes(this, that MapsOfBuiltInTypes) int {
-	if c := deriveCompareMapOfboolTostring(this.BoolToString, that.BoolToString); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfstringTobool(this.StringToBool, that.StringToBool); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfcomplex128Tocomplex64(this.Complex128ToComplex64, that.Complex128ToComplex64); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOffloat64Touint32(this.Float64ToUint32, that.Float64ToUint32); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfuint16Touint8(this.Uint16ToUint8, that.Uint16ToUint8); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareSliceToSlice(this, that SliceToSlice) int {
-	if c := deriveCompareSliceOfSliceOfint(this.Ints, that.Ints); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfSliceOfstring(this.Strings, that.Strings); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfSliceOfPtrToint(this.IntPtrs, that.IntPtrs); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveComparePtrTo(this, that PtrTo) int {
-	if c := deriveComparePtrToint(this.Basic, that.Basic); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToSliceOfint(this.Slice, that.Slice); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToArray4Ofint(this.Array, that.Array); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToMapOfintToint(this.Map, that.Map); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareName(this, that Name) int {
-	if c := strings.Compare(this.Name, that.Name); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareStructs(this, that Structs) int {
-	if c := this.Struct.Compare(&that.Struct); c != 0 {
-		return c
-	}
-	if c := this.PtrToStruct.Compare(that.PtrToStruct); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfName(this.SliceOfStructs, that.SliceOfStructs); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrToName(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareMapWithStructs(this, that MapWithStructs) int {
-	if c := deriveCompareMapOfNameTostring(this.NameToString, that.NameToString); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfstringToName(this.StringToName, that.StringToName); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfstringToPtrToName(this.StringToPtrToName, that.StringToPtrToName); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfstringToSliceOfName(this.StringToSliceOfName, that.StringToSliceOfName); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareRecursiveType(this, that RecursiveType) int {
-	if c := bytes.Compare(this.Bytes, that.Bytes); c != 0 {
-		return c
-	}
-	if c := deriveCompareMapOfintToRecursiveType(this.N, that.N); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareEmbeddedStruct1(this, that EmbeddedStruct1) int {
-	if c := this.Name.Compare(&that.Name); c != 0 {
-		return c
-	}
-	if c := this.Structs.Compare(that.Structs); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareEmbeddedStruct2(this, that EmbeddedStruct2) int {
-	if c := this.Structs.Compare(&that.Structs); c != 0 {
-		return c
-	}
-	if c := this.Name.Compare(that.Name); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareStructWithStructFieldWithoutEqualMethod(this, that StructWithStructFieldWithoutEqualMethod) int {
-	if c := deriveComparePtrToStructWithoutEqualMethod(this.A, that.A); c != 0 {
-		return c
-	}
-	if c := deriveCompareStructWithoutEqualMethod(this.B, that.B); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareStructWithStructWithFromAnotherPackage(this, that StructWithStructWithFromAnotherPackage) int {
-	if c := deriveComparePtrToextra_StructWithoutEqualMethod(this.A, that.A); c != 0 {
-		return c
-	}
-	if c := deriveCompareextra_StructWithoutEqualMethod(this.B, that.B); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareFieldWithStructWithPrivateFields(this, that FieldWithStructWithPrivateFields) int {
-	if c := deriveComparePtrToextra_PrivateFieldAndNoEqualMethod(this.A, that.A); c != 0 {
-		return c
-	}
-	return 0
-}
-
-func deriveCompareDeriveTheDerived_(this, that DeriveTheDerived) int {
-	if c := deriveCompareint(this.Field, that.Field); c != 0 {
-		return c
-	}
-	return 0
 }
 
 func deriveComparebool(this, that bool) int {
@@ -4872,10 +4792,6 @@ func deriveComparePtrToStructWithoutEqualMethod(this, that *StructWithoutEqualMe
 	if that == nil {
 		return 1
 	}
-	return deriveCompareStructWithoutEqualMethod(*this, *that)
-}
-
-func deriveCompareStructWithoutEqualMethod(this, that StructWithoutEqualMethod) int {
 	if c := deriveCompareint64(this.Num, that.Num); c != 0 {
 		return c
 	}
@@ -4892,10 +4808,6 @@ func deriveComparePtrToextra_StructWithoutEqualMethod(this, that *extra.StructWi
 	if that == nil {
 		return 1
 	}
-	return deriveCompareextra_StructWithoutEqualMethod(*this, *that)
-}
-
-func deriveCompareextra_StructWithoutEqualMethod(this, that extra.StructWithoutEqualMethod) int {
 	if c := deriveCompareint64(this.Number, that.Number); c != 0 {
 		return c
 	}
@@ -4912,7 +4824,24 @@ func deriveComparePtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Priv
 	if that == nil {
 		return 1
 	}
-	return deriveCompareextra_PrivateFieldAndNoEqualMethod(*this, *that)
+	thisv := reflect.Indirect(reflect.ValueOf(this))
+	thatv := reflect.Indirect(reflect.ValueOf(that))
+	if c := deriveCompareint64(*(*int64)(unsafe.Pointer(thisv.FieldByName("number").UnsafeAddr())), *(*int64)(unsafe.Pointer(thatv.FieldByName("number").UnsafeAddr()))); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint64(*(*[]int64)(unsafe.Pointer(thisv.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(thatv.FieldByName("numbers").UnsafeAddr()))); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint64(*(**int64)(unsafe.Pointer(thisv.FieldByName("ptr").UnsafeAddr())), *(**int64)(unsafe.Pointer(thatv.FieldByName("ptr").UnsafeAddr()))); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint64(*(*[]*int64)(unsafe.Pointer(thisv.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(thatv.FieldByName("numberpts").UnsafeAddr()))); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToextra_StructWithoutEqualMethod(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr()))); c != 0 {
+		return c
+	}
+	return 0
 }
 
 func deriveSortedSliceOfuint8(src []uint8) []uint8 {
@@ -5115,25 +5044,8 @@ func deriveCompareMapOfintToint(this, that map[int]int) int {
 	return 0
 }
 
-func deriveCompareextra_PrivateFieldAndNoEqualMethod(this, that extra.PrivateFieldAndNoEqualMethod) int {
-	thisv := reflect.Indirect(reflect.ValueOf(&this))
-	thatv := reflect.Indirect(reflect.ValueOf(&that))
-	if c := deriveCompareint64(*(*int64)(unsafe.Pointer(thisv.FieldByName("number").UnsafeAddr())), *(*int64)(unsafe.Pointer(thatv.FieldByName("number").UnsafeAddr()))); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfint64(*(*[]int64)(unsafe.Pointer(thisv.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(thatv.FieldByName("numbers").UnsafeAddr()))); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToint64(*(**int64)(unsafe.Pointer(thisv.FieldByName("ptr").UnsafeAddr())), *(**int64)(unsafe.Pointer(thatv.FieldByName("ptr").UnsafeAddr()))); c != 0 {
-		return c
-	}
-	if c := deriveCompareSliceOfPtrToint64(*(*[]*int64)(unsafe.Pointer(thisv.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(thatv.FieldByName("numberpts").UnsafeAddr()))); c != 0 {
-		return c
-	}
-	if c := deriveComparePtrToextra_StructWithoutEqualMethod(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr()))); c != 0 {
-		return c
-	}
-	return 0
+func deriveCompareName(this, that Name) int {
+	return (&this).Compare(&that)
 }
 
 func deriveKeysMapOfintToint(m map[int]int) []int {

@@ -63,7 +63,7 @@ func (this *compare) Add(name string, typs []types.Type) (string, error) {
 
 func (this *compare) Generate() error {
 	for _, typs := range this.ToGenerate() {
-		if err := this.genFuncFor(typs[0]); err != nil {
+		if err := this.genFunc(typs[0]); err != nil {
 			return err
 		}
 	}
@@ -100,18 +100,28 @@ func hasCompareMethod(typ *types.Named) bool {
 	return false
 }
 
-func (this *compare) genFuncFor(typ types.Type) error {
-	p := this.printer
-	this.Generating(typ)
-	typeStr := this.TypeString(typ)
+func (g *compare) genFunc(typ types.Type) error {
+	p := g.printer
+	g.Generating(typ)
+	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(this, that %s) int {", this.GetFuncName(typ), typeStr)
+	p.P("func %s(this, that %s) int {", g.GetFuncName(typ), typeStr)
 	p.In()
-	switch ttyp := typ.Underlying().(type) {
+	if err := g.genStatement(typ, "this", "that"); err != nil {
+		return err
+	}
+	p.Out()
+	p.P("}")
+	return nil
+}
+
+func (g *compare) genStatement(typ types.Type, this, that string) error {
+	p := g.printer
+	switch ttyp := typ.(type) {
 	case *types.Pointer:
-		p.P("if this == nil {")
+		p.P("if %s == nil {", this)
 		p.In()
-		p.P("if that == nil {")
+		p.P("if %s == nil {", that)
 		p.In()
 		p.P("return 0")
 		p.Out()
@@ -119,21 +129,52 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.P("return -1")
 		p.Out()
 		p.P("}")
-		p.P("if that == nil {")
+		p.P("if %s == nil {", that)
 		p.In()
 		p.P("return 1")
 		p.Out()
 		p.P("}")
-		ref := ttyp.Elem()
-		p.P("return %s(*this, *that)", this.GetFuncName(ref))
+		reftyp := ttyp.Elem()
+		named, ok := reftyp.(*types.Named)
+		if !ok {
+			p.P("return %s(*%s, *%s)", g.GetFuncName(reftyp), this, that)
+			return nil
+		}
+		fields := Fields(g.TypesMap, named.Underlying().(*types.Struct))
+		if fields.Reflect {
+			p.P(`thisv := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(` + this + `))`)
+			p.P(`thatv := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(` + that + `))`)
+		}
+		for _, field := range fields.Fields {
+			fieldType := field.Type
+			var thisField, thatField string
+			if !field.Private() {
+				thisField = field.Name(this, nil)
+				thatField = field.Name(that, nil)
+			} else {
+				thisField = field.Name("thisv", g.unsafePkg)
+				thatField = field.Name("thatv", g.unsafePkg)
+			}
+			fieldStr, err := g.field(thisField, thatField, fieldType)
+			if err != nil {
+				return err
+			}
+			p.P("if c := %s; c != 0 {", fieldStr)
+			p.In()
+			p.P("return c")
+			p.Out()
+			p.P("}")
+		}
+		p.P("return 0")
+		return nil
 	case *types.Basic:
 		switch ttyp.Kind() {
 		case types.String:
-			p.P("return %s.Compare(this, that)", this.stringsPkg())
+			p.P("return %s.Compare(%s, %s)", g.stringsPkg(), this, that)
 		case types.Complex128, types.Complex64:
-			p.P("if thisr, thatr := real(this), real(that); thisr == thatr {")
+			p.P("if thisr, thatr := real(%s), real(%s); thisr == thatr {", this, that)
 			p.In()
-			p.P("if thisi, thati := imag(this), imag(that); thisi == thati {")
+			p.P("if thisi, thati := imag(%s), imag(%s); thisi == thati {", this, that)
 			p.In()
 			p.P("return 0")
 			p.Out()
@@ -157,21 +198,21 @@ func (this *compare) genFuncFor(typ types.Type) error {
 			p.Out()
 			p.P(`}`)
 		case types.Bool:
-			p.P("if this == that {")
+			p.P("if %s == %s {", this, that)
 			p.In()
 			p.P("return 0")
 			p.Out()
 			p.P("}")
-			p.P("if that {")
+			p.P("if %s {", that)
 			p.In()
 			p.P("return -1")
 			p.Out()
 			p.P("}")
 			p.P("return 1")
 		default:
-			p.P("if this != that {")
+			p.P("if %s != %s {", this, that)
 			p.In()
-			p.P("if this < that {")
+			p.P("if %s < %s {", this, that)
 			p.In()
 			p.P("return -1")
 			p.Out()
@@ -184,39 +225,18 @@ func (this *compare) genFuncFor(typ types.Type) error {
 			p.P("}")
 			p.P("return 0")
 		}
-	case *types.Struct:
-		named := Fields(this.TypesMap, ttyp)
-		if named.Reflect {
-			if named.Reflect {
-				p.P(`thisv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&this))`)
-				p.P(`thatv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&that))`)
-			}
+		return nil
+	case *types.Named:
+		fieldStr, err := g.field("&"+this, "&"+that, types.NewPointer(ttyp))
+		if err != nil {
+			return err
 		}
-		for _, field := range named.Fields {
-			fieldType := field.Type
-			var thisField, thatField string
-			if !field.Private() {
-				thisField = field.Name("this", nil)
-				thatField = field.Name("that", nil)
-			} else {
-				thisField = field.Name("thisv", this.unsafePkg)
-				thatField = field.Name("thatv", this.unsafePkg)
-			}
-			fieldStr, err := this.field(thisField, thatField, fieldType)
-			if err != nil {
-				return err
-			}
-			p.P("if c := %s; c != 0 {", fieldStr)
-			p.In()
-			p.P("return c")
-			p.Out()
-			p.P("}")
-		}
-		p.P("return 0")
+		p.P("return " + fieldStr)
+		return nil
 	case *types.Slice:
-		p.P("if this == nil {")
+		p.P("if %s == nil {", this)
 		p.In()
-		p.P("if that == nil {")
+		p.P("if %s == nil {", that)
 		p.In()
 		p.P("return 0")
 		p.Out()
@@ -224,14 +244,14 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.P("return -1")
 		p.Out()
 		p.P("}")
-		p.P("if that == nil {")
+		p.P("if %s == nil {", that)
 		p.In()
 		p.P("return 1")
 		p.Out()
 		p.P("}")
-		p.P("if len(this) != len(that) {")
+		p.P("if len(%s) != len(%s) {", this, that)
 		p.In()
-		p.P("if len(this) < len(that) {")
+		p.P("if len(%s) < len(%s) {", this, that)
 		p.In()
 		p.P("return -1")
 		p.Out()
@@ -239,9 +259,9 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.P("return 1")
 		p.Out()
 		p.P("}")
-		p.P("for i := 0; i < len(this); i++ {")
+		p.P("for i := 0; i < len(%s); i++ {", this)
 		p.In()
-		cmpStr, err := this.field("this[i]", "that[i]", ttyp.Elem())
+		cmpStr, err := g.field(this+"[i]", that+"[i]", ttyp.Elem())
 		if err != nil {
 			return err
 		}
@@ -253,10 +273,11 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.Out()
 		p.P("}")
 		p.P("return 0")
+		return nil
 	case *types.Array:
-		p.P("if len(this) != len(that) {")
+		p.P("if len(%s) != len(%s) {", this, that)
 		p.In()
-		p.P("if len(this) < len(that) {")
+		p.P("if len(%s) < len(%s) {", this, that)
 		p.In()
 		p.P("return -1")
 		p.Out()
@@ -264,9 +285,9 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.P("return 1")
 		p.Out()
 		p.P("}")
-		p.P("for i := 0; i < len(this); i++ {")
+		p.P("for i := 0; i < len(%s); i++ {", this)
 		p.In()
-		cmpStr, err := this.field("this[i]", "that[i]", ttyp.Elem())
+		cmpStr, err := g.field(this+"[i]", that+"[i]", ttyp.Elem())
 		if err != nil {
 			return err
 		}
@@ -278,10 +299,11 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.Out()
 		p.P("}")
 		p.P("return 0")
+		return nil
 	case *types.Map:
-		p.P("if this == nil {")
+		p.P("if %s == nil {", this)
 		p.In()
-		p.P("if that == nil {")
+		p.P("if %s == nil {", that)
 		p.In()
 		p.P("return 0")
 		p.Out()
@@ -289,14 +311,14 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.P("return -1")
 		p.Out()
 		p.P("}")
-		p.P("if that == nil {")
+		p.P("if %s == nil {", that)
 		p.In()
 		p.P("return 1")
 		p.Out()
 		p.P("}")
-		p.P("if len(this) != len(that) {")
+		p.P("if len(%s) != len(%s) {", this, that)
 		p.In()
-		p.P("if len(this) < len(that) {")
+		p.P("if len(%s) < len(%s) {", this, that)
 		p.In()
 		p.P("return -1")
 		p.Out()
@@ -304,8 +326,8 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.P("return 1")
 		p.Out()
 		p.P("}")
-		p.P("thiskeys := %s(%s(this))", this.sorted.GetFuncName(types.NewSlice(ttyp.Key())), this.keys.GetFuncName(typ))
-		p.P("thatkeys := %s(%s(that))", this.sorted.GetFuncName(types.NewSlice(ttyp.Key())), this.keys.GetFuncName(typ))
+		p.P("thiskeys := %s(%s(%s))", g.sorted.GetFuncName(types.NewSlice(ttyp.Key())), g.keys.GetFuncName(typ), this)
+		p.P("thatkeys := %s(%s(%s))", g.sorted.GetFuncName(types.NewSlice(ttyp.Key())), g.keys.GetFuncName(typ), that)
 		p.P("for i, thiskey := range thiskeys {")
 		p.In()
 		p.P("thatkey := thatkeys[i]")
@@ -313,7 +335,7 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.In()
 		p.P("thisvalue := this[thiskey]")
 		p.P("thatvalue := that[thatkey]")
-		cmpStr, err := this.field("thisvalue", "thatvalue", ttyp.Elem())
+		cmpStr, err := g.field("thisvalue", "thatvalue", ttyp.Elem())
 		if err != nil {
 			return err
 		}
@@ -325,7 +347,7 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.Out()
 		p.P(`} else {`)
 		p.In()
-		cmpStr2, err := this.field("thiskey", "thatkey", ttyp.Key())
+		cmpStr2, err := g.field("thiskey", "thatkey", ttyp.Key())
 		if err != nil {
 			return err
 		}
@@ -339,12 +361,9 @@ func (this *compare) genFuncFor(typ types.Type) error {
 		p.Out()
 		p.P(`}`)
 		p.P(`return 0`)
-	default:
-		return fmt.Errorf("unsupported compare type: %s", this.TypeString(typ))
+		return nil
 	}
-	p.Out()
-	p.P("}")
-	return nil
+	return fmt.Errorf("unsupported compare type: %s", g.TypeString(typ))
 }
 
 func (this *compare) field(thisField, thatField string, fieldType types.Type) (string, error) {
@@ -358,7 +377,7 @@ func (this *compare) field(thisField, thatField string, fieldType types.Type) (s
 		ref := typ.Elem()
 		if named, ok := ref.(*types.Named); ok {
 			if hasCompareMethod(named) {
-				return fmt.Sprintf("%s.Compare(%s)", thisField, thatField), nil
+				return fmt.Sprintf("%s.Compare(%s)", wrap(thisField), thatField), nil
 			} else {
 				return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 			}
@@ -375,7 +394,7 @@ func (this *compare) field(thisField, thatField string, fieldType types.Type) (s
 		if hasCompareMethod(typ) {
 			return fmt.Sprintf("%s.Compare(&%s)", thisField, thatField), nil
 		} else {
-			return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+			return this.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))
 		}
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return "", fmt.Errorf("unsupported field type %s", this.TypeString(fieldType))

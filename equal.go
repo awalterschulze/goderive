@@ -58,19 +58,19 @@ func (this *equal) Add(name string, typs []types.Type) (string, error) {
 
 func (this *equal) Generate() error {
 	for _, typs := range this.ToGenerate() {
-		if err := this.genFuncFor(typs[0]); err != nil {
+		if err := this.genFunc(typs[0]); err != nil {
 			return err
 		}
 	}
 	for _, typs := range this.ToGenerate() {
-		if err := this.genFuncFor(typs[0]); err != nil {
+		if err := this.genFunc(typs[0]); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (g *equal) genFuncFor(typ types.Type) error {
+func (g *equal) genFunc(typ types.Type) error {
 	p := g.printer
 	g.Generating(typ)
 	typeStr := g.TypeString(typ)

@@ -245,6 +245,17 @@ func hasEqualMethod(typ *types.Named) bool {
 		if sig.Params().Len() != 1 {
 			continue
 		}
+		res := sig.Results()
+		if res.Len() != 1 {
+			continue
+		}
+		b, ok := res.At(0).Type().(*types.Basic)
+		if !ok {
+			continue
+		}
+		if b.Kind() != types.Bool {
+			continue
+		}
 		return true
 	}
 	return false

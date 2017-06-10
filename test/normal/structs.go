@@ -359,6 +359,10 @@ func (this *StructWithStructFieldWithoutEqualMethod) Equal(that *StructWithStruc
 	return deriveEqualPtrToStructWithStructFieldWithoutEqualMethod(this, that)
 }
 
+func (this *StructWithStructFieldWithoutEqualMethod) Compare(that *StructWithStructFieldWithoutEqualMethod) int {
+	return deriveComparePtrToStructWithStructFieldWithoutEqualMethod(this, that)
+}
+
 type StructWithoutEqualMethod struct {
 	Num int64
 }
@@ -372,10 +376,18 @@ func (this *StructWithStructWithFromAnotherPackage) Equal(that *StructWithStruct
 	return deriveEqualPtrToStructWithStructWithFromAnotherPackage(this, that)
 }
 
+func (this *StructWithStructWithFromAnotherPackage) Compare(that *StructWithStructWithFromAnotherPackage) int {
+	return deriveComparePtrToStructWithStructWithFromAnotherPackage(this, that)
+}
+
 type FieldWithStructWithPrivateFields struct {
 	A *extra.PrivateFieldAndNoEqualMethod
 }
 
 func (this *FieldWithStructWithPrivateFields) Equal(that *FieldWithStructWithPrivateFields) bool {
 	return deriveEqualPtrToFieldWithStructWithPrivateFields(this, that)
+}
+
+func (this *FieldWithStructWithPrivateFields) Compare(that *FieldWithStructWithPrivateFields) int {
+	return deriveComparePtrToFieldWithStructWithPrivateFields(this, that)
 }

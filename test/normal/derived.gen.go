@@ -569,6 +569,45 @@ func deriveComparePtrToEmbeddedStruct2(this, that *EmbeddedStruct2) int {
 	return deriveCompareEmbeddedStruct2(*this, *that)
 }
 
+func deriveComparePtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareStructWithStructFieldWithoutEqualMethod(*this, *that)
+}
+
+func deriveComparePtrToStructWithStructWithFromAnotherPackage(this, that *StructWithStructWithFromAnotherPackage) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareStructWithStructWithFromAnotherPackage(*this, *that)
+}
+
+func deriveComparePtrToFieldWithStructWithPrivateFields(this, that *FieldWithStructWithPrivateFields) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareFieldWithStructWithPrivateFields(*this, *that)
+}
+
 func deriveCompareComplex32(this, that complex64) int {
 	if thisr, thatr := real(this), real(that); thisr == thatr {
 		if thisi, thati := imag(this), imag(that); thisi == thati {
@@ -2243,6 +2282,33 @@ func deriveCompareEmbeddedStruct2(this, that EmbeddedStruct2) int {
 		return c
 	}
 	if c := this.Name.Compare(that.Name); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareStructWithStructFieldWithoutEqualMethod(this, that StructWithStructFieldWithoutEqualMethod) int {
+	if c := deriveComparePtrToStructWithoutEqualMethod(this.A, that.A); c != 0 {
+		return c
+	}
+	if c := deriveCompareStructWithoutEqualMethod(this.B, that.B); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareStructWithStructWithFromAnotherPackage(this, that StructWithStructWithFromAnotherPackage) int {
+	if c := deriveComparePtrToextra_StructWithoutEqualMethod(this.A, that.A); c != 0 {
+		return c
+	}
+	if c := deriveCompareextra_StructWithoutEqualMethod(this.B, that.B); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveCompareFieldWithStructWithPrivateFields(this, that FieldWithStructWithPrivateFields) int {
+	if c := deriveComparePtrToextra_PrivateFieldAndNoEqualMethod(this.A, that.A); c != 0 {
 		return c
 	}
 	return 0
@@ -4755,6 +4821,59 @@ func deriveCompareMapOfintToRecursiveType(this, that map[int]RecursiveType) int 
 	return 0
 }
 
+func deriveComparePtrToStructWithoutEqualMethod(this, that *StructWithoutEqualMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareStructWithoutEqualMethod(*this, *that)
+}
+
+func deriveCompareStructWithoutEqualMethod(this, that StructWithoutEqualMethod) int {
+	if c := deriveCompareint64(this.Num, that.Num); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveComparePtrToextra_StructWithoutEqualMethod(this, that *extra.StructWithoutEqualMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareextra_StructWithoutEqualMethod(*this, *that)
+}
+
+func deriveCompareextra_StructWithoutEqualMethod(this, that extra.StructWithoutEqualMethod) int {
+	if c := deriveCompareint64(this.Number, that.Number); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveComparePtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.PrivateFieldAndNoEqualMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareextra_PrivateFieldAndNoEqualMethod(*this, *that)
+}
+
 func deriveSortedSliceOfuint8(src []uint8) []uint8 {
 	dst := make([]uint8, len(src))
 	copy(dst, src)
@@ -4951,6 +5070,27 @@ func deriveCompareMapOfintToint(this, that map[int]int) int {
 				return c
 			}
 		}
+	}
+	return 0
+}
+
+func deriveCompareextra_PrivateFieldAndNoEqualMethod(this, that extra.PrivateFieldAndNoEqualMethod) int {
+	thisv := reflect.Indirect(reflect.ValueOf(&this))
+	thatv := reflect.Indirect(reflect.ValueOf(&that))
+	if c := deriveCompareint64(*(*int64)(unsafe.Pointer(thisv.FieldByName("number").UnsafeAddr())), *(*int64)(unsafe.Pointer(thatv.FieldByName("number").UnsafeAddr()))); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfint64(*(*[]int64)(unsafe.Pointer(thisv.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(thatv.FieldByName("numbers").UnsafeAddr()))); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToint64(*(**int64)(unsafe.Pointer(thisv.FieldByName("ptr").UnsafeAddr())), *(**int64)(unsafe.Pointer(thatv.FieldByName("ptr").UnsafeAddr()))); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrToint64(*(*[]*int64)(unsafe.Pointer(thisv.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(thatv.FieldByName("numberpts").UnsafeAddr()))); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToextra_StructWithoutEqualMethod(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr()))); c != 0 {
+		return c
 	}
 	return 0
 }

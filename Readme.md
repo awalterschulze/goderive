@@ -90,7 +90,6 @@ func (this *MyStruct) Less(that *MyStruct) bool {
   - Chan
   - Interface
   - Function
-  - Struct without a Compare method
   - Unnamed Structs
 
 ## Keys

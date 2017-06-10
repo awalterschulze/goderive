@@ -27,6 +27,8 @@ type compare struct {
 	printer    Printer
 	bytesPkg   Import
 	stringsPkg Import
+	reflectPkg Import
+	unsafePkg  Import
 	keys       Plugin
 	sorted     Plugin
 }
@@ -37,6 +39,8 @@ func newCompare(typesMap TypesMap, p Printer, keys, sorted Plugin) *compare {
 		printer:    p,
 		bytesPkg:   p.NewImport("bytes"),
 		stringsPkg: p.NewImport("strings"),
+		reflectPkg: p.NewImport("reflect"),
+		unsafePkg:  p.NewImport("unsafe"),
 		keys:       keys,
 		sorted:     sorted,
 	}
@@ -64,6 +68,36 @@ func (this *compare) Generate() error {
 		}
 	}
 	return nil
+}
+
+func hasCompareMethod(typ *types.Named) bool {
+	for i := 0; i < typ.NumMethods(); i++ {
+		meth := typ.Method(i)
+		if meth.Name() != "Compare" {
+			continue
+		}
+		sig, ok := meth.Type().(*types.Signature)
+		if !ok {
+			// impossible, but lets check anyway
+			continue
+		}
+		if sig.Params().Len() != 1 {
+			continue
+		}
+		res := sig.Results()
+		if res.Len() != 1 {
+			continue
+		}
+		b, ok := res.At(0).Type().(*types.Basic)
+		if !ok {
+			continue
+		}
+		if b.Kind() != types.Int {
+			continue
+		}
+		return true
+	}
+	return false
 }
 
 func (this *compare) genFuncFor(typ types.Type) error {
@@ -151,13 +185,23 @@ func (this *compare) genFuncFor(typ types.Type) error {
 			p.P("return 0")
 		}
 	case *types.Struct:
-		numFields := ttyp.NumFields()
-		for i := 0; i < numFields; i++ {
-			field := ttyp.Field(i)
-			fieldType := field.Type()
-			fieldName := field.Name()
-			thisField := "this." + fieldName
-			thatField := "that." + fieldName
+		named := Fields(this.TypesMap, ttyp)
+		if named.Reflect {
+			if named.Reflect {
+				p.P(`thisv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&this))`)
+				p.P(`thatv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&that))`)
+			}
+		}
+		for _, field := range named.Fields {
+			fieldType := field.Type
+			var thisField, thatField string
+			if !field.Private() {
+				thisField = field.Name("this", nil)
+				thatField = field.Name("that", nil)
+			} else {
+				thisField = field.Name("thisv", this.unsafePkg)
+				thatField = field.Name("thatv", this.unsafePkg)
+			}
 			fieldStr, err := this.field(thisField, thatField, fieldType)
 			if err != nil {
 				return err
@@ -312,8 +356,12 @@ func (this *compare) field(thisField, thatField string, fieldType types.Type) (s
 		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(fieldType), thisField, thatField), nil
 	case *types.Pointer:
 		ref := typ.Elem()
-		if _, ok := ref.(*types.Named); ok {
-			return fmt.Sprintf("%s.Compare(%s)", thisField, thatField), nil
+		if named, ok := ref.(*types.Named); ok {
+			if hasCompareMethod(named) {
+				return fmt.Sprintf("%s.Compare(%s)", thisField, thatField), nil
+			} else {
+				return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+			}
 		}
 		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 	case *types.Array, *types.Map:
@@ -324,7 +372,11 @@ func (this *compare) field(thisField, thatField string, fieldType types.Type) (s
 		}
 		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 	case *types.Named:
-		return fmt.Sprintf("%s.Compare(&%s)", thisField, thatField), nil
+		if hasCompareMethod(typ) {
+			return fmt.Sprintf("%s.Compare(&%s)", thisField, thatField), nil
+		} else {
+			return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+		}
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return "", fmt.Errorf("unsupported field type %s", this.TypeString(fieldType))
 	}

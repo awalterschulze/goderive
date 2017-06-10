@@ -42,6 +42,9 @@ func TestCompareStructs(t *testing.T) {
 		&RecursiveType{},
 		&EmbeddedStruct1{},
 		&EmbeddedStruct2{},
+		&StructWithStructFieldWithoutEqualMethod{},
+		&StructWithStructWithFromAnotherPackage{},
+		&FieldWithStructWithPrivateFields{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

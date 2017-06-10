@@ -251,6 +251,25 @@ func canEqual(tt types.Type) bool {
 	return false
 }
 
+func hasEqualMethod(typ *types.Named) bool {
+	for i := 0; i < typ.NumMethods(); i++ {
+		meth := typ.Method(i)
+		if meth.Name() != "Equal" {
+			continue
+		}
+		sig, ok := meth.Type().(*types.Signature)
+		if !ok {
+			// impossible, but lets check anyway
+			continue
+		}
+		if sig.Params().Len() != 1 {
+			continue
+		}
+		return true
+	}
+	return false
+}
+
 func (this *equal) field(thisField, thatField string, fieldType types.Type) (string, error) {
 	if canEqual(fieldType) {
 		return fmt.Sprintf("%s == %s", thisField, thatField), nil
@@ -258,8 +277,12 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 	switch typ := fieldType.(type) {
 	case *types.Pointer:
 		ref := typ.Elem()
-		if _, ok := ref.(*types.Named); ok {
-			return fmt.Sprintf("%s.Equal(%s)", thisField, thatField), nil
+		if named, ok := ref.(*types.Named); ok {
+			if hasEqualMethod(named) {
+				return fmt.Sprintf("%s.Equal(%s)", thisField, thatField), nil
+			} else {
+				return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+			}
 		}
 		eqStr, err := this.field("*"+thisField, "*"+thatField, ref)
 		if err != nil {
@@ -276,7 +299,11 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 	case *types.Map:
 		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 	case *types.Named:
-		return fmt.Sprintf("%s.Equal(&%s)", thisField, thatField), nil
+		if hasEqualMethod(typ) {
+			return fmt.Sprintf("%s.Equal(&%s)", thisField, thatField), nil
+		} else {
+			return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+		}
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return "", fmt.Errorf("unsupported type %#v", fieldType)
 	}

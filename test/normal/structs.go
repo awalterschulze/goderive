@@ -347,3 +347,16 @@ type UnnamedStruct struct {
 func (this *UnnamedStruct) Equal(that *UnnamedStruct) bool {
 	return deriveEqualPtrToUnnamedStruct(this, that)
 }
+
+type StructWithStructFieldWithoutEqualMethod struct {
+	A *StructWithoutEqualMethod
+	B StructWithoutEqualMethod
+}
+
+func (this *StructWithStructFieldWithoutEqualMethod) Equal(that *StructWithStructFieldWithoutEqualMethod) bool {
+	return deriveEqualPtrToStructWithStructFieldWithoutEqualMethod(this, that)
+}
+
+type StructWithoutEqualMethod struct {
+	Num int64
+}

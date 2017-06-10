@@ -43,6 +43,7 @@ func TestEqualStructs(t *testing.T) {
 		&EmbeddedStruct1{},
 		&EmbeddedStruct2{},
 		&UnnamedStruct{},
+		&StructWithStructFieldWithoutEqualMethod{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

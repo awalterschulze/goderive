@@ -223,6 +223,12 @@ func deriveEqualPtrToUnnamedStruct(this, that *UnnamedStruct) bool {
 		this.Unnamed == that.Unnamed
 }
 
+func deriveEqualPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		deriveEqualPtrToStructWithoutEqualMethod(this.A, that.A) &&
+		this.B == that.B
+}
+
 func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
 	return this == that
 }
@@ -1324,6 +1330,11 @@ func deriveEqualMapOfintToRecursiveType(this, that map[int]RecursiveType) bool {
 		}
 	}
 	return true
+}
+
+func deriveEqualPtrToStructWithoutEqualMethod(this, that *StructWithoutEqualMethod) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil) &&
+		this.Num == that.Num
 }
 
 func deriveEqualArray10Ofint(this, that [10]int) bool {

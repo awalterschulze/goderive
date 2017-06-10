@@ -18,6 +18,7 @@ import (
 	"flag"
 	"fmt"
 	"go/types"
+	"strings"
 )
 
 var equalPrefix = flag.String("equal.prefix", "deriveEqual", "set the prefix for equal functions that should be derived.")
@@ -69,146 +70,190 @@ func (this *equal) Generate() error {
 	return nil
 }
 
-func (this *equal) genFuncFor(typ types.Type) error {
-	p := this.printer
-	this.Generating(typ)
-	typeStr := this.TypeString(typ)
+func (g *equal) genFuncFor(typ types.Type) error {
+	p := g.printer
+	g.Generating(typ)
+	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(this, that %s) bool {", this.GetFuncName(typ), typeStr)
+	p.P("func %s(this, that %s) bool {", g.GetFuncName(typ), typeStr)
 	p.In()
-	typ = typ.Underlying()
-	switch ttyp := typ.(type) {
-	case *types.Basic:
-		fieldStr, err := this.field("this", "that", typ)
-		if err != nil {
-			return err
-		}
-		p.P("return " + fieldStr)
-	case *types.Pointer:
-		ref := ttyp.Elem()
-		p.P("return (this == nil && that == nil) || this != nil && that != nil && %s(*this, *that)", this.GetFuncName(ref))
-	case *types.Struct:
-		if canEqual(ttyp) {
-			p.P("return this == that")
-		} else {
-			named := Fields(this.TypesMap, ttyp)
-			if named.Reflect {
-				p.P(`thisv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&this))`)
-				p.P(`thatv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&that))`)
-			}
-			if len(named.Fields) == 0 {
-				p.P("return true")
-			}
-			for i, field := range named.Fields {
-				fieldType := field.Type
-				var thisField, thatField string
-				if !field.Private() {
-					thisField = field.Name("this", nil)
-					thatField = field.Name("that", nil)
-				} else {
-					thisField = field.Name("thisv", this.unsafePkg)
-					thatField = field.Name("thatv", this.unsafePkg)
-				}
-				fieldStr, err := this.field(thisField, thatField, fieldType)
-				if err != nil {
-					return err
-				}
-				if (i + 1) != len(named.Fields) {
-					fieldStr += " &&"
-				}
-				if i == 0 {
-					p.P("return " + fieldStr)
-					p.In()
-				} else {
-					p.P(fieldStr)
-				}
-			}
-			p.Out()
-		}
-	case *types.Slice:
-		p.P("if this == nil || that == nil {")
-		p.In()
-		p.P("return this == nil && that == nil")
-		p.Out()
-		p.P("}")
-		p.P("if len(this) != len(that) {")
-		p.In()
-		p.P("return false")
-		p.Out()
-		p.P("}")
-		p.P("for i := 0; i < len(this); i++ {")
-		p.In()
-		eqStr, err := this.field("this[i]", "that[i]", ttyp.Elem())
-		if err != nil {
-			return err
-		}
-		p.P("if %s {", not(eqStr))
-		p.In()
-		p.P("return false")
-		p.Out()
-		p.P("}")
-		p.Out()
-		p.P("}")
-		p.P("return true")
-	case *types.Array:
-		p.P("for i := 0; i < len(this); i++ {")
-		p.In()
-		eqStr, err := this.field("this[i]", "that[i]", ttyp.Elem())
-		if err != nil {
-			return err
-		}
-		p.P("if %s {", not(eqStr))
-		p.In()
-		p.P("return false")
-		p.Out()
-		p.P("}")
-		p.Out()
-		p.P("}")
-		p.P("return true")
-	case *types.Map:
-		p.P("if this == nil || that == nil {")
-		p.In()
-		p.P("return this == nil && that == nil")
-		p.Out()
-		p.P("}")
-		p.P("if len(this) != len(that) {")
-		p.In()
-		p.P("return false")
-		p.Out()
-		p.P("}")
-		p.P("for k, v := range this {")
-		p.In()
-		p.P("thatv, ok := that[k]")
-		p.P("if !ok {")
-		p.In()
-		p.P("return false")
-		p.Out()
-		p.P("}")
-		eqStr, err := this.field("v", "thatv", ttyp.Elem())
-		if err != nil {
-			return err
-		}
-		p.P("if %s {", not(eqStr))
-		p.In()
-		p.P("return false")
-		p.Out()
-		p.P("}")
-		p.Out()
-		p.P("}")
-		p.P("return true")
-	default:
-		return fmt.Errorf("unsupported type: %#v", typ)
+	if err := g.genStatement(typ, "this", "that"); err != nil {
+		return nil
 	}
 	p.Out()
 	p.P("}")
 	return nil
 }
 
+func (g *equal) genStatement(typ types.Type, this, that string) error {
+	p := g.printer
+	switch ttyp := typ.(type) {
+	case *types.Basic:
+		fieldStr, err := g.field(this, that, typ)
+		if err != nil {
+			return err
+		}
+		p.P("return " + fieldStr)
+		return nil
+	case *types.Pointer:
+		thisref, thatref := "*"+this, "*"+that
+		reftyp := ttyp.Elem()
+		named, ok := reftyp.(*types.Named)
+		if !ok {
+			p.P("if %s == nil && %s == nil {", this, that)
+			p.In()
+			p.P("return true")
+			p.Out()
+			p.P("}")
+			p.P("if %s != nil && %s != nil {", this, that)
+			p.In()
+			if err := g.genStatement(reftyp, thisref, thatref); err != nil {
+				return err
+			}
+			p.Out()
+			p.P("}")
+			p.P("return false")
+			return nil
+		}
+		fields := Fields(g.TypesMap, named.Underlying().(*types.Struct))
+		if len(fields.Fields) == 0 {
+			p.P("return %s == nil && %s == nil", this, that)
+			return nil
+		}
+		if fields.Reflect {
+			p.P(`thisv := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, this)
+			p.P(`thatv := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, that)
+		}
+		p.P("return (%s == nil && %s == nil) ||", this, that)
+		p.In()
+		p.P("%s != nil && %s != nil &&", this, that)
+		for i, field := range fields.Fields {
+			fieldType := field.Type
+			var thisField, thatField string
+			if !field.Private() {
+				thisField, thatField = field.Name(this, nil), field.Name(that, nil)
+			} else {
+				thisField, thatField = field.Name("thisv", g.unsafePkg), field.Name("thatv", g.unsafePkg)
+			}
+			fieldStr, err := g.field(thisField, thatField, fieldType)
+			if err != nil {
+				return err
+			}
+			if (i + 1) != len(fields.Fields) {
+				fieldStr += " &&"
+			}
+			if i == 0 {
+				p.In()
+			}
+			p.P(fieldStr)
+		}
+		p.Out()
+		p.Out()
+		return nil
+	case *types.Struct:
+		if canEqual(ttyp) {
+			p.P("return %s == %s", this, that)
+			return nil
+		}
+	case *types.Named:
+		fieldStr, err := g.field("&"+this, "&"+that, types.NewPointer(ttyp))
+		if err != nil {
+			return err
+		}
+		p.P("return " + fieldStr)
+		return nil
+	case *types.Slice:
+		p.P("if %s == nil || %s == nil {", this, that)
+		p.In()
+		p.P("return %s == nil && %s == nil", this, that)
+		p.Out()
+		p.P("}")
+		p.P("if len(%s) != len(%s) {", this, that)
+		p.In()
+		p.P("return false")
+		p.Out()
+		p.P("}")
+		p.P("for i := 0; i < len(%s); i++ {", this)
+		p.In()
+		thisElem, thatElem := wrap(this)+"[i]", wrap(that)+"[i]"
+		eqStr, err := g.field(thisElem, thatElem, ttyp.Elem())
+		if err != nil {
+			return err
+		}
+		p.P("if %s {", not(eqStr))
+		p.In()
+		p.P("return false")
+		p.Out()
+		p.P("}")
+		p.Out()
+		p.P("}")
+		p.P("return true")
+		return nil
+	case *types.Array:
+		p.P("for i := 0; i < len(%s); i++ {", this)
+		p.In()
+		thisElem, thatElem := wrap(this)+"[i]", wrap(that)+"[i]"
+		eqStr, err := g.field(thisElem, thatElem, ttyp.Elem())
+		if err != nil {
+			return err
+		}
+		p.P("if %s {", not(eqStr))
+		p.In()
+		p.P("return false")
+		p.Out()
+		p.P("}")
+		p.Out()
+		p.P("}")
+		p.P("return true")
+		return nil
+	case *types.Map:
+		p.P("if %s == nil || %s == nil {", this, that)
+		p.In()
+		p.P("return %s == nil && %s == nil", this, that)
+		p.Out()
+		p.P("}")
+		p.P("if len(%s) != len(%s) {", this, that)
+		p.In()
+		p.P("return false")
+		p.Out()
+		p.P("}")
+		p.P("for k, v := range %s {", this)
+		p.In()
+		p.P("thatv, ok := %s[k]", wrap(that))
+		p.P("if !ok {")
+		p.In()
+		p.P("return false")
+		p.Out()
+		p.P("}")
+		eqStr, err := g.field("v", "thatv", ttyp.Elem())
+		if err != nil {
+			return err
+		}
+		p.P("if %s {", not(eqStr))
+		p.In()
+		p.P("return false")
+		p.Out()
+		p.P("}")
+		p.Out()
+		p.P("}")
+		p.P("return true")
+		return nil
+	}
+	return fmt.Errorf("unsupported type: %#v", typ)
+}
+
 func not(s string) string {
-	if s[0] == '(' {
+	if strings.HasPrefix(s, "(") && strings.HasSuffix(s, ")") {
 		return "!" + s
 	}
 	return "!(" + s + ")"
+}
+
+func wrap(value string) string {
+	if strings.HasPrefix(value, "*") || strings.HasPrefix(value, "&") {
+		return "(" + value + ")"
+	}
+	return value
 }
 
 func canEqual(tt types.Type) bool {
@@ -270,12 +315,12 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 		ref := typ.Elem()
 		if named, ok := ref.(*types.Named); ok {
 			if hasEqualMethod(named) {
-				return fmt.Sprintf("%s.Equal(%s)", thisField, thatField), nil
+				return fmt.Sprintf("%s.Equal(%s)", wrap(thisField), thatField), nil
 			} else {
 				return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 			}
 		}
-		eqStr, err := this.field("*"+thisField, "*"+thatField, ref)
+		eqStr, err := this.field("*("+thisField+")", "*("+thatField+")", ref)
 		if err != nil {
 			return "", err
 		}
@@ -293,7 +338,7 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 		if hasEqualMethod(typ) {
 			return fmt.Sprintf("%s.Equal(&%s)", thisField, thatField), nil
 		} else {
-			return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+			return this.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))
 		}
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return "", fmt.Errorf("unsupported type %#v", fieldType)

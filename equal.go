@@ -88,39 +88,43 @@ func (this *equal) genFuncFor(typ types.Type) error {
 		ref := ttyp.Elem()
 		p.P("return (this == nil && that == nil) || this != nil && that != nil && %s(*this, *that)", this.GetFuncName(ref))
 	case *types.Struct:
-		named := Fields(this.TypesMap, ttyp)
-		if named.Reflect {
-			p.P(`thisv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&this))`)
-			p.P(`thatv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&that))`)
+		if canEqual(ttyp) {
+			p.P("return this == that")
+		} else {
+			named := Fields(this.TypesMap, ttyp)
+			if named.Reflect {
+				p.P(`thisv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&this))`)
+				p.P(`thatv := ` + this.reflectPkg() + `.Indirect(` + this.reflectPkg() + `.ValueOf(&that))`)
+			}
+			if len(named.Fields) == 0 {
+				p.P("return true")
+			}
+			for i, field := range named.Fields {
+				fieldType := field.Type
+				var thisField, thatField string
+				if !field.Private() {
+					thisField = field.Name("this", nil)
+					thatField = field.Name("that", nil)
+				} else {
+					thisField = field.Name("thisv", this.unsafePkg)
+					thatField = field.Name("thatv", this.unsafePkg)
+				}
+				fieldStr, err := this.field(thisField, thatField, fieldType)
+				if err != nil {
+					return err
+				}
+				if (i + 1) != len(named.Fields) {
+					fieldStr += " &&"
+				}
+				if i == 0 {
+					p.P("return " + fieldStr)
+					p.In()
+				} else {
+					p.P(fieldStr)
+				}
+			}
+			p.Out()
 		}
-		if len(named.Fields) == 0 {
-			p.P("return true")
-		}
-		for i, field := range named.Fields {
-			fieldType := field.Type
-			var thisField, thatField string
-			if !field.Private() {
-				thisField = field.Name("this", nil)
-				thatField = field.Name("that", nil)
-			} else {
-				thisField = field.Name("thisv", this.unsafePkg)
-				thatField = field.Name("thatv", this.unsafePkg)
-			}
-			fieldStr, err := this.field(thisField, thatField, fieldType)
-			if err != nil {
-				return err
-			}
-			if (i + 1) != len(named.Fields) {
-				fieldStr += " &&"
-			}
-			if i == 0 {
-				p.P("return " + fieldStr)
-				p.In()
-			} else {
-				p.P(fieldStr)
-			}
-		}
-		p.Out()
 	case *types.Slice:
 		p.P("if this == nil || that == nil {")
 		p.In()

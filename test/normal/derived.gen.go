@@ -146,25 +146,7 @@ func deriveEqualPtrToMapOfintToint(this, that *map[int]int) bool {
 }
 
 func deriveEqual1(this, that BuiltInTypes) bool {
-	return this.Bool == that.Bool &&
-		this.Byte == that.Byte &&
-		this.Complex128 == that.Complex128 &&
-		this.Complex64 == that.Complex64 &&
-		this.Float64 == that.Float64 &&
-		this.Float32 == that.Float32 &&
-		this.Int == that.Int &&
-		this.Int16 == that.Int16 &&
-		this.Int32 == that.Int32 &&
-		this.Int64 == that.Int64 &&
-		this.Int8 == that.Int8 &&
-		this.Rune == that.Rune &&
-		this.String == that.String &&
-		this.Uint == that.Uint &&
-		this.Uint16 == that.Uint16 &&
-		this.Uint32 == that.Uint32 &&
-		this.Uint64 == that.Uint64 &&
-		this.Uint8 == that.Uint8 &&
-		this.UintPtr == that.UintPtr
+	return this == that
 }
 
 func deriveEqualPtrToBuiltInTypes_(this, that PtrToBuiltInTypes) bool {
@@ -234,26 +216,7 @@ func deriveEqualSliceOfPtrToBuiltInTypes(this, that SliceOfPtrToBuiltInTypes) bo
 }
 
 func deriveEqualArrayOfBuiltInTypes(this, that ArrayOfBuiltInTypes) bool {
-	return this.Bool == that.Bool &&
-		this.Byte == that.Byte &&
-		this.Complex128 == that.Complex128 &&
-		this.Complex64 == that.Complex64 &&
-		this.Float64 == that.Float64 &&
-		this.Float32 == that.Float32 &&
-		this.Int == that.Int &&
-		this.Int16 == that.Int16 &&
-		this.Int32 == that.Int32 &&
-		this.Int64 == that.Int64 &&
-		this.Int8 == that.Int8 &&
-		this.Rune == that.Rune &&
-		this.String == that.String &&
-		this.Uint == that.Uint &&
-		this.Uint16 == that.Uint16 &&
-		this.Uint32 == that.Uint32 &&
-		this.Uint64 == that.Uint64 &&
-		this.Uint8 == that.Uint8 &&
-		this.UintPtr == that.UintPtr &&
-		this.AnotherBoolOfDifferentSize == that.AnotherBoolOfDifferentSize
+	return this == that
 }
 
 func deriveEqualArrayOfPtrToBuiltInTypes(this, that ArrayOfPtrToBuiltInTypes) bool {
@@ -306,7 +269,7 @@ func deriveEqualPtrTo(this, that PtrTo) bool {
 }
 
 func deriveEqualName(this, that Name) bool {
-	return this.Name == that.Name
+	return this == that
 }
 
 func deriveEqualStructs(this, that Structs) bool {
@@ -340,7 +303,7 @@ func deriveEqualEmbeddedStruct2(this, that EmbeddedStruct2) bool {
 }
 
 func deriveEqualUnnamedStruct(this, that UnnamedStruct) bool {
-	return this.Unnamed == that.Unnamed
+	return this == that
 }
 
 func deriveEqualStructWithStructFieldWithoutEqualMethod(this, that StructWithStructFieldWithoutEqualMethod) bool {
@@ -1766,11 +1729,11 @@ func deriveEqualPtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Privat
 }
 
 func deriveEqualStructWithoutEqualMethod(this, that StructWithoutEqualMethod) bool {
-	return this.Num == that.Num
+	return this == that
 }
 
 func deriveEqualextra_StructWithoutEqualMethod(this, that extra.StructWithoutEqualMethod) bool {
-	return this.Number == that.Number
+	return this == that
 }
 
 func deriveEqualextra_PrivateFieldAndNoEqualMethod(this, that extra.PrivateFieldAndNoEqualMethod) bool {

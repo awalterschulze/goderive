@@ -7,6 +7,5 @@ func deriveEqual(this, that *MyStruct) bool {
 }
 
 func deriveEqualMyStruct(this, that MyStruct) bool {
-	return this.Int64 == that.Int64 &&
-		this.String == that.String
+	return this == that
 }

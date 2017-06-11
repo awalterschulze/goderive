@@ -1,33 +1,38 @@
 package sorted
 
 import (
-	"flag"
 	"fmt"
 	"go/types"
 
 	"github.com/awalterschulze/goderive/derive"
 )
 
-var Prefix = flag.String("sorted.prefix", "deriveSorted", "set the prefix for sorted functions that should be derived.")
+const Gen gen = 0
+
+type gen int
+
+func (gen) Name() string {
+	return "sorted"
+}
+
+func (gen) Prefix() string {
+	return "deriveSorted"
+}
+
+func (gen) New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
+	return &sorted{
+		TypesMap: typesMap,
+		printer:  p,
+		sortPkg:  p.NewImport("sort"),
+		compare:  deps["compare"],
+	}
+}
 
 type sorted struct {
 	derive.TypesMap
 	printer derive.Printer
 	sortPkg derive.Import
-	compare derive.Plugin
-}
-
-func New(typesMap derive.TypesMap, p derive.Printer, compareTypesMap derive.Plugin) *sorted {
-	return &sorted{
-		TypesMap: typesMap,
-		printer:  p,
-		sortPkg:  p.NewImport("sort"),
-		compare:  compareTypesMap,
-	}
-}
-
-func (this *sorted) Name() string {
-	return "sorted"
+	compare derive.Dependency
 }
 
 func (this *sorted) Add(name string, typs []types.Type) (string, error) {

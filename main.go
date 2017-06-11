@@ -39,14 +39,20 @@ var dedup = flag.Bool("dedup", false, "rename functions to functions that are du
 
 const derivedFilename = "derived.gen.go"
 
-type Generator interface {
-	derive.TypesMap
-	Add(name string, typs []types.Type) (string, error)
-	Name() string
-	Generate() error
-}
-
 func main() {
+	generators := []derive.Generator{
+		equal.Gen,
+		compare.Gen,
+		fmap.Gen,
+		join.Gen,
+		keys.Gen,
+		sorted.Gen,
+	}
+	flags := make(map[string]*string)
+	for _, g := range generators {
+		flags[g.Name()] = flag.String(g.Name()+".prefix", g.Prefix(), "set the prefix for "+g.Name()+" functions that should be derived.")
+	}
+
 	log.SetFlags(0)
 	flag.Parse()
 	paths := gotool.ImportPaths(flag.Args())
@@ -72,20 +78,17 @@ func main() {
 			p := derive.NewPrinter(pkgInfo.Pkg.Name())
 			quals := derive.NewQualifier(p, pkgInfo.Pkg)
 
-			equalTypesMap := derive.NewTypesMap(quals, *equal.Prefix, *autoname, *dedup)
-			keysTypesMap := derive.NewTypesMap(quals, *keys.Prefix, *autoname, *dedup)
-			sortedTypesMap := derive.NewTypesMap(quals, *sorted.Prefix, *autoname, *dedup)
-			compareTypesMap := derive.NewTypesMap(quals, *compare.Prefix, *autoname, *dedup)
-			fmapTypesMap := derive.NewTypesMap(quals, *fmap.Prefix, *autoname, *dedup)
-			joinTypesMap := derive.NewTypesMap(quals, *join.Prefix, *autoname, *dedup)
+			typesmaps := make(map[string]derive.TypesMap, len(generators))
+			deps := make(map[string]derive.Dependency, len(generators))
+			for _, g := range generators {
+				tm := derive.NewTypesMap(quals, *(flags[g.Name()]), *autoname, *dedup)
+				deps[g.Name()] = tm
+				typesmaps[g.Name()] = tm
+			}
 
-			generators := []Generator{
-				equal.New(equalTypesMap, p),
-				keys.New(keysTypesMap, p),
-				compare.New(compareTypesMap, p, keysTypesMap, sortedTypesMap),
-				sorted.New(sortedTypesMap, p, compareTypesMap),
-				fmap.New(fmapTypesMap, p),
-				join.New(joinTypesMap, p),
+			plugins := make(map[string]derive.Plugin, len(generators))
+			for _, g := range generators {
+				plugins[g.Name()] = g.New(typesmaps[g.Name()], p, deps)
 			}
 
 			var notgenerated []*ast.CallExpr
@@ -108,13 +111,14 @@ func main() {
 						continue
 					}
 					generated := func() bool {
-						for _, gen := range generators {
-							if !strings.HasPrefix(call.Name, gen.Prefix()) {
+						for _, g := range generators {
+							if !strings.HasPrefix(call.Name, *(flags[g.Name()])) {
 								continue
 							}
-							name, err := gen.Add(call.Name, call.Args)
+							p := plugins[g.Name()]
+							name, err := p.Add(call.Name, call.Args)
 							if err != nil {
-								log.Fatalf("%s: %v", gen.Name(), err)
+								log.Fatalf("%s: %v", g.Name(), err)
 							}
 							if name != call.Name {
 								if !*autoname && !*dedup {
@@ -161,14 +165,14 @@ func main() {
 
 			alldone := false
 			for !alldone {
-				for _, gen := range generators {
-					if err := gen.Generate(); err != nil {
-						log.Fatal(gen.Name() + ":" + err.Error())
+				for _, g := range generators {
+					if err := plugins[g.Name()].Generate(); err != nil {
+						log.Fatal(g.Name() + ":" + err.Error())
 					}
 				}
 				alldone = func() bool {
-					for _, gen := range generators {
-						if !gen.Done() {
+					for _, p := range plugins {
+						if !p.Done() {
 							return false
 						}
 					}

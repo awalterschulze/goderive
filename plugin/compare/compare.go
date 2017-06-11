@@ -15,7 +15,6 @@
 package compare
 
 import (
-	"flag"
 	"fmt"
 	"go/types"
 	"strings"
@@ -23,7 +22,30 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-var Prefix = flag.String("compare.prefix", "deriveCompare", "set the prefix for compare functions that should be derived.")
+const Gen gen = 0
+
+type gen int
+
+func (gen) Name() string {
+	return "compare"
+}
+
+func (gen) Prefix() string {
+	return "deriveCompare"
+}
+
+func (gen) New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
+	return &compare{
+		TypesMap:   typesMap,
+		printer:    p,
+		bytesPkg:   p.NewImport("bytes"),
+		stringsPkg: p.NewImport("strings"),
+		reflectPkg: p.NewImport("reflect"),
+		unsafePkg:  p.NewImport("unsafe"),
+		keys:       deps["keys"],
+		sorted:     deps["sorted"],
+	}
+}
 
 type compare struct {
 	derive.TypesMap
@@ -32,25 +54,8 @@ type compare struct {
 	stringsPkg derive.Import
 	reflectPkg derive.Import
 	unsafePkg  derive.Import
-	keys       derive.Plugin
-	sorted     derive.Plugin
-}
-
-func New(typesMap derive.TypesMap, p derive.Printer, keys, sorted derive.Plugin) *compare {
-	return &compare{
-		TypesMap:   typesMap,
-		printer:    p,
-		bytesPkg:   p.NewImport("bytes"),
-		stringsPkg: p.NewImport("strings"),
-		reflectPkg: p.NewImport("reflect"),
-		unsafePkg:  p.NewImport("unsafe"),
-		keys:       keys,
-		sorted:     sorted,
-	}
-}
-
-func (this *compare) Name() string {
-	return "compare"
+	keys       derive.Dependency
+	sorted     derive.Dependency
 }
 
 func (this *compare) Add(name string, typs []types.Type) (string, error) {

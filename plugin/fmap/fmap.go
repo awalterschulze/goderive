@@ -15,30 +15,35 @@
 package fmap
 
 import (
-	"flag"
 	"fmt"
 	"go/types"
 
 	"github.com/awalterschulze/goderive/derive"
 )
 
-var Prefix = flag.String("fmap.prefix", "deriveFmap", "set the prefix for fmap functions that should be derived.")
+const Gen gen = 0
 
-type fmap struct {
-	derive.TypesMap
-	printer  derive.Printer
-	bytesPkg derive.Import
+type gen int
+
+func (gen) Name() string {
+	return "fmap"
 }
 
-func New(typesMap derive.TypesMap, p derive.Printer) *fmap {
+func (gen) Prefix() string {
+	return "deriveFmap"
+}
+
+func (gen) New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
 	return &fmap{
 		TypesMap: typesMap,
 		printer:  p,
 	}
 }
 
-func (this *fmap) Name() string {
-	return "fmap"
+type fmap struct {
+	derive.TypesMap
+	printer  derive.Printer
+	bytesPkg derive.Import
 }
 
 func (this *fmap) Add(name string, typs []types.Type) (string, error) {

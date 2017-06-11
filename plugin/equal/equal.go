@@ -15,7 +15,6 @@
 package equal
 
 import (
-	"flag"
 	"fmt"
 	"go/types"
 	"strings"
@@ -23,17 +22,19 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-var Prefix = flag.String("equal.prefix", "deriveEqual", "set the prefix for equal functions that should be derived.")
+const Gen gen = 0
 
-type equal struct {
-	derive.TypesMap
-	printer    derive.Printer
-	bytesPkg   derive.Import
-	reflectPkg derive.Import
-	unsafePkg  derive.Import
+type gen int
+
+func (gen) Name() string {
+	return "equal"
 }
 
-func New(typesMap derive.TypesMap, p derive.Printer) *equal {
+func (gen) Prefix() string {
+	return "deriveEqual"
+}
+
+func (gen) New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
 	return &equal{
 		TypesMap:   typesMap,
 		printer:    p,
@@ -43,8 +44,12 @@ func New(typesMap derive.TypesMap, p derive.Printer) *equal {
 	}
 }
 
-func (this *equal) Name() string {
-	return "equal"
+type equal struct {
+	derive.TypesMap
+	printer    derive.Printer
+	bytesPkg   derive.Import
+	reflectPkg derive.Import
+	unsafePkg  derive.Import
 }
 
 func (this *equal) Add(name string, typs []types.Type) (string, error) {

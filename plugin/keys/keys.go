@@ -1,29 +1,34 @@
 package keys
 
 import (
-	"flag"
 	"fmt"
 	"go/types"
 
 	"github.com/awalterschulze/goderive/derive"
 )
 
-var Prefix = flag.String("keys.prefix", "deriveKeys", "set the prefix for keys functions that should be derived.")
+const Gen gen = 0
 
-type keys struct {
-	derive.TypesMap
-	printer derive.Printer
+type gen int
+
+func (gen) Name() string {
+	return "keys"
 }
 
-func New(typesMap derive.TypesMap, p derive.Printer) *keys {
+func (gen) Prefix() string {
+	return "deriveKeys"
+}
+
+func (gen) New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
 	return &keys{
 		TypesMap: typesMap,
 		printer:  p,
 	}
 }
 
-func (this *keys) Name() string {
-	return "keys"
+type keys struct {
+	derive.TypesMap
+	printer derive.Printer
 }
 
 func (this *keys) Add(name string, typs []types.Type) (string, error) {

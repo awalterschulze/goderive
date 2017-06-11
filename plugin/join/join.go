@@ -15,30 +15,35 @@
 package join
 
 import (
-	"flag"
 	"fmt"
 	"go/types"
 
 	"github.com/awalterschulze/goderive/derive"
 )
 
-var Prefix = flag.String("join.prefix", "deriveJoin", "set the prefix for join functions that should be derived.")
+const Gen gen = 0
 
-type join struct {
-	derive.TypesMap
-	printer  derive.Printer
-	bytesPkg derive.Import
+type gen int
+
+func (gen) Name() string {
+	return "join"
 }
 
-func New(typesMap derive.TypesMap, p derive.Printer) *join {
+func (gen) Prefix() string {
+	return "deriveJoin"
+}
+
+func (gen) New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
 	return &join{
 		TypesMap: typesMap,
 		printer:  p,
 	}
 }
 
-func (this *join) Name() string {
-	return "join"
+type join struct {
+	derive.TypesMap
+	printer  derive.Printer
+	bytesPkg derive.Import
 }
 
 func (this *join) Add(name string, typs []types.Type) (string, error) {

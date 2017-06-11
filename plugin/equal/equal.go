@@ -61,11 +61,6 @@ func (this *equal) Generate() error {
 			return err
 		}
 	}
-	for _, typs := range this.ToGenerate() {
-		if err := this.genFunc(typs[0]); err != nil {
-			return err
-		}
-	}
 	return nil
 }
 

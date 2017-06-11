@@ -19,6 +19,7 @@ import (
 	"log"
 
 	"github.com/awalterschulze/goderive/derive"
+	"github.com/awalterschulze/goderive/plugin/clone"
 	"github.com/awalterschulze/goderive/plugin/compare"
 	"github.com/awalterschulze/goderive/plugin/equal"
 	"github.com/awalterschulze/goderive/plugin/fmap"
@@ -40,6 +41,7 @@ func main() {
 		keys.NewPlugin(),
 		sorted.NewPlugin(),
 		sort.NewPlugin(),
+		clone.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

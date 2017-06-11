@@ -44,12 +44,14 @@ func NewPlugins(ps []Plugin, autoname bool, dedup bool) *plugins {
 	}
 }
 
+// sortPlugins sorts plugins from biggest to smallest prefix to make sure than conflicts in prefixes are resolved.
+// For example: derivSorted should generated a sorted function and not a sort function.
 func sortPlugins(ps []Plugin) {
 	sort.Slice(ps, func(i, j int) bool {
 		if len(ps[i].GetPrefix()) == len(ps[j].GetPrefix()) {
-			return ps[i].GetPrefix() < ps[j].GetPrefix()
+			return ps[i].GetPrefix() > ps[j].GetPrefix()
 		}
-		return len(ps[i].GetPrefix()) < len(ps[j].GetPrefix())
+		return len(ps[i].GetPrefix()) > len(ps[j].GetPrefix())
 	})
 }
 

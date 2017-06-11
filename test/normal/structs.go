@@ -46,6 +46,10 @@ func (this *BuiltInTypes) Compare(that *BuiltInTypes) int {
 	return deriveComparePtrToBuiltInTypes(this, that)
 }
 
+func (this *BuiltInTypes) Clone() *BuiltInTypes {
+	return deriveClonePtrToBuiltInTypes(this)
+}
+
 type PtrToBuiltInTypes struct {
 	Bool       *bool
 	Byte       *byte
@@ -74,6 +78,10 @@ func (this *PtrToBuiltInTypes) Equal(that *PtrToBuiltInTypes) bool {
 
 func (this *PtrToBuiltInTypes) Compare(that *PtrToBuiltInTypes) int {
 	return deriveComparePtrToPtrToBuiltInTypes(this, that)
+}
+
+func (this *PtrToBuiltInTypes) Clone() *PtrToBuiltInTypes {
+	return deriveClonePtrToPtrToBuiltInTypes(this)
 }
 
 type SliceOfBuiltInTypes struct {

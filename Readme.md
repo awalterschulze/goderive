@@ -10,6 +10,7 @@ Functions that are currently supported include:
   - [Compare](https://github.com/awalterschulze/goderive#compare)
   - [Keys](https://github.com/awalterschulze/goderive#keys)
   - [Sorted](https://github.com/awalterschulze/goderive#sorted)
+  - [Sort](https://github.com/awalterschulze/goderive#sort)
 
 More functions are in the works:
 
@@ -94,14 +95,19 @@ func (this *MyStruct) Less(that *MyStruct) bool {
 
 The `deriveKeys` function returns a map's keys as a slice.
 
+## Sort
+
+This feature requires Go 1.8
+
+The `deriveSort` function is useful for deterministically ranging over maps when used with `deriveKeys`.
+
+`deriveSort` supports only the types that `deriveCompare` supports, since it uses it for sorting.
+
 ## Sorted
 
 This feature requires Go 1.8
 
-The `deriveSorted` function is useful for deterministically ranging over maps when used with `deriveKeys`.
-`deriveSorted` sacrifices efficiency for immutability by creating a copy of its input.
-
-`deriveSorted` supports only the types that `deriveCompare` supports, since it uses it for sorting.
+`deriveSorted` is like `deriveSort`, but sacrifices efficiency for immutability by creating a copy of its input.
 
 ## Fmap
 

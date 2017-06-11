@@ -22,6 +22,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/kisielk/gotool"
@@ -35,11 +36,21 @@ type plugins struct {
 }
 
 func NewPlugins(ps []Plugin, autoname bool, dedup bool) *plugins {
+	sortPlugins(ps)
 	return &plugins{
 		plugins:  ps,
 		autoname: autoname,
 		dedup:    dedup,
 	}
+}
+
+func sortPlugins(ps []Plugin) {
+	sort.Slice(ps, func(i, j int) bool {
+		if len(ps[i].GetPrefix()) == len(ps[j].GetPrefix()) {
+			return ps[i].GetPrefix() < ps[j].GetPrefix()
+		}
+		return len(ps[i].GetPrefix()) < len(ps[j].GetPrefix())
+	})
 }
 
 type program struct {

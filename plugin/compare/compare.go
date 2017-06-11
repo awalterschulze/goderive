@@ -35,7 +35,7 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 		reflectPkg: p.NewImport("reflect"),
 		unsafePkg:  p.NewImport("unsafe"),
 		keys:       deps["keys"],
-		sorted:     deps["sorted"],
+		sort:       deps["sort"],
 	}
 }
 
@@ -47,7 +47,7 @@ type compare struct {
 	reflectPkg derive.Import
 	unsafePkg  derive.Import
 	keys       derive.Dependency
-	sorted     derive.Dependency
+	sort       derive.Dependency
 }
 
 func (this *compare) Add(name string, typs []types.Type) (string, error) {
@@ -326,8 +326,8 @@ func (g *compare) genStatement(typ types.Type, this, that string) error {
 		p.P("return 1")
 		p.Out()
 		p.P("}")
-		p.P("thiskeys := %s(%s(%s))", g.sorted.GetFuncName(types.NewSlice(ttyp.Key())), g.keys.GetFuncName(typ), this)
-		p.P("thatkeys := %s(%s(%s))", g.sorted.GetFuncName(types.NewSlice(ttyp.Key())), g.keys.GetFuncName(typ), that)
+		p.P("thiskeys := %s(%s(%s))", g.sort.GetFuncName(types.NewSlice(ttyp.Key())), g.keys.GetFuncName(typ), this)
+		p.P("thatkeys := %s(%s(%s))", g.sort.GetFuncName(types.NewSlice(ttyp.Key())), g.keys.GetFuncName(typ), that)
 		p.P("for i, thiskey := range thiskeys {")
 		p.In()
 		p.P("thatkey := thatkeys[i]")

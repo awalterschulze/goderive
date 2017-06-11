@@ -12,23 +12,25 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package main
+package fmap
 
 import (
 	"flag"
 	"fmt"
 	"go/types"
+
+	"github.com/awalterschulze/goderive/derive"
 )
 
-var fmapPrefix = flag.String("fmap.prefix", "deriveFmap", "set the prefix for fmap functions that should be derived.")
+var Prefix = flag.String("fmap.prefix", "deriveFmap", "set the prefix for fmap functions that should be derived.")
 
 type fmap struct {
-	TypesMap
-	printer  Printer
-	bytesPkg Import
+	derive.TypesMap
+	printer  derive.Printer
+	bytesPkg derive.Import
 }
 
-func newFmap(typesMap TypesMap, p Printer) *fmap {
+func New(typesMap derive.TypesMap, p derive.Printer) *fmap {
 	return &fmap{
 		TypesMap: typesMap,
 		printer:  p,

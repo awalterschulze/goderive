@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package main
+package derive
 
 import (
 	"bytes"
@@ -41,7 +41,7 @@ type printer struct {
 	hasContent bool
 }
 
-func newPrinter(pkgName string) Printer {
+func NewPrinter(pkgName string) Printer {
 	return &printer{pkgName, bytes.NewBuffer(nil), "", make(map[string]string), false}
 }
 

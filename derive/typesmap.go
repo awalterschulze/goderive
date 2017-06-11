@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package main
+package derive
 
 import (
 	"fmt"
@@ -46,7 +46,7 @@ type typesMap struct {
 	dedup      bool
 }
 
-func newTypesMap(qual types.Qualifier, prefix string, autoname bool, dedup bool) TypesMap {
+func NewTypesMap(qual types.Qualifier, prefix string, autoname bool, dedup bool) TypesMap {
 	return &typesMap{
 		qual:       qual,
 		prefix:     prefix,

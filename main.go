@@ -24,6 +24,13 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/awalterschulze/goderive/derive"
+	"github.com/awalterschulze/goderive/plugin/compare"
+	"github.com/awalterschulze/goderive/plugin/equal"
+	"github.com/awalterschulze/goderive/plugin/fmap"
+	"github.com/awalterschulze/goderive/plugin/join"
+	"github.com/awalterschulze/goderive/plugin/keys"
+	"github.com/awalterschulze/goderive/plugin/sorted"
 	"github.com/kisielk/gotool"
 )
 
@@ -33,7 +40,7 @@ var dedup = flag.Bool("dedup", false, "rename functions to functions that are du
 const derivedFilename = "derived.gen.go"
 
 type Generator interface {
-	TypesMap
+	derive.TypesMap
 	Add(name string, typs []types.Type) (string, error)
 	Name() string
 	Generate() error
@@ -44,7 +51,7 @@ func main() {
 	flag.Parse()
 	paths := gotool.ImportPaths(flag.Args())
 
-	program, err := load(paths...)
+	program, err := derive.Load(paths...)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,30 +62,30 @@ func main() {
 			thisprogram := program
 			if ungenerated > 0 {
 				// reload path with newly generated code, with the hope that some types are now inferable.
-				thisprogram, err = load(path)
+				thisprogram, err = derive.Load(path)
 				if err != nil {
 					log.Fatal(err)
 				}
 				pkgInfo = thisprogram.Package(path)
 			}
 
-			p := newPrinter(pkgInfo.Pkg.Name())
-			quals := newQualifiers(p, pkgInfo.Pkg)
+			p := derive.NewPrinter(pkgInfo.Pkg.Name())
+			quals := derive.NewQualifier(p, pkgInfo.Pkg)
 
-			equalTypesMap := newTypesMap(quals, *equalPrefix, *autoname, *dedup)
-			keysTypesMap := newTypesMap(quals, *keysPrefix, *autoname, *dedup)
-			sortedTypesMap := newTypesMap(quals, *sortedPrefix, *autoname, *dedup)
-			compareTypesMap := newTypesMap(quals, *comparePrefix, *autoname, *dedup)
-			fmapTypesMap := newTypesMap(quals, *fmapPrefix, *autoname, *dedup)
-			joinTypesMap := newTypesMap(quals, *joinPrefix, *autoname, *dedup)
+			equalTypesMap := derive.NewTypesMap(quals, *equal.Prefix, *autoname, *dedup)
+			keysTypesMap := derive.NewTypesMap(quals, *keys.Prefix, *autoname, *dedup)
+			sortedTypesMap := derive.NewTypesMap(quals, *sorted.Prefix, *autoname, *dedup)
+			compareTypesMap := derive.NewTypesMap(quals, *compare.Prefix, *autoname, *dedup)
+			fmapTypesMap := derive.NewTypesMap(quals, *fmap.Prefix, *autoname, *dedup)
+			joinTypesMap := derive.NewTypesMap(quals, *join.Prefix, *autoname, *dedup)
 
 			generators := []Generator{
-				newEqual(equalTypesMap, p),
-				newKeys(keysTypesMap, p),
-				newCompare(compareTypesMap, p, keysTypesMap, sortedTypesMap),
-				newSorted(sortedTypesMap, p, compareTypesMap),
-				newFmap(fmapTypesMap, p),
-				newJoin(joinTypesMap, p),
+				equal.New(equalTypesMap, p),
+				keys.New(keysTypesMap, p),
+				compare.New(compareTypesMap, p, keysTypesMap, sortedTypesMap),
+				sorted.New(sortedTypesMap, p, compareTypesMap),
+				fmap.New(fmapTypesMap, p),
+				join.New(joinTypesMap, p),
 			}
 
 			var notgenerated []*ast.CallExpr
@@ -93,36 +100,36 @@ func main() {
 					continue
 				}
 
-				calls := findUndefinedOrDerivedFuncs(thisprogram, pkgInfo, file)
+				calls := derive.FindUndefinedOrDerivedFuncs(thisprogram, pkgInfo, file)
 				changed := false
 				for _, call := range calls {
-					if call.hasUndefined() {
-						notgenerated = append(notgenerated, call.call)
+					if call.HasUndefined() {
+						notgenerated = append(notgenerated, call.Expr)
 						continue
 					}
 					generated := func() bool {
 						for _, gen := range generators {
-							if !strings.HasPrefix(call.name, gen.Prefix()) {
+							if !strings.HasPrefix(call.Name, gen.Prefix()) {
 								continue
 							}
-							name, err := gen.Add(call.name, call.args)
+							name, err := gen.Add(call.Name, call.Args)
 							if err != nil {
 								log.Fatalf("%s: %v", gen.Name(), err)
 							}
-							if name != call.name {
+							if name != call.Name {
 								if !*autoname && !*dedup {
 									panic("unreachable: function names cannot be changed if it is not allowed by the user")
 								}
 								changed = true
-								log.Printf("changing function call name from %s to %s", call.name, name)
-								call.call.Fun = ast.NewIdent(name)
+								log.Printf("changing function call name from %s to %s", call.Name, name)
+								call.Expr.Fun = ast.NewIdent(name)
 							}
 							return true
 						}
 						return false
 					}()
 					if !generated {
-						notgenerated = append(notgenerated, call.call)
+						notgenerated = append(notgenerated, call.Expr)
 					}
 				}
 				if changed {

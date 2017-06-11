@@ -12,22 +12,22 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package main
+package derive
 
 import "go/types"
 
-type qualifiers struct {
+type qual struct {
 	p        *types.Package
-	importer importer
+	importer Importer
 	imported map[*types.Package]Import
 }
 
-type importer interface {
+type Importer interface {
 	NewImport(path string) Import
 }
 
-func newQualifiers(importer importer, p *types.Package) types.Qualifier {
-	q := &qualifiers{
+func NewQualifier(importer Importer, p *types.Package) types.Qualifier {
+	q := &qual{
 		p:        p,
 		importer: importer,
 		imported: make(map[*types.Package]Import),
@@ -35,7 +35,7 @@ func newQualifiers(importer importer, p *types.Package) types.Qualifier {
 	return q.Qualifier
 }
 
-func (this *qualifiers) Qualifier(p *types.Package) string {
+func (this *qual) Qualifier(p *types.Package) string {
 	if this.p == p {
 		return ""
 	}

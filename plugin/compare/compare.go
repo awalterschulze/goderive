@@ -12,28 +12,31 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package main
+package compare
 
 import (
 	"flag"
 	"fmt"
 	"go/types"
+	"strings"
+
+	"github.com/awalterschulze/goderive/derive"
 )
 
-var comparePrefix = flag.String("compare.prefix", "deriveCompare", "set the prefix for compare functions that should be derived.")
+var Prefix = flag.String("compare.prefix", "deriveCompare", "set the prefix for compare functions that should be derived.")
 
 type compare struct {
-	TypesMap
-	printer    Printer
-	bytesPkg   Import
-	stringsPkg Import
-	reflectPkg Import
-	unsafePkg  Import
-	keys       Plugin
-	sorted     Plugin
+	derive.TypesMap
+	printer    derive.Printer
+	bytesPkg   derive.Import
+	stringsPkg derive.Import
+	reflectPkg derive.Import
+	unsafePkg  derive.Import
+	keys       derive.Plugin
+	sorted     derive.Plugin
 }
 
-func newCompare(typesMap TypesMap, p Printer, keys, sorted Plugin) *compare {
+func New(typesMap derive.TypesMap, p derive.Printer, keys, sorted derive.Plugin) *compare {
 	return &compare{
 		TypesMap:   typesMap,
 		printer:    p,
@@ -140,7 +143,7 @@ func (g *compare) genStatement(typ types.Type, this, that string) error {
 			p.P("return %s(*%s, *%s)", g.GetFuncName(reftyp), this, that)
 			return nil
 		}
-		fields := Fields(g.TypesMap, named.Underlying().(*types.Struct))
+		fields := derive.Fields(g.TypesMap, named.Underlying().(*types.Struct))
 		if fields.Reflect {
 			p.P(`thisv := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(` + this + `))`)
 			p.P(`thatv := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(` + that + `))`)
@@ -364,6 +367,13 @@ func (g *compare) genStatement(typ types.Type, this, that string) error {
 		return nil
 	}
 	return fmt.Errorf("unsupported compare type: %s", g.TypeString(typ))
+}
+
+func wrap(value string) string {
+	if strings.HasPrefix(value, "*") || strings.HasPrefix(value, "&") {
+		return "(" + value + ")"
+	}
+	return value
 }
 
 func (this *compare) field(thisField, thatField string, fieldType types.Type) (string, error) {

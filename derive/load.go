@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package main
+package derive
 
 import (
 	"fmt"
@@ -21,7 +21,7 @@ import (
 	"golang.org/x/tools/go/loader"
 )
 
-func load(paths ...string) (*loader.Program, error) {
+func Load(paths ...string) (*loader.Program, error) {
 	conf := loader.Config{
 		ParserMode:  parser.ParseComments,
 		AllowErrors: true,

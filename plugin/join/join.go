@@ -12,23 +12,25 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package main
+package join
 
 import (
 	"flag"
 	"fmt"
 	"go/types"
+
+	"github.com/awalterschulze/goderive/derive"
 )
 
-var joinPrefix = flag.String("join.prefix", "deriveJoin", "set the prefix for join functions that should be derived.")
+var Prefix = flag.String("join.prefix", "deriveJoin", "set the prefix for join functions that should be derived.")
 
 type join struct {
-	TypesMap
-	printer  Printer
-	bytesPkg Import
+	derive.TypesMap
+	printer  derive.Printer
+	bytesPkg derive.Import
 }
 
-func newJoin(typesMap TypesMap, p Printer) *join {
+func New(typesMap derive.TypesMap, p derive.Printer) *join {
 	return &join{
 		TypesMap: typesMap,
 		printer:  p,

@@ -12,26 +12,28 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package main
+package equal
 
 import (
 	"flag"
 	"fmt"
 	"go/types"
 	"strings"
+
+	"github.com/awalterschulze/goderive/derive"
 )
 
-var equalPrefix = flag.String("equal.prefix", "deriveEqual", "set the prefix for equal functions that should be derived.")
+var Prefix = flag.String("equal.prefix", "deriveEqual", "set the prefix for equal functions that should be derived.")
 
 type equal struct {
-	TypesMap
-	printer    Printer
-	bytesPkg   Import
-	reflectPkg Import
-	unsafePkg  Import
+	derive.TypesMap
+	printer    derive.Printer
+	bytesPkg   derive.Import
+	reflectPkg derive.Import
+	unsafePkg  derive.Import
 }
 
-func newEqual(typesMap TypesMap, p Printer) *equal {
+func New(typesMap derive.TypesMap, p derive.Printer) *equal {
 	return &equal{
 		TypesMap:   typesMap,
 		printer:    p,
@@ -115,7 +117,7 @@ func (g *equal) genStatement(typ types.Type, this, that string) error {
 			p.P("return false")
 			return nil
 		}
-		fields := Fields(g.TypesMap, named.Underlying().(*types.Struct))
+		fields := derive.Fields(g.TypesMap, named.Underlying().(*types.Struct))
 		if len(fields.Fields) == 0 {
 			p.P("return %s == nil && %s == nil", this, that)
 			return nil

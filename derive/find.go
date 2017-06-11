@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package main
+package derive
 
 import (
 	"go/ast"
@@ -21,6 +21,21 @@ import (
 
 	"golang.org/x/tools/go/loader"
 )
+
+const DerivedFilename = "derived.gen.go"
+
+func FindUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []*Call {
+	f := &finder{program, pkgInfo, nil, nil}
+	for _, d := range file.Decls {
+		ast.Walk(f, d)
+	}
+	callExprs := append(f.undefined, f.derived...)
+	calls := make([]*Call, len(callExprs))
+	for i := range callExprs {
+		calls[i] = newCall(pkgInfo, callExprs[i])
+	}
+	return calls
+}
 
 type finder struct {
 	program   *loader.Program
@@ -49,39 +64,26 @@ func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
 		return this
 	}
 	_, filename := filepath.Split(file.Name())
-	if filename == derivedFilename {
+	if filename == DerivedFilename {
 		this.derived = append(this.derived, call)
 	}
 	return this
 }
 
-func findUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []*Call {
-	f := &finder{program, pkgInfo, nil, nil}
-	for _, d := range file.Decls {
-		ast.Walk(f, d)
-	}
-	callExprs := append(f.undefined, f.derived...)
-	calls := make([]*Call, len(callExprs))
-	for i := range callExprs {
-		calls[i] = newCall(pkgInfo, callExprs[i])
-	}
-	return calls
-}
-
 type Call struct {
-	call *ast.CallExpr
-	name string
-	args []types.Type
+	Expr *ast.CallExpr
+	Name string
+	Args []types.Type
 }
 
-func newCall(pkgInfo *loader.PackageInfo, call *ast.CallExpr) *Call {
-	fn, ok := call.Fun.(*ast.Ident)
+func newCall(pkgInfo *loader.PackageInfo, expr *ast.CallExpr) *Call {
+	fn, ok := expr.Fun.(*ast.Ident)
 	if !ok {
 		panic("unreachable, finder has already eliminated this option")
 	}
 	name := fn.Name
-	typs := getInputTypes(pkgInfo, call)
-	return &Call{call, name, typs}
+	typs := getInputTypes(pkgInfo, expr)
+	return &Call{expr, name, typs}
 }
 
 // argTypes returns the argument types of a function call.
@@ -93,10 +95,10 @@ func getInputTypes(pkgInfo *loader.PackageInfo, call *ast.CallExpr) []types.Type
 	return typs
 }
 
-// hasUndefined returns whether the call has undefined arguments
-func (this *Call) hasUndefined() bool {
-	for i := range this.args {
-		if this.args[i] == nil {
+// HasUndefined returns whether the call has undefined arguments
+func (this *Call) HasUndefined() bool {
+	for i := range this.Args {
+		if this.Args[i] == nil {
 			return true
 		}
 	}

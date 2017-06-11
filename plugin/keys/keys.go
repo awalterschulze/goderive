@@ -1,19 +1,21 @@
-package main
+package keys
 
 import (
 	"flag"
 	"fmt"
 	"go/types"
+
+	"github.com/awalterschulze/goderive/derive"
 )
 
-var keysPrefix = flag.String("keys.prefix", "deriveKeys", "set the prefix for keys functions that should be derived.")
+var Prefix = flag.String("keys.prefix", "deriveKeys", "set the prefix for keys functions that should be derived.")
 
 type keys struct {
-	TypesMap
-	printer Printer
+	derive.TypesMap
+	printer derive.Printer
 }
 
-func newKeys(typesMap TypesMap, p Printer) *keys {
+func New(typesMap derive.TypesMap, p derive.Printer) *keys {
 	return &keys{
 		TypesMap: typesMap,
 		printer:  p,

@@ -29,7 +29,7 @@ func TestCloneStructs(t *testing.T) {
 	structs := []interface{}{
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
-		// &SliceOfBuiltInTypes{},
+		&SliceOfBuiltInTypes{},
 		// &SliceOfPtrToBuiltInTypes{},
 		// &ArrayOfBuiltInTypes{},
 		// &ArrayOfPtrToBuiltInTypes{},

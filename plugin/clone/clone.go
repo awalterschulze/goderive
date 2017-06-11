@@ -69,7 +69,7 @@ func (g *gen) genFunc(typ types.Type) error {
 	p.In()
 	p.P("var that %s", typeStr)
 	if err := g.genStatement(typ, "this", "that"); err != nil {
-		return nil
+		return err
 	}
 	p.P("return that")
 	p.Out()
@@ -111,8 +111,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 					} else {
 						thisField, thatField = field.Name("thisv", g.unsafePkg), field.Name("thatv", g.unsafePkg)
 					}
-					err := g.genStatement(fieldType, thisField, thatField)
-					if err != nil {
+					if err := g.genStatement(fieldType, thisField, thatField); err != nil {
 						return err
 					}
 				}
@@ -124,7 +123,22 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 	case *types.Named:
 
 	case *types.Slice:
-
+		p.P("if %s != nil {", this)
+		p.In()
+		p.P("%s = make(%s, len(%s))", that, g.TypeString(typ), this)
+		elmType := ttyp.Elem()
+		if canClone(elmType) {
+			p.P("copy(%s, %s)", that, this)
+		} else {
+			p.P("for i, thisvalue := range %s {", this)
+			p.In()
+			g.genStatement(elmType, "thisvalue", that+"[i]")
+			p.Out()
+			p.P("}")
+		}
+		p.Out()
+		p.P("}")
+		return nil
 	case *types.Array:
 
 	case *types.Map:

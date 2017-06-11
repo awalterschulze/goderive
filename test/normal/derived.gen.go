@@ -1256,6 +1256,90 @@ func deriveClonePtrToPtrToBuiltInTypes(this *PtrToBuiltInTypes) *PtrToBuiltInTyp
 	return that
 }
 
+func deriveClonePtrToSliceOfBuiltInTypes(this *SliceOfBuiltInTypes) *SliceOfBuiltInTypes {
+	var that *SliceOfBuiltInTypes
+	if this != nil {
+		that = new(SliceOfBuiltInTypes)
+		if this.Bool != nil {
+			that.Bool = make([]bool, len(this.Bool))
+			copy(that.Bool, this.Bool)
+		}
+		if this.Byte != nil {
+			that.Byte = make([]byte, len(this.Byte))
+			copy(that.Byte, this.Byte)
+		}
+		if this.Complex128 != nil {
+			that.Complex128 = make([]complex128, len(this.Complex128))
+			copy(that.Complex128, this.Complex128)
+		}
+		if this.Complex64 != nil {
+			that.Complex64 = make([]complex64, len(this.Complex64))
+			copy(that.Complex64, this.Complex64)
+		}
+		if this.Float64 != nil {
+			that.Float64 = make([]float64, len(this.Float64))
+			copy(that.Float64, this.Float64)
+		}
+		if this.Float32 != nil {
+			that.Float32 = make([]float32, len(this.Float32))
+			copy(that.Float32, this.Float32)
+		}
+		if this.Int != nil {
+			that.Int = make([]int, len(this.Int))
+			copy(that.Int, this.Int)
+		}
+		if this.Int16 != nil {
+			that.Int16 = make([]int16, len(this.Int16))
+			copy(that.Int16, this.Int16)
+		}
+		if this.Int32 != nil {
+			that.Int32 = make([]int32, len(this.Int32))
+			copy(that.Int32, this.Int32)
+		}
+		if this.Int64 != nil {
+			that.Int64 = make([]int64, len(this.Int64))
+			copy(that.Int64, this.Int64)
+		}
+		if this.Int8 != nil {
+			that.Int8 = make([]int8, len(this.Int8))
+			copy(that.Int8, this.Int8)
+		}
+		if this.Rune != nil {
+			that.Rune = make([]rune, len(this.Rune))
+			copy(that.Rune, this.Rune)
+		}
+		if this.String != nil {
+			that.String = make([]string, len(this.String))
+			copy(that.String, this.String)
+		}
+		if this.Uint != nil {
+			that.Uint = make([]uint, len(this.Uint))
+			copy(that.Uint, this.Uint)
+		}
+		if this.Uint16 != nil {
+			that.Uint16 = make([]uint16, len(this.Uint16))
+			copy(that.Uint16, this.Uint16)
+		}
+		if this.Uint32 != nil {
+			that.Uint32 = make([]uint32, len(this.Uint32))
+			copy(that.Uint32, this.Uint32)
+		}
+		if this.Uint64 != nil {
+			that.Uint64 = make([]uint64, len(this.Uint64))
+			copy(that.Uint64, this.Uint64)
+		}
+		if this.Uint8 != nil {
+			that.Uint8 = make([]uint8, len(this.Uint8))
+			copy(that.Uint8, this.Uint8)
+		}
+		if this.UintPtr != nil {
+			that.UintPtr = make([]uintptr, len(this.UintPtr))
+			copy(that.UintPtr, this.UintPtr)
+		}
+	}
+	return that
+}
+
 func deriveKeysForFmap(m map[int]string) []int {
 	keys := make([]int, 0, len(m))
 	for key, _ := range m {

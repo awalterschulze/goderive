@@ -49,7 +49,7 @@ func main() {
 		p.SetPrefix(*(flags[p.Name()]))
 	}
 	paths := derive.ImportPaths(flag.Args())
-	g, err := derive.NewGenerator(plugins, paths, *autoname, *dedup)
+	g, err := derive.NewPlugins(plugins, *autoname, *dedup).Load(paths)
 	if err != nil {
 		log.Fatal(err)
 	}

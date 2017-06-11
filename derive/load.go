@@ -21,7 +21,7 @@ import (
 	"golang.org/x/tools/go/loader"
 )
 
-func Load(paths ...string) (*loader.Program, error) {
+func load(paths ...string) (*loader.Program, error) {
 	conf := loader.Config{
 		ParserMode:  parser.ParseComments,
 		AllowErrors: true,

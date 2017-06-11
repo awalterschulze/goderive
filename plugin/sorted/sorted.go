@@ -7,11 +7,11 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-func NewGenerator() derive.Generator {
-	return derive.NewGenerator("sorted", "deriveSorted", New)
+func NewPlugin() derive.Plugin {
+	return derive.NewPlugin("sorted", "deriveSorted", New)
 }
 
-func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
+func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &sorted{
 		TypesMap: typesMap,
 		printer:  p,

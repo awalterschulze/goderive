@@ -21,11 +21,11 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-func NewGenerator() derive.Generator {
-	return derive.NewGenerator("join", "deriveJoin", New)
+func NewPlugin() derive.Plugin {
+	return derive.NewPlugin("join", "deriveJoin", New)
 }
 
-func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
+func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &join{
 		TypesMap: typesMap,
 		printer:  p,

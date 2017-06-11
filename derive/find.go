@@ -22,9 +22,9 @@ import (
 	"golang.org/x/tools/go/loader"
 )
 
-const DerivedFilename = "derived.gen.go"
+const derivedFilename = "derived.gen.go"
 
-func FindUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []*Call {
+func findUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []*Call {
 	f := &finder{program, pkgInfo, nil, nil}
 	for _, d := range file.Decls {
 		ast.Walk(f, d)
@@ -64,7 +64,7 @@ func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
 		return this
 	}
 	_, filename := filepath.Split(file.Name())
-	if filename == DerivedFilename {
+	if filename == derivedFilename {
 		this.derived = append(this.derived, call)
 	}
 	return this

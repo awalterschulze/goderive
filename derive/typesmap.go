@@ -42,7 +42,7 @@ type typesMap struct {
 	dedup      bool
 }
 
-func NewTypesMap(qual types.Qualifier, prefix string, autoname bool, dedup bool) TypesMap {
+func newTypesMap(qual types.Qualifier, prefix string, autoname bool, dedup bool) TypesMap {
 	return &typesMap{
 		qual:       qual,
 		prefix:     prefix,

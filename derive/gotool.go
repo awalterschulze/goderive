@@ -14,33 +14,8 @@
 
 package derive
 
-import "go/types"
+import "github.com/kisielk/gotool"
 
-type qual struct {
-	p        *types.Package
-	importer Importer
-	imported map[*types.Package]Import
-}
-
-type Importer interface {
-	NewImport(path string) Import
-}
-
-func newQualifier(importer Importer, p *types.Package) types.Qualifier {
-	q := &qual{
-		p:        p,
-		importer: importer,
-		imported: make(map[*types.Package]Import),
-	}
-	return q.Qualifier
-}
-
-func (this *qual) Qualifier(p *types.Package) string {
-	if this.p == p {
-		return ""
-	}
-	if _, ok := this.imported[p]; !ok {
-		this.imported[p] = this.importer.NewImport(p.Path())
-	}
-	return this.imported[p]()
+func ImportPaths(args []string) []string {
+	return gotool.ImportPaths(args)
 }

@@ -41,7 +41,7 @@ type printer struct {
 	hasContent bool
 }
 
-func NewPrinter(pkgName string) Printer {
+func newPrinter(pkgName string) Printer {
 	return &printer{pkgName, bytes.NewBuffer(nil), "", make(map[string]string), false}
 }
 

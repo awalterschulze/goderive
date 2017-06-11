@@ -22,11 +22,11 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-func NewGenerator() derive.Generator {
-	return derive.NewGenerator("compare", "deriveCompare", New)
+func NewPlugin() derive.Plugin {
+	return derive.NewPlugin("compare", "deriveCompare", New)
 }
 
-func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
+func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &compare{
 		TypesMap:   typesMap,
 		printer:    p,

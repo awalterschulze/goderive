@@ -22,19 +22,11 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-const Gen gen = 0
-
-type gen int
-
-func (gen) Name() string {
-	return "equal"
+func NewGenerator() derive.Generator {
+	return derive.NewGenerator("equal", "deriveEqual", New)
 }
 
-func (gen) Prefix() string {
-	return "deriveEqual"
-}
-
-func (gen) New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
+func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Plugin {
 	return &equal{
 		TypesMap:   typesMap,
 		printer:    p,

@@ -41,20 +41,25 @@ const derivedFilename = "derived.gen.go"
 
 func main() {
 	generators := []derive.Generator{
-		equal.Gen,
-		compare.Gen,
-		fmap.Gen,
-		join.Gen,
-		keys.Gen,
-		sorted.Gen,
+		equal.NewGenerator(),
+		compare.NewGenerator(),
+		fmap.NewGenerator(),
+		join.NewGenerator(),
+		keys.NewGenerator(),
+		sorted.NewGenerator(),
 	}
 	flags := make(map[string]*string)
 	for _, g := range generators {
-		flags[g.Name()] = flag.String(g.Name()+".prefix", g.Prefix(), "set the prefix for "+g.Name()+" functions that should be derived.")
+		flags[g.Name()] = flag.String(g.Name()+".prefix", g.GetPrefix(), "set the prefix for "+g.Name()+" functions that should be derived.")
 	}
 
 	log.SetFlags(0)
 	flag.Parse()
+
+	for _, g := range generators {
+		g.SetPrefix(*(flags[g.Name()]))
+	}
+
 	paths := gotool.ImportPaths(flag.Args())
 
 	program, err := derive.Load(paths...)
@@ -81,7 +86,7 @@ func main() {
 			typesmaps := make(map[string]derive.TypesMap, len(generators))
 			deps := make(map[string]derive.Dependency, len(generators))
 			for _, g := range generators {
-				tm := derive.NewTypesMap(quals, *(flags[g.Name()]), *autoname, *dedup)
+				tm := derive.NewTypesMap(quals, g.GetPrefix(), *autoname, *dedup)
 				deps[g.Name()] = tm
 				typesmaps[g.Name()] = tm
 			}
@@ -112,7 +117,7 @@ func main() {
 					}
 					generated := func() bool {
 						for _, g := range generators {
-							if !strings.HasPrefix(call.Name, *(flags[g.Name()])) {
+							if !strings.HasPrefix(call.Name, g.GetPrefix()) {
 								continue
 							}
 							p := plugins[g.Name()]

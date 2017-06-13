@@ -140,7 +140,13 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.P("}")
 		return nil
 	case *types.Array:
-
+		elmType := ttyp.Elem()
+		p.P("for i, thisvalue := range %s {", this)
+		p.In()
+		g.genStatement(elmType, "thisvalue", that+"[i]")
+		p.Out()
+		p.P("}")
+		return nil
 	case *types.Map:
 
 	}

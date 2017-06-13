@@ -1145,6 +1145,134 @@ func deriveEqual1(this, that BuiltInTypes) bool {
 	return (&this).Equal(&that)
 }
 
+func deriveClonePtrToArrayOfPtrToBuiltInTypes(this *ArrayOfPtrToBuiltInTypes) *ArrayOfPtrToBuiltInTypes {
+	var that *ArrayOfPtrToBuiltInTypes
+	if this != nil {
+		that = new(ArrayOfPtrToBuiltInTypes)
+		for i, thisvalue := range this.Bool {
+			if thisvalue != nil {
+				that.Bool[i] = new(bool)
+				*that.Bool[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Byte {
+			if thisvalue != nil {
+				that.Byte[i] = new(byte)
+				*that.Byte[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Complex128 {
+			if thisvalue != nil {
+				that.Complex128[i] = new(complex128)
+				*that.Complex128[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Complex64 {
+			if thisvalue != nil {
+				that.Complex64[i] = new(complex64)
+				*that.Complex64[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Float64 {
+			if thisvalue != nil {
+				that.Float64[i] = new(float64)
+				*that.Float64[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Float32 {
+			if thisvalue != nil {
+				that.Float32[i] = new(float32)
+				*that.Float32[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Int {
+			if thisvalue != nil {
+				that.Int[i] = new(int)
+				*that.Int[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Int16 {
+			if thisvalue != nil {
+				that.Int16[i] = new(int16)
+				*that.Int16[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Int32 {
+			if thisvalue != nil {
+				that.Int32[i] = new(int32)
+				*that.Int32[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Int64 {
+			if thisvalue != nil {
+				that.Int64[i] = new(int64)
+				*that.Int64[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Int8 {
+			if thisvalue != nil {
+				that.Int8[i] = new(int8)
+				*that.Int8[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Rune {
+			if thisvalue != nil {
+				that.Rune[i] = new(rune)
+				*that.Rune[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.String {
+			if thisvalue != nil {
+				that.String[i] = new(string)
+				*that.String[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Uint {
+			if thisvalue != nil {
+				that.Uint[i] = new(uint)
+				*that.Uint[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Uint16 {
+			if thisvalue != nil {
+				that.Uint16[i] = new(uint16)
+				*that.Uint16[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Uint32 {
+			if thisvalue != nil {
+				that.Uint32[i] = new(uint32)
+				*that.Uint32[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Uint64 {
+			if thisvalue != nil {
+				that.Uint64[i] = new(uint64)
+				*that.Uint64[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.Uint8 {
+			if thisvalue != nil {
+				that.Uint8[i] = new(uint8)
+				*that.Uint8[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.UintPtr {
+			if thisvalue != nil {
+				that.UintPtr[i] = new(uintptr)
+				*that.UintPtr[i] = *thisvalue
+			}
+		}
+		for i, thisvalue := range this.AnotherBoolOfDifferentSize {
+			if thisvalue != nil {
+				that.AnotherBoolOfDifferentSize[i] = new(bool)
+				*that.AnotherBoolOfDifferentSize[i] = *thisvalue
+			}
+		}
+	}
+	return that
+}
+
 func deriveClonePtrToBuiltInTypes(this *BuiltInTypes) *BuiltInTypes {
 	var that *BuiltInTypes
 	if this != nil {
@@ -1336,6 +1464,213 @@ func deriveClonePtrToSliceOfBuiltInTypes(this *SliceOfBuiltInTypes) *SliceOfBuil
 			that.UintPtr = make([]uintptr, len(this.UintPtr))
 			copy(that.UintPtr, this.UintPtr)
 		}
+	}
+	return that
+}
+
+func deriveClonePtrToSliceOfPtrToBuiltInTypes(this *SliceOfPtrToBuiltInTypes) *SliceOfPtrToBuiltInTypes {
+	var that *SliceOfPtrToBuiltInTypes
+	if this != nil {
+		that = new(SliceOfPtrToBuiltInTypes)
+		if this.Bool != nil {
+			that.Bool = make([]*bool, len(this.Bool))
+			for i, thisvalue := range this.Bool {
+				if thisvalue != nil {
+					that.Bool[i] = new(bool)
+					*that.Bool[i] = *thisvalue
+				}
+			}
+		}
+		if this.Byte != nil {
+			that.Byte = make([]*byte, len(this.Byte))
+			for i, thisvalue := range this.Byte {
+				if thisvalue != nil {
+					that.Byte[i] = new(byte)
+					*that.Byte[i] = *thisvalue
+				}
+			}
+		}
+		if this.Complex128 != nil {
+			that.Complex128 = make([]*complex128, len(this.Complex128))
+			for i, thisvalue := range this.Complex128 {
+				if thisvalue != nil {
+					that.Complex128[i] = new(complex128)
+					*that.Complex128[i] = *thisvalue
+				}
+			}
+		}
+		if this.Complex64 != nil {
+			that.Complex64 = make([]*complex64, len(this.Complex64))
+			for i, thisvalue := range this.Complex64 {
+				if thisvalue != nil {
+					that.Complex64[i] = new(complex64)
+					*that.Complex64[i] = *thisvalue
+				}
+			}
+		}
+		if this.Float64 != nil {
+			that.Float64 = make([]*float64, len(this.Float64))
+			for i, thisvalue := range this.Float64 {
+				if thisvalue != nil {
+					that.Float64[i] = new(float64)
+					*that.Float64[i] = *thisvalue
+				}
+			}
+		}
+		if this.Float32 != nil {
+			that.Float32 = make([]*float32, len(this.Float32))
+			for i, thisvalue := range this.Float32 {
+				if thisvalue != nil {
+					that.Float32[i] = new(float32)
+					*that.Float32[i] = *thisvalue
+				}
+			}
+		}
+		if this.Int != nil {
+			that.Int = make([]*int, len(this.Int))
+			for i, thisvalue := range this.Int {
+				if thisvalue != nil {
+					that.Int[i] = new(int)
+					*that.Int[i] = *thisvalue
+				}
+			}
+		}
+		if this.Int16 != nil {
+			that.Int16 = make([]*int16, len(this.Int16))
+			for i, thisvalue := range this.Int16 {
+				if thisvalue != nil {
+					that.Int16[i] = new(int16)
+					*that.Int16[i] = *thisvalue
+				}
+			}
+		}
+		if this.Int32 != nil {
+			that.Int32 = make([]*int32, len(this.Int32))
+			for i, thisvalue := range this.Int32 {
+				if thisvalue != nil {
+					that.Int32[i] = new(int32)
+					*that.Int32[i] = *thisvalue
+				}
+			}
+		}
+		if this.Int64 != nil {
+			that.Int64 = make([]*int64, len(this.Int64))
+			for i, thisvalue := range this.Int64 {
+				if thisvalue != nil {
+					that.Int64[i] = new(int64)
+					*that.Int64[i] = *thisvalue
+				}
+			}
+		}
+		if this.Int8 != nil {
+			that.Int8 = make([]*int8, len(this.Int8))
+			for i, thisvalue := range this.Int8 {
+				if thisvalue != nil {
+					that.Int8[i] = new(int8)
+					*that.Int8[i] = *thisvalue
+				}
+			}
+		}
+		if this.Rune != nil {
+			that.Rune = make([]*rune, len(this.Rune))
+			for i, thisvalue := range this.Rune {
+				if thisvalue != nil {
+					that.Rune[i] = new(rune)
+					*that.Rune[i] = *thisvalue
+				}
+			}
+		}
+		if this.String != nil {
+			that.String = make([]*string, len(this.String))
+			for i, thisvalue := range this.String {
+				if thisvalue != nil {
+					that.String[i] = new(string)
+					*that.String[i] = *thisvalue
+				}
+			}
+		}
+		if this.Uint != nil {
+			that.Uint = make([]*uint, len(this.Uint))
+			for i, thisvalue := range this.Uint {
+				if thisvalue != nil {
+					that.Uint[i] = new(uint)
+					*that.Uint[i] = *thisvalue
+				}
+			}
+		}
+		if this.Uint16 != nil {
+			that.Uint16 = make([]*uint16, len(this.Uint16))
+			for i, thisvalue := range this.Uint16 {
+				if thisvalue != nil {
+					that.Uint16[i] = new(uint16)
+					*that.Uint16[i] = *thisvalue
+				}
+			}
+		}
+		if this.Uint32 != nil {
+			that.Uint32 = make([]*uint32, len(this.Uint32))
+			for i, thisvalue := range this.Uint32 {
+				if thisvalue != nil {
+					that.Uint32[i] = new(uint32)
+					*that.Uint32[i] = *thisvalue
+				}
+			}
+		}
+		if this.Uint64 != nil {
+			that.Uint64 = make([]*uint64, len(this.Uint64))
+			for i, thisvalue := range this.Uint64 {
+				if thisvalue != nil {
+					that.Uint64[i] = new(uint64)
+					*that.Uint64[i] = *thisvalue
+				}
+			}
+		}
+		if this.Uint8 != nil {
+			that.Uint8 = make([]*uint8, len(this.Uint8))
+			for i, thisvalue := range this.Uint8 {
+				if thisvalue != nil {
+					that.Uint8[i] = new(uint8)
+					*that.Uint8[i] = *thisvalue
+				}
+			}
+		}
+		if this.UintPtr != nil {
+			that.UintPtr = make([]*uintptr, len(this.UintPtr))
+			for i, thisvalue := range this.UintPtr {
+				if thisvalue != nil {
+					that.UintPtr[i] = new(uintptr)
+					*that.UintPtr[i] = *thisvalue
+				}
+			}
+		}
+	}
+	return that
+}
+
+func deriveClonePtrToArrayOfBuiltInTypes(this *ArrayOfBuiltInTypes) *ArrayOfBuiltInTypes {
+	var that *ArrayOfBuiltInTypes
+	if this != nil {
+		that = new(ArrayOfBuiltInTypes)
+		that.Bool = this.Bool
+		that.Byte = this.Byte
+		that.Complex128 = this.Complex128
+		that.Complex64 = this.Complex64
+		that.Float64 = this.Float64
+		that.Float32 = this.Float32
+		that.Int = this.Int
+		that.Int16 = this.Int16
+		that.Int32 = this.Int32
+		that.Int64 = this.Int64
+		that.Int8 = this.Int8
+		that.Rune = this.Rune
+		that.String = this.String
+		that.Uint = this.Uint
+		that.Uint16 = this.Uint16
+		that.Uint32 = this.Uint32
+		that.Uint64 = this.Uint64
+		that.Uint8 = this.Uint8
+		that.UintPtr = this.UintPtr
+		that.AnotherBoolOfDifferentSize = this.AnotherBoolOfDifferentSize
 	}
 	return that
 }

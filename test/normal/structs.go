@@ -148,6 +148,10 @@ func (this *SliceOfPtrToBuiltInTypes) Compare(that *SliceOfPtrToBuiltInTypes) in
 	return deriveComparePtrToSliceOfPtrToBuiltInTypes(this, that)
 }
 
+func (this *SliceOfPtrToBuiltInTypes) Clone() *SliceOfPtrToBuiltInTypes {
+	return deriveClonePtrToSliceOfPtrToBuiltInTypes(this)
+}
+
 type ArrayOfBuiltInTypes struct {
 	Bool       [1]bool
 	Byte       [2]byte
@@ -180,6 +184,10 @@ func (this *ArrayOfBuiltInTypes) Compare(that *ArrayOfBuiltInTypes) int {
 	return deriveComparePtrToArrayOfBuiltInTypes(this, that)
 }
 
+func (this *ArrayOfBuiltInTypes) Clone() *ArrayOfBuiltInTypes {
+	return deriveClonePtrToArrayOfBuiltInTypes(this)
+}
+
 type ArrayOfPtrToBuiltInTypes struct {
 	Bool       [1]*bool
 	Byte       [2]*byte
@@ -210,6 +218,10 @@ func (this *ArrayOfPtrToBuiltInTypes) Equal(that *ArrayOfPtrToBuiltInTypes) bool
 
 func (this *ArrayOfPtrToBuiltInTypes) Compare(that *ArrayOfPtrToBuiltInTypes) int {
 	return deriveComparePtrToArrayOfPtrToBuiltInTypes(this, that)
+}
+
+func (this *ArrayOfPtrToBuiltInTypes) Clone() *ArrayOfPtrToBuiltInTypes {
+	return deriveClonePtrToArrayOfPtrToBuiltInTypes(this)
 }
 
 type MapsOfSimplerBuiltInTypes struct {

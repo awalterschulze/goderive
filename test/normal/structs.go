@@ -275,6 +275,10 @@ func (this *SliceToSlice) Compare(that *SliceToSlice) int {
 	return deriveComparePtrToSliceToSlice(this, that)
 }
 
+func (this *SliceToSlice) Clone() *SliceToSlice {
+	return deriveClonePtrToSliceToSlice(this)
+}
+
 type PtrTo struct {
 	Basic *int
 	Slice *[]int

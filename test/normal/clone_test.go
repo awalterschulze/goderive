@@ -35,7 +35,7 @@ func TestCloneStructs(t *testing.T) {
 		&ArrayOfPtrToBuiltInTypes{},
 		&MapsOfBuiltInTypes{},
 		&MapsOfSimplerBuiltInTypes{},
-		// &SliceToSlice{},
+		&SliceToSlice{},
 		// &PtrTo{},
 		// &Structs{},
 		// &MapWithStructs{},

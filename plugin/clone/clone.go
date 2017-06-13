@@ -77,6 +77,11 @@ func (g *gen) genFunc(typ types.Type) error {
 	return nil
 }
 
+func prepend(before, after string) string {
+	bs := strings.Split(before, ".")
+	return bs[0] + "_" + after
+}
+
 func (g *gen) genStatement(typ types.Type, this, that string) error {
 	p := g.printer
 	if canClone(typ) {
@@ -99,9 +104,11 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		} else {
 			fields := derive.Fields(g.TypesMap, named.Underlying().(*types.Struct))
 			if len(fields.Fields) > 0 {
+				thisv := prepend(this, "v")
+				thatv := prepend(that, "v")
 				if fields.Reflect {
-					p.P(`thisv := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, this)
-					p.P(`thatv := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, that)
+					p.P(thisv + ` := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(%s))`)
+					p.P(thatv + ` := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(%s))`)
 				}
 				for _, field := range fields.Fields {
 					fieldType := field.Type
@@ -109,7 +116,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 					if !field.Private() {
 						thisField, thatField = field.Name(this, nil), field.Name(that, nil)
 					} else {
-						thisField, thatField = field.Name("thisv", g.unsafePkg), field.Name("thatv", g.unsafePkg)
+						thisField, thatField = field.Name(thisv, g.unsafePkg), field.Name(thatv, g.unsafePkg)
 					}
 					if err := g.genStatement(fieldType, thisField, thatField); err != nil {
 						return err
@@ -130,9 +137,11 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		if canClone(elmType) {
 			p.P("copy(%s, %s)", that, this)
 		} else {
-			p.P("for i, thisvalue := range %s {", this)
+			thisvalue := prepend(this, "value")
+			thisi := prepend(this, "i")
+			p.P("for %s, %s := range %s {", thisi, thisvalue, this)
 			p.In()
-			g.genStatement(elmType, "thisvalue", that+"[i]")
+			g.genStatement(elmType, thisvalue, that+"["+thisi+"]")
 			p.Out()
 			p.P("}")
 		}
@@ -141,9 +150,11 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		return nil
 	case *types.Array:
 		elmType := ttyp.Elem()
-		p.P("for i, thisvalue := range %s {", this)
+		thisvalue := prepend(this, "value")
+		thisi := prepend(this, "i")
+		p.P("for %s, %s := range %s {", thisi, thisvalue, this)
 		p.In()
-		g.genStatement(elmType, "thisvalue", that+"[i]")
+		g.genStatement(elmType, thisvalue, that+"["+thisi+"]")
 		p.Out()
 		p.P("}")
 		return nil
@@ -153,13 +164,15 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.P("%s = make(%s, len(%s))", that, g.TypeString(typ), this)
 		elmType := ttyp.Elem()
 		keyType := ttyp.Key()
-		p.P("for thiskey, thisvalue := range %s {", this)
+		thiskey, thisvalue := prepend(this, "key"), prepend(this, "value")
+		p.P("for %s, %s := range %s {", thiskey, thisvalue, this)
 		p.In()
 		if canClone(keyType) {
-			g.genStatement(elmType, "thisvalue", that+"[thiskey]")
+			g.genStatement(elmType, thisvalue, that+"["+thiskey+"]")
 		} else {
-			g.genStatement(keyType, "thatkey", "thiskey")
-			g.genStatement(elmType, "thisvalue", that+"[thatkey]")
+			thatkey := prepend(that, "key")
+			g.genStatement(keyType, thatkey, thiskey)
+			g.genStatement(elmType, thisvalue, that+"["+thatkey+"]")
 		}
 		p.Out()
 		p.P("}")

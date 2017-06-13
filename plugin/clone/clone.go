@@ -148,7 +148,24 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.P("}")
 		return nil
 	case *types.Map:
-
+		p.P("if %s != nil {", this)
+		p.In()
+		p.P("%s = make(%s, len(%s))", that, g.TypeString(typ), this)
+		elmType := ttyp.Elem()
+		keyType := ttyp.Key()
+		p.P("for thiskey, thisvalue := range %s {", this)
+		p.In()
+		if canClone(keyType) {
+			g.genStatement(elmType, "thisvalue", that+"[thiskey]")
+		} else {
+			g.genStatement(keyType, "thatkey", "thiskey")
+			g.genStatement(elmType, "thisvalue", that+"[thatkey]")
+		}
+		p.Out()
+		p.P("}")
+		p.Out()
+		p.P("}")
+		return nil
 	}
 	return fmt.Errorf("unsupported type: %#v", typ)
 }

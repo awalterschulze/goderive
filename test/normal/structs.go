@@ -237,6 +237,10 @@ func (this *MapsOfSimplerBuiltInTypes) Compare(that *MapsOfSimplerBuiltInTypes) 
 	return deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that)
 }
 
+func (this *MapsOfSimplerBuiltInTypes) Clone() *MapsOfSimplerBuiltInTypes {
+	return deriveClonePtrToMapsOfSimplerBuiltInTypes(this)
+}
+
 type MapsOfBuiltInTypes struct {
 	BoolToString          map[bool]string
 	StringToBool          map[string]bool
@@ -251,6 +255,10 @@ func (this *MapsOfBuiltInTypes) Equal(that *MapsOfBuiltInTypes) bool {
 
 func (this *MapsOfBuiltInTypes) Compare(that *MapsOfBuiltInTypes) int {
 	return deriveComparePtrToMapsOfBuiltInTypes(this, that)
+}
+
+func (this *MapsOfBuiltInTypes) Clone() *MapsOfBuiltInTypes {
+	return deriveClonePtrToMapsOfBuiltInTypes(this)
 }
 
 type SliceToSlice struct {

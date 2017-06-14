@@ -37,7 +37,7 @@ func TestCloneStructs(t *testing.T) {
 		&MapsOfSimplerBuiltInTypes{},
 		&SliceToSlice{},
 		&PtrTo{},
-		// &Structs{},
+		&Structs{},
 		// &MapWithStructs{},
 		// &RecursiveType{},
 		// &EmbeddedStruct1{},

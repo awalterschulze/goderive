@@ -113,7 +113,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 					} else {
 						thisField, thatField = field.Name(thisv, g.unsafePkg), field.Name(thatv, g.unsafePkg)
 					}
-					if err := g.genStatement(fieldType, thisField, thatField); err != nil {
+					if err := g.genField(fieldType, thisField, thatField); err != nil {
 						return err
 					}
 				}
@@ -239,4 +239,47 @@ func hasCloneMethod(typ *types.Named) bool {
 		return true
 	}
 	return false
+}
+
+func (g *gen) genField(fieldType types.Type, thisField, thatField string) error {
+	p := g.printer
+	if canClone(fieldType) {
+		p.P("%s = %s", thatField, thisField)
+		return nil
+	}
+	switch typ := fieldType.(type) {
+	case *types.Pointer:
+		ref := typ.Elem()
+		if named, ok := ref.(*types.Named); ok {
+			if hasCloneMethod(named) {
+				p.P("%s = %s.Clone()", thatField, wrap(thisField))
+				return nil
+			}
+		}
+		p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
+		return nil
+	case *types.Array:
+		g.genStatement(fieldType, thisField, thatField)
+		return nil
+	case *types.Slice:
+		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
+			p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
+			return nil
+		}
+		p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
+		return nil
+	case *types.Map:
+		p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
+		return nil
+	case *types.Named:
+		if hasCloneMethod(typ) {
+			p.P("%s = %s.Clone()", thatField, wrap(thisField))
+			return nil
+		} else {
+			p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
+			return nil
+		}
+	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
+		return fmt.Errorf("unsupported type %#v", fieldType)
+	}
 }

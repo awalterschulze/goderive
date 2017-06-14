@@ -325,6 +325,10 @@ func (this *Structs) Compare(that *Structs) int {
 	return deriveComparePtrToStructs(this, that)
 }
 
+func (this *Structs) Clone() *Structs {
+	return deriveClonePtrToStructs(this)
+}
+
 type MapWithStructs struct {
 	NameToString             map[Name]string
 	StringToName             map[string]Name

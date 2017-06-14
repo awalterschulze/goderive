@@ -1467,6 +1467,19 @@ func deriveClonePtrToStructs(this *Structs) *Structs {
 	return that
 }
 
+func deriveClonePtrToMapWithStructs(this *MapWithStructs) *MapWithStructs {
+	var that *MapWithStructs
+	if this != nil {
+		that = new(MapWithStructs)
+		that.NameToString = deriveCloneMapOfNameTostring(this.NameToString)
+		that.StringToName = deriveCloneMapOfstringToName(this.StringToName)
+		that.StringToPtrToName = deriveCloneMapOfstringToPtrToName(this.StringToPtrToName)
+		that.StringToSliceOfName = deriveCloneMapOfstringToSliceOfName(this.StringToSliceOfName)
+		that.StringToSliceOfPtrToName = deriveCloneMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName)
+	}
+	return that
+}
+
 func deriveKeysForFmap(m map[int]string) []int {
 	keys := make([]int, 0, len(m))
 	for key, _ := range m {
@@ -5959,6 +5972,84 @@ func deriveCloneSliceOfPtrToName(this []*Name) []*Name {
 			if this_value != nil {
 				that[this_i] = new(Name)
 				that[this_i].Name = this_value.Name
+			}
+		}
+	}
+	return that
+}
+
+func deriveCloneMapOfNameTostring(this map[Name]string) map[Name]string {
+	var that map[Name]string
+	if this != nil {
+		that = make(map[Name]string, len(this))
+		for this_key, this_value := range this {
+			that[this_key] = this_value
+		}
+	}
+	return that
+}
+
+func deriveCloneMapOfstringToName(this map[string]Name) map[string]Name {
+	var that map[string]Name
+	if this != nil {
+		that = make(map[string]Name, len(this))
+		for this_key, this_value := range this {
+			that[this_key] = this_value
+		}
+	}
+	return that
+}
+
+func deriveCloneMapOfstringToPtrToName(this map[string]*Name) map[string]*Name {
+	var that map[string]*Name
+	if this != nil {
+		that = make(map[string]*Name, len(this))
+		for this_key, this_value := range this {
+			if this_value == nil {
+				that[this_key] = nil
+			}
+			if this_value != nil {
+				that[this_key] = new(Name)
+				that[this_key].Name = this_value.Name
+			}
+		}
+	}
+	return that
+}
+
+func deriveCloneMapOfstringToSliceOfName(this map[string][]Name) map[string][]Name {
+	var that map[string][]Name
+	if this != nil {
+		that = make(map[string][]Name, len(this))
+		for this_key, this_value := range this {
+			if this_value == nil {
+				that[this_key] = nil
+			}
+			if this_value != nil {
+				that[this_key] = make([]Name, len(this_value))
+				copy(that[this_key], this_value)
+			}
+		}
+	}
+	return that
+}
+
+func deriveCloneMapOfstringToSliceOfPtrToName(this map[string][]*Name) map[string][]*Name {
+	var that map[string][]*Name
+	if this != nil {
+		that = make(map[string][]*Name, len(this))
+		for this_key, this_value := range this {
+			if this_value == nil {
+				that[this_key] = nil
+			}
+			if this_value != nil {
+				that[this_key] = make([]*Name, len(this_value))
+				for this_value_i, this_value_value := range this_value {
+					if this_value_value != nil {
+						that[this_key][this_value_i] = new(Name)
+						that[this_key][this_value_i].Name = this_value_value.Name
+					}
+				}
 			}
 		}
 	}

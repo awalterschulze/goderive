@@ -345,6 +345,10 @@ func (this *MapWithStructs) Compare(that *MapWithStructs) int {
 	return deriveComparePtrToMapWithStructs(this, that)
 }
 
+func (this *MapWithStructs) Clone() *MapWithStructs {
+	return deriveClonePtrToMapWithStructs(this)
+}
+
 type RecursiveType struct {
 	Bytes []byte
 	N     map[int]RecursiveType

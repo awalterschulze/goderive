@@ -38,7 +38,7 @@ func TestCloneStructs(t *testing.T) {
 		&SliceToSlice{},
 		&PtrTo{},
 		&Structs{},
-		// &MapWithStructs{},
+		&MapWithStructs{},
 		// &RecursiveType{},
 		// &EmbeddedStruct1{},
 		// &EmbeddedStruct2{},
@@ -57,5 +57,15 @@ func TestCloneStructs(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestCloneMapNilEntry(t *testing.T) {
+	this := &MapWithStructs{StringToPtrToName: map[string]*Name{
+		"a": nil,
+	}}
+	that := clone(this)
+	if want, got := true, reflect.DeepEqual(this, that); want != got {
+		t.Fatalf("want %v got %v\n this = %#v, that = %#v\n", want, got, this, that)
 	}
 }

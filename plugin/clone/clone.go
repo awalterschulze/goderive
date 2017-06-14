@@ -162,13 +162,19 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		thiskey, thisvalue := prepend(this, "key"), prepend(this, "value")
 		p.P("for %s, %s := range %s {", thiskey, thisvalue, this)
 		p.In()
-		if canClone(keyType) {
-			g.genStatement(elmType, thisvalue, wrap(that)+"["+thiskey+"]")
-		} else {
-			thatkey := prepend(that, "key")
+		thatkey := thiskey
+		if !canClone(keyType) {
 			g.genStatement(keyType, thatkey, thiskey)
-			g.genStatement(elmType, thisvalue, wrap(that)+"["+thatkey+"]")
+			thatkey = prepend(that, "key")
 		}
+		if nullable(elmType) {
+			p.P("if %s == nil {", thisvalue)
+			p.In()
+			p.P("%s = nil", wrap(that)+"["+thatkey+"]")
+			p.Out()
+			p.P("}")
+		}
+		g.genStatement(elmType, thisvalue, wrap(that)+"["+thatkey+"]")
 		p.Out()
 		p.P("}")
 		p.Out()
@@ -176,6 +182,14 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		return nil
 	}
 	return fmt.Errorf("unsupported type: %#v", typ)
+}
+
+func nullable(typ types.Type) bool {
+	switch typ.(type) {
+	case *types.Pointer, *types.Slice, *types.Map:
+		return true
+	}
+	return false
 }
 
 func not(s string) string {

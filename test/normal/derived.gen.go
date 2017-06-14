@@ -1773,6 +1773,38 @@ func deriveClonePtrToSliceToSlice(this *SliceToSlice) *SliceToSlice {
 	return that
 }
 
+func deriveClonePtrToPtrTo(this *PtrTo) *PtrTo {
+	var that *PtrTo
+	if this != nil {
+		that = new(PtrTo)
+		if this.Basic != nil {
+			that.Basic = new(int)
+			*that.Basic = *this.Basic
+		}
+		if this.Slice != nil {
+			that.Slice = new([]int)
+			if *this.Slice != nil {
+				*that.Slice = make([]int, len(*this.Slice))
+				copy(*that.Slice, *this.Slice)
+			}
+		}
+		if this.Array != nil {
+			that.Array = new([4]int)
+			*that.Array = *this.Array
+		}
+		if this.Map != nil {
+			that.Map = new(map[int]int)
+			if *this.Map != nil {
+				*that.Map = make(map[int]int, len(*this.Map))
+				for this_key, this_value := range *this.Map {
+					(*that.Map)[this_key] = this_value
+				}
+			}
+		}
+	}
+	return that
+}
+
 func deriveKeysForFmap(m map[int]string) []int {
 	keys := make([]int, 0, len(m))
 	for key, _ := range m {

@@ -294,6 +294,10 @@ func (this *PtrTo) Compare(that *PtrTo) int {
 	return deriveComparePtrToPtrTo(this, that)
 }
 
+func (this *PtrTo) Clone() *PtrTo {
+	return deriveClonePtrToPtrTo(this)
+}
+
 type Name struct {
 	Name string
 }

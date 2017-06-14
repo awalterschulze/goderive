@@ -77,11 +77,6 @@ func (g *gen) genFunc(typ types.Type) error {
 	return nil
 }
 
-func prepend(before, after string) string {
-	bs := strings.Split(before, ".")
-	return bs[0] + "_" + after
-}
-
 func (g *gen) genStatement(typ types.Type, this, that string) error {
 	p := g.printer
 	if canClone(typ) {
@@ -141,7 +136,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 			thisi := prepend(this, "i")
 			p.P("for %s, %s := range %s {", thisi, thisvalue, this)
 			p.In()
-			g.genStatement(elmType, thisvalue, that+"["+thisi+"]")
+			g.genStatement(elmType, thisvalue, wrap(that)+"["+thisi+"]")
 			p.Out()
 			p.P("}")
 		}
@@ -154,7 +149,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		thisi := prepend(this, "i")
 		p.P("for %s, %s := range %s {", thisi, thisvalue, this)
 		p.In()
-		g.genStatement(elmType, thisvalue, that+"["+thisi+"]")
+		g.genStatement(elmType, thisvalue, wrap(that)+"["+thisi+"]")
 		p.Out()
 		p.P("}")
 		return nil
@@ -168,11 +163,11 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.P("for %s, %s := range %s {", thiskey, thisvalue, this)
 		p.In()
 		if canClone(keyType) {
-			g.genStatement(elmType, thisvalue, that+"["+thiskey+"]")
+			g.genStatement(elmType, thisvalue, wrap(that)+"["+thiskey+"]")
 		} else {
 			thatkey := prepend(that, "key")
 			g.genStatement(keyType, thatkey, thiskey)
-			g.genStatement(elmType, thisvalue, that+"["+thatkey+"]")
+			g.genStatement(elmType, thisvalue, wrap(that)+"["+thatkey+"]")
 		}
 		p.Out()
 		p.P("}")
@@ -195,6 +190,12 @@ func wrap(value string) string {
 		return "(" + value + ")"
 	}
 	return value
+}
+
+func prepend(before, after string) string {
+	bs := strings.Split(before, ".")
+	b := strings.Replace(bs[0], "*", "", -1)
+	return b + "_" + after
 }
 
 func canClone(tt types.Type) bool {

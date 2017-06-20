@@ -54,8 +54,10 @@ func TestCloneStructs(t *testing.T) {
 				for reflect.ValueOf(this).IsNil() {
 					this = random(this)
 				}
-				typ := reflect.ValueOf(this).Type().Elem()
-				that := reflect.New(typ).Interface()
+				that := random(this)
+				for reflect.ValueOf(that).IsNil() {
+					that = random(that)
+				}
 				copyto(this, that)
 				if want, got := true, reflect.DeepEqual(this, that); want != got {
 					t.Fatalf("want %v got %v\n this = %#v, that = %#v\n", want, got, this, that)
@@ -65,7 +67,7 @@ func TestCloneStructs(t *testing.T) {
 	}
 }
 
-func DisabledTestCopyToMapNilEntry(t *testing.T) {
+func TestCopyToMapNilEntry(t *testing.T) {
 	this := &MapWithStructs{StringToPtrToName: map[string]*Name{
 		"a": nil,
 	}}
@@ -74,4 +76,8 @@ func DisabledTestCopyToMapNilEntry(t *testing.T) {
 	if want, got := true, reflect.DeepEqual(this, that); want != got {
 		t.Fatalf("want %v got %v\n this = %#v, that = %#v\n", want, got, this, that)
 	}
+}
+
+func DisabledTestStructWithPrivateFieldsWithAPrivateStructType(t *testing.T) {
+	t.Fatal("todo")
 }

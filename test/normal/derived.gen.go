@@ -925,8 +925,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Bool != nil {
 			if len(this.Bool) > len(that.Bool) {
-				if len(this.Bool) > cap(that.Bool) {
-					panic(`todo`)
+				if cap(that.Bool) >= len(this.Bool) {
+					that.Bool = (that.Bool)[:len(this.Bool)]
+				} else {
+					that.Bool = make([]bool, len(this.Bool))
 				}
 			} else if len(this.Bool) < len(that.Bool) {
 				that.Bool = (that.Bool)[:len(this.Bool)]
@@ -941,8 +943,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Byte != nil {
 			if len(this.Byte) > len(that.Byte) {
-				if len(this.Byte) > cap(that.Byte) {
-					panic(`todo`)
+				if cap(that.Byte) >= len(this.Byte) {
+					that.Byte = (that.Byte)[:len(this.Byte)]
+				} else {
+					that.Byte = make([]byte, len(this.Byte))
 				}
 			} else if len(this.Byte) < len(that.Byte) {
 				that.Byte = (that.Byte)[:len(this.Byte)]
@@ -957,8 +961,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Complex128 != nil {
 			if len(this.Complex128) > len(that.Complex128) {
-				if len(this.Complex128) > cap(that.Complex128) {
-					panic(`todo`)
+				if cap(that.Complex128) >= len(this.Complex128) {
+					that.Complex128 = (that.Complex128)[:len(this.Complex128)]
+				} else {
+					that.Complex128 = make([]complex128, len(this.Complex128))
 				}
 			} else if len(this.Complex128) < len(that.Complex128) {
 				that.Complex128 = (that.Complex128)[:len(this.Complex128)]
@@ -973,8 +979,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Complex64 != nil {
 			if len(this.Complex64) > len(that.Complex64) {
-				if len(this.Complex64) > cap(that.Complex64) {
-					panic(`todo`)
+				if cap(that.Complex64) >= len(this.Complex64) {
+					that.Complex64 = (that.Complex64)[:len(this.Complex64)]
+				} else {
+					that.Complex64 = make([]complex64, len(this.Complex64))
 				}
 			} else if len(this.Complex64) < len(that.Complex64) {
 				that.Complex64 = (that.Complex64)[:len(this.Complex64)]
@@ -989,8 +997,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Float64 != nil {
 			if len(this.Float64) > len(that.Float64) {
-				if len(this.Float64) > cap(that.Float64) {
-					panic(`todo`)
+				if cap(that.Float64) >= len(this.Float64) {
+					that.Float64 = (that.Float64)[:len(this.Float64)]
+				} else {
+					that.Float64 = make([]float64, len(this.Float64))
 				}
 			} else if len(this.Float64) < len(that.Float64) {
 				that.Float64 = (that.Float64)[:len(this.Float64)]
@@ -1005,8 +1015,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Float32 != nil {
 			if len(this.Float32) > len(that.Float32) {
-				if len(this.Float32) > cap(that.Float32) {
-					panic(`todo`)
+				if cap(that.Float32) >= len(this.Float32) {
+					that.Float32 = (that.Float32)[:len(this.Float32)]
+				} else {
+					that.Float32 = make([]float32, len(this.Float32))
 				}
 			} else if len(this.Float32) < len(that.Float32) {
 				that.Float32 = (that.Float32)[:len(this.Float32)]
@@ -1021,8 +1033,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Int != nil {
 			if len(this.Int) > len(that.Int) {
-				if len(this.Int) > cap(that.Int) {
-					panic(`todo`)
+				if cap(that.Int) >= len(this.Int) {
+					that.Int = (that.Int)[:len(this.Int)]
+				} else {
+					that.Int = make([]int, len(this.Int))
 				}
 			} else if len(this.Int) < len(that.Int) {
 				that.Int = (that.Int)[:len(this.Int)]
@@ -1037,8 +1051,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Int16 != nil {
 			if len(this.Int16) > len(that.Int16) {
-				if len(this.Int16) > cap(that.Int16) {
-					panic(`todo`)
+				if cap(that.Int16) >= len(this.Int16) {
+					that.Int16 = (that.Int16)[:len(this.Int16)]
+				} else {
+					that.Int16 = make([]int16, len(this.Int16))
 				}
 			} else if len(this.Int16) < len(that.Int16) {
 				that.Int16 = (that.Int16)[:len(this.Int16)]
@@ -1053,8 +1069,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Int32 != nil {
 			if len(this.Int32) > len(that.Int32) {
-				if len(this.Int32) > cap(that.Int32) {
-					panic(`todo`)
+				if cap(that.Int32) >= len(this.Int32) {
+					that.Int32 = (that.Int32)[:len(this.Int32)]
+				} else {
+					that.Int32 = make([]int32, len(this.Int32))
 				}
 			} else if len(this.Int32) < len(that.Int32) {
 				that.Int32 = (that.Int32)[:len(this.Int32)]
@@ -1069,8 +1087,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Int64 != nil {
 			if len(this.Int64) > len(that.Int64) {
-				if len(this.Int64) > cap(that.Int64) {
-					panic(`todo`)
+				if cap(that.Int64) >= len(this.Int64) {
+					that.Int64 = (that.Int64)[:len(this.Int64)]
+				} else {
+					that.Int64 = make([]int64, len(this.Int64))
 				}
 			} else if len(this.Int64) < len(that.Int64) {
 				that.Int64 = (that.Int64)[:len(this.Int64)]
@@ -1085,8 +1105,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Int8 != nil {
 			if len(this.Int8) > len(that.Int8) {
-				if len(this.Int8) > cap(that.Int8) {
-					panic(`todo`)
+				if cap(that.Int8) >= len(this.Int8) {
+					that.Int8 = (that.Int8)[:len(this.Int8)]
+				} else {
+					that.Int8 = make([]int8, len(this.Int8))
 				}
 			} else if len(this.Int8) < len(that.Int8) {
 				that.Int8 = (that.Int8)[:len(this.Int8)]
@@ -1101,8 +1123,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Rune != nil {
 			if len(this.Rune) > len(that.Rune) {
-				if len(this.Rune) > cap(that.Rune) {
-					panic(`todo`)
+				if cap(that.Rune) >= len(this.Rune) {
+					that.Rune = (that.Rune)[:len(this.Rune)]
+				} else {
+					that.Rune = make([]rune, len(this.Rune))
 				}
 			} else if len(this.Rune) < len(that.Rune) {
 				that.Rune = (that.Rune)[:len(this.Rune)]
@@ -1117,8 +1141,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.String != nil {
 			if len(this.String) > len(that.String) {
-				if len(this.String) > cap(that.String) {
-					panic(`todo`)
+				if cap(that.String) >= len(this.String) {
+					that.String = (that.String)[:len(this.String)]
+				} else {
+					that.String = make([]string, len(this.String))
 				}
 			} else if len(this.String) < len(that.String) {
 				that.String = (that.String)[:len(this.String)]
@@ -1133,8 +1159,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Uint != nil {
 			if len(this.Uint) > len(that.Uint) {
-				if len(this.Uint) > cap(that.Uint) {
-					panic(`todo`)
+				if cap(that.Uint) >= len(this.Uint) {
+					that.Uint = (that.Uint)[:len(this.Uint)]
+				} else {
+					that.Uint = make([]uint, len(this.Uint))
 				}
 			} else if len(this.Uint) < len(that.Uint) {
 				that.Uint = (that.Uint)[:len(this.Uint)]
@@ -1149,8 +1177,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Uint16 != nil {
 			if len(this.Uint16) > len(that.Uint16) {
-				if len(this.Uint16) > cap(that.Uint16) {
-					panic(`todo`)
+				if cap(that.Uint16) >= len(this.Uint16) {
+					that.Uint16 = (that.Uint16)[:len(this.Uint16)]
+				} else {
+					that.Uint16 = make([]uint16, len(this.Uint16))
 				}
 			} else if len(this.Uint16) < len(that.Uint16) {
 				that.Uint16 = (that.Uint16)[:len(this.Uint16)]
@@ -1165,8 +1195,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Uint32 != nil {
 			if len(this.Uint32) > len(that.Uint32) {
-				if len(this.Uint32) > cap(that.Uint32) {
-					panic(`todo`)
+				if cap(that.Uint32) >= len(this.Uint32) {
+					that.Uint32 = (that.Uint32)[:len(this.Uint32)]
+				} else {
+					that.Uint32 = make([]uint32, len(this.Uint32))
 				}
 			} else if len(this.Uint32) < len(that.Uint32) {
 				that.Uint32 = (that.Uint32)[:len(this.Uint32)]
@@ -1181,8 +1213,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Uint64 != nil {
 			if len(this.Uint64) > len(that.Uint64) {
-				if len(this.Uint64) > cap(that.Uint64) {
-					panic(`todo`)
+				if cap(that.Uint64) >= len(this.Uint64) {
+					that.Uint64 = (that.Uint64)[:len(this.Uint64)]
+				} else {
+					that.Uint64 = make([]uint64, len(this.Uint64))
 				}
 			} else if len(this.Uint64) < len(that.Uint64) {
 				that.Uint64 = (that.Uint64)[:len(this.Uint64)]
@@ -1197,8 +1231,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.Uint8 != nil {
 			if len(this.Uint8) > len(that.Uint8) {
-				if len(this.Uint8) > cap(that.Uint8) {
-					panic(`todo`)
+				if cap(that.Uint8) >= len(this.Uint8) {
+					that.Uint8 = (that.Uint8)[:len(this.Uint8)]
+				} else {
+					that.Uint8 = make([]uint8, len(this.Uint8))
 				}
 			} else if len(this.Uint8) < len(that.Uint8) {
 				that.Uint8 = (that.Uint8)[:len(this.Uint8)]
@@ -1213,8 +1249,10 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	} else {
 		if that.UintPtr != nil {
 			if len(this.UintPtr) > len(that.UintPtr) {
-				if len(this.UintPtr) > cap(that.UintPtr) {
-					panic(`todo`)
+				if cap(that.UintPtr) >= len(this.UintPtr) {
+					that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
+				} else {
+					that.UintPtr = make([]uintptr, len(this.UintPtr))
 				}
 			} else if len(this.UintPtr) < len(that.UintPtr) {
 				that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
@@ -1232,8 +1270,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Bool != nil {
 			if len(this.Bool) > len(that.Bool) {
-				if len(this.Bool) > cap(that.Bool) {
-					panic(`todo`)
+				if cap(that.Bool) >= len(this.Bool) {
+					that.Bool = (that.Bool)[:len(this.Bool)]
+				} else {
+					that.Bool = make([]*bool, len(this.Bool))
 				}
 			} else if len(this.Bool) < len(that.Bool) {
 				that.Bool = (that.Bool)[:len(this.Bool)]
@@ -1248,8 +1288,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Byte != nil {
 			if len(this.Byte) > len(that.Byte) {
-				if len(this.Byte) > cap(that.Byte) {
-					panic(`todo`)
+				if cap(that.Byte) >= len(this.Byte) {
+					that.Byte = (that.Byte)[:len(this.Byte)]
+				} else {
+					that.Byte = make([]*byte, len(this.Byte))
 				}
 			} else if len(this.Byte) < len(that.Byte) {
 				that.Byte = (that.Byte)[:len(this.Byte)]
@@ -1264,8 +1306,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Complex128 != nil {
 			if len(this.Complex128) > len(that.Complex128) {
-				if len(this.Complex128) > cap(that.Complex128) {
-					panic(`todo`)
+				if cap(that.Complex128) >= len(this.Complex128) {
+					that.Complex128 = (that.Complex128)[:len(this.Complex128)]
+				} else {
+					that.Complex128 = make([]*complex128, len(this.Complex128))
 				}
 			} else if len(this.Complex128) < len(that.Complex128) {
 				that.Complex128 = (that.Complex128)[:len(this.Complex128)]
@@ -1280,8 +1324,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Complex64 != nil {
 			if len(this.Complex64) > len(that.Complex64) {
-				if len(this.Complex64) > cap(that.Complex64) {
-					panic(`todo`)
+				if cap(that.Complex64) >= len(this.Complex64) {
+					that.Complex64 = (that.Complex64)[:len(this.Complex64)]
+				} else {
+					that.Complex64 = make([]*complex64, len(this.Complex64))
 				}
 			} else if len(this.Complex64) < len(that.Complex64) {
 				that.Complex64 = (that.Complex64)[:len(this.Complex64)]
@@ -1296,8 +1342,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Float64 != nil {
 			if len(this.Float64) > len(that.Float64) {
-				if len(this.Float64) > cap(that.Float64) {
-					panic(`todo`)
+				if cap(that.Float64) >= len(this.Float64) {
+					that.Float64 = (that.Float64)[:len(this.Float64)]
+				} else {
+					that.Float64 = make([]*float64, len(this.Float64))
 				}
 			} else if len(this.Float64) < len(that.Float64) {
 				that.Float64 = (that.Float64)[:len(this.Float64)]
@@ -1312,8 +1360,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Float32 != nil {
 			if len(this.Float32) > len(that.Float32) {
-				if len(this.Float32) > cap(that.Float32) {
-					panic(`todo`)
+				if cap(that.Float32) >= len(this.Float32) {
+					that.Float32 = (that.Float32)[:len(this.Float32)]
+				} else {
+					that.Float32 = make([]*float32, len(this.Float32))
 				}
 			} else if len(this.Float32) < len(that.Float32) {
 				that.Float32 = (that.Float32)[:len(this.Float32)]
@@ -1328,8 +1378,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Int != nil {
 			if len(this.Int) > len(that.Int) {
-				if len(this.Int) > cap(that.Int) {
-					panic(`todo`)
+				if cap(that.Int) >= len(this.Int) {
+					that.Int = (that.Int)[:len(this.Int)]
+				} else {
+					that.Int = make([]*int, len(this.Int))
 				}
 			} else if len(this.Int) < len(that.Int) {
 				that.Int = (that.Int)[:len(this.Int)]
@@ -1344,8 +1396,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Int16 != nil {
 			if len(this.Int16) > len(that.Int16) {
-				if len(this.Int16) > cap(that.Int16) {
-					panic(`todo`)
+				if cap(that.Int16) >= len(this.Int16) {
+					that.Int16 = (that.Int16)[:len(this.Int16)]
+				} else {
+					that.Int16 = make([]*int16, len(this.Int16))
 				}
 			} else if len(this.Int16) < len(that.Int16) {
 				that.Int16 = (that.Int16)[:len(this.Int16)]
@@ -1360,8 +1414,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Int32 != nil {
 			if len(this.Int32) > len(that.Int32) {
-				if len(this.Int32) > cap(that.Int32) {
-					panic(`todo`)
+				if cap(that.Int32) >= len(this.Int32) {
+					that.Int32 = (that.Int32)[:len(this.Int32)]
+				} else {
+					that.Int32 = make([]*int32, len(this.Int32))
 				}
 			} else if len(this.Int32) < len(that.Int32) {
 				that.Int32 = (that.Int32)[:len(this.Int32)]
@@ -1376,8 +1432,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Int64 != nil {
 			if len(this.Int64) > len(that.Int64) {
-				if len(this.Int64) > cap(that.Int64) {
-					panic(`todo`)
+				if cap(that.Int64) >= len(this.Int64) {
+					that.Int64 = (that.Int64)[:len(this.Int64)]
+				} else {
+					that.Int64 = make([]*int64, len(this.Int64))
 				}
 			} else if len(this.Int64) < len(that.Int64) {
 				that.Int64 = (that.Int64)[:len(this.Int64)]
@@ -1392,8 +1450,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Int8 != nil {
 			if len(this.Int8) > len(that.Int8) {
-				if len(this.Int8) > cap(that.Int8) {
-					panic(`todo`)
+				if cap(that.Int8) >= len(this.Int8) {
+					that.Int8 = (that.Int8)[:len(this.Int8)]
+				} else {
+					that.Int8 = make([]*int8, len(this.Int8))
 				}
 			} else if len(this.Int8) < len(that.Int8) {
 				that.Int8 = (that.Int8)[:len(this.Int8)]
@@ -1408,8 +1468,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Rune != nil {
 			if len(this.Rune) > len(that.Rune) {
-				if len(this.Rune) > cap(that.Rune) {
-					panic(`todo`)
+				if cap(that.Rune) >= len(this.Rune) {
+					that.Rune = (that.Rune)[:len(this.Rune)]
+				} else {
+					that.Rune = make([]*rune, len(this.Rune))
 				}
 			} else if len(this.Rune) < len(that.Rune) {
 				that.Rune = (that.Rune)[:len(this.Rune)]
@@ -1424,8 +1486,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.String != nil {
 			if len(this.String) > len(that.String) {
-				if len(this.String) > cap(that.String) {
-					panic(`todo`)
+				if cap(that.String) >= len(this.String) {
+					that.String = (that.String)[:len(this.String)]
+				} else {
+					that.String = make([]*string, len(this.String))
 				}
 			} else if len(this.String) < len(that.String) {
 				that.String = (that.String)[:len(this.String)]
@@ -1440,8 +1504,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Uint != nil {
 			if len(this.Uint) > len(that.Uint) {
-				if len(this.Uint) > cap(that.Uint) {
-					panic(`todo`)
+				if cap(that.Uint) >= len(this.Uint) {
+					that.Uint = (that.Uint)[:len(this.Uint)]
+				} else {
+					that.Uint = make([]*uint, len(this.Uint))
 				}
 			} else if len(this.Uint) < len(that.Uint) {
 				that.Uint = (that.Uint)[:len(this.Uint)]
@@ -1456,8 +1522,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Uint16 != nil {
 			if len(this.Uint16) > len(that.Uint16) {
-				if len(this.Uint16) > cap(that.Uint16) {
-					panic(`todo`)
+				if cap(that.Uint16) >= len(this.Uint16) {
+					that.Uint16 = (that.Uint16)[:len(this.Uint16)]
+				} else {
+					that.Uint16 = make([]*uint16, len(this.Uint16))
 				}
 			} else if len(this.Uint16) < len(that.Uint16) {
 				that.Uint16 = (that.Uint16)[:len(this.Uint16)]
@@ -1472,8 +1540,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Uint32 != nil {
 			if len(this.Uint32) > len(that.Uint32) {
-				if len(this.Uint32) > cap(that.Uint32) {
-					panic(`todo`)
+				if cap(that.Uint32) >= len(this.Uint32) {
+					that.Uint32 = (that.Uint32)[:len(this.Uint32)]
+				} else {
+					that.Uint32 = make([]*uint32, len(this.Uint32))
 				}
 			} else if len(this.Uint32) < len(that.Uint32) {
 				that.Uint32 = (that.Uint32)[:len(this.Uint32)]
@@ -1488,8 +1558,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Uint64 != nil {
 			if len(this.Uint64) > len(that.Uint64) {
-				if len(this.Uint64) > cap(that.Uint64) {
-					panic(`todo`)
+				if cap(that.Uint64) >= len(this.Uint64) {
+					that.Uint64 = (that.Uint64)[:len(this.Uint64)]
+				} else {
+					that.Uint64 = make([]*uint64, len(this.Uint64))
 				}
 			} else if len(this.Uint64) < len(that.Uint64) {
 				that.Uint64 = (that.Uint64)[:len(this.Uint64)]
@@ -1504,8 +1576,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.Uint8 != nil {
 			if len(this.Uint8) > len(that.Uint8) {
-				if len(this.Uint8) > cap(that.Uint8) {
-					panic(`todo`)
+				if cap(that.Uint8) >= len(this.Uint8) {
+					that.Uint8 = (that.Uint8)[:len(this.Uint8)]
+				} else {
+					that.Uint8 = make([]*uint8, len(this.Uint8))
 				}
 			} else if len(this.Uint8) < len(that.Uint8) {
 				that.Uint8 = (that.Uint8)[:len(this.Uint8)]
@@ -1520,8 +1594,10 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	} else {
 		if that.UintPtr != nil {
 			if len(this.UintPtr) > len(that.UintPtr) {
-				if len(this.UintPtr) > cap(that.UintPtr) {
-					panic(`todo`)
+				if cap(that.UintPtr) >= len(this.UintPtr) {
+					that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
+				} else {
+					that.UintPtr = make([]*uintptr, len(this.UintPtr))
 				}
 			} else if len(this.UintPtr) < len(that.UintPtr) {
 				that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
@@ -1773,8 +1849,10 @@ func deriveCopyToPtrToSliceToSlice(this, that *SliceToSlice) {
 	} else {
 		if that.Ints != nil {
 			if len(this.Ints) > len(that.Ints) {
-				if len(this.Ints) > cap(that.Ints) {
-					panic(`todo`)
+				if cap(that.Ints) >= len(this.Ints) {
+					that.Ints = (that.Ints)[:len(this.Ints)]
+				} else {
+					that.Ints = make([][]int, len(this.Ints))
 				}
 			} else if len(this.Ints) < len(that.Ints) {
 				that.Ints = (that.Ints)[:len(this.Ints)]
@@ -1789,8 +1867,10 @@ func deriveCopyToPtrToSliceToSlice(this, that *SliceToSlice) {
 	} else {
 		if that.Strings != nil {
 			if len(this.Strings) > len(that.Strings) {
-				if len(this.Strings) > cap(that.Strings) {
-					panic(`todo`)
+				if cap(that.Strings) >= len(this.Strings) {
+					that.Strings = (that.Strings)[:len(this.Strings)]
+				} else {
+					that.Strings = make([][]string, len(this.Strings))
 				}
 			} else if len(this.Strings) < len(that.Strings) {
 				that.Strings = (that.Strings)[:len(this.Strings)]
@@ -1805,8 +1885,10 @@ func deriveCopyToPtrToSliceToSlice(this, that *SliceToSlice) {
 	} else {
 		if that.IntPtrs != nil {
 			if len(this.IntPtrs) > len(that.IntPtrs) {
-				if len(this.IntPtrs) > cap(that.IntPtrs) {
-					panic(`todo`)
+				if cap(that.IntPtrs) >= len(this.IntPtrs) {
+					that.IntPtrs = (that.IntPtrs)[:len(this.IntPtrs)]
+				} else {
+					that.IntPtrs = make([][]*int, len(this.IntPtrs))
 				}
 			} else if len(this.IntPtrs) < len(that.IntPtrs) {
 				that.IntPtrs = (that.IntPtrs)[:len(this.IntPtrs)]
@@ -1862,8 +1944,10 @@ func deriveCopyToPtrToStructs(this, that *Structs) {
 	} else {
 		if that.SliceOfStructs != nil {
 			if len(this.SliceOfStructs) > len(that.SliceOfStructs) {
-				if len(this.SliceOfStructs) > cap(that.SliceOfStructs) {
-					panic(`todo`)
+				if cap(that.SliceOfStructs) >= len(this.SliceOfStructs) {
+					that.SliceOfStructs = (that.SliceOfStructs)[:len(this.SliceOfStructs)]
+				} else {
+					that.SliceOfStructs = make([]Name, len(this.SliceOfStructs))
 				}
 			} else if len(this.SliceOfStructs) < len(that.SliceOfStructs) {
 				that.SliceOfStructs = (that.SliceOfStructs)[:len(this.SliceOfStructs)]
@@ -1878,8 +1962,10 @@ func deriveCopyToPtrToStructs(this, that *Structs) {
 	} else {
 		if that.SliceToPtrOfStruct != nil {
 			if len(this.SliceToPtrOfStruct) > len(that.SliceToPtrOfStruct) {
-				if len(this.SliceToPtrOfStruct) > cap(that.SliceToPtrOfStruct) {
-					panic(`todo`)
+				if cap(that.SliceToPtrOfStruct) >= len(this.SliceToPtrOfStruct) {
+					that.SliceToPtrOfStruct = (that.SliceToPtrOfStruct)[:len(this.SliceToPtrOfStruct)]
+				} else {
+					that.SliceToPtrOfStruct = make([]*Name, len(this.SliceToPtrOfStruct))
 				}
 			} else if len(this.SliceToPtrOfStruct) < len(that.SliceToPtrOfStruct) {
 				that.SliceToPtrOfStruct = (that.SliceToPtrOfStruct)[:len(this.SliceToPtrOfStruct)]
@@ -1930,8 +2016,10 @@ func deriveCopyToPtrToRecursiveType(this, that *RecursiveType) {
 	} else {
 		if that.Bytes != nil {
 			if len(this.Bytes) > len(that.Bytes) {
-				if len(this.Bytes) > cap(that.Bytes) {
-					panic(`todo`)
+				if cap(that.Bytes) >= len(this.Bytes) {
+					that.Bytes = (that.Bytes)[:len(this.Bytes)]
+				} else {
+					that.Bytes = make([]byte, len(this.Bytes))
 				}
 			} else if len(this.Bytes) < len(that.Bytes) {
 				that.Bytes = (that.Bytes)[:len(this.Bytes)]
@@ -5275,8 +5363,10 @@ func deriveCopyToSliceOfSliceOfint(this, that [][]int) {
 		} else {
 			if that[this_i] != nil {
 				if len(this_value) > len(that[this_i]) {
-					if len(this_value) > cap(that[this_i]) {
-						panic(`todo`)
+					if cap(that[this_i]) >= len(this_value) {
+						that[this_i] = (that[this_i])[:len(this_value)]
+					} else {
+						that[this_i] = make([]int, len(this_value))
 					}
 				} else if len(this_value) < len(that[this_i]) {
 					that[this_i] = (that[this_i])[:len(this_value)]
@@ -5296,8 +5386,10 @@ func deriveCopyToSliceOfSliceOfstring(this, that [][]string) {
 		} else {
 			if that[this_i] != nil {
 				if len(this_value) > len(that[this_i]) {
-					if len(this_value) > cap(that[this_i]) {
-						panic(`todo`)
+					if cap(that[this_i]) >= len(this_value) {
+						that[this_i] = (that[this_i])[:len(this_value)]
+					} else {
+						that[this_i] = make([]string, len(this_value))
 					}
 				} else if len(this_value) < len(that[this_i]) {
 					that[this_i] = (that[this_i])[:len(this_value)]
@@ -5317,8 +5409,10 @@ func deriveCopyToSliceOfSliceOfPtrToint(this, that [][]*int) {
 		} else {
 			if that[this_i] != nil {
 				if len(this_value) > len(that[this_i]) {
-					if len(this_value) > cap(that[this_i]) {
-						panic(`todo`)
+					if cap(that[this_i]) >= len(this_value) {
+						that[this_i] = (that[this_i])[:len(this_value)]
+					} else {
+						that[this_i] = make([]*int, len(this_value))
 					}
 				} else if len(this_value) < len(that[this_i]) {
 					that[this_i] = (that[this_i])[:len(this_value)]
@@ -5337,8 +5431,10 @@ func deriveCopyToPtrToSliceOfint(this, that *[]int) {
 	} else {
 		if *that != nil {
 			if len(*this) > len(*that) {
-				if len(*this) > cap(*that) {
-					panic(`todo`)
+				if cap(*that) >= len(*this) {
+					*that = (*that)[:len(*this)]
+				} else {
+					*that = make([]int, len(*this))
 				}
 			} else if len(*this) < len(*that) {
 				*that = (*that)[:len(*this)]
@@ -5406,8 +5502,10 @@ func deriveCopyToMapOfstringToSliceOfName(this, that map[string][]Name) {
 		} else {
 			if that[this_key] != nil {
 				if len(this_value) > len(that[this_key]) {
-					if len(this_value) > cap(that[this_key]) {
-						panic(`todo`)
+					if cap(that[this_key]) >= len(this_value) {
+						that[this_key] = (that[this_key])[:len(this_value)]
+					} else {
+						that[this_key] = make([]Name, len(this_value))
 					}
 				} else if len(this_value) < len(that[this_key]) {
 					that[this_key] = (that[this_key])[:len(this_value)]
@@ -5430,8 +5528,10 @@ func deriveCopyToMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) {
 		} else {
 			if that[this_key] != nil {
 				if len(this_value) > len(that[this_key]) {
-					if len(this_value) > cap(that[this_key]) {
-						panic(`todo`)
+					if cap(that[this_key]) >= len(this_value) {
+						that[this_key] = (that[this_key])[:len(this_value)]
+					} else {
+						that[this_key] = make([]*Name, len(this_value))
 					}
 				} else if len(this_value) < len(that[this_key]) {
 					that[this_key] = (that[this_key])[:len(this_value)]
@@ -5461,8 +5561,10 @@ func deriveCopyToPtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Priva
 	} else {
 		if *(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) != nil {
 			if len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) > len(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) {
-				if len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) > cap(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) {
-					panic(`todo`)
+				if cap(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) >= len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) {
+					*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr())))]
+				} else {
+					*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))))
 				}
 			} else if len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) < len(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) {
 				*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr())))]
@@ -5483,8 +5585,10 @@ func deriveCopyToPtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Priva
 	} else {
 		if *(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) != nil {
 			if len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) > len(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) {
-				if len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) > cap(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) {
-					panic(`todo`)
+				if cap(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) >= len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) {
+					*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr())))]
+				} else {
+					*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))))
 				}
 			} else if len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) < len(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) {
 				*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr())))]

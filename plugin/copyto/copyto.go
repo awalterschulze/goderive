@@ -285,11 +285,15 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.In()
 		p.P("if len(%s) > len(%s) {", thisField, thatField) // len
 		p.In()
-		p.P("if len(%s) > cap(%s) {", thisField, thatField) // cap
+		p.P("if cap(%s) >= len(%s) {", thatField, thisField) // cap
 		p.In()
-		p.P("panic(`todo`)")
+		p.P("%s = (%s)[:len(%s)]", thatField, thatField, thisField)
 		p.Out()
-		p.P("}") // cap
+		p.P("} else {") // cap
+		p.In()
+		p.P("%s = make(%s, len(%s))", thatField, g.TypeString(typ), thisField)
+		p.Out()
+		p.P("}")
 		p.Out()
 		p.P("} else if len(%s) < len(%s) {", thisField, thatField) // len
 		p.In()

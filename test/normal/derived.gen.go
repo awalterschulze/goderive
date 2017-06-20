@@ -780,10 +780,6 @@ func deriveSortedInt64s(src []int64) []int64 {
 	return dst
 }
 
-func deriveCopyToPtrToUnnamedStruct(this, that *UnnamedStruct) {
-	that.Unnamed = this.Unnamed
-}
-
 func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
 	that.Bool = this.Bool
 	that.Byte = this.Byte
@@ -1975,6 +1971,10 @@ func deriveCopyToPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) {
 	}
 }
 
+func deriveCopyToPtrToUnnamedStruct(this, that *UnnamedStruct) {
+	that.Unnamed = this.Unnamed
+}
+
 func deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) {
 	if this.A == nil {
 		that.A = nil
@@ -1983,6 +1983,25 @@ func deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(this, that *Struct
 		*that.A = *this.A
 	}
 	that.B = this.B
+}
+
+func deriveCopyToPtrToStructWithStructWithFromAnotherPackage(this, that *StructWithStructWithFromAnotherPackage) {
+	if this.A == nil {
+		that.A = nil
+	} else {
+		that.A = new(extra.StructWithoutEqualMethod)
+		*that.A = *this.A
+	}
+	that.B = this.B
+}
+
+func deriveCopyToPtrToFieldWithStructWithPrivateFields(this, that *FieldWithStructWithPrivateFields) {
+	if this.A == nil {
+		that.A = nil
+	} else {
+		that.A = new(extra.PrivateFieldAndNoEqualMethod)
+		deriveCopyToPtrToextra_PrivateFieldAndNoEqualMethod(this.A, that.A)
+	}
 }
 
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
@@ -5430,6 +5449,56 @@ func deriveCopyToMapOfintToRecursiveType(this, that map[int]RecursiveType) {
 		field := new(RecursiveType)
 		this_value.CopyTo(field)
 		that[this_key] = *field
+	}
+}
+
+func deriveCopyToPtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.PrivateFieldAndNoEqualMethod) {
+	this_v := reflect.Indirect(reflect.ValueOf(this))
+	that_v := reflect.Indirect(reflect.ValueOf(that))
+	*(*int64)(unsafe.Pointer(that_v.FieldByName("number").UnsafeAddr())) = *(*int64)(unsafe.Pointer(this_v.FieldByName("number").UnsafeAddr()))
+	if *(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr())) == nil {
+		*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = nil
+	} else {
+		if *(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) != nil {
+			if len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) > len(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) {
+				if len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) > cap(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) {
+					panic(`todo`)
+				}
+			} else if len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) < len(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) {
+				*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr())))]
+			}
+		} else {
+			*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))))
+		}
+		copy(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr())))
+	}
+	if *(**int64)(unsafe.Pointer(this_v.FieldByName("ptr").UnsafeAddr())) == nil {
+		*(**int64)(unsafe.Pointer(that_v.FieldByName("ptr").UnsafeAddr())) = nil
+	} else {
+		*(**int64)(unsafe.Pointer(that_v.FieldByName("ptr").UnsafeAddr())) = new(int64)
+		**(**int64)(unsafe.Pointer(that_v.FieldByName("ptr").UnsafeAddr())) = **(**int64)(unsafe.Pointer(this_v.FieldByName("ptr").UnsafeAddr()))
+	}
+	if *(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr())) == nil {
+		*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = nil
+	} else {
+		if *(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) != nil {
+			if len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) > len(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) {
+				if len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) > cap(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) {
+					panic(`todo`)
+				}
+			} else if len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) < len(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) {
+				*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr())))]
+			}
+		} else {
+			*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))))
+		}
+		deriveCopyToSliceOfPtrToint64(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())))
+	}
+	if *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(this_v.FieldByName("strct").UnsafeAddr())) == nil {
+		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(that_v.FieldByName("strct").UnsafeAddr())) = nil
+	} else {
+		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(that_v.FieldByName("strct").UnsafeAddr())) = new(extra.StructWithoutEqualMethod)
+		**(**extra.StructWithoutEqualMethod)(unsafe.Pointer(that_v.FieldByName("strct").UnsafeAddr())) = **(**extra.StructWithoutEqualMethod)(unsafe.Pointer(this_v.FieldByName("strct").UnsafeAddr()))
 	}
 }
 

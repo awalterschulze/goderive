@@ -43,8 +43,8 @@ func TestCloneStructs(t *testing.T) {
 		&EmbeddedStruct2{},
 		&UnnamedStruct{},
 		&StructWithStructFieldWithoutEqualMethod{},
-		// &StructWithStructWithFromAnotherPackage{},
-		// &FieldWithStructWithPrivateFields{},
+		&StructWithStructWithFromAnotherPackage{},
+		&FieldWithStructWithPrivateFields{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

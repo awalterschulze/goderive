@@ -102,8 +102,8 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 				thisv := prepend(this, "v")
 				thatv := prepend(that, "v")
 				if fields.Reflect {
-					p.P(thisv + ` := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(%s))`)
-					p.P(thatv + ` := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(%s))`)
+					p.P(thisv+` := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, this)
+					p.P(thatv+` := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, that)
 				}
 				for _, field := range fields.Fields {
 					fieldType := field.Type

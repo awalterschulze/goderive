@@ -452,6 +452,10 @@ func (this *StructWithStructWithFromAnotherPackage) Compare(that *StructWithStru
 	return deriveComparePtrToStructWithStructWithFromAnotherPackage(this, that)
 }
 
+func (this *StructWithStructWithFromAnotherPackage) CopyTo(that *StructWithStructWithFromAnotherPackage) {
+	deriveCopyToPtrToStructWithStructWithFromAnotherPackage(this, that)
+}
+
 type FieldWithStructWithPrivateFields struct {
 	A *extra.PrivateFieldAndNoEqualMethod
 }
@@ -462,4 +466,8 @@ func (this *FieldWithStructWithPrivateFields) Equal(that *FieldWithStructWithPri
 
 func (this *FieldWithStructWithPrivateFields) Compare(that *FieldWithStructWithPrivateFields) int {
 	return deriveComparePtrToFieldWithStructWithPrivateFields(this, that)
+}
+
+func (this *FieldWithStructWithPrivateFields) CopyTo(that *FieldWithStructWithPrivateFields) {
+	deriveCopyToPtrToFieldWithStructWithPrivateFields(this, that)
 }

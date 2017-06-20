@@ -123,7 +123,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.P("}")
 		return nil
 	case *types.Named:
-
+		panic("todo")
 	case *types.Slice:
 		p.P("if %s != nil {", this)
 		p.In()
@@ -200,7 +200,9 @@ func not(s string) string {
 }
 
 func wrap(value string) string {
-	if strings.HasPrefix(value, "*") || strings.HasPrefix(value, "&") {
+	if strings.HasPrefix(value, "*") ||
+		strings.HasPrefix(value, "&") ||
+		strings.HasSuffix(value, "]") {
 		return "(" + value + ")"
 	}
 	return value

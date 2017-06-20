@@ -5901,8 +5901,8 @@ func deriveCloneSliceOfSliceOfPtrToint(this [][]*int) [][]*int {
 				that[this_i] = make([]*int, len(this_value))
 				for this_value_i, this_value_value := range this_value {
 					if this_value_value != nil {
-						that[this_i][this_value_i] = new(int)
-						*that[this_i][this_value_i] = *this_value_value
+						(that[this_i])[this_value_i] = new(int)
+						*(that[this_i])[this_value_i] = *this_value_value
 					}
 				}
 			}
@@ -6046,8 +6046,8 @@ func deriveCloneMapOfstringToSliceOfPtrToName(this map[string][]*Name) map[strin
 				that[this_key] = make([]*Name, len(this_value))
 				for this_value_i, this_value_value := range this_value {
 					if this_value_value != nil {
-						that[this_key][this_value_i] = new(Name)
-						that[this_key][this_value_i].Name = this_value_value.Name
+						(that[this_key])[this_value_i] = new(Name)
+						(that[this_key])[this_value_i].Name = this_value_value.Name
 					}
 				}
 			}

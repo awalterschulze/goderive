@@ -780,6 +780,1150 @@ func deriveSortedInt64s(src []int64) []int64 {
 	return dst
 }
 
+func deriveCopyToPtrToMapWithStructs(this, that *MapWithStructs) {
+	if this.NameToString != nil {
+		that.NameToString = make(map[Name]string, len(this.NameToString))
+		deriveCopyToMapOfNameTostring(this.NameToString, that.NameToString)
+	} else {
+		that.NameToString = nil
+	}
+	if this.StringToName != nil {
+		that.StringToName = make(map[string]Name, len(this.StringToName))
+		deriveCopyToMapOfstringToName(this.StringToName, that.StringToName)
+	} else {
+		that.StringToName = nil
+	}
+	if this.StringToPtrToName != nil {
+		that.StringToPtrToName = make(map[string]*Name, len(this.StringToPtrToName))
+		deriveCopyToMapOfstringToPtrToName(this.StringToPtrToName, that.StringToPtrToName)
+	} else {
+		that.StringToPtrToName = nil
+	}
+	if this.StringToSliceOfName != nil {
+		that.StringToSliceOfName = make(map[string][]Name, len(this.StringToSliceOfName))
+		deriveCopyToMapOfstringToSliceOfName(this.StringToSliceOfName, that.StringToSliceOfName)
+	} else {
+		that.StringToSliceOfName = nil
+	}
+	if this.StringToSliceOfPtrToName != nil {
+		that.StringToSliceOfPtrToName = make(map[string][]*Name, len(this.StringToSliceOfPtrToName))
+		deriveCopyToMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName)
+	} else {
+		that.StringToSliceOfPtrToName = nil
+	}
+}
+
+func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
+	that.Bool = this.Bool
+	that.Byte = this.Byte
+	that.Complex128 = this.Complex128
+	that.Complex64 = this.Complex64
+	that.Float64 = this.Float64
+	that.Float32 = this.Float32
+	that.Int = this.Int
+	that.Int16 = this.Int16
+	that.Int32 = this.Int32
+	that.Int64 = this.Int64
+	that.Int8 = this.Int8
+	that.Rune = this.Rune
+	that.String = this.String
+	that.Uint = this.Uint
+	that.Uint16 = this.Uint16
+	that.Uint32 = this.Uint32
+	that.Uint64 = this.Uint64
+	that.Uint8 = this.Uint8
+	that.UintPtr = this.UintPtr
+}
+
+func deriveCopyToPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) {
+	if this.Bool == nil {
+		that.Bool = nil
+	} else {
+		that.Bool = new(bool)
+		*that.Bool = *this.Bool
+	}
+	if this.Byte == nil {
+		that.Byte = nil
+	} else {
+		that.Byte = new(byte)
+		*that.Byte = *this.Byte
+	}
+	if this.Complex128 == nil {
+		that.Complex128 = nil
+	} else {
+		that.Complex128 = new(complex128)
+		*that.Complex128 = *this.Complex128
+	}
+	if this.Complex64 == nil {
+		that.Complex64 = nil
+	} else {
+		that.Complex64 = new(complex64)
+		*that.Complex64 = *this.Complex64
+	}
+	if this.Float64 == nil {
+		that.Float64 = nil
+	} else {
+		that.Float64 = new(float64)
+		*that.Float64 = *this.Float64
+	}
+	if this.Float32 == nil {
+		that.Float32 = nil
+	} else {
+		that.Float32 = new(float32)
+		*that.Float32 = *this.Float32
+	}
+	if this.Int == nil {
+		that.Int = nil
+	} else {
+		that.Int = new(int)
+		*that.Int = *this.Int
+	}
+	if this.Int16 == nil {
+		that.Int16 = nil
+	} else {
+		that.Int16 = new(int16)
+		*that.Int16 = *this.Int16
+	}
+	if this.Int32 == nil {
+		that.Int32 = nil
+	} else {
+		that.Int32 = new(int32)
+		*that.Int32 = *this.Int32
+	}
+	if this.Int64 == nil {
+		that.Int64 = nil
+	} else {
+		that.Int64 = new(int64)
+		*that.Int64 = *this.Int64
+	}
+	if this.Int8 == nil {
+		that.Int8 = nil
+	} else {
+		that.Int8 = new(int8)
+		*that.Int8 = *this.Int8
+	}
+	if this.Rune == nil {
+		that.Rune = nil
+	} else {
+		that.Rune = new(rune)
+		*that.Rune = *this.Rune
+	}
+	if this.String == nil {
+		that.String = nil
+	} else {
+		that.String = new(string)
+		*that.String = *this.String
+	}
+	if this.Uint == nil {
+		that.Uint = nil
+	} else {
+		that.Uint = new(uint)
+		*that.Uint = *this.Uint
+	}
+	if this.Uint16 == nil {
+		that.Uint16 = nil
+	} else {
+		that.Uint16 = new(uint16)
+		*that.Uint16 = *this.Uint16
+	}
+	if this.Uint32 == nil {
+		that.Uint32 = nil
+	} else {
+		that.Uint32 = new(uint32)
+		*that.Uint32 = *this.Uint32
+	}
+	if this.Uint64 == nil {
+		that.Uint64 = nil
+	} else {
+		that.Uint64 = new(uint64)
+		*that.Uint64 = *this.Uint64
+	}
+	if this.Uint8 == nil {
+		that.Uint8 = nil
+	} else {
+		that.Uint8 = new(uint8)
+		*that.Uint8 = *this.Uint8
+	}
+	if this.UintPtr == nil {
+		that.UintPtr = nil
+	} else {
+		that.UintPtr = new(uintptr)
+		*that.UintPtr = *this.UintPtr
+	}
+}
+
+func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
+	if this.Bool == nil {
+		that.Bool = nil
+	} else {
+		if that.Bool != nil {
+			if len(this.Bool) > len(that.Bool) {
+				if len(this.Bool) > cap(that.Bool) {
+					panic(`todo`)
+				}
+			} else if len(this.Bool) < len(that.Bool) {
+				that.Bool = (that.Bool)[:len(this.Bool)]
+			}
+		} else {
+			that.Bool = make([]bool, len(this.Bool))
+		}
+		copy(that.Bool, this.Bool)
+	}
+	if this.Byte == nil {
+		that.Byte = nil
+	} else {
+		if that.Byte != nil {
+			if len(this.Byte) > len(that.Byte) {
+				if len(this.Byte) > cap(that.Byte) {
+					panic(`todo`)
+				}
+			} else if len(this.Byte) < len(that.Byte) {
+				that.Byte = (that.Byte)[:len(this.Byte)]
+			}
+		} else {
+			that.Byte = make([]byte, len(this.Byte))
+		}
+		copy(that.Byte, this.Byte)
+	}
+	if this.Complex128 == nil {
+		that.Complex128 = nil
+	} else {
+		if that.Complex128 != nil {
+			if len(this.Complex128) > len(that.Complex128) {
+				if len(this.Complex128) > cap(that.Complex128) {
+					panic(`todo`)
+				}
+			} else if len(this.Complex128) < len(that.Complex128) {
+				that.Complex128 = (that.Complex128)[:len(this.Complex128)]
+			}
+		} else {
+			that.Complex128 = make([]complex128, len(this.Complex128))
+		}
+		copy(that.Complex128, this.Complex128)
+	}
+	if this.Complex64 == nil {
+		that.Complex64 = nil
+	} else {
+		if that.Complex64 != nil {
+			if len(this.Complex64) > len(that.Complex64) {
+				if len(this.Complex64) > cap(that.Complex64) {
+					panic(`todo`)
+				}
+			} else if len(this.Complex64) < len(that.Complex64) {
+				that.Complex64 = (that.Complex64)[:len(this.Complex64)]
+			}
+		} else {
+			that.Complex64 = make([]complex64, len(this.Complex64))
+		}
+		copy(that.Complex64, this.Complex64)
+	}
+	if this.Float64 == nil {
+		that.Float64 = nil
+	} else {
+		if that.Float64 != nil {
+			if len(this.Float64) > len(that.Float64) {
+				if len(this.Float64) > cap(that.Float64) {
+					panic(`todo`)
+				}
+			} else if len(this.Float64) < len(that.Float64) {
+				that.Float64 = (that.Float64)[:len(this.Float64)]
+			}
+		} else {
+			that.Float64 = make([]float64, len(this.Float64))
+		}
+		copy(that.Float64, this.Float64)
+	}
+	if this.Float32 == nil {
+		that.Float32 = nil
+	} else {
+		if that.Float32 != nil {
+			if len(this.Float32) > len(that.Float32) {
+				if len(this.Float32) > cap(that.Float32) {
+					panic(`todo`)
+				}
+			} else if len(this.Float32) < len(that.Float32) {
+				that.Float32 = (that.Float32)[:len(this.Float32)]
+			}
+		} else {
+			that.Float32 = make([]float32, len(this.Float32))
+		}
+		copy(that.Float32, this.Float32)
+	}
+	if this.Int == nil {
+		that.Int = nil
+	} else {
+		if that.Int != nil {
+			if len(this.Int) > len(that.Int) {
+				if len(this.Int) > cap(that.Int) {
+					panic(`todo`)
+				}
+			} else if len(this.Int) < len(that.Int) {
+				that.Int = (that.Int)[:len(this.Int)]
+			}
+		} else {
+			that.Int = make([]int, len(this.Int))
+		}
+		copy(that.Int, this.Int)
+	}
+	if this.Int16 == nil {
+		that.Int16 = nil
+	} else {
+		if that.Int16 != nil {
+			if len(this.Int16) > len(that.Int16) {
+				if len(this.Int16) > cap(that.Int16) {
+					panic(`todo`)
+				}
+			} else if len(this.Int16) < len(that.Int16) {
+				that.Int16 = (that.Int16)[:len(this.Int16)]
+			}
+		} else {
+			that.Int16 = make([]int16, len(this.Int16))
+		}
+		copy(that.Int16, this.Int16)
+	}
+	if this.Int32 == nil {
+		that.Int32 = nil
+	} else {
+		if that.Int32 != nil {
+			if len(this.Int32) > len(that.Int32) {
+				if len(this.Int32) > cap(that.Int32) {
+					panic(`todo`)
+				}
+			} else if len(this.Int32) < len(that.Int32) {
+				that.Int32 = (that.Int32)[:len(this.Int32)]
+			}
+		} else {
+			that.Int32 = make([]int32, len(this.Int32))
+		}
+		copy(that.Int32, this.Int32)
+	}
+	if this.Int64 == nil {
+		that.Int64 = nil
+	} else {
+		if that.Int64 != nil {
+			if len(this.Int64) > len(that.Int64) {
+				if len(this.Int64) > cap(that.Int64) {
+					panic(`todo`)
+				}
+			} else if len(this.Int64) < len(that.Int64) {
+				that.Int64 = (that.Int64)[:len(this.Int64)]
+			}
+		} else {
+			that.Int64 = make([]int64, len(this.Int64))
+		}
+		copy(that.Int64, this.Int64)
+	}
+	if this.Int8 == nil {
+		that.Int8 = nil
+	} else {
+		if that.Int8 != nil {
+			if len(this.Int8) > len(that.Int8) {
+				if len(this.Int8) > cap(that.Int8) {
+					panic(`todo`)
+				}
+			} else if len(this.Int8) < len(that.Int8) {
+				that.Int8 = (that.Int8)[:len(this.Int8)]
+			}
+		} else {
+			that.Int8 = make([]int8, len(this.Int8))
+		}
+		copy(that.Int8, this.Int8)
+	}
+	if this.Rune == nil {
+		that.Rune = nil
+	} else {
+		if that.Rune != nil {
+			if len(this.Rune) > len(that.Rune) {
+				if len(this.Rune) > cap(that.Rune) {
+					panic(`todo`)
+				}
+			} else if len(this.Rune) < len(that.Rune) {
+				that.Rune = (that.Rune)[:len(this.Rune)]
+			}
+		} else {
+			that.Rune = make([]rune, len(this.Rune))
+		}
+		copy(that.Rune, this.Rune)
+	}
+	if this.String == nil {
+		that.String = nil
+	} else {
+		if that.String != nil {
+			if len(this.String) > len(that.String) {
+				if len(this.String) > cap(that.String) {
+					panic(`todo`)
+				}
+			} else if len(this.String) < len(that.String) {
+				that.String = (that.String)[:len(this.String)]
+			}
+		} else {
+			that.String = make([]string, len(this.String))
+		}
+		copy(that.String, this.String)
+	}
+	if this.Uint == nil {
+		that.Uint = nil
+	} else {
+		if that.Uint != nil {
+			if len(this.Uint) > len(that.Uint) {
+				if len(this.Uint) > cap(that.Uint) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint) < len(that.Uint) {
+				that.Uint = (that.Uint)[:len(this.Uint)]
+			}
+		} else {
+			that.Uint = make([]uint, len(this.Uint))
+		}
+		copy(that.Uint, this.Uint)
+	}
+	if this.Uint16 == nil {
+		that.Uint16 = nil
+	} else {
+		if that.Uint16 != nil {
+			if len(this.Uint16) > len(that.Uint16) {
+				if len(this.Uint16) > cap(that.Uint16) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint16) < len(that.Uint16) {
+				that.Uint16 = (that.Uint16)[:len(this.Uint16)]
+			}
+		} else {
+			that.Uint16 = make([]uint16, len(this.Uint16))
+		}
+		copy(that.Uint16, this.Uint16)
+	}
+	if this.Uint32 == nil {
+		that.Uint32 = nil
+	} else {
+		if that.Uint32 != nil {
+			if len(this.Uint32) > len(that.Uint32) {
+				if len(this.Uint32) > cap(that.Uint32) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint32) < len(that.Uint32) {
+				that.Uint32 = (that.Uint32)[:len(this.Uint32)]
+			}
+		} else {
+			that.Uint32 = make([]uint32, len(this.Uint32))
+		}
+		copy(that.Uint32, this.Uint32)
+	}
+	if this.Uint64 == nil {
+		that.Uint64 = nil
+	} else {
+		if that.Uint64 != nil {
+			if len(this.Uint64) > len(that.Uint64) {
+				if len(this.Uint64) > cap(that.Uint64) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint64) < len(that.Uint64) {
+				that.Uint64 = (that.Uint64)[:len(this.Uint64)]
+			}
+		} else {
+			that.Uint64 = make([]uint64, len(this.Uint64))
+		}
+		copy(that.Uint64, this.Uint64)
+	}
+	if this.Uint8 == nil {
+		that.Uint8 = nil
+	} else {
+		if that.Uint8 != nil {
+			if len(this.Uint8) > len(that.Uint8) {
+				if len(this.Uint8) > cap(that.Uint8) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint8) < len(that.Uint8) {
+				that.Uint8 = (that.Uint8)[:len(this.Uint8)]
+			}
+		} else {
+			that.Uint8 = make([]uint8, len(this.Uint8))
+		}
+		copy(that.Uint8, this.Uint8)
+	}
+	if this.UintPtr == nil {
+		that.UintPtr = nil
+	} else {
+		if that.UintPtr != nil {
+			if len(this.UintPtr) > len(that.UintPtr) {
+				if len(this.UintPtr) > cap(that.UintPtr) {
+					panic(`todo`)
+				}
+			} else if len(this.UintPtr) < len(that.UintPtr) {
+				that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
+			}
+		} else {
+			that.UintPtr = make([]uintptr, len(this.UintPtr))
+		}
+		copy(that.UintPtr, this.UintPtr)
+	}
+}
+
+func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) {
+	if this.Bool == nil {
+		that.Bool = nil
+	} else {
+		if that.Bool != nil {
+			if len(this.Bool) > len(that.Bool) {
+				if len(this.Bool) > cap(that.Bool) {
+					panic(`todo`)
+				}
+			} else if len(this.Bool) < len(that.Bool) {
+				that.Bool = (that.Bool)[:len(this.Bool)]
+			}
+		} else {
+			that.Bool = make([]*bool, len(this.Bool))
+		}
+		deriveCopyToSliceOfPtrTobool(this.Bool, that.Bool)
+	}
+	if this.Byte == nil {
+		that.Byte = nil
+	} else {
+		if that.Byte != nil {
+			if len(this.Byte) > len(that.Byte) {
+				if len(this.Byte) > cap(that.Byte) {
+					panic(`todo`)
+				}
+			} else if len(this.Byte) < len(that.Byte) {
+				that.Byte = (that.Byte)[:len(this.Byte)]
+			}
+		} else {
+			that.Byte = make([]*byte, len(this.Byte))
+		}
+		deriveCopyToSliceOfPtrTobyte(this.Byte, that.Byte)
+	}
+	if this.Complex128 == nil {
+		that.Complex128 = nil
+	} else {
+		if that.Complex128 != nil {
+			if len(this.Complex128) > len(that.Complex128) {
+				if len(this.Complex128) > cap(that.Complex128) {
+					panic(`todo`)
+				}
+			} else if len(this.Complex128) < len(that.Complex128) {
+				that.Complex128 = (that.Complex128)[:len(this.Complex128)]
+			}
+		} else {
+			that.Complex128 = make([]*complex128, len(this.Complex128))
+		}
+		deriveCopyToSliceOfPtrTocomplex128(this.Complex128, that.Complex128)
+	}
+	if this.Complex64 == nil {
+		that.Complex64 = nil
+	} else {
+		if that.Complex64 != nil {
+			if len(this.Complex64) > len(that.Complex64) {
+				if len(this.Complex64) > cap(that.Complex64) {
+					panic(`todo`)
+				}
+			} else if len(this.Complex64) < len(that.Complex64) {
+				that.Complex64 = (that.Complex64)[:len(this.Complex64)]
+			}
+		} else {
+			that.Complex64 = make([]*complex64, len(this.Complex64))
+		}
+		deriveCopyToSliceOfPtrTocomplex64(this.Complex64, that.Complex64)
+	}
+	if this.Float64 == nil {
+		that.Float64 = nil
+	} else {
+		if that.Float64 != nil {
+			if len(this.Float64) > len(that.Float64) {
+				if len(this.Float64) > cap(that.Float64) {
+					panic(`todo`)
+				}
+			} else if len(this.Float64) < len(that.Float64) {
+				that.Float64 = (that.Float64)[:len(this.Float64)]
+			}
+		} else {
+			that.Float64 = make([]*float64, len(this.Float64))
+		}
+		deriveCopyToSliceOfPtrTofloat64(this.Float64, that.Float64)
+	}
+	if this.Float32 == nil {
+		that.Float32 = nil
+	} else {
+		if that.Float32 != nil {
+			if len(this.Float32) > len(that.Float32) {
+				if len(this.Float32) > cap(that.Float32) {
+					panic(`todo`)
+				}
+			} else if len(this.Float32) < len(that.Float32) {
+				that.Float32 = (that.Float32)[:len(this.Float32)]
+			}
+		} else {
+			that.Float32 = make([]*float32, len(this.Float32))
+		}
+		deriveCopyToSliceOfPtrTofloat32(this.Float32, that.Float32)
+	}
+	if this.Int == nil {
+		that.Int = nil
+	} else {
+		if that.Int != nil {
+			if len(this.Int) > len(that.Int) {
+				if len(this.Int) > cap(that.Int) {
+					panic(`todo`)
+				}
+			} else if len(this.Int) < len(that.Int) {
+				that.Int = (that.Int)[:len(this.Int)]
+			}
+		} else {
+			that.Int = make([]*int, len(this.Int))
+		}
+		deriveCopyToSliceOfPtrToint(this.Int, that.Int)
+	}
+	if this.Int16 == nil {
+		that.Int16 = nil
+	} else {
+		if that.Int16 != nil {
+			if len(this.Int16) > len(that.Int16) {
+				if len(this.Int16) > cap(that.Int16) {
+					panic(`todo`)
+				}
+			} else if len(this.Int16) < len(that.Int16) {
+				that.Int16 = (that.Int16)[:len(this.Int16)]
+			}
+		} else {
+			that.Int16 = make([]*int16, len(this.Int16))
+		}
+		deriveCopyToSliceOfPtrToint16(this.Int16, that.Int16)
+	}
+	if this.Int32 == nil {
+		that.Int32 = nil
+	} else {
+		if that.Int32 != nil {
+			if len(this.Int32) > len(that.Int32) {
+				if len(this.Int32) > cap(that.Int32) {
+					panic(`todo`)
+				}
+			} else if len(this.Int32) < len(that.Int32) {
+				that.Int32 = (that.Int32)[:len(this.Int32)]
+			}
+		} else {
+			that.Int32 = make([]*int32, len(this.Int32))
+		}
+		deriveCopyToSliceOfPtrToint32(this.Int32, that.Int32)
+	}
+	if this.Int64 == nil {
+		that.Int64 = nil
+	} else {
+		if that.Int64 != nil {
+			if len(this.Int64) > len(that.Int64) {
+				if len(this.Int64) > cap(that.Int64) {
+					panic(`todo`)
+				}
+			} else if len(this.Int64) < len(that.Int64) {
+				that.Int64 = (that.Int64)[:len(this.Int64)]
+			}
+		} else {
+			that.Int64 = make([]*int64, len(this.Int64))
+		}
+		deriveCopyToSliceOfPtrToint64(this.Int64, that.Int64)
+	}
+	if this.Int8 == nil {
+		that.Int8 = nil
+	} else {
+		if that.Int8 != nil {
+			if len(this.Int8) > len(that.Int8) {
+				if len(this.Int8) > cap(that.Int8) {
+					panic(`todo`)
+				}
+			} else if len(this.Int8) < len(that.Int8) {
+				that.Int8 = (that.Int8)[:len(this.Int8)]
+			}
+		} else {
+			that.Int8 = make([]*int8, len(this.Int8))
+		}
+		deriveCopyToSliceOfPtrToint8(this.Int8, that.Int8)
+	}
+	if this.Rune == nil {
+		that.Rune = nil
+	} else {
+		if that.Rune != nil {
+			if len(this.Rune) > len(that.Rune) {
+				if len(this.Rune) > cap(that.Rune) {
+					panic(`todo`)
+				}
+			} else if len(this.Rune) < len(that.Rune) {
+				that.Rune = (that.Rune)[:len(this.Rune)]
+			}
+		} else {
+			that.Rune = make([]*rune, len(this.Rune))
+		}
+		deriveCopyToSliceOfPtrTorune(this.Rune, that.Rune)
+	}
+	if this.String == nil {
+		that.String = nil
+	} else {
+		if that.String != nil {
+			if len(this.String) > len(that.String) {
+				if len(this.String) > cap(that.String) {
+					panic(`todo`)
+				}
+			} else if len(this.String) < len(that.String) {
+				that.String = (that.String)[:len(this.String)]
+			}
+		} else {
+			that.String = make([]*string, len(this.String))
+		}
+		deriveCopyToSliceOfPtrTostring(this.String, that.String)
+	}
+	if this.Uint == nil {
+		that.Uint = nil
+	} else {
+		if that.Uint != nil {
+			if len(this.Uint) > len(that.Uint) {
+				if len(this.Uint) > cap(that.Uint) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint) < len(that.Uint) {
+				that.Uint = (that.Uint)[:len(this.Uint)]
+			}
+		} else {
+			that.Uint = make([]*uint, len(this.Uint))
+		}
+		deriveCopyToSliceOfPtrTouint(this.Uint, that.Uint)
+	}
+	if this.Uint16 == nil {
+		that.Uint16 = nil
+	} else {
+		if that.Uint16 != nil {
+			if len(this.Uint16) > len(that.Uint16) {
+				if len(this.Uint16) > cap(that.Uint16) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint16) < len(that.Uint16) {
+				that.Uint16 = (that.Uint16)[:len(this.Uint16)]
+			}
+		} else {
+			that.Uint16 = make([]*uint16, len(this.Uint16))
+		}
+		deriveCopyToSliceOfPtrTouint16(this.Uint16, that.Uint16)
+	}
+	if this.Uint32 == nil {
+		that.Uint32 = nil
+	} else {
+		if that.Uint32 != nil {
+			if len(this.Uint32) > len(that.Uint32) {
+				if len(this.Uint32) > cap(that.Uint32) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint32) < len(that.Uint32) {
+				that.Uint32 = (that.Uint32)[:len(this.Uint32)]
+			}
+		} else {
+			that.Uint32 = make([]*uint32, len(this.Uint32))
+		}
+		deriveCopyToSliceOfPtrTouint32(this.Uint32, that.Uint32)
+	}
+	if this.Uint64 == nil {
+		that.Uint64 = nil
+	} else {
+		if that.Uint64 != nil {
+			if len(this.Uint64) > len(that.Uint64) {
+				if len(this.Uint64) > cap(that.Uint64) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint64) < len(that.Uint64) {
+				that.Uint64 = (that.Uint64)[:len(this.Uint64)]
+			}
+		} else {
+			that.Uint64 = make([]*uint64, len(this.Uint64))
+		}
+		deriveCopyToSliceOfPtrTouint64(this.Uint64, that.Uint64)
+	}
+	if this.Uint8 == nil {
+		that.Uint8 = nil
+	} else {
+		if that.Uint8 != nil {
+			if len(this.Uint8) > len(that.Uint8) {
+				if len(this.Uint8) > cap(that.Uint8) {
+					panic(`todo`)
+				}
+			} else if len(this.Uint8) < len(that.Uint8) {
+				that.Uint8 = (that.Uint8)[:len(this.Uint8)]
+			}
+		} else {
+			that.Uint8 = make([]*uint8, len(this.Uint8))
+		}
+		deriveCopyToSliceOfPtrTouint8(this.Uint8, that.Uint8)
+	}
+	if this.UintPtr == nil {
+		that.UintPtr = nil
+	} else {
+		if that.UintPtr != nil {
+			if len(this.UintPtr) > len(that.UintPtr) {
+				if len(this.UintPtr) > cap(that.UintPtr) {
+					panic(`todo`)
+				}
+			} else if len(this.UintPtr) < len(that.UintPtr) {
+				that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
+			}
+		} else {
+			that.UintPtr = make([]*uintptr, len(this.UintPtr))
+		}
+		deriveCopyToSliceOfPtrTouintptr(this.UintPtr, that.UintPtr)
+	}
+}
+
+func deriveCopyToPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) {
+	that.Bool = this.Bool
+	that.Byte = this.Byte
+	that.Complex128 = this.Complex128
+	that.Complex64 = this.Complex64
+	that.Float64 = this.Float64
+	that.Float32 = this.Float32
+	that.Int = this.Int
+	that.Int16 = this.Int16
+	that.Int32 = this.Int32
+	that.Int64 = this.Int64
+	that.Int8 = this.Int8
+	that.Rune = this.Rune
+	that.String = this.String
+	that.Uint = this.Uint
+	that.Uint16 = this.Uint16
+	that.Uint32 = this.Uint32
+	that.Uint64 = this.Uint64
+	that.Uint8 = this.Uint8
+	that.UintPtr = this.UintPtr
+	that.AnotherBoolOfDifferentSize = this.AnotherBoolOfDifferentSize
+}
+
+func deriveCopyToPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) {
+	for this_i, this_value := range this.Bool {
+		if this_value == nil {
+			that.Bool[this_i] = nil
+		} else {
+			that.Bool[this_i] = new(bool)
+			*that.Bool[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Byte {
+		if this_value == nil {
+			that.Byte[this_i] = nil
+		} else {
+			that.Byte[this_i] = new(byte)
+			*that.Byte[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Complex128 {
+		if this_value == nil {
+			that.Complex128[this_i] = nil
+		} else {
+			that.Complex128[this_i] = new(complex128)
+			*that.Complex128[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Complex64 {
+		if this_value == nil {
+			that.Complex64[this_i] = nil
+		} else {
+			that.Complex64[this_i] = new(complex64)
+			*that.Complex64[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Float64 {
+		if this_value == nil {
+			that.Float64[this_i] = nil
+		} else {
+			that.Float64[this_i] = new(float64)
+			*that.Float64[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Float32 {
+		if this_value == nil {
+			that.Float32[this_i] = nil
+		} else {
+			that.Float32[this_i] = new(float32)
+			*that.Float32[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Int {
+		if this_value == nil {
+			that.Int[this_i] = nil
+		} else {
+			that.Int[this_i] = new(int)
+			*that.Int[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Int16 {
+		if this_value == nil {
+			that.Int16[this_i] = nil
+		} else {
+			that.Int16[this_i] = new(int16)
+			*that.Int16[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Int32 {
+		if this_value == nil {
+			that.Int32[this_i] = nil
+		} else {
+			that.Int32[this_i] = new(int32)
+			*that.Int32[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Int64 {
+		if this_value == nil {
+			that.Int64[this_i] = nil
+		} else {
+			that.Int64[this_i] = new(int64)
+			*that.Int64[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Int8 {
+		if this_value == nil {
+			that.Int8[this_i] = nil
+		} else {
+			that.Int8[this_i] = new(int8)
+			*that.Int8[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Rune {
+		if this_value == nil {
+			that.Rune[this_i] = nil
+		} else {
+			that.Rune[this_i] = new(rune)
+			*that.Rune[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.String {
+		if this_value == nil {
+			that.String[this_i] = nil
+		} else {
+			that.String[this_i] = new(string)
+			*that.String[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Uint {
+		if this_value == nil {
+			that.Uint[this_i] = nil
+		} else {
+			that.Uint[this_i] = new(uint)
+			*that.Uint[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Uint16 {
+		if this_value == nil {
+			that.Uint16[this_i] = nil
+		} else {
+			that.Uint16[this_i] = new(uint16)
+			*that.Uint16[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Uint32 {
+		if this_value == nil {
+			that.Uint32[this_i] = nil
+		} else {
+			that.Uint32[this_i] = new(uint32)
+			*that.Uint32[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Uint64 {
+		if this_value == nil {
+			that.Uint64[this_i] = nil
+		} else {
+			that.Uint64[this_i] = new(uint64)
+			*that.Uint64[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.Uint8 {
+		if this_value == nil {
+			that.Uint8[this_i] = nil
+		} else {
+			that.Uint8[this_i] = new(uint8)
+			*that.Uint8[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.UintPtr {
+		if this_value == nil {
+			that.UintPtr[this_i] = nil
+		} else {
+			that.UintPtr[this_i] = new(uintptr)
+			*that.UintPtr[this_i] = *this_value
+		}
+	}
+	for this_i, this_value := range this.AnotherBoolOfDifferentSize {
+		if this_value == nil {
+			that.AnotherBoolOfDifferentSize[this_i] = nil
+		} else {
+			that.AnotherBoolOfDifferentSize[this_i] = new(bool)
+			*that.AnotherBoolOfDifferentSize[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToPtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) {
+	if this.StringToUint32 != nil {
+		that.StringToUint32 = make(map[string]uint32, len(this.StringToUint32))
+		deriveCopyToMapOfstringTouint32(this.StringToUint32, that.StringToUint32)
+	} else {
+		that.StringToUint32 = nil
+	}
+	if this.Uint64ToInt64 != nil {
+		that.Uint64ToInt64 = make(map[uint8]int64, len(this.Uint64ToInt64))
+		deriveCopyToMapOfuint8Toint64(this.Uint64ToInt64, that.Uint64ToInt64)
+	} else {
+		that.Uint64ToInt64 = nil
+	}
+}
+
+func deriveCopyToPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) {
+	if this.BoolToString != nil {
+		that.BoolToString = make(map[bool]string, len(this.BoolToString))
+		deriveCopyToMapOfboolTostring(this.BoolToString, that.BoolToString)
+	} else {
+		that.BoolToString = nil
+	}
+	if this.StringToBool != nil {
+		that.StringToBool = make(map[string]bool, len(this.StringToBool))
+		deriveCopyToMapOfstringTobool(this.StringToBool, that.StringToBool)
+	} else {
+		that.StringToBool = nil
+	}
+	if this.Complex128ToComplex64 != nil {
+		that.Complex128ToComplex64 = make(map[complex128]complex64, len(this.Complex128ToComplex64))
+		deriveCopyToMapOfcomplex128Tocomplex64(this.Complex128ToComplex64, that.Complex128ToComplex64)
+	} else {
+		that.Complex128ToComplex64 = nil
+	}
+	if this.Float64ToUint32 != nil {
+		that.Float64ToUint32 = make(map[float64]uint32, len(this.Float64ToUint32))
+		deriveCopyToMapOffloat64Touint32(this.Float64ToUint32, that.Float64ToUint32)
+	} else {
+		that.Float64ToUint32 = nil
+	}
+	if this.Uint16ToUint8 != nil {
+		that.Uint16ToUint8 = make(map[uint16]uint8, len(this.Uint16ToUint8))
+		deriveCopyToMapOfuint16Touint8(this.Uint16ToUint8, that.Uint16ToUint8)
+	} else {
+		that.Uint16ToUint8 = nil
+	}
+}
+
+func deriveCopyToPtrToSliceToSlice(this, that *SliceToSlice) {
+	if this.Ints == nil {
+		that.Ints = nil
+	} else {
+		if that.Ints != nil {
+			if len(this.Ints) > len(that.Ints) {
+				if len(this.Ints) > cap(that.Ints) {
+					panic(`todo`)
+				}
+			} else if len(this.Ints) < len(that.Ints) {
+				that.Ints = (that.Ints)[:len(this.Ints)]
+			}
+		} else {
+			that.Ints = make([][]int, len(this.Ints))
+		}
+		deriveCopyToSliceOfSliceOfint(this.Ints, that.Ints)
+	}
+	if this.Strings == nil {
+		that.Strings = nil
+	} else {
+		if that.Strings != nil {
+			if len(this.Strings) > len(that.Strings) {
+				if len(this.Strings) > cap(that.Strings) {
+					panic(`todo`)
+				}
+			} else if len(this.Strings) < len(that.Strings) {
+				that.Strings = (that.Strings)[:len(this.Strings)]
+			}
+		} else {
+			that.Strings = make([][]string, len(this.Strings))
+		}
+		deriveCopyToSliceOfSliceOfstring(this.Strings, that.Strings)
+	}
+	if this.IntPtrs == nil {
+		that.IntPtrs = nil
+	} else {
+		if that.IntPtrs != nil {
+			if len(this.IntPtrs) > len(that.IntPtrs) {
+				if len(this.IntPtrs) > cap(that.IntPtrs) {
+					panic(`todo`)
+				}
+			} else if len(this.IntPtrs) < len(that.IntPtrs) {
+				that.IntPtrs = (that.IntPtrs)[:len(this.IntPtrs)]
+			}
+		} else {
+			that.IntPtrs = make([][]*int, len(this.IntPtrs))
+		}
+		deriveCopyToSliceOfSliceOfPtrToint(this.IntPtrs, that.IntPtrs)
+	}
+}
+
+func deriveCopyToPtrToPtrTo(this, that *PtrTo) {
+	if this.Basic == nil {
+		that.Basic = nil
+	} else {
+		that.Basic = new(int)
+		*that.Basic = *this.Basic
+	}
+	if this.Slice == nil {
+		that.Slice = nil
+	} else {
+		that.Slice = new([]int)
+		deriveCopyToPtrToSliceOfint(this.Slice, that.Slice)
+	}
+	if this.Array == nil {
+		that.Array = nil
+	} else {
+		that.Array = new([4]int)
+		*that.Array = *this.Array
+	}
+	if this.Map == nil {
+		that.Map = nil
+	} else {
+		that.Map = new(map[int]int)
+		deriveCopyToPtrToMapOfintToint(this.Map, that.Map)
+	}
+}
+
+func deriveCopyToPtrToName(this, that *Name) {
+	that.Name = this.Name
+}
+
+func deriveCopyToPtrToStructs(this, that *Structs) {
+	that.Struct = this.Struct
+	if this.PtrToStruct == nil {
+		that.PtrToStruct = nil
+	} else {
+		that.PtrToStruct = new(Name)
+		this.PtrToStruct.CopyTo(that.PtrToStruct)
+	}
+	if this.SliceOfStructs == nil {
+		that.SliceOfStructs = nil
+	} else {
+		if that.SliceOfStructs != nil {
+			if len(this.SliceOfStructs) > len(that.SliceOfStructs) {
+				if len(this.SliceOfStructs) > cap(that.SliceOfStructs) {
+					panic(`todo`)
+				}
+			} else if len(this.SliceOfStructs) < len(that.SliceOfStructs) {
+				that.SliceOfStructs = (that.SliceOfStructs)[:len(this.SliceOfStructs)]
+			}
+		} else {
+			that.SliceOfStructs = make([]Name, len(this.SliceOfStructs))
+		}
+		copy(that.SliceOfStructs, this.SliceOfStructs)
+	}
+	if this.SliceToPtrOfStruct == nil {
+		that.SliceToPtrOfStruct = nil
+	} else {
+		if that.SliceToPtrOfStruct != nil {
+			if len(this.SliceToPtrOfStruct) > len(that.SliceToPtrOfStruct) {
+				if len(this.SliceToPtrOfStruct) > cap(that.SliceToPtrOfStruct) {
+					panic(`todo`)
+				}
+			} else if len(this.SliceToPtrOfStruct) < len(that.SliceToPtrOfStruct) {
+				that.SliceToPtrOfStruct = (that.SliceToPtrOfStruct)[:len(this.SliceToPtrOfStruct)]
+			}
+		} else {
+			that.SliceToPtrOfStruct = make([]*Name, len(this.SliceToPtrOfStruct))
+		}
+		deriveCopyToSliceOfPtrToName(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct)
+	}
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -1143,341 +2287,6 @@ func deriveEqualPtrToMapOfintToint(this, that *map[int]int) bool {
 
 func deriveEqual1(this, that BuiltInTypes) bool {
 	return (&this).Equal(&that)
-}
-
-func deriveClonePtrToBuiltInTypes(this *BuiltInTypes) *BuiltInTypes {
-	var that *BuiltInTypes
-	if this != nil {
-		that = new(BuiltInTypes)
-		that.Bool = this.Bool
-		that.Byte = this.Byte
-		that.Complex128 = this.Complex128
-		that.Complex64 = this.Complex64
-		that.Float64 = this.Float64
-		that.Float32 = this.Float32
-		that.Int = this.Int
-		that.Int16 = this.Int16
-		that.Int32 = this.Int32
-		that.Int64 = this.Int64
-		that.Int8 = this.Int8
-		that.Rune = this.Rune
-		that.String = this.String
-		that.Uint = this.Uint
-		that.Uint16 = this.Uint16
-		that.Uint32 = this.Uint32
-		that.Uint64 = this.Uint64
-		that.Uint8 = this.Uint8
-		that.UintPtr = this.UintPtr
-	}
-	return that
-}
-
-func deriveClonePtrToPtrToBuiltInTypes(this *PtrToBuiltInTypes) *PtrToBuiltInTypes {
-	var that *PtrToBuiltInTypes
-	if this != nil {
-		that = new(PtrToBuiltInTypes)
-		that.Bool = deriveClonePtrTobool(this.Bool)
-		that.Byte = deriveClonePtrTobyte(this.Byte)
-		that.Complex128 = deriveClonePtrTocomplex128(this.Complex128)
-		that.Complex64 = deriveClonePtrTocomplex64(this.Complex64)
-		that.Float64 = deriveClonePtrTofloat64(this.Float64)
-		that.Float32 = deriveClonePtrTofloat32(this.Float32)
-		that.Int = deriveClonePtrToint(this.Int)
-		that.Int16 = deriveClonePtrToint16(this.Int16)
-		that.Int32 = deriveClonePtrToint32(this.Int32)
-		that.Int64 = deriveClonePtrToint64(this.Int64)
-		that.Int8 = deriveClonePtrToint8(this.Int8)
-		that.Rune = deriveClonePtrTorune(this.Rune)
-		that.String = deriveClonePtrTostring(this.String)
-		that.Uint = deriveClonePtrTouint(this.Uint)
-		that.Uint16 = deriveClonePtrTouint16(this.Uint16)
-		that.Uint32 = deriveClonePtrTouint32(this.Uint32)
-		that.Uint64 = deriveClonePtrTouint64(this.Uint64)
-		that.Uint8 = deriveClonePtrTouint8(this.Uint8)
-		that.UintPtr = deriveClonePtrTouintptr(this.UintPtr)
-	}
-	return that
-}
-
-func deriveClonePtrToSliceOfBuiltInTypes(this *SliceOfBuiltInTypes) *SliceOfBuiltInTypes {
-	var that *SliceOfBuiltInTypes
-	if this != nil {
-		that = new(SliceOfBuiltInTypes)
-		that.Bool = deriveCloneSliceOfbool(this.Bool)
-		that.Byte = deriveCloneSliceOfbyte(this.Byte)
-		that.Complex128 = deriveCloneSliceOfcomplex128(this.Complex128)
-		that.Complex64 = deriveCloneSliceOfcomplex64(this.Complex64)
-		that.Float64 = deriveCloneSliceOffloat64(this.Float64)
-		that.Float32 = deriveCloneSliceOffloat32(this.Float32)
-		that.Int = deriveCloneSliceOfint(this.Int)
-		that.Int16 = deriveCloneSliceOfint16(this.Int16)
-		that.Int32 = deriveCloneSliceOfint32(this.Int32)
-		that.Int64 = deriveCloneSliceOfint64(this.Int64)
-		that.Int8 = deriveCloneSliceOfint8(this.Int8)
-		that.Rune = deriveCloneSliceOfrune(this.Rune)
-		that.String = deriveCloneSliceOfstring(this.String)
-		that.Uint = deriveCloneSliceOfuint(this.Uint)
-		that.Uint16 = deriveCloneSliceOfuint16(this.Uint16)
-		that.Uint32 = deriveCloneSliceOfuint32(this.Uint32)
-		that.Uint64 = deriveCloneSliceOfuint64(this.Uint64)
-		that.Uint8 = deriveCloneSliceOfuint8(this.Uint8)
-		that.UintPtr = deriveCloneSliceOfuintptr(this.UintPtr)
-	}
-	return that
-}
-
-func deriveClonePtrToSliceOfPtrToBuiltInTypes(this *SliceOfPtrToBuiltInTypes) *SliceOfPtrToBuiltInTypes {
-	var that *SliceOfPtrToBuiltInTypes
-	if this != nil {
-		that = new(SliceOfPtrToBuiltInTypes)
-		that.Bool = deriveCloneSliceOfPtrTobool(this.Bool)
-		that.Byte = deriveCloneSliceOfPtrTobyte(this.Byte)
-		that.Complex128 = deriveCloneSliceOfPtrTocomplex128(this.Complex128)
-		that.Complex64 = deriveCloneSliceOfPtrTocomplex64(this.Complex64)
-		that.Float64 = deriveCloneSliceOfPtrTofloat64(this.Float64)
-		that.Float32 = deriveCloneSliceOfPtrTofloat32(this.Float32)
-		that.Int = deriveCloneSliceOfPtrToint(this.Int)
-		that.Int16 = deriveCloneSliceOfPtrToint16(this.Int16)
-		that.Int32 = deriveCloneSliceOfPtrToint32(this.Int32)
-		that.Int64 = deriveCloneSliceOfPtrToint64(this.Int64)
-		that.Int8 = deriveCloneSliceOfPtrToint8(this.Int8)
-		that.Rune = deriveCloneSliceOfPtrTorune(this.Rune)
-		that.String = deriveCloneSliceOfPtrTostring(this.String)
-		that.Uint = deriveCloneSliceOfPtrTouint(this.Uint)
-		that.Uint16 = deriveCloneSliceOfPtrTouint16(this.Uint16)
-		that.Uint32 = deriveCloneSliceOfPtrTouint32(this.Uint32)
-		that.Uint64 = deriveCloneSliceOfPtrTouint64(this.Uint64)
-		that.Uint8 = deriveCloneSliceOfPtrTouint8(this.Uint8)
-		that.UintPtr = deriveCloneSliceOfPtrTouintptr(this.UintPtr)
-	}
-	return that
-}
-
-func deriveClonePtrToArrayOfBuiltInTypes(this *ArrayOfBuiltInTypes) *ArrayOfBuiltInTypes {
-	var that *ArrayOfBuiltInTypes
-	if this != nil {
-		that = new(ArrayOfBuiltInTypes)
-		that.Bool = this.Bool
-		that.Byte = this.Byte
-		that.Complex128 = this.Complex128
-		that.Complex64 = this.Complex64
-		that.Float64 = this.Float64
-		that.Float32 = this.Float32
-		that.Int = this.Int
-		that.Int16 = this.Int16
-		that.Int32 = this.Int32
-		that.Int64 = this.Int64
-		that.Int8 = this.Int8
-		that.Rune = this.Rune
-		that.String = this.String
-		that.Uint = this.Uint
-		that.Uint16 = this.Uint16
-		that.Uint32 = this.Uint32
-		that.Uint64 = this.Uint64
-		that.Uint8 = this.Uint8
-		that.UintPtr = this.UintPtr
-		that.AnotherBoolOfDifferentSize = this.AnotherBoolOfDifferentSize
-	}
-	return that
-}
-
-func deriveClonePtrToArrayOfPtrToBuiltInTypes(this *ArrayOfPtrToBuiltInTypes) *ArrayOfPtrToBuiltInTypes {
-	var that *ArrayOfPtrToBuiltInTypes
-	if this != nil {
-		that = new(ArrayOfPtrToBuiltInTypes)
-		for this_i, this_value := range this.Bool {
-			if this_value != nil {
-				that.Bool[this_i] = new(bool)
-				*that.Bool[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Byte {
-			if this_value != nil {
-				that.Byte[this_i] = new(byte)
-				*that.Byte[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Complex128 {
-			if this_value != nil {
-				that.Complex128[this_i] = new(complex128)
-				*that.Complex128[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Complex64 {
-			if this_value != nil {
-				that.Complex64[this_i] = new(complex64)
-				*that.Complex64[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Float64 {
-			if this_value != nil {
-				that.Float64[this_i] = new(float64)
-				*that.Float64[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Float32 {
-			if this_value != nil {
-				that.Float32[this_i] = new(float32)
-				*that.Float32[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Int {
-			if this_value != nil {
-				that.Int[this_i] = new(int)
-				*that.Int[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Int16 {
-			if this_value != nil {
-				that.Int16[this_i] = new(int16)
-				*that.Int16[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Int32 {
-			if this_value != nil {
-				that.Int32[this_i] = new(int32)
-				*that.Int32[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Int64 {
-			if this_value != nil {
-				that.Int64[this_i] = new(int64)
-				*that.Int64[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Int8 {
-			if this_value != nil {
-				that.Int8[this_i] = new(int8)
-				*that.Int8[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Rune {
-			if this_value != nil {
-				that.Rune[this_i] = new(rune)
-				*that.Rune[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.String {
-			if this_value != nil {
-				that.String[this_i] = new(string)
-				*that.String[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Uint {
-			if this_value != nil {
-				that.Uint[this_i] = new(uint)
-				*that.Uint[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Uint16 {
-			if this_value != nil {
-				that.Uint16[this_i] = new(uint16)
-				*that.Uint16[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Uint32 {
-			if this_value != nil {
-				that.Uint32[this_i] = new(uint32)
-				*that.Uint32[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Uint64 {
-			if this_value != nil {
-				that.Uint64[this_i] = new(uint64)
-				*that.Uint64[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.Uint8 {
-			if this_value != nil {
-				that.Uint8[this_i] = new(uint8)
-				*that.Uint8[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.UintPtr {
-			if this_value != nil {
-				that.UintPtr[this_i] = new(uintptr)
-				*that.UintPtr[this_i] = *this_value
-			}
-		}
-		for this_i, this_value := range this.AnotherBoolOfDifferentSize {
-			if this_value != nil {
-				that.AnotherBoolOfDifferentSize[this_i] = new(bool)
-				*that.AnotherBoolOfDifferentSize[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveClonePtrToMapsOfSimplerBuiltInTypes(this *MapsOfSimplerBuiltInTypes) *MapsOfSimplerBuiltInTypes {
-	var that *MapsOfSimplerBuiltInTypes
-	if this != nil {
-		that = new(MapsOfSimplerBuiltInTypes)
-		that.StringToUint32 = deriveCloneMapOfstringTouint32(this.StringToUint32)
-		that.Uint64ToInt64 = deriveCloneMapOfuint8Toint64(this.Uint64ToInt64)
-	}
-	return that
-}
-
-func deriveClonePtrToMapsOfBuiltInTypes(this *MapsOfBuiltInTypes) *MapsOfBuiltInTypes {
-	var that *MapsOfBuiltInTypes
-	if this != nil {
-		that = new(MapsOfBuiltInTypes)
-		that.BoolToString = deriveCloneMapOfboolTostring(this.BoolToString)
-		that.StringToBool = deriveCloneMapOfstringTobool(this.StringToBool)
-		that.Complex128ToComplex64 = deriveCloneMapOfcomplex128Tocomplex64(this.Complex128ToComplex64)
-		that.Float64ToUint32 = deriveCloneMapOffloat64Touint32(this.Float64ToUint32)
-		that.Uint16ToUint8 = deriveCloneMapOfuint16Touint8(this.Uint16ToUint8)
-	}
-	return that
-}
-
-func deriveClonePtrToSliceToSlice(this *SliceToSlice) *SliceToSlice {
-	var that *SliceToSlice
-	if this != nil {
-		that = new(SliceToSlice)
-		that.Ints = deriveCloneSliceOfSliceOfint(this.Ints)
-		that.Strings = deriveCloneSliceOfSliceOfstring(this.Strings)
-		that.IntPtrs = deriveCloneSliceOfSliceOfPtrToint(this.IntPtrs)
-	}
-	return that
-}
-
-func deriveClonePtrToPtrTo(this *PtrTo) *PtrTo {
-	var that *PtrTo
-	if this != nil {
-		that = new(PtrTo)
-		that.Basic = deriveClonePtrToint(this.Basic)
-		that.Slice = deriveClonePtrToSliceOfint(this.Slice)
-		that.Array = deriveClonePtrToArray4Ofint(this.Array)
-		that.Map = deriveClonePtrToMapOfintToint(this.Map)
-	}
-	return that
-}
-
-func deriveClonePtrToStructs(this *Structs) *Structs {
-	var that *Structs
-	if this != nil {
-		that = new(Structs)
-		that.Struct = this.Struct
-		that.PtrToStruct = deriveClonePtrToName(this.PtrToStruct)
-		that.SliceOfStructs = deriveCloneSliceOfName(this.SliceOfStructs)
-		that.SliceToPtrOfStruct = deriveCloneSliceOfPtrToName(this.SliceToPtrOfStruct)
-	}
-	return that
-}
-
-func deriveClonePtrToMapWithStructs(this *MapWithStructs) *MapWithStructs {
-	var that *MapWithStructs
-	if this != nil {
-		that = new(MapWithStructs)
-		that.NameToString = deriveCloneMapOfNameTostring(this.NameToString)
-		that.StringToName = deriveCloneMapOfstringToName(this.StringToName)
-		that.StringToPtrToName = deriveCloneMapOfstringToPtrToName(this.StringToPtrToName)
-		that.StringToSliceOfName = deriveCloneMapOfstringToSliceOfName(this.StringToSliceOfName)
-		that.StringToSliceOfPtrToName = deriveCloneMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName)
-	}
-	return that
 }
 
 func deriveKeysForFmap(m map[int]string) []int {
@@ -4128,6 +4937,433 @@ func deriveComparePtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Priv
 	return 0
 }
 
+func deriveCopyToMapOfNameTostring(this, that map[Name]string) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfstringToName(this, that map[string]Name) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfstringToPtrToName(this, that map[string]*Name) {
+	for this_key, this_value := range this {
+		if this_value == nil {
+			that[this_key] = nil
+		}
+		if this_value == nil {
+			that[this_key] = nil
+		} else {
+			that[this_key] = new(Name)
+			this_value.CopyTo(that[this_key])
+		}
+	}
+}
+
+func deriveCopyToMapOfstringToSliceOfName(this, that map[string][]Name) {
+	for this_key, this_value := range this {
+		if this_value == nil {
+			that[this_key] = nil
+		}
+		if this_value == nil {
+			that[this_key] = nil
+		} else {
+			if that[this_key] != nil {
+				if len(this_value) > len(that[this_key]) {
+					if len(this_value) > cap(that[this_key]) {
+						panic(`todo`)
+					}
+				} else if len(this_value) < len(that[this_key]) {
+					that[this_key] = (that[this_key])[:len(this_value)]
+				}
+			} else {
+				that[this_key] = make([]Name, len(this_value))
+			}
+			copy(that[this_key], this_value)
+		}
+	}
+}
+
+func deriveCopyToMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) {
+	for this_key, this_value := range this {
+		if this_value == nil {
+			that[this_key] = nil
+		}
+		if this_value == nil {
+			that[this_key] = nil
+		} else {
+			if that[this_key] != nil {
+				if len(this_value) > len(that[this_key]) {
+					if len(this_value) > cap(that[this_key]) {
+						panic(`todo`)
+					}
+				} else if len(this_value) < len(that[this_key]) {
+					that[this_key] = (that[this_key])[:len(this_value)]
+				}
+			} else {
+				that[this_key] = make([]*Name, len(this_value))
+			}
+			deriveCopyToSliceOfPtrToName(this_value, that[this_key])
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTobool(this, that []*bool) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(bool)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTobyte(this, that []*byte) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(byte)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTocomplex128(this, that []*complex128) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(complex128)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTocomplex64(this, that []*complex64) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(complex64)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTofloat64(this, that []*float64) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(float64)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTofloat32(this, that []*float32) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(float32)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrToint(this, that []*int) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(int)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrToint16(this, that []*int16) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(int16)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrToint32(this, that []*int32) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(int32)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrToint64(this, that []*int64) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(int64)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrToint8(this, that []*int8) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(int8)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTorune(this, that []*rune) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(rune)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTostring(this, that []*string) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(string)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTouint(this, that []*uint) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(uint)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTouint16(this, that []*uint16) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(uint16)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTouint32(this, that []*uint32) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(uint32)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTouint64(this, that []*uint64) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(uint64)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTouint8(this, that []*uint8) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(uint8)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTouintptr(this, that []*uintptr) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(uintptr)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToMapOfstringTouint32(this, that map[string]uint32) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfuint8Toint64(this, that map[uint8]int64) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfboolTostring(this, that map[bool]string) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfstringTobool(this, that map[string]bool) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfcomplex128Tocomplex64(this, that map[complex128]complex64) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOffloat64Touint32(this, that map[float64]uint32) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfuint16Touint8(this, that map[uint16]uint8) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToSliceOfSliceOfint(this, that [][]int) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			if that[this_i] != nil {
+				if len(this_value) > len(that[this_i]) {
+					if len(this_value) > cap(that[this_i]) {
+						panic(`todo`)
+					}
+				} else if len(this_value) < len(that[this_i]) {
+					that[this_i] = (that[this_i])[:len(this_value)]
+				}
+			} else {
+				that[this_i] = make([]int, len(this_value))
+			}
+			copy(that[this_i], this_value)
+		}
+	}
+}
+
+func deriveCopyToSliceOfSliceOfstring(this, that [][]string) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			if that[this_i] != nil {
+				if len(this_value) > len(that[this_i]) {
+					if len(this_value) > cap(that[this_i]) {
+						panic(`todo`)
+					}
+				} else if len(this_value) < len(that[this_i]) {
+					that[this_i] = (that[this_i])[:len(this_value)]
+				}
+			} else {
+				that[this_i] = make([]string, len(this_value))
+			}
+			copy(that[this_i], this_value)
+		}
+	}
+}
+
+func deriveCopyToSliceOfSliceOfPtrToint(this, that [][]*int) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			if that[this_i] != nil {
+				if len(this_value) > len(that[this_i]) {
+					if len(this_value) > cap(that[this_i]) {
+						panic(`todo`)
+					}
+				} else if len(this_value) < len(that[this_i]) {
+					that[this_i] = (that[this_i])[:len(this_value)]
+				}
+			} else {
+				that[this_i] = make([]*int, len(this_value))
+			}
+			deriveCopyToSliceOfPtrToint(this_value, that[this_i])
+		}
+	}
+}
+
+func deriveCopyToPtrToSliceOfint(this, that *[]int) {
+	if *this == nil {
+		*that = nil
+	} else {
+		if *that != nil {
+			if len(*this) > len(*that) {
+				if len(*this) > cap(*that) {
+					panic(`todo`)
+				}
+			} else if len(*this) < len(*that) {
+				*that = (*that)[:len(*this)]
+			}
+		} else {
+			*that = make([]int, len(*this))
+		}
+		copy(*that, *this)
+	}
+}
+
+func deriveCopyToPtrToMapOfintToint(this, that *map[int]int) {
+	if *this != nil {
+		*that = make(map[int]int, len(*this))
+		deriveCopyToMapOfintToint(*this, *that)
+	} else {
+		*that = nil
+	}
+}
+
+func deriveCopyToSliceOfPtrToName(this, that []*Name) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(Name)
+			this_value.CopyTo(that[this_i])
+		}
+	}
+}
+
 func deriveEqualSliceOfbool(this, that []bool) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -5179,883 +6415,6 @@ func deriveEqualPtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Privat
 			deriveEqualPtrToextra_StructWithoutEqualMethod(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr())))
 }
 
-func deriveClonePtrTobool(this *bool) *bool {
-	var that *bool
-	if this != nil {
-		that = new(bool)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTobyte(this *byte) *byte {
-	var that *byte
-	if this != nil {
-		that = new(byte)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTocomplex128(this *complex128) *complex128 {
-	var that *complex128
-	if this != nil {
-		that = new(complex128)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTocomplex64(this *complex64) *complex64 {
-	var that *complex64
-	if this != nil {
-		that = new(complex64)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTofloat64(this *float64) *float64 {
-	var that *float64
-	if this != nil {
-		that = new(float64)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTofloat32(this *float32) *float32 {
-	var that *float32
-	if this != nil {
-		that = new(float32)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrToint(this *int) *int {
-	var that *int
-	if this != nil {
-		that = new(int)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrToint16(this *int16) *int16 {
-	var that *int16
-	if this != nil {
-		that = new(int16)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrToint32(this *int32) *int32 {
-	var that *int32
-	if this != nil {
-		that = new(int32)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrToint64(this *int64) *int64 {
-	var that *int64
-	if this != nil {
-		that = new(int64)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrToint8(this *int8) *int8 {
-	var that *int8
-	if this != nil {
-		that = new(int8)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTorune(this *rune) *rune {
-	var that *rune
-	if this != nil {
-		that = new(rune)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTostring(this *string) *string {
-	var that *string
-	if this != nil {
-		that = new(string)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTouint(this *uint) *uint {
-	var that *uint
-	if this != nil {
-		that = new(uint)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTouint16(this *uint16) *uint16 {
-	var that *uint16
-	if this != nil {
-		that = new(uint16)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTouint32(this *uint32) *uint32 {
-	var that *uint32
-	if this != nil {
-		that = new(uint32)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTouint64(this *uint64) *uint64 {
-	var that *uint64
-	if this != nil {
-		that = new(uint64)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTouint8(this *uint8) *uint8 {
-	var that *uint8
-	if this != nil {
-		that = new(uint8)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrTouintptr(this *uintptr) *uintptr {
-	var that *uintptr
-	if this != nil {
-		that = new(uintptr)
-		*that = *this
-	}
-	return that
-}
-
-func deriveCloneSliceOfbool(this []bool) []bool {
-	var that []bool
-	if this != nil {
-		that = make([]bool, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfbyte(this []byte) []byte {
-	var that []byte
-	if this != nil {
-		that = make([]byte, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfcomplex128(this []complex128) []complex128 {
-	var that []complex128
-	if this != nil {
-		that = make([]complex128, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfcomplex64(this []complex64) []complex64 {
-	var that []complex64
-	if this != nil {
-		that = make([]complex64, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOffloat64(this []float64) []float64 {
-	var that []float64
-	if this != nil {
-		that = make([]float64, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOffloat32(this []float32) []float32 {
-	var that []float32
-	if this != nil {
-		that = make([]float32, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfint(this []int) []int {
-	var that []int
-	if this != nil {
-		that = make([]int, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfint16(this []int16) []int16 {
-	var that []int16
-	if this != nil {
-		that = make([]int16, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfint32(this []int32) []int32 {
-	var that []int32
-	if this != nil {
-		that = make([]int32, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfint64(this []int64) []int64 {
-	var that []int64
-	if this != nil {
-		that = make([]int64, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfint8(this []int8) []int8 {
-	var that []int8
-	if this != nil {
-		that = make([]int8, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfrune(this []rune) []rune {
-	var that []rune
-	if this != nil {
-		that = make([]rune, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfstring(this []string) []string {
-	var that []string
-	if this != nil {
-		that = make([]string, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfuint(this []uint) []uint {
-	var that []uint
-	if this != nil {
-		that = make([]uint, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfuint16(this []uint16) []uint16 {
-	var that []uint16
-	if this != nil {
-		that = make([]uint16, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfuint32(this []uint32) []uint32 {
-	var that []uint32
-	if this != nil {
-		that = make([]uint32, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfuint64(this []uint64) []uint64 {
-	var that []uint64
-	if this != nil {
-		that = make([]uint64, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfuint8(this []uint8) []uint8 {
-	var that []uint8
-	if this != nil {
-		that = make([]uint8, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfuintptr(this []uintptr) []uintptr {
-	var that []uintptr
-	if this != nil {
-		that = make([]uintptr, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTobool(this []*bool) []*bool {
-	var that []*bool
-	if this != nil {
-		that = make([]*bool, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(bool)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTobyte(this []*byte) []*byte {
-	var that []*byte
-	if this != nil {
-		that = make([]*byte, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(byte)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTocomplex128(this []*complex128) []*complex128 {
-	var that []*complex128
-	if this != nil {
-		that = make([]*complex128, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(complex128)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTocomplex64(this []*complex64) []*complex64 {
-	var that []*complex64
-	if this != nil {
-		that = make([]*complex64, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(complex64)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTofloat64(this []*float64) []*float64 {
-	var that []*float64
-	if this != nil {
-		that = make([]*float64, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(float64)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTofloat32(this []*float32) []*float32 {
-	var that []*float32
-	if this != nil {
-		that = make([]*float32, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(float32)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrToint(this []*int) []*int {
-	var that []*int
-	if this != nil {
-		that = make([]*int, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(int)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrToint16(this []*int16) []*int16 {
-	var that []*int16
-	if this != nil {
-		that = make([]*int16, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(int16)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrToint32(this []*int32) []*int32 {
-	var that []*int32
-	if this != nil {
-		that = make([]*int32, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(int32)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrToint64(this []*int64) []*int64 {
-	var that []*int64
-	if this != nil {
-		that = make([]*int64, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(int64)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrToint8(this []*int8) []*int8 {
-	var that []*int8
-	if this != nil {
-		that = make([]*int8, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(int8)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTorune(this []*rune) []*rune {
-	var that []*rune
-	if this != nil {
-		that = make([]*rune, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(rune)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTostring(this []*string) []*string {
-	var that []*string
-	if this != nil {
-		that = make([]*string, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(string)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTouint(this []*uint) []*uint {
-	var that []*uint
-	if this != nil {
-		that = make([]*uint, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(uint)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTouint16(this []*uint16) []*uint16 {
-	var that []*uint16
-	if this != nil {
-		that = make([]*uint16, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(uint16)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTouint32(this []*uint32) []*uint32 {
-	var that []*uint32
-	if this != nil {
-		that = make([]*uint32, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(uint32)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTouint64(this []*uint64) []*uint64 {
-	var that []*uint64
-	if this != nil {
-		that = make([]*uint64, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(uint64)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTouint8(this []*uint8) []*uint8 {
-	var that []*uint8
-	if this != nil {
-		that = make([]*uint8, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(uint8)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrTouintptr(this []*uintptr) []*uintptr {
-	var that []*uintptr
-	if this != nil {
-		that = make([]*uintptr, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(uintptr)
-				*that[this_i] = *this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfstringTouint32(this map[string]uint32) map[string]uint32 {
-	var that map[string]uint32
-	if this != nil {
-		that = make(map[string]uint32, len(this))
-		for this_key, this_value := range this {
-			that[this_key] = this_value
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfuint8Toint64(this map[uint8]int64) map[uint8]int64 {
-	var that map[uint8]int64
-	if this != nil {
-		that = make(map[uint8]int64, len(this))
-		for this_key, this_value := range this {
-			that[this_key] = this_value
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfboolTostring(this map[bool]string) map[bool]string {
-	var that map[bool]string
-	if this != nil {
-		that = make(map[bool]string, len(this))
-		for this_key, this_value := range this {
-			that[this_key] = this_value
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfstringTobool(this map[string]bool) map[string]bool {
-	var that map[string]bool
-	if this != nil {
-		that = make(map[string]bool, len(this))
-		for this_key, this_value := range this {
-			that[this_key] = this_value
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfcomplex128Tocomplex64(this map[complex128]complex64) map[complex128]complex64 {
-	var that map[complex128]complex64
-	if this != nil {
-		that = make(map[complex128]complex64, len(this))
-		for this_key, this_value := range this {
-			that[this_key] = this_value
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOffloat64Touint32(this map[float64]uint32) map[float64]uint32 {
-	var that map[float64]uint32
-	if this != nil {
-		that = make(map[float64]uint32, len(this))
-		for this_key, this_value := range this {
-			that[this_key] = this_value
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfuint16Touint8(this map[uint16]uint8) map[uint16]uint8 {
-	var that map[uint16]uint8
-	if this != nil {
-		that = make(map[uint16]uint8, len(this))
-		for this_key, this_value := range this {
-			that[this_key] = this_value
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfSliceOfint(this [][]int) [][]int {
-	var that [][]int
-	if this != nil {
-		that = make([][]int, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = make([]int, len(this_value))
-				copy(that[this_i], this_value)
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfSliceOfstring(this [][]string) [][]string {
-	var that [][]string
-	if this != nil {
-		that = make([][]string, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = make([]string, len(this_value))
-				copy(that[this_i], this_value)
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneSliceOfSliceOfPtrToint(this [][]*int) [][]*int {
-	var that [][]*int
-	if this != nil {
-		that = make([][]*int, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = make([]*int, len(this_value))
-				for this_value_i, this_value_value := range this_value {
-					if this_value_value != nil {
-						(that[this_i])[this_value_i] = new(int)
-						*(that[this_i])[this_value_i] = *this_value_value
-					}
-				}
-			}
-		}
-	}
-	return that
-}
-
-func deriveClonePtrToSliceOfint(this *[]int) *[]int {
-	var that *[]int
-	if this != nil {
-		that = new([]int)
-		if *this != nil {
-			*that = make([]int, len(*this))
-			copy(*that, *this)
-		}
-	}
-	return that
-}
-
-func deriveClonePtrToArray4Ofint(this *[4]int) *[4]int {
-	var that *[4]int
-	if this != nil {
-		that = new([4]int)
-		*that = *this
-	}
-	return that
-}
-
-func deriveClonePtrToMapOfintToint(this *map[int]int) *map[int]int {
-	var that *map[int]int
-	if this != nil {
-		that = new(map[int]int)
-		if *this != nil {
-			*that = make(map[int]int, len(*this))
-			for this_key, this_value := range *this {
-				(*that)[this_key] = this_value
-			}
-		}
-	}
-	return that
-}
-
-func deriveClonePtrToName(this *Name) *Name {
-	var that *Name
-	if this != nil {
-		that = new(Name)
-		that.Name = this.Name
-	}
-	return that
-}
-
-func deriveCloneSliceOfName(this []Name) []Name {
-	var that []Name
-	if this != nil {
-		that = make([]Name, len(this))
-		copy(that, this)
-	}
-	return that
-}
-
-func deriveCloneSliceOfPtrToName(this []*Name) []*Name {
-	var that []*Name
-	if this != nil {
-		that = make([]*Name, len(this))
-		for this_i, this_value := range this {
-			if this_value != nil {
-				that[this_i] = new(Name)
-				that[this_i].Name = this_value.Name
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfNameTostring(this map[Name]string) map[Name]string {
-	var that map[Name]string
-	if this != nil {
-		that = make(map[Name]string, len(this))
-		for this_key, this_value := range this {
-			that[this_key] = this_value
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfstringToName(this map[string]Name) map[string]Name {
-	var that map[string]Name
-	if this != nil {
-		that = make(map[string]Name, len(this))
-		for this_key, this_value := range this {
-			that[this_key] = this_value
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfstringToPtrToName(this map[string]*Name) map[string]*Name {
-	var that map[string]*Name
-	if this != nil {
-		that = make(map[string]*Name, len(this))
-		for this_key, this_value := range this {
-			if this_value == nil {
-				that[this_key] = nil
-			}
-			if this_value != nil {
-				that[this_key] = new(Name)
-				that[this_key].Name = this_value.Name
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfstringToSliceOfName(this map[string][]Name) map[string][]Name {
-	var that map[string][]Name
-	if this != nil {
-		that = make(map[string][]Name, len(this))
-		for this_key, this_value := range this {
-			if this_value == nil {
-				that[this_key] = nil
-			}
-			if this_value != nil {
-				that[this_key] = make([]Name, len(this_value))
-				copy(that[this_key], this_value)
-			}
-		}
-	}
-	return that
-}
-
-func deriveCloneMapOfstringToSliceOfPtrToName(this map[string][]*Name) map[string][]*Name {
-	var that map[string][]*Name
-	if this != nil {
-		that = make(map[string][]*Name, len(this))
-		for this_key, this_value := range this {
-			if this_value == nil {
-				that[this_key] = nil
-			}
-			if this_value != nil {
-				that[this_key] = make([]*Name, len(this_value))
-				for this_value_i, this_value_value := range this_value {
-					if this_value_value != nil {
-						(that[this_key])[this_value_i] = new(Name)
-						(that[this_key])[this_value_i].Name = this_value_value.Name
-					}
-				}
-			}
-		}
-	}
-	return that
-}
-
 func deriveSortSliceOfstring(list []string) []string {
 	sort.Strings(list)
 	return list
@@ -6256,6 +6615,12 @@ func deriveCompareMapOfintToint(this, that map[int]int) int {
 
 func deriveCompareName(this, that Name) int {
 	return (&this).Compare(&that)
+}
+
+func deriveCopyToMapOfintToint(this, that map[int]int) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
 }
 
 func deriveKeysMapOfintToint(m map[int]int) []int {

@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package clone
+package copyto
 
 import (
 	"fmt"
@@ -23,7 +23,7 @@ import (
 )
 
 func NewPlugin() derive.Plugin {
-	return derive.NewPlugin("clone", "deriveClone", New)
+	return derive.NewPlugin("copyto", "deriveCopyTo", New)
 }
 
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
@@ -45,8 +45,12 @@ type gen struct {
 }
 
 func (this *gen) Add(name string, typs []types.Type) (string, error) {
-	if len(typs) != 1 {
-		return "", fmt.Errorf("%s does not have one argument", name)
+	if len(typs) != 2 {
+		return "", fmt.Errorf("%s does not have two arguments", name)
+	}
+	if !types.Identical(typs[0], typs[1]) {
+		return "", fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
+			name, this.TypeString(typs[0]), this.TypeString(typs[1]))
 	}
 	return this.SetFuncName(name, typs[0])
 }
@@ -65,13 +69,11 @@ func (g *gen) genFunc(typ types.Type) error {
 	g.Generating(typ)
 	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(this %s) %s {", g.GetFuncName(typ), typeStr, typeStr)
+	p.P("func %s(this, that %s) {", g.GetFuncName(typ), typeStr)
 	p.In()
-	p.P("var that %s", typeStr)
 	if err := g.genStatement(typ, "this", "that"); err != nil {
 		return err
 	}
-	p.P("return that")
 	p.Out()
 	p.P("}")
 	return nil
@@ -79,21 +81,19 @@ func (g *gen) genFunc(typ types.Type) error {
 
 func (g *gen) genStatement(typ types.Type, this, that string) error {
 	p := g.printer
-	if canClone(typ) {
+	if canCopy(typ) {
 		p.P("%s = %s", that, this)
 		return nil
 	}
 	switch ttyp := typ.(type) {
 	case *types.Pointer:
-		p.P("if %s != nil {", this)
-		p.In()
 		reftyp := ttyp.Elem()
 		g.TypeString(reftyp)
-		p.P("%s = new(%s)", that, g.TypeString(reftyp))
+		//p.P("%s = new(%s)", that, g.TypeString(reftyp))
 		thisref, thatref := "*"+this, "*"+that
 		named, ok := reftyp.(*types.Named)
 		if !ok {
-			if err := g.genStatement(reftyp, thisref, thatref); err != nil {
+			if err := g.genField(reftyp, thisref, thatref); err != nil {
 				return err
 			}
 		} else {
@@ -119,29 +119,22 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 				}
 			}
 		}
-		p.Out()
-		p.P("}")
 		return nil
 	case *types.Named:
 		panic("todo")
 	case *types.Slice:
-		p.P("if %s != nil {", this)
-		p.In()
-		p.P("%s = make(%s, len(%s))", that, g.TypeString(typ), this)
 		elmType := ttyp.Elem()
-		if canClone(elmType) {
+		if canCopy(elmType) {
 			p.P("copy(%s, %s)", that, this)
 		} else {
 			thisvalue := prepend(this, "value")
 			thisi := prepend(this, "i")
 			p.P("for %s, %s := range %s {", thisi, thisvalue, this)
 			p.In()
-			g.genStatement(elmType, thisvalue, wrap(that)+"["+thisi+"]")
+			g.genField(elmType, thisvalue, wrap(that)+"["+thisi+"]")
 			p.Out()
 			p.P("}")
 		}
-		p.Out()
-		p.P("}")
 		return nil
 	case *types.Array:
 		elmType := ttyp.Elem()
@@ -149,22 +142,19 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		thisi := prepend(this, "i")
 		p.P("for %s, %s := range %s {", thisi, thisvalue, this)
 		p.In()
-		g.genStatement(elmType, thisvalue, wrap(that)+"["+thisi+"]")
+		g.genField(elmType, thisvalue, wrap(that)+"["+thisi+"]")
 		p.Out()
 		p.P("}")
 		return nil
 	case *types.Map:
-		p.P("if %s != nil {", this)
-		p.In()
-		p.P("%s = make(%s, len(%s))", that, g.TypeString(typ), this)
 		elmType := ttyp.Elem()
 		keyType := ttyp.Key()
 		thiskey, thisvalue := prepend(this, "key"), prepend(this, "value")
 		p.P("for %s, %s := range %s {", thiskey, thisvalue, this)
 		p.In()
 		thatkey := thiskey
-		if !canClone(keyType) {
-			g.genStatement(keyType, thatkey, thiskey)
+		if !canCopy(keyType) {
+			g.genField(keyType, thatkey, thiskey)
 			thatkey = prepend(that, "key")
 		}
 		if nullable(elmType) {
@@ -174,9 +164,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 			p.Out()
 			p.P("}")
 		}
-		g.genStatement(elmType, thisvalue, wrap(that)+"["+thatkey+"]")
-		p.Out()
-		p.P("}")
+		g.genField(elmType, thisvalue, wrap(that)+"["+thatkey+"]")
 		p.Out()
 		p.P("}")
 		return nil
@@ -214,7 +202,7 @@ func prepend(before, after string) string {
 	return b + "_" + after
 }
 
-func canClone(tt types.Type) bool {
+func canCopy(tt types.Type) bool {
 	t := tt.Underlying()
 	switch typ := t.(type) {
 	case *types.Basic:
@@ -223,21 +211,21 @@ func canClone(tt types.Type) bool {
 		for i := 0; i < typ.NumFields(); i++ {
 			f := typ.Field(i)
 			ft := f.Type()
-			if !canClone(ft) {
+			if !canCopy(ft) {
 				return false
 			}
 		}
 		return true
 	case *types.Array:
-		return canClone(typ.Elem())
+		return canCopy(typ.Elem())
 	}
 	return false
 }
 
-func hasCloneMethod(typ *types.Named) bool {
+func hasCopyToMethod(typ *types.Named) bool {
 	for i := 0; i < typ.NumMethods(); i++ {
 		meth := typ.Method(i)
-		if meth.Name() != "Clone" {
+		if meth.Name() != "CopyTo" {
 			continue
 		}
 		sig, ok := meth.Type().(*types.Signature)
@@ -245,11 +233,11 @@ func hasCloneMethod(typ *types.Named) bool {
 			// impossible, but lets check anyway
 			continue
 		}
-		if sig.Params().Len() != 0 {
+		if sig.Params().Len() != 1 {
 			continue
 		}
 		res := sig.Results()
-		if res.Len() != 1 {
+		if res.Len() != 0 {
 			continue
 		}
 		return true
@@ -259,40 +247,87 @@ func hasCloneMethod(typ *types.Named) bool {
 
 func (g *gen) genField(fieldType types.Type, thisField, thatField string) error {
 	p := g.printer
-	if canClone(fieldType) {
+	if canCopy(fieldType) {
 		p.P("%s = %s", thatField, thisField)
 		return nil
 	}
 	switch typ := fieldType.(type) {
 	case *types.Pointer:
+		p.P("if %s == nil {", thisField)
+		p.In()
+		p.P("%s = nil", thatField)
+		p.Out()
+		p.P("} else {")
+		p.In()
 		ref := typ.Elem()
-		if named, ok := ref.(*types.Named); ok {
-			if hasCloneMethod(named) {
-				p.P("%s = %s.Clone()", thatField, wrap(thisField))
-				return nil
-			}
+		p.P("%s = new(%s)", thatField, g.TypeString(typ.Elem()))
+		if named, ok := ref.(*types.Named); ok && hasCopyToMethod(named) {
+			p.P("%s.CopyTo(%s)", wrap(thisField), thatField)
+		} else if canCopy(typ.Elem()) {
+			p.P("*%s = *%s", thatField, thisField)
+		} else {
+			p.P("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField)
 		}
-		p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
+		p.Out()
+		p.P("}")
 		return nil
 	case *types.Array:
 		g.genStatement(fieldType, thisField, thatField)
 		return nil
 	case *types.Slice:
-		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
-			p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
-			return nil
+		p.P("if %s == nil {", thisField) // nil
+		p.In()
+		p.P("%s = nil", thatField)
+		p.Out()
+		p.P("} else {") // nil
+		p.In()
+		p.P("if %s != nil {", thatField) // not nil
+		p.In()
+		p.P("if len(%s) > len(%s) {", thisField, thatField) // len
+		p.In()
+		p.P("if len(%s) > cap(%s) {", thisField, thatField) // cap
+		p.In()
+		p.P("panic(`todo`)")
+		p.Out()
+		p.P("}") // cap
+		p.Out()
+		p.P("} else if len(%s) < len(%s) {", thisField, thatField) // len
+		p.In()
+		p.P("%s = (%s)[:len(%s)]", thatField, thatField, thisField)
+		p.Out()
+		p.P("}") // len
+		p.Out()
+		p.P("} else {") // not nil
+		p.In()
+		p.P("%s = make(%s, len(%s))", thatField, g.TypeString(typ), thisField)
+		p.Out()
+		p.P("}") // not nil
+		if canCopy(typ.Elem()) {
+			p.P("copy(%s, %s)", thatField, thisField)
+		} else {
+			p.P("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField)
 		}
-		p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
+		p.Out()
+		p.P("}") // nil
 		return nil
 	case *types.Map:
-		p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
+		p.P("if %s != nil {", thisField)
+		p.In()
+		p.P("%s = make(%s, len(%s))", thatField, g.TypeString(typ), thisField)
+		p.P("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField)
+		p.Out()
+		p.P("} else {")
+		p.In()
+		p.P("%s = nil", thatField)
+		p.Out()
+		p.P("}")
 		return nil
 	case *types.Named:
-		if hasCloneMethod(typ) {
-			p.P("%s = %s.Clone()", thatField, wrap(thisField))
+		if hasCopyToMethod(typ) {
+			p.P("%s.CopyTo(%s)", wrap(thisField), thatField)
 			return nil
 		} else {
-			p.P("%s = %s(%s)", thatField, g.GetFuncName(typ), thisField)
+			p.P("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField)
 			return nil
 		}
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct

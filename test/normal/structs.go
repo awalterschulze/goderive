@@ -46,8 +46,8 @@ func (this *BuiltInTypes) Compare(that *BuiltInTypes) int {
 	return deriveComparePtrToBuiltInTypes(this, that)
 }
 
-func (this *BuiltInTypes) Clone() *BuiltInTypes {
-	return deriveClonePtrToBuiltInTypes(this)
+func (this *BuiltInTypes) CopyTo(that *BuiltInTypes) {
+	deriveCopyToPtrToBuiltInTypes(this, that)
 }
 
 type PtrToBuiltInTypes struct {
@@ -80,8 +80,8 @@ func (this *PtrToBuiltInTypes) Compare(that *PtrToBuiltInTypes) int {
 	return deriveComparePtrToPtrToBuiltInTypes(this, that)
 }
 
-func (this *PtrToBuiltInTypes) Clone() *PtrToBuiltInTypes {
-	return deriveClonePtrToPtrToBuiltInTypes(this)
+func (this *PtrToBuiltInTypes) CopyTo(that *PtrToBuiltInTypes) {
+	deriveCopyToPtrToPtrToBuiltInTypes(this, that)
 }
 
 type SliceOfBuiltInTypes struct {
@@ -114,8 +114,8 @@ func (this *SliceOfBuiltInTypes) Compare(that *SliceOfBuiltInTypes) int {
 	return deriveComparePtrToSliceOfBuiltInTypes(this, that)
 }
 
-func (this *SliceOfBuiltInTypes) Clone() *SliceOfBuiltInTypes {
-	return deriveClonePtrToSliceOfBuiltInTypes(this)
+func (this *SliceOfBuiltInTypes) CopyTo(that *SliceOfBuiltInTypes) {
+	deriveCopyToPtrToSliceOfBuiltInTypes(this, that)
 }
 
 type SliceOfPtrToBuiltInTypes struct {
@@ -148,8 +148,8 @@ func (this *SliceOfPtrToBuiltInTypes) Compare(that *SliceOfPtrToBuiltInTypes) in
 	return deriveComparePtrToSliceOfPtrToBuiltInTypes(this, that)
 }
 
-func (this *SliceOfPtrToBuiltInTypes) Clone() *SliceOfPtrToBuiltInTypes {
-	return deriveClonePtrToSliceOfPtrToBuiltInTypes(this)
+func (this *SliceOfPtrToBuiltInTypes) CopyTo(that *SliceOfPtrToBuiltInTypes) {
+	deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that)
 }
 
 type ArrayOfBuiltInTypes struct {
@@ -184,8 +184,8 @@ func (this *ArrayOfBuiltInTypes) Compare(that *ArrayOfBuiltInTypes) int {
 	return deriveComparePtrToArrayOfBuiltInTypes(this, that)
 }
 
-func (this *ArrayOfBuiltInTypes) Clone() *ArrayOfBuiltInTypes {
-	return deriveClonePtrToArrayOfBuiltInTypes(this)
+func (this *ArrayOfBuiltInTypes) CopyTo(that *ArrayOfBuiltInTypes) {
+	deriveCopyToPtrToArrayOfBuiltInTypes(this, that)
 }
 
 type ArrayOfPtrToBuiltInTypes struct {
@@ -220,8 +220,8 @@ func (this *ArrayOfPtrToBuiltInTypes) Compare(that *ArrayOfPtrToBuiltInTypes) in
 	return deriveComparePtrToArrayOfPtrToBuiltInTypes(this, that)
 }
 
-func (this *ArrayOfPtrToBuiltInTypes) Clone() *ArrayOfPtrToBuiltInTypes {
-	return deriveClonePtrToArrayOfPtrToBuiltInTypes(this)
+func (this *ArrayOfPtrToBuiltInTypes) CopyTo(that *ArrayOfPtrToBuiltInTypes) {
+	deriveCopyToPtrToArrayOfPtrToBuiltInTypes(this, that)
 }
 
 type MapsOfSimplerBuiltInTypes struct {
@@ -237,8 +237,8 @@ func (this *MapsOfSimplerBuiltInTypes) Compare(that *MapsOfSimplerBuiltInTypes) 
 	return deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that)
 }
 
-func (this *MapsOfSimplerBuiltInTypes) Clone() *MapsOfSimplerBuiltInTypes {
-	return deriveClonePtrToMapsOfSimplerBuiltInTypes(this)
+func (this *MapsOfSimplerBuiltInTypes) CopyTo(that *MapsOfSimplerBuiltInTypes) {
+	deriveCopyToPtrToMapsOfSimplerBuiltInTypes(this, that)
 }
 
 type MapsOfBuiltInTypes struct {
@@ -257,8 +257,8 @@ func (this *MapsOfBuiltInTypes) Compare(that *MapsOfBuiltInTypes) int {
 	return deriveComparePtrToMapsOfBuiltInTypes(this, that)
 }
 
-func (this *MapsOfBuiltInTypes) Clone() *MapsOfBuiltInTypes {
-	return deriveClonePtrToMapsOfBuiltInTypes(this)
+func (this *MapsOfBuiltInTypes) CopyTo(that *MapsOfBuiltInTypes) {
+	deriveCopyToPtrToMapsOfBuiltInTypes(this, that)
 }
 
 type SliceToSlice struct {
@@ -275,8 +275,8 @@ func (this *SliceToSlice) Compare(that *SliceToSlice) int {
 	return deriveComparePtrToSliceToSlice(this, that)
 }
 
-func (this *SliceToSlice) Clone() *SliceToSlice {
-	return deriveClonePtrToSliceToSlice(this)
+func (this *SliceToSlice) CopyTo(that *SliceToSlice) {
+	deriveCopyToPtrToSliceToSlice(this, that)
 }
 
 type PtrTo struct {
@@ -294,8 +294,8 @@ func (this *PtrTo) Compare(that *PtrTo) int {
 	return deriveComparePtrToPtrTo(this, that)
 }
 
-func (this *PtrTo) Clone() *PtrTo {
-	return deriveClonePtrToPtrTo(this)
+func (this *PtrTo) CopyTo(that *PtrTo) {
+	deriveCopyToPtrToPtrTo(this, that)
 }
 
 type Name struct {
@@ -308,6 +308,10 @@ func (this *Name) Equal(that *Name) bool {
 
 func (this *Name) Compare(that *Name) int {
 	return deriveComparePtrToName(this, that)
+}
+
+func (this *Name) CopyTo(that *Name) {
+	deriveCopyToPtrToName(this, that)
 }
 
 type Structs struct {
@@ -325,8 +329,8 @@ func (this *Structs) Compare(that *Structs) int {
 	return deriveComparePtrToStructs(this, that)
 }
 
-func (this *Structs) Clone() *Structs {
-	return deriveClonePtrToStructs(this)
+func (this *Structs) CopyTo(that *Structs) {
+	deriveCopyToPtrToStructs(this, that)
 }
 
 type MapWithStructs struct {
@@ -345,8 +349,8 @@ func (this *MapWithStructs) Compare(that *MapWithStructs) int {
 	return deriveComparePtrToMapWithStructs(this, that)
 }
 
-func (this *MapWithStructs) Clone() *MapWithStructs {
-	return deriveClonePtrToMapWithStructs(this)
+func (this *MapWithStructs) CopyTo(that *MapWithStructs) {
+	deriveCopyToPtrToMapWithStructs(this, that)
 }
 
 type RecursiveType struct {

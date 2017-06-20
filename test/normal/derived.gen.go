@@ -780,37 +780,8 @@ func deriveSortedInt64s(src []int64) []int64 {
 	return dst
 }
 
-func deriveCopyToPtrToMapWithStructs(this, that *MapWithStructs) {
-	if this.NameToString != nil {
-		that.NameToString = make(map[Name]string, len(this.NameToString))
-		deriveCopyToMapOfNameTostring(this.NameToString, that.NameToString)
-	} else {
-		that.NameToString = nil
-	}
-	if this.StringToName != nil {
-		that.StringToName = make(map[string]Name, len(this.StringToName))
-		deriveCopyToMapOfstringToName(this.StringToName, that.StringToName)
-	} else {
-		that.StringToName = nil
-	}
-	if this.StringToPtrToName != nil {
-		that.StringToPtrToName = make(map[string]*Name, len(this.StringToPtrToName))
-		deriveCopyToMapOfstringToPtrToName(this.StringToPtrToName, that.StringToPtrToName)
-	} else {
-		that.StringToPtrToName = nil
-	}
-	if this.StringToSliceOfName != nil {
-		that.StringToSliceOfName = make(map[string][]Name, len(this.StringToSliceOfName))
-		deriveCopyToMapOfstringToSliceOfName(this.StringToSliceOfName, that.StringToSliceOfName)
-	} else {
-		that.StringToSliceOfName = nil
-	}
-	if this.StringToSliceOfPtrToName != nil {
-		that.StringToSliceOfPtrToName = make(map[string][]*Name, len(this.StringToSliceOfPtrToName))
-		deriveCopyToMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName)
-	} else {
-		that.StringToSliceOfPtrToName = nil
-	}
+func deriveCopyToPtrToUnnamedStruct(this, that *UnnamedStruct) {
+	that.Unnamed = this.Unnamed
 }
 
 func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
@@ -1922,6 +1893,96 @@ func deriveCopyToPtrToStructs(this, that *Structs) {
 		}
 		deriveCopyToSliceOfPtrToName(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct)
 	}
+}
+
+func deriveCopyToPtrToMapWithStructs(this, that *MapWithStructs) {
+	if this.NameToString != nil {
+		that.NameToString = make(map[Name]string, len(this.NameToString))
+		deriveCopyToMapOfNameTostring(this.NameToString, that.NameToString)
+	} else {
+		that.NameToString = nil
+	}
+	if this.StringToName != nil {
+		that.StringToName = make(map[string]Name, len(this.StringToName))
+		deriveCopyToMapOfstringToName(this.StringToName, that.StringToName)
+	} else {
+		that.StringToName = nil
+	}
+	if this.StringToPtrToName != nil {
+		that.StringToPtrToName = make(map[string]*Name, len(this.StringToPtrToName))
+		deriveCopyToMapOfstringToPtrToName(this.StringToPtrToName, that.StringToPtrToName)
+	} else {
+		that.StringToPtrToName = nil
+	}
+	if this.StringToSliceOfName != nil {
+		that.StringToSliceOfName = make(map[string][]Name, len(this.StringToSliceOfName))
+		deriveCopyToMapOfstringToSliceOfName(this.StringToSliceOfName, that.StringToSliceOfName)
+	} else {
+		that.StringToSliceOfName = nil
+	}
+	if this.StringToSliceOfPtrToName != nil {
+		that.StringToSliceOfPtrToName = make(map[string][]*Name, len(this.StringToSliceOfPtrToName))
+		deriveCopyToMapOfstringToSliceOfPtrToName(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName)
+	} else {
+		that.StringToSliceOfPtrToName = nil
+	}
+}
+
+func deriveCopyToPtrToRecursiveType(this, that *RecursiveType) {
+	if this.Bytes == nil {
+		that.Bytes = nil
+	} else {
+		if that.Bytes != nil {
+			if len(this.Bytes) > len(that.Bytes) {
+				if len(this.Bytes) > cap(that.Bytes) {
+					panic(`todo`)
+				}
+			} else if len(this.Bytes) < len(that.Bytes) {
+				that.Bytes = (that.Bytes)[:len(this.Bytes)]
+			}
+		} else {
+			that.Bytes = make([]byte, len(this.Bytes))
+		}
+		copy(that.Bytes, this.Bytes)
+	}
+	if this.N != nil {
+		that.N = make(map[int]RecursiveType, len(this.N))
+		deriveCopyToMapOfintToRecursiveType(this.N, that.N)
+	} else {
+		that.N = nil
+	}
+}
+
+func deriveCopyToPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) {
+	that.Name = this.Name
+	if this.Structs == nil {
+		that.Structs = nil
+	} else {
+		that.Structs = new(Structs)
+		this.Structs.CopyTo(that.Structs)
+	}
+}
+
+func deriveCopyToPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) {
+	field := new(Structs)
+	this.Structs.CopyTo(field)
+	that.Structs = *field
+	if this.Name == nil {
+		that.Name = nil
+	} else {
+		that.Name = new(Name)
+		this.Name.CopyTo(that.Name)
+	}
+}
+
+func deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) {
+	if this.A == nil {
+		that.A = nil
+	} else {
+		that.A = new(StructWithoutEqualMethod)
+		*that.A = *this.A
+	}
+	that.B = this.B
 }
 
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
@@ -4937,80 +4998,6 @@ func deriveComparePtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Priv
 	return 0
 }
 
-func deriveCopyToMapOfNameTostring(this, that map[Name]string) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
-	}
-}
-
-func deriveCopyToMapOfstringToName(this, that map[string]Name) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
-	}
-}
-
-func deriveCopyToMapOfstringToPtrToName(this, that map[string]*Name) {
-	for this_key, this_value := range this {
-		if this_value == nil {
-			that[this_key] = nil
-		}
-		if this_value == nil {
-			that[this_key] = nil
-		} else {
-			that[this_key] = new(Name)
-			this_value.CopyTo(that[this_key])
-		}
-	}
-}
-
-func deriveCopyToMapOfstringToSliceOfName(this, that map[string][]Name) {
-	for this_key, this_value := range this {
-		if this_value == nil {
-			that[this_key] = nil
-		}
-		if this_value == nil {
-			that[this_key] = nil
-		} else {
-			if that[this_key] != nil {
-				if len(this_value) > len(that[this_key]) {
-					if len(this_value) > cap(that[this_key]) {
-						panic(`todo`)
-					}
-				} else if len(this_value) < len(that[this_key]) {
-					that[this_key] = (that[this_key])[:len(this_value)]
-				}
-			} else {
-				that[this_key] = make([]Name, len(this_value))
-			}
-			copy(that[this_key], this_value)
-		}
-	}
-}
-
-func deriveCopyToMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) {
-	for this_key, this_value := range this {
-		if this_value == nil {
-			that[this_key] = nil
-		}
-		if this_value == nil {
-			that[this_key] = nil
-		} else {
-			if that[this_key] != nil {
-				if len(this_value) > len(that[this_key]) {
-					if len(this_value) > cap(that[this_key]) {
-						panic(`todo`)
-					}
-				} else if len(this_value) < len(that[this_key]) {
-					that[this_key] = (that[this_key])[:len(this_value)]
-				}
-			} else {
-				that[this_key] = make([]*Name, len(this_value))
-			}
-			deriveCopyToSliceOfPtrToName(this_value, that[this_key])
-		}
-	}
-}
-
 func deriveCopyToSliceOfPtrTobool(this, that []*bool) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -5361,6 +5348,88 @@ func deriveCopyToSliceOfPtrToName(this, that []*Name) {
 			that[this_i] = new(Name)
 			this_value.CopyTo(that[this_i])
 		}
+	}
+}
+
+func deriveCopyToMapOfNameTostring(this, that map[Name]string) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfstringToName(this, that map[string]Name) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfstringToPtrToName(this, that map[string]*Name) {
+	for this_key, this_value := range this {
+		if this_value == nil {
+			that[this_key] = nil
+		}
+		if this_value == nil {
+			that[this_key] = nil
+		} else {
+			that[this_key] = new(Name)
+			this_value.CopyTo(that[this_key])
+		}
+	}
+}
+
+func deriveCopyToMapOfstringToSliceOfName(this, that map[string][]Name) {
+	for this_key, this_value := range this {
+		if this_value == nil {
+			that[this_key] = nil
+		}
+		if this_value == nil {
+			that[this_key] = nil
+		} else {
+			if that[this_key] != nil {
+				if len(this_value) > len(that[this_key]) {
+					if len(this_value) > cap(that[this_key]) {
+						panic(`todo`)
+					}
+				} else if len(this_value) < len(that[this_key]) {
+					that[this_key] = (that[this_key])[:len(this_value)]
+				}
+			} else {
+				that[this_key] = make([]Name, len(this_value))
+			}
+			copy(that[this_key], this_value)
+		}
+	}
+}
+
+func deriveCopyToMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) {
+	for this_key, this_value := range this {
+		if this_value == nil {
+			that[this_key] = nil
+		}
+		if this_value == nil {
+			that[this_key] = nil
+		} else {
+			if that[this_key] != nil {
+				if len(this_value) > len(that[this_key]) {
+					if len(this_value) > cap(that[this_key]) {
+						panic(`todo`)
+					}
+				} else if len(this_value) < len(that[this_key]) {
+					that[this_key] = (that[this_key])[:len(this_value)]
+				}
+			} else {
+				that[this_key] = make([]*Name, len(this_value))
+			}
+			deriveCopyToSliceOfPtrToName(this_value, that[this_key])
+		}
+	}
+}
+
+func deriveCopyToMapOfintToRecursiveType(this, that map[int]RecursiveType) {
+	for this_key, this_value := range this {
+		field := new(RecursiveType)
+		this_value.CopyTo(field)
+		that[this_key] = *field
 	}
 }
 

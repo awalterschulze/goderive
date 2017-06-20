@@ -323,13 +323,14 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("}")
 		return nil
 	case *types.Named:
+		p.P("field := new(%s)", g.TypeString(typ))
 		if hasCopyToMethod(typ) {
-			p.P("%s.CopyTo(%s)", wrap(thisField), thatField)
-			return nil
+			p.P("%s.CopyTo(field)", wrap(thisField))
 		} else {
 			p.P("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField)
-			return nil
 		}
+		p.P("%s = *field", thatField)
+		return nil
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return fmt.Errorf("unsupported type %#v", fieldType)
 	}

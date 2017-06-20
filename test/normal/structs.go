@@ -366,6 +366,10 @@ func (this *RecursiveType) Compare(that *RecursiveType) int {
 	return deriveComparePtrToRecursiveType(this, that)
 }
 
+func (this *RecursiveType) CopyTo(that *RecursiveType) {
+	deriveCopyToPtrToRecursiveType(this, that)
+}
+
 type EmbeddedStruct1 struct {
 	Name
 	*Structs
@@ -377,6 +381,10 @@ func (this *EmbeddedStruct1) Equal(that *EmbeddedStruct1) bool {
 
 func (this *EmbeddedStruct1) Compare(that *EmbeddedStruct1) int {
 	return deriveComparePtrToEmbeddedStruct1(this, that)
+}
+
+func (this *EmbeddedStruct1) CopyTo(that *EmbeddedStruct1) {
+	deriveCopyToPtrToEmbeddedStruct1(this, that)
 }
 
 type EmbeddedStruct2 struct {
@@ -392,6 +400,10 @@ func (this *EmbeddedStruct2) Compare(that *EmbeddedStruct2) int {
 	return deriveComparePtrToEmbeddedStruct2(this, that)
 }
 
+func (this *EmbeddedStruct2) CopyTo(that *EmbeddedStruct2) {
+	deriveCopyToPtrToEmbeddedStruct2(this, that)
+}
+
 type UnnamedStruct struct {
 	Unnamed struct {
 		String string
@@ -400,6 +412,10 @@ type UnnamedStruct struct {
 
 func (this *UnnamedStruct) Equal(that *UnnamedStruct) bool {
 	return deriveEqualPtrToUnnamedStruct(this, that)
+}
+
+func (this *UnnamedStruct) CopyTo(that *UnnamedStruct) {
+	deriveCopyToPtrToUnnamedStruct(this, that)
 }
 
 type StructWithStructFieldWithoutEqualMethod struct {
@@ -413,6 +429,10 @@ func (this *StructWithStructFieldWithoutEqualMethod) Equal(that *StructWithStruc
 
 func (this *StructWithStructFieldWithoutEqualMethod) Compare(that *StructWithStructFieldWithoutEqualMethod) int {
 	return deriveComparePtrToStructWithStructFieldWithoutEqualMethod(this, that)
+}
+
+func (this *StructWithStructFieldWithoutEqualMethod) CopyTo(that *StructWithStructFieldWithoutEqualMethod) {
+	deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(this, that)
 }
 
 type StructWithoutEqualMethod struct {

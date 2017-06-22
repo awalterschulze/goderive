@@ -12,6 +12,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// Package fmap contains the implementation of the fmap plugin, which generates the deriveFmap function.
+// The deriveFmap function applies a given function to each element of a list, returning a list of results in the same order.
+// More things to come:
+//	- currently only slices are supported, think about supporting other types and not just slices
+//	- think about functions without a return type
 package fmap
 
 import (
@@ -21,10 +26,14 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
+// NewPlugin creates a new fmap plugin.
+// This function returns the plugin name, default prefix and a constructor for the fmap code generator.
 func NewPlugin() derive.Plugin {
 	return derive.NewPlugin("fmap", "deriveFmap", New)
 }
 
+// New is a constructor for the fmap code generator.
+// This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &fmap{
 		TypesMap: typesMap,

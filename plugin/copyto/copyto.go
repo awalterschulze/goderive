@@ -74,10 +74,14 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
+// NewPlugin creates a new copyto plugin.
+// This function returns the plugin name, default prefix and a constructor for the copyto code generator.
 func NewPlugin() derive.Plugin {
 	return derive.NewPlugin("copyto", "deriveCopyTo", New)
 }
 
+// New is a constructor for the copyto code generator.
+// This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &gen{
 		TypesMap:   typesMap,

@@ -1,3 +1,21 @@
+//  Copyright 2017 Walter Schulze
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+
+// Package sort contains the implementation of the sort plugin, which generates the deriveSort function.
+// This feature requires Go 1.8
+// The deriveSort function is useful for deterministically ranging over maps when used with deriveKeys.
+// deriveSort supports only the types that deriveCompare supports, since it uses it for sorting.
 package sort
 
 import (
@@ -7,10 +25,14 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
+// NewPlugin creates a new sort plugin.
+// This function returns the plugin name, default prefix and a constructor for the sort code generator.
 func NewPlugin() derive.Plugin {
 	return derive.NewPlugin("sort", "deriveSort", New)
 }
 
+// New is a constructor for the sort code generator.
+// This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &gen{
 		TypesMap: typesMap,

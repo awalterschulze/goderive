@@ -12,6 +12,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// Package join contains the implementation of the join plugin, which generates the deriveJoin function.
+// The deriveJoin function joins a slice of slices into a single slice.
+// More things to come:
+//	- currently only slices are supported, think about supporting other types and not just slices
+//	- what about []string and not just [][]string as in the current example.
 package join
 
 import (
@@ -21,10 +26,14 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
+// NewPlugin creates a new join plugin.
+// This function returns the plugin name, default prefix and a constructor for the join code generator.
 func NewPlugin() derive.Plugin {
 	return derive.NewPlugin("join", "deriveJoin", New)
 }
 
+// New is a constructor for the join code generator.
+// This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &join{
 		TypesMap: typesMap,

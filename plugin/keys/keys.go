@@ -1,3 +1,19 @@
+//  Copyright 2017 Walter Schulze
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+
+// Package keys contains the implementation of the keys plugin, which generates the deriveKeys function.
+// The deriveKeys function returns a map's keys as a slice.
 package keys
 
 import (
@@ -7,10 +23,14 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
+// NewPlugin creates a new keys plugin.
+// This function returns the plugin name, default prefix and a constructor for the keys code generator.
 func NewPlugin() derive.Plugin {
 	return derive.NewPlugin("keys", "deriveKeys", New)
 }
 
+// New is a constructor for the keys code generator.
+// This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &keys{
 		TypesMap: typesMap,

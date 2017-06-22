@@ -26,7 +26,6 @@ import (
 	"github.com/awalterschulze/goderive/plugin/join"
 	"github.com/awalterschulze/goderive/plugin/keys"
 	"github.com/awalterschulze/goderive/plugin/sort"
-	"github.com/awalterschulze/goderive/plugin/sorted"
 )
 
 var autoname = flag.Bool("autoname", false, "rename functions that are conflicting with other functions")
@@ -39,7 +38,6 @@ func main() {
 		fmap.NewPlugin(),
 		join.NewPlugin(),
 		keys.NewPlugin(),
-		sorted.NewPlugin(),
 		sort.NewPlugin(),
 		copyto.NewPlugin(),
 	}

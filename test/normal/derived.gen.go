@@ -759,27 +759,6 @@ func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 	return 0
 }
 
-func deriveSortedInts(src []int) []int {
-	dst := make([]int, len(src))
-	copy(dst, src)
-	sort.Ints(dst)
-	return dst
-}
-
-func deriveSortedStrings(src []string) []string {
-	dst := make([]string, len(src))
-	copy(dst, src)
-	sort.Strings(dst)
-	return dst
-}
-
-func deriveSortedInt64s(src []int64) []int64 {
-	dst := make([]int64, len(src))
-	copy(dst, src)
-	sort.Slice(dst, func(i, j int) bool { return dst[i] < dst[j] })
-	return dst
-}
-
 func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
 	that.Bool = this.Bool
 	that.Byte = this.Byte
@@ -2455,6 +2434,21 @@ func deriveEqualPtrToMapOfintToint(this, that *map[int]int) bool {
 
 func deriveEqual1(this, that BuiltInTypes) bool {
 	return (&this).Equal(&that)
+}
+
+func deriveSortedInts(list []int) []int {
+	sort.Ints(list)
+	return list
+}
+
+func deriveSortedStrings(list []string) []string {
+	sort.Strings(list)
+	return list
+}
+
+func deriveSortedInt64s(list []int64) []int64 {
+	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
+	return list
 }
 
 func deriveKeysForFmap(m map[int]string) []int {
@@ -4445,8 +4439,8 @@ func deriveCompareMapOfstringTouint32(this, that map[string]uint32) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortSliceOfstring(deriveKeysMapOfstringTouint32(this))
-	thatkeys := deriveSortSliceOfstring(deriveKeysMapOfstringTouint32(that))
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringTouint32(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringTouint32(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -4550,8 +4544,8 @@ func deriveCompareMapOfstringTobool(this, that map[string]bool) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortSliceOfstring(deriveKeysMapOfstringTobool(this))
-	thatkeys := deriveSortSliceOfstring(deriveKeysMapOfstringTobool(that))
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringTobool(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringTobool(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -4884,8 +4878,8 @@ func deriveCompareMapOfstringToName(this, that map[string]Name) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortSliceOfstring(deriveKeysMapOfstringToName(this))
-	thatkeys := deriveSortSliceOfstring(deriveKeysMapOfstringToName(that))
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringToName(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringToName(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -4919,8 +4913,8 @@ func deriveCompareMapOfstringToPtrToName(this, that map[string]*Name) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortSliceOfstring(deriveKeysMapOfstringToPtrToName(this))
-	thatkeys := deriveSortSliceOfstring(deriveKeysMapOfstringToPtrToName(that))
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringToPtrToName(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringToPtrToName(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -4954,8 +4948,8 @@ func deriveCompareMapOfstringToSliceOfName(this, that map[string][]Name) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortSliceOfstring(deriveKeysMapOfstringToSliceOfName(this))
-	thatkeys := deriveSortSliceOfstring(deriveKeysMapOfstringToSliceOfName(that))
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringToSliceOfName(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringToSliceOfName(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -4989,8 +4983,8 @@ func deriveCompareMapOfstringToSliceOfPtrToName(this, that map[string][]*Name) i
 		}
 		return 1
 	}
-	thiskeys := deriveSortSliceOfstring(deriveKeysMapOfstringToSliceOfPtrToName(this))
-	thatkeys := deriveSortSliceOfstring(deriveKeysMapOfstringToSliceOfPtrToName(that))
+	thiskeys := deriveSortedStrings(deriveKeysMapOfstringToSliceOfPtrToName(this))
+	thatkeys := deriveSortedStrings(deriveKeysMapOfstringToSliceOfPtrToName(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -5024,8 +5018,8 @@ func deriveCompareMapOfintToRecursiveType(this, that map[int]RecursiveType) int 
 		}
 		return 1
 	}
-	thiskeys := deriveSortSliceOfint(deriveKeysMapOfintToRecursiveType(this))
-	thatkeys := deriveSortSliceOfint(deriveKeysMapOfintToRecursiveType(that))
+	thiskeys := deriveSortedInts(deriveKeysMapOfintToRecursiveType(this))
+	thatkeys := deriveSortedInts(deriveKeysMapOfintToRecursiveType(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -6657,11 +6651,6 @@ func deriveEqualPtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Privat
 			deriveEqualPtrToextra_StructWithoutEqualMethod(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr())))
 }
 
-func deriveSortSliceOfstring(list []string) []string {
-	sort.Strings(list)
-	return list
-}
-
 func deriveSortSliceOfuint8(list []uint8) []uint8 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
@@ -6689,11 +6678,6 @@ func deriveSortSliceOfuint16(list []uint16) []uint16 {
 
 func deriveSortSliceOfName(list []Name) []Name {
 	sort.Slice(list, func(i, j int) bool { return deriveCompareName(list[i], list[j]) < 0 })
-	return list
-}
-
-func deriveSortSliceOfint(list []int) []int {
-	sort.Ints(list)
 	return list
 }
 
@@ -6836,8 +6820,8 @@ func deriveCompareMapOfintToint(this, that map[int]int) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortSliceOfint(deriveKeysMapOfintToint(this))
-	thatkeys := deriveSortSliceOfint(deriveKeysMapOfintToint(that))
+	thiskeys := deriveSortedInts(deriveKeysMapOfintToint(this))
+	thatkeys := deriveSortedInts(deriveKeysMapOfintToint(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {

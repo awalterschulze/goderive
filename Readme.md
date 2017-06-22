@@ -4,19 +4,21 @@
 
 `goderive` parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. 
 
-Functions that are currently supported include:
+Deep Functions:
 
   - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal)
   - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare)
   - [CopyTo](http://godoc.org/github.com/awalterschulze/goderive/plugin/copyto)
-  - [Keys](https://github.com/awalterschulze/goderive#keys)
-  - [Sorted](https://github.com/awalterschulze/goderive#sorted)
-  - [Sort](https://github.com/awalterschulze/goderive#sort)
 
-More functions are in the works:
+Tool Functions:
 
-  - Fmap
-  - Join
+  - [Keys](http://godoc.org/github.com/awalterschulze/goderive/plugin/keys)
+  - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort)
+
+Functional Functions:
+
+  - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)
+  - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join)
 
 Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.
 
@@ -52,37 +54,3 @@ func deriveEqual(this, that *MyStruct) bool {
 			((this.StringPtr == nil && that.StringPtr == nil) || (this.StringPtr != nil && that.StringPtr != nil && *(this.StringPtr) == *(that.StringPtr)))
 }
 ```
-
-## Keys
-
-The `deriveKeys` function returns a map's keys as a slice.
-
-## Sort
-
-This feature requires Go 1.8
-
-The `deriveSort` function is useful for deterministically ranging over maps when used with `deriveKeys`.
-
-`deriveSort` supports only the types that `deriveCompare` supports, since it uses it for sorting.
-
-## Sorted
-
-This feature requires Go 1.8
-
-`deriveSorted` is like `deriveSort`, but sacrifices efficiency for immutability by creating a copy of its input.
-
-## Fmap
-
-The `deriveFmap` function applies a given function to each element of a list, returning a list of results in the same order.
-
-TODO:
-  - currently only slices are supported, think about supporting other types and not just slices
-  - think about functions without a return type
-
-## Join
-
-The `deriveJoin` function applies a given joins a slice of slices into a single slice.
-
-TODO:
-  - currently only slices are supported, think about supporting other types and not just slices
-  - what about []string and not just [][]string as in the current example.

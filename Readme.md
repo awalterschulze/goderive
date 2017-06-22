@@ -20,14 +20,21 @@ Functional Functions:
   - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)
   - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join)
 
-Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.
+When goderive walks over your code it is looking for a function that:
+  - was not implemented (or was previously derived) and
+  - has a prefix predefined prefix.
 
-Distinguishing between which function (`Equal`, `Compare`, ...) should be derived is done using a customizable prefix, see command line flags.
+Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.  
+
+For example when someone in your team adds a new field to a struct and forgets to update the CopyTo method.  This problem is solved by goderive, by generating generated functions given the new types.
+
+Function prefixes are by default `deriveCamelCaseFunctionName`, for example `deriveEqual`.
+These are customizable using command line flags.
 
 Let `goderive` edit your function names in your source code, by enabling `autoname` and `dedup` using the command line flags.
 These flags respectively makes sure than your functions have unique names and that you don't generate multiple functions that do the same thing.
 
-## Example
+## Equal Example
 
 In the following code the `deriveEqual` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveEqual`.
 

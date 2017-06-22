@@ -34,7 +34,7 @@ These are customizable using command line flags.
 Let `goderive` edit your function names in your source code, by enabling `autoname` and `dedup` using the command line flags.
 These flags respectively makes sure than your functions have unique names and that you don't generate multiple functions that do the same thing.
 
-## Equal Example
+## Example
 
 In the following code the `deriveEqual` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveEqual`.
 

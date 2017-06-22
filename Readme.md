@@ -24,11 +24,7 @@ Distinguishing between which function (`Equal`, `Compare`, ...) should be derive
 Let `goderive` edit your function names in your source code, by enabling `autoname` and `dedup` using the command line flags.
 These flags respectively makes sure than your functions have unique names and that you don't generate multiple functions that do the same thing.
 
-## Equal
-
-The `deriveEqual` function is a faster alternative to `reflect.DeepEqual`.
-
-### Example
+## Example
 
 In the following code the `deriveEqual` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveEqual`.
 
@@ -55,41 +51,6 @@ func deriveEqual(this, that *MyStruct) bool {
 			((this.StringPtr == nil && that.StringPtr == nil) || (this.StringPtr != nil && that.StringPtr != nil && *(this.StringPtr) == *(that.StringPtr)))
 }
 ```
-
-### Unsupported Types
-
-  - Chan
-  - Interface
-  - Function
-  - Unnamed Structs, which are not comparable with `==`
-
-## Compare
-
-The `deriveCompare` function is a maintainable way to implement Less functions.
-
-### Example
-
-In the following code the `deriveCompare` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveCompare`.
-
-```go
-package main
-
-type MyStruct struct {
-	Int64  int64
-	String string
-}
-
-func (this *MyStruct) Less(that *MyStruct) bool {
-	return deriveCompare(this, that) < 0
-}
-```
-
-### Unsupported Types
-
-  - Chan
-  - Interface
-  - Function
-  - Unnamed Structs
 
 ## Keys
 

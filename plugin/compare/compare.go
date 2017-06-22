@@ -12,6 +12,48 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// Package compare contains the implementation of the compare plugin, which generates the deriveCompare function.
+//
+// The deriveCompare function is a maintainable and fast way to implement fast Less functions.
+//
+// When goderive walks over your code it is looking for a function that:
+//  - was not implemented (or was previously derived) and
+//  - has a prefix predefined prefix.
+//
+// In the following code the deriveCompare function will be found, because
+// it was not implemented and it has a prefix deriveCompare.
+// This prefix is configurable.
+//
+//	package main
+//
+//	import "sort"
+//
+//	type MyStruct struct {
+// 		Int64     int64
+//		StringPtr *string
+//	}
+//
+//	func sortStructs(ss []*MyStruct) {
+//		return sort.Slice(ss,  func(i, j int) bool {
+//				deriveCompare(ss[i], ss[j]) < 0
+//		}
+//	}
+//
+// Supported types:
+//	- basic types
+//	- named structs
+//	- slices
+//	- maps
+//	- pointers to these types
+//	- private fields of structs in external packages (using reflect and unsafe)
+//	- and many more
+// Unsupported types:
+//   - chan
+//   - interface
+//   - function
+//   - unnamed structs, which are not comparable with the == operator
+//
+// This plugin has been tested thoroughly.
 package compare
 
 import (

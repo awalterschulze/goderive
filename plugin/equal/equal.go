@@ -54,10 +54,10 @@
 //	- private fields of structs in external packages (using reflect and unsafe)
 //	- and many more
 // Unsupported types:
-//   - chan
-//   - interface
-//   - function
-//   - unnamed structs, which are not comparable with the == operator
+//	- chan
+//	- interface
+//	- function
+//	- unnamed structs, which are not comparable with the == operator
 //
 // This plugin has been tested thoroughly.
 package equal

@@ -12,6 +12,58 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// Package copyto contains the implementation of the copyto plugin, which generates the deriveCopyTo function.
+//
+// The deriveCopyTo function is a maintainable and fast way to implement fast copy functions.
+//
+// When goderive walks over your code it is looking for a function that:
+//  - was not implemented (or was previously derived) and
+//  - has a prefix predefined prefix.
+//
+// In the following code the deriveCopyTo function will be found, because
+// it was not implemented and it has a prefix deriveCopyTo.
+// This prefix is configurable.
+//
+//	package main
+//
+//	import "sort"
+//
+//	type MyStruct struct {
+// 		Int64     int64
+//		StringPtr *string
+//	}
+//
+//	func (m *MyStruct) Clone() *MyStruct {
+//		if m == nil {
+//			return nil
+//		}
+//		n := &MyStruct{}
+//		deriveCopyTo(m, n)
+//		return n
+//	}
+//
+// The initial type that is passed into deriveCopyTo needs to have a reference type:
+//	- pointer
+//	- slice
+//	- map
+// , otherwise we are not able to modify the input parameter and then what are you really copying,
+// but as we go deeper we support most types.
+//
+// Supported types:
+//	- basic types
+//	- named structs
+//	- slices
+//	- maps
+//	- pointers to these types
+//	- private fields of structs in external packages (using reflect and unsafe)
+//	- and many more
+// Unsupported types:
+//	- chan
+//	- interface
+//	- function
+//	- unnamed structs, which are not comparable with the == operator
+//
+// This plugin has been tested thoroughly.
 package copyto
 
 import (

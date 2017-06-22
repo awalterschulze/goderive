@@ -8,6 +8,7 @@ Functions that are currently supported include:
 
   - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal)
   - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare)
+  - [CopyTo](http://godoc.org/github.com/awalterschulze/goderive/plugin/copyto)
   - [Keys](https://github.com/awalterschulze/goderive#keys)
   - [Sorted](https://github.com/awalterschulze/goderive#sorted)
   - [Sort](https://github.com/awalterschulze/goderive#sort)

@@ -12,6 +12,54 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// Package equal generates a deriveEqual function.
+//
+// The deriveEqual function is a faster alternative to reflect.DeepEqual.
+//
+// When goderive walks over your code it is looking for a function that:
+//  - was not implemented (or was previously derived) and
+//  - has a prefix predefined prefix.
+//
+// In the following code the deriveEqual function will be found, because
+// it was not implemented and it has a prefix deriveEqual.
+// This prefix is configurable.
+//
+//	package main
+//
+//	type MyStruct struct {
+// 		Int64     int64
+//		StringPtr *string
+//	}
+//
+//	func (this *MyStruct) Equal(that *MyStruct) bool {
+// 		return deriveEqual(this, that)
+//	}
+//
+// goderive will then generate the following code in a derived.gen.go file in the same package:
+//
+//	func deriveEqual(this, that *MyStruct) bool {
+//		return (this == nil && that == nil) ||
+//			this != nil && that != nil &&
+//			this.Int64 == that.Int64 &&
+//			((this.StringPtr == nil && that.StringPtr == nil) ||
+//				(this.StringPtr != nil && that.StringPtr != nil && *(this.StringPtr) == *(that.StringPtr)))
+//	}
+//
+// Supported types:
+//	- basic types
+//	- named structs
+//	- slices
+//	- maps
+//	- pointers to these types
+//	- private fields of structs in external packages (using reflect and unsafe)
+//	- and many more
+// Unsupported types:
+//   - chan
+//   - interface
+//   - function
+//   - unnamed structs, which are not comparable with the == operator
+//
+// This plugin has been tested thoroughly.
 package equal
 
 import (
@@ -22,10 +70,14 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
+// NewPlugin creates a new equal plugin.
+// This function returns the plugin name, default prefix and a constructor for the equal code generator.
 func NewPlugin() derive.Plugin {
 	return derive.NewPlugin("equal", "deriveEqual", New)
 }
 
+// New is a constructor for the equal code generator.
+// This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &equal{
 		TypesMap:   typesMap,

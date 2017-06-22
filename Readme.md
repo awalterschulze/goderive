@@ -6,7 +6,7 @@
 
 Functions that are currently supported include:
 
-  - [Equal](https://github.com/awalterschulze/goderive#equal)
+  - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal)
   - [Compare](https://github.com/awalterschulze/goderive#compare)
   - [Keys](https://github.com/awalterschulze/goderive#keys)
   - [Sorted](https://github.com/awalterschulze/goderive#sorted)

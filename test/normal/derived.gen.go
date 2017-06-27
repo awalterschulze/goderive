@@ -745,6 +745,28 @@ func deriveComparePtrToEnums(this, that *Enums) int {
 	return 0
 }
 
+func deriveComparePtrToNamedTypes(this, that *NamedTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if c := deriveComparePtrToMySlice(&this.Slice, &that.Slice); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrToMySlice(this.PtrToSlice, that.PtrToSlice); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfMySlice(this.SliceToSlice, that.SliceToSlice); c != 0 {
+		return c
+	}
+	return 0
+}
+
 func deriveCompareComplex32(this, that complex64) int {
 	if thisr, thatr := real(this), real(that); thisr == thatr {
 		if thisi, thati := imag(this), imag(that); thisi == thati {
@@ -791,65 +813,6 @@ func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 		return c
 	}
 	return 0
-}
-
-func deriveCopyToPtrToEnums(this, that *Enums) {
-	that.Enum = this.Enum
-	if this.PtrToEnum == nil {
-		that.PtrToEnum = nil
-	} else {
-		that.PtrToEnum = new(MyEnum)
-		*that.PtrToEnum = *this.PtrToEnum
-	}
-	if this.SliceToEnum == nil {
-		that.SliceToEnum = nil
-	} else {
-		if that.SliceToEnum != nil {
-			if len(this.SliceToEnum) > len(that.SliceToEnum) {
-				if cap(that.SliceToEnum) >= len(this.SliceToEnum) {
-					that.SliceToEnum = (that.SliceToEnum)[:len(this.SliceToEnum)]
-				} else {
-					that.SliceToEnum = make([]MyEnum, len(this.SliceToEnum))
-				}
-			} else if len(this.SliceToEnum) < len(that.SliceToEnum) {
-				that.SliceToEnum = (that.SliceToEnum)[:len(this.SliceToEnum)]
-			}
-		} else {
-			that.SliceToEnum = make([]MyEnum, len(this.SliceToEnum))
-		}
-		copy(that.SliceToEnum, this.SliceToEnum)
-	}
-	if this.SliceToPtrToEnum == nil {
-		that.SliceToPtrToEnum = nil
-	} else {
-		if that.SliceToPtrToEnum != nil {
-			if len(this.SliceToPtrToEnum) > len(that.SliceToPtrToEnum) {
-				if cap(that.SliceToPtrToEnum) >= len(this.SliceToPtrToEnum) {
-					that.SliceToPtrToEnum = (that.SliceToPtrToEnum)[:len(this.SliceToPtrToEnum)]
-				} else {
-					that.SliceToPtrToEnum = make([]*MyEnum, len(this.SliceToPtrToEnum))
-				}
-			} else if len(this.SliceToPtrToEnum) < len(that.SliceToPtrToEnum) {
-				that.SliceToPtrToEnum = (that.SliceToPtrToEnum)[:len(this.SliceToPtrToEnum)]
-			}
-		} else {
-			that.SliceToPtrToEnum = make([]*MyEnum, len(this.SliceToPtrToEnum))
-		}
-		deriveCopyToSliceOfPtrToMyEnum(this.SliceToPtrToEnum, that.SliceToPtrToEnum)
-	}
-	if this.MapToEnum != nil {
-		that.MapToEnum = make(map[int32]MyEnum, len(this.MapToEnum))
-		deriveCopyToMapOfint32ToMyEnum(this.MapToEnum, that.MapToEnum)
-	} else {
-		that.MapToEnum = nil
-	}
-	if this.EnumToMap != nil {
-		that.EnumToMap = make(map[MyEnum]int32, len(this.EnumToMap))
-		deriveCopyToMapOfMyEnumToint32(this.EnumToMap, that.EnumToMap)
-	} else {
-		that.EnumToMap = nil
-	}
-	that.ArrayEnum = this.ArrayEnum
 }
 
 func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
@@ -2164,6 +2127,110 @@ func deriveCopyToPtrToFieldWithStructWithPrivateFields(this, that *FieldWithStru
 	}
 }
 
+func deriveCopyToPtrToEnums(this, that *Enums) {
+	that.Enum = this.Enum
+	if this.PtrToEnum == nil {
+		that.PtrToEnum = nil
+	} else {
+		that.PtrToEnum = new(MyEnum)
+		*that.PtrToEnum = *this.PtrToEnum
+	}
+	if this.SliceToEnum == nil {
+		that.SliceToEnum = nil
+	} else {
+		if that.SliceToEnum != nil {
+			if len(this.SliceToEnum) > len(that.SliceToEnum) {
+				if cap(that.SliceToEnum) >= len(this.SliceToEnum) {
+					that.SliceToEnum = (that.SliceToEnum)[:len(this.SliceToEnum)]
+				} else {
+					that.SliceToEnum = make([]MyEnum, len(this.SliceToEnum))
+				}
+			} else if len(this.SliceToEnum) < len(that.SliceToEnum) {
+				that.SliceToEnum = (that.SliceToEnum)[:len(this.SliceToEnum)]
+			}
+		} else {
+			that.SliceToEnum = make([]MyEnum, len(this.SliceToEnum))
+		}
+		copy(that.SliceToEnum, this.SliceToEnum)
+	}
+	if this.SliceToPtrToEnum == nil {
+		that.SliceToPtrToEnum = nil
+	} else {
+		if that.SliceToPtrToEnum != nil {
+			if len(this.SliceToPtrToEnum) > len(that.SliceToPtrToEnum) {
+				if cap(that.SliceToPtrToEnum) >= len(this.SliceToPtrToEnum) {
+					that.SliceToPtrToEnum = (that.SliceToPtrToEnum)[:len(this.SliceToPtrToEnum)]
+				} else {
+					that.SliceToPtrToEnum = make([]*MyEnum, len(this.SliceToPtrToEnum))
+				}
+			} else if len(this.SliceToPtrToEnum) < len(that.SliceToPtrToEnum) {
+				that.SliceToPtrToEnum = (that.SliceToPtrToEnum)[:len(this.SliceToPtrToEnum)]
+			}
+		} else {
+			that.SliceToPtrToEnum = make([]*MyEnum, len(this.SliceToPtrToEnum))
+		}
+		deriveCopyToSliceOfPtrToMyEnum(this.SliceToPtrToEnum, that.SliceToPtrToEnum)
+	}
+	if this.MapToEnum != nil {
+		that.MapToEnum = make(map[int32]MyEnum, len(this.MapToEnum))
+		deriveCopyToMapOfint32ToMyEnum(this.MapToEnum, that.MapToEnum)
+	} else {
+		that.MapToEnum = nil
+	}
+	if this.EnumToMap != nil {
+		that.EnumToMap = make(map[MyEnum]int32, len(this.EnumToMap))
+		deriveCopyToMapOfMyEnumToint32(this.EnumToMap, that.EnumToMap)
+	} else {
+		that.EnumToMap = nil
+	}
+	that.ArrayEnum = this.ArrayEnum
+}
+
+func deriveCopyToPtrToNamedTypes(this, that *NamedTypes) {
+	if this.Slice == nil {
+		that.Slice = nil
+	} else {
+		if that.Slice != nil {
+			if len(this.Slice) > len(that.Slice) {
+				if cap(that.Slice) >= len(this.Slice) {
+					that.Slice = (that.Slice)[:len(this.Slice)]
+				} else {
+					that.Slice = make([]int64, len(this.Slice))
+				}
+			} else if len(this.Slice) < len(that.Slice) {
+				that.Slice = (that.Slice)[:len(this.Slice)]
+			}
+		} else {
+			that.Slice = make([]int64, len(this.Slice))
+		}
+		copy(that.Slice, this.Slice)
+	}
+	if this.PtrToSlice == nil {
+		that.PtrToSlice = nil
+	} else {
+		that.PtrToSlice = new(MySlice)
+		deriveCopyToPtrToMySlice(this.PtrToSlice, that.PtrToSlice)
+	}
+	if this.SliceToSlice == nil {
+		that.SliceToSlice = nil
+	} else {
+		if that.SliceToSlice != nil {
+			if len(this.SliceToSlice) > len(that.SliceToSlice) {
+				if cap(that.SliceToSlice) >= len(this.SliceToSlice) {
+					that.SliceToSlice = (that.SliceToSlice)[:len(this.SliceToSlice)]
+				} else {
+					that.SliceToSlice = make([]MySlice, len(this.SliceToSlice))
+				}
+			} else if len(this.SliceToSlice) < len(that.SliceToSlice) {
+				that.SliceToSlice = (that.SliceToSlice)[:len(this.SliceToSlice)]
+			}
+		} else {
+			that.SliceToSlice = make([]MySlice, len(this.SliceToSlice))
+		}
+		deriveCopyToSliceOfMySlice(this.SliceToSlice, that.SliceToSlice)
+	}
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -2426,6 +2493,14 @@ func deriveEqualPtrToEnums(this, that *Enums) bool {
 			deriveEqualMapOfint32ToMyEnum(this.MapToEnum, that.MapToEnum) &&
 			deriveEqualMapOfMyEnumToint32(this.EnumToMap, that.EnumToMap) &&
 			this.ArrayEnum == that.ArrayEnum
+}
+
+func deriveEqualPtrToNamedTypes(this, that *NamedTypes) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			deriveEqualPtrToMySlice(&this.Slice, &that.Slice) &&
+			deriveEqualPtrToMySlice(this.PtrToSlice, that.PtrToSlice) &&
+			deriveEqualSliceOfMySlice(this.SliceToSlice, that.SliceToSlice)
 }
 
 func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
@@ -5350,27 +5425,41 @@ func deriveCompareArray2OfMyEnum(this, that [2]MyEnum) int {
 	return 0
 }
 
-func deriveCopyToSliceOfPtrToMyEnum(this, that []*MyEnum) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
-		} else {
-			that[this_i] = new(MyEnum)
-			*that[this_i] = *this_value
+func deriveComparePtrToMySlice(this, that *MySlice) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveCompareMySlice(*this, *that)
+}
+
+func deriveCompareSliceOfMySlice(this, that []MySlice) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrToMySlice(&this[i], &that[i]); c != 0 {
+			return c
 		}
 	}
-}
-
-func deriveCopyToMapOfint32ToMyEnum(this, that map[int32]MyEnum) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
-	}
-}
-
-func deriveCopyToMapOfMyEnumToint32(this, that map[MyEnum]int32) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
-	}
+	return 0
 }
 
 func deriveCopyToSliceOfPtrTobool(this, that []*bool) {
@@ -5871,6 +5960,73 @@ func deriveCopyToPtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Priva
 	} else {
 		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(that_v.FieldByName("strct").UnsafeAddr())) = new(extra.StructWithoutEqualMethod)
 		**(**extra.StructWithoutEqualMethod)(unsafe.Pointer(that_v.FieldByName("strct").UnsafeAddr())) = **(**extra.StructWithoutEqualMethod)(unsafe.Pointer(this_v.FieldByName("strct").UnsafeAddr()))
+	}
+}
+
+func deriveCopyToSliceOfPtrToMyEnum(this, that []*MyEnum) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(MyEnum)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToMapOfint32ToMyEnum(this, that map[int32]MyEnum) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToMapOfMyEnumToint32(this, that map[MyEnum]int32) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
+	}
+}
+
+func deriveCopyToPtrToMySlice(this, that *MySlice) {
+	if *this == nil {
+		*that = nil
+	} else {
+		if *that != nil {
+			if len(*this) > len(*that) {
+				if cap(*that) >= len(*this) {
+					*that = (*that)[:len(*this)]
+				} else {
+					*that = make([]int64, len(*this))
+				}
+			} else if len(*this) < len(*that) {
+				*that = (*that)[:len(*this)]
+			}
+		} else {
+			*that = make([]int64, len(*this))
+		}
+		copy(*that, *this)
+	}
+}
+
+func deriveCopyToSliceOfMySlice(this, that []MySlice) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			if that[this_i] != nil {
+				if len(this_value) > len(that[this_i]) {
+					if cap(that[this_i]) >= len(this_value) {
+						that[this_i] = (that[this_i])[:len(this_value)]
+					} else {
+						that[this_i] = make([]int64, len(this_value))
+					}
+				} else if len(this_value) < len(that[this_i]) {
+					that[this_i] = (that[this_i])[:len(this_value)]
+				}
+			} else {
+				that[this_i] = make([]int64, len(this_value))
+			}
+			copy(that[this_i], this_value)
+		}
 	}
 }
 
@@ -7003,6 +7159,42 @@ func deriveEqualMapOfMyEnumToint32(this, that map[MyEnum]int32) bool {
 	return true
 }
 
+func deriveEqualPtrToMySlice(this, that *MySlice) bool {
+	if this == nil && that == nil {
+		return true
+	}
+	if this != nil && that != nil {
+		if *this == nil || *that == nil {
+			return *this == nil && *that == nil
+		}
+		if len(*this) != len(*that) {
+			return false
+		}
+		for i := 0; i < len(*this); i++ {
+			if !((*this)[i] == (*that)[i]) {
+				return false
+			}
+		}
+		return true
+	}
+	return false
+}
+
+func deriveEqualSliceOfMySlice(this, that []MySlice) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqualPtrToMySlice(&this[i], &that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
 func deriveSortSliceOfuint8(list []uint8) []uint8 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
@@ -7223,6 +7415,30 @@ func deriveCompareMyEnum(this, that MyEnum) int {
 			return -1
 		} else {
 			return 1
+		}
+	}
+	return 0
+}
+
+func deriveCompareMySlice(this, that MySlice) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompareint64(this[i], that[i]); c != 0 {
+			return c
 		}
 	}
 	return 0

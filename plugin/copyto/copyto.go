@@ -141,19 +141,20 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.P("%s = %s", that, this)
 		return nil
 	}
-	switch ttyp := typ.(type) {
+	switch ttyp := typ.Underlying().(type) {
 	case *types.Pointer:
 		reftyp := ttyp.Elem()
 		g.TypeString(reftyp)
-		//p.P("%s = new(%s)", that, g.TypeString(reftyp))
 		thisref, thatref := "*"+this, "*"+that
-		named, ok := reftyp.(*types.Named)
-		if !ok {
+		_, isNamed := reftyp.(*types.Named)
+		strct, isStruct := reftyp.Underlying().(*types.Struct)
+		if !isStruct {
 			if err := g.genField(reftyp, thisref, thatref); err != nil {
 				return err
 			}
-		} else {
-			fields := derive.Fields(g.TypesMap, named.Underlying().(*types.Struct))
+			return nil
+		} else if isNamed {
+			fields := derive.Fields(g.TypesMap, strct)
 			if len(fields.Fields) > 0 {
 				thisv := prepend(this, "v")
 				thatv := prepend(that, "v")
@@ -174,23 +175,23 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 					}
 				}
 			}
+			return nil
 		}
-		return nil
-	case *types.Named:
-		panic("todo")
 	case *types.Slice:
 		elmType := ttyp.Elem()
 		if canCopy(elmType) {
 			p.P("copy(%s, %s)", that, this)
-		} else {
-			thisvalue := prepend(this, "value")
-			thisi := prepend(this, "i")
-			p.P("for %s, %s := range %s {", thisi, thisvalue, this)
-			p.In()
-			g.genField(elmType, thisvalue, wrap(that)+"["+thisi+"]")
-			p.Out()
-			p.P("}")
+			return nil
 		}
+		thisvalue := prepend(this, "value")
+		thisi := prepend(this, "i")
+		p.P("for %s, %s := range %s {", thisi, thisvalue, this)
+		p.In()
+		if err := g.genField(elmType, thisvalue, wrap(that)+"["+thisi+"]"); err != nil {
+			return err
+		}
+		p.Out()
+		p.P("}")
 		return nil
 	case *types.Array:
 		elmType := ttyp.Elem()
@@ -198,7 +199,9 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		thisi := prepend(this, "i")
 		p.P("for %s, %s := range %s {", thisi, thisvalue, this)
 		p.In()
-		g.genField(elmType, thisvalue, wrap(that)+"["+thisi+"]")
+		if err := g.genField(elmType, thisvalue, wrap(that)+"["+thisi+"]"); err != nil {
+			return err
+		}
 		p.Out()
 		p.P("}")
 		return nil
@@ -210,7 +213,9 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.In()
 		thatkey := thiskey
 		if !canCopy(keyType) {
-			g.genField(keyType, thatkey, thiskey)
+			if err := g.genField(keyType, thatkey, thiskey); err != nil {
+				return err
+			}
 			thatkey = prepend(that, "key")
 		}
 		if nullable(elmType) {
@@ -220,12 +225,14 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 			p.Out()
 			p.P("}")
 		}
-		g.genField(elmType, thisvalue, wrap(that)+"["+thatkey+"]")
+		if err := g.genField(elmType, thisvalue, wrap(that)+"["+thatkey+"]"); err != nil {
+			return err
+		}
 		p.Out()
 		p.P("}")
 		return nil
 	}
-	return fmt.Errorf("unsupported type: %#v", typ)
+	return fmt.Errorf("unsupported copyto type: %s", g.TypeString(typ))
 }
 
 func nullable(typ types.Type) bool {
@@ -307,7 +314,7 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("%s = %s", thatField, thisField)
 		return nil
 	}
-	switch typ := fieldType.(type) {
+	switch typ := fieldType.Underlying().(type) {
 	case *types.Pointer:
 		p.P("if %s == nil {", thisField)
 		p.In()
@@ -382,16 +389,17 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.Out()
 		p.P("}")
 		return nil
-	case *types.Named:
-		p.P("field := new(%s)", g.TypeString(typ))
-		if hasCopyToMethod(typ) {
+	case *types.Struct:
+		p.P("field := new(%s)", g.TypeString(fieldType))
+		named, isNamed := fieldType.(*types.Named)
+		if isNamed && hasCopyToMethod(named) {
 			p.P("%s.CopyTo(field)", wrap(thisField))
 		} else {
-			p.P("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField)
+			p.P("%s(%s, %s)", g.GetFuncName(fieldType), thisField, thatField)
 		}
 		p.P("%s = *field", thatField)
 		return nil
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
-		return fmt.Errorf("unsupported type %#v", fieldType)
+		return fmt.Errorf("unsupported field type %s", g.TypeString(fieldType))
 	}
 }

@@ -495,3 +495,23 @@ func (this *Enums) Compare(that *Enums) int {
 func (this *Enums) CopyTo(that *Enums) {
 	deriveCopyToPtrToEnums(this, that)
 }
+
+type NamedTypes struct {
+	Slice        MySlice
+	PtrToSlice   *MySlice
+	SliceToSlice []MySlice
+}
+
+type MySlice []int64
+
+func (this *NamedTypes) Equal(that *NamedTypes) bool {
+	return deriveEqualPtrToNamedTypes(this, that)
+}
+
+func (this *NamedTypes) Compare(that *NamedTypes) int {
+	return deriveComparePtrToNamedTypes(this, that)
+}
+
+func (this *NamedTypes) CopyTo(that *NamedTypes) {
+	deriveCopyToPtrToNamedTypes(this, that)
+}

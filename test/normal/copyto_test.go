@@ -46,6 +46,7 @@ func TestCloneStructs(t *testing.T) {
 		&StructWithStructWithFromAnotherPackage{},
 		&FieldWithStructWithPrivateFields{},
 		&Enums{},
+		&NamedTypes{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

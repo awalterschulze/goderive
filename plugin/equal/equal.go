@@ -326,7 +326,7 @@ func canEqual(tt types.Type) bool {
 	return false
 }
 
-func hasEqualMethod(typ *types.Named) bool {
+func equalMethodInputParam(typ *types.Named) *types.Type {
 	for i := 0; i < typ.NumMethods(); i++ {
 		meth := typ.Method(i)
 		if meth.Name() != "Equal" {
@@ -351,9 +351,10 @@ func hasEqualMethod(typ *types.Named) bool {
 		if b.Kind() != types.Bool {
 			continue
 		}
-		return true
+		inputType := sig.Params().At(0).Type()
+		return &inputType
 	}
-	return false
+	return nil
 }
 
 func (this *equal) field(thisField, thatField string, fieldType types.Type) (string, error) {
@@ -364,8 +365,16 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 	case *types.Pointer:
 		ref := typ.Elem()
 		if named, ok := ref.(*types.Named); ok {
-			if hasEqualMethod(named) {
-				return fmt.Sprintf("%s.Equal(%s)", wrap(thisField), thatField), nil
+			inputType := equalMethodInputParam(named)
+			if inputType != nil {
+				ityp := *inputType
+				if _, ok := ityp.(*types.Pointer); ok {
+					return fmt.Sprintf("%s.Equal(%s)", wrap(thisField), thatField), nil
+				} else if _, ok := ityp.(*types.Interface); ok {
+					return fmt.Sprintf("%s.Equal(%s)", wrap(thisField), thatField), nil
+				} else {
+					// fall through to deferencing of pointers
+				}
 			} else {
 				return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 			}
@@ -385,12 +394,20 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 	case *types.Map:
 		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 	case *types.Struct:
-		named, isNamed := fieldType.(*types.Named)
-		if isNamed && hasEqualMethod(named) {
-			return fmt.Sprintf("%s.Equal(&%s)", thisField, thatField), nil
-		} else {
-			return this.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))
+		if named, isNamed := fieldType.(*types.Named); isNamed {
+			inputType := equalMethodInputParam(named)
+			if inputType != nil {
+				ityp := *inputType
+				if _, ok := ityp.(*types.Pointer); ok {
+					return fmt.Sprintf("%s.Equal(&%s)", wrap(thisField), thatField), nil
+				} else if _, ok := ityp.(*types.Interface); ok {
+					return fmt.Sprintf("%s.Equal(&%s)", wrap(thisField), thatField), nil
+				} else {
+					return fmt.Sprintf("%s.Equal(%s)", wrap(thisField), thatField), nil
+				}
+			}
 		}
+		return this.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return "", fmt.Errorf("unsupported type %#v", fieldType)
 	}

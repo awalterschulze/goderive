@@ -27,14 +27,14 @@ type Named struct {
 type Field struct {
 	name    string
 	Type    types.Type
-	typeStr string
+	typeStr func() string
 }
 
 func (f *Field) Name(recv string, unsafePkg Import) string {
 	if !f.Private() {
 		return recv + "." + f.name
 	}
-	return `*(*` + f.typeStr + `)(` + unsafePkg() + `.Pointer(` + recv + `.FieldByName("` + f.name + `").UnsafeAddr()))`
+	return `*(*` + f.typeStr() + `)(` + unsafePkg() + `.Pointer(` + recv + `.FieldByName("` + f.name + `").UnsafeAddr()))`
 }
 
 func (f *Field) Private() bool {
@@ -51,9 +51,11 @@ func Fields(typesMap TypesMap, typ *types.Struct) *Named {
 		fieldType := field.Type()
 		fieldName := field.Name()
 		n.Fields[i] = &Field{
-			name:    fieldName,
-			Type:    fieldType,
-			typeStr: typesMap.TypeString(fieldType),
+			name: fieldName,
+			Type: fieldType,
+			typeStr: func() string {
+				return typesMap.TypeString(fieldType)
+			},
 		}
 		if n.Fields[i].Private() {
 			n.Reflect = true

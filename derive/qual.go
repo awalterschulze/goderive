@@ -14,7 +14,9 @@
 
 package derive
 
-import "go/types"
+import (
+	"go/types"
+)
 
 type qual struct {
 	p        *types.Package

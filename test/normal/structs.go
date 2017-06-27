@@ -15,6 +15,10 @@
 package test
 
 import (
+	"math/rand"
+	"reflect"
+	"time"
+
 	"github.com/awalterschulze/goderive/test/extra"
 )
 
@@ -516,4 +520,29 @@ func (this *NamedTypes) Compare(that *NamedTypes) int {
 
 func (this *NamedTypes) CopyTo(that *NamedTypes) {
 	deriveCopyToPtrToNamedTypes(this, that)
+}
+
+type Time struct {
+	T time.Time
+	P *time.Time
+}
+
+func (this *Time) Equal(that *Time) bool {
+	return deriveEqualPtrToTime(this, that)
+}
+
+func (this *Time) Generate(rand *rand.Rand, size int) reflect.Value {
+	if size == 0 {
+		this = nil
+		return reflect.ValueOf(this)
+	}
+	this = &Time{}
+	if size == 1 {
+		this.T = time.Unix(0, rand.Int63())
+		return reflect.ValueOf(this)
+	}
+	this.T = time.Unix(0, rand.Int63())
+	t := time.Unix(0, rand.Int63())
+	this.P = &t
+	return reflect.ValueOf(this)
 }

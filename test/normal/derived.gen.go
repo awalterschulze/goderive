@@ -2503,6 +2503,13 @@ func deriveEqualPtrToNamedTypes(this, that *NamedTypes) bool {
 			deriveEqualSliceOfMySlice(this.SliceToSlice, that.SliceToSlice)
 }
 
+func deriveEqualPtrToTime(this, that *Time) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.T.Equal(that.T) &&
+			((this.P == nil && that.P == nil) || (this.P != nil && that.P != nil && (*(this.P)).Equal(*(that.P))))
+}
+
 func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
 	return this == that
 }

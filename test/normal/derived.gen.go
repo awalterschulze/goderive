@@ -2498,7 +2498,7 @@ func deriveEqualPtrToEnums(this, that *Enums) bool {
 func deriveEqualPtrToNamedTypes(this, that *NamedTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqualPtrToMySlice(&this.Slice, &that.Slice) &&
+			deriveEqualSliceOfint64(this.Slice, that.Slice) &&
 			deriveEqualPtrToMySlice(this.PtrToSlice, that.PtrToSlice) &&
 			deriveEqualSliceOfMySlice(this.SliceToSlice, that.SliceToSlice)
 }
@@ -7188,7 +7188,7 @@ func deriveEqualSliceOfMySlice(this, that []MySlice) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqualPtrToMySlice(&this[i], &that[i])) {
+		if !(deriveEqualSliceOfint64(this[i], that[i])) {
 			return false
 		}
 	}

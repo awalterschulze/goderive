@@ -360,7 +360,7 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 	if canEqual(fieldType) {
 		return fmt.Sprintf("%s == %s", thisField, thatField), nil
 	}
-	switch typ := fieldType.(type) {
+	switch typ := fieldType.Underlying().(type) {
 	case *types.Pointer:
 		ref := typ.Elem()
 		if named, ok := ref.(*types.Named); ok {
@@ -384,8 +384,9 @@ func (this *equal) field(thisField, thatField string, fieldType types.Type) (str
 		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
 	case *types.Map:
 		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
-	case *types.Named:
-		if hasEqualMethod(typ) {
+	case *types.Struct:
+		named, isNamed := fieldType.(*types.Named)
+		if isNamed && hasEqualMethod(named) {
 			return fmt.Sprintf("%s.Equal(&%s)", thisField, thatField), nil
 		} else {
 			return this.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))

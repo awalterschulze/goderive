@@ -14,7 +14,9 @@
 
 package test
 
-import "github.com/awalterschulze/goderive/test/extra"
+import (
+	"github.com/awalterschulze/goderive/test/extra"
+)
 
 type BuiltInTypes struct {
 	Bool       bool

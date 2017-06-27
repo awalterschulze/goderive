@@ -133,7 +133,7 @@ func (g *equal) genFunc(typ types.Type) error {
 
 func (g *equal) genStatement(typ types.Type, this, that string) error {
 	p := g.printer
-	switch ttyp := typ.(type) {
+	switch ttyp := typ.Underlying().(type) {
 	case *types.Basic:
 		fieldStr, err := g.field(this, that, typ)
 		if err != nil {
@@ -144,8 +144,9 @@ func (g *equal) genStatement(typ types.Type, this, that string) error {
 	case *types.Pointer:
 		thisref, thatref := "*"+this, "*"+that
 		reftyp := ttyp.Elem()
-		named, ok := reftyp.(*types.Named)
-		if !ok {
+		_, isNamed := reftyp.(*types.Named)
+		strct, isStruct := reftyp.Underlying().(*types.Struct)
+		if !isStruct {
 			p.P("if %s == nil && %s == nil {", this, that)
 			p.In()
 			p.P("return true")
@@ -161,53 +162,56 @@ func (g *equal) genStatement(typ types.Type, this, that string) error {
 			p.P("return false")
 			return nil
 		}
-		fields := derive.Fields(g.TypesMap, named.Underlying().(*types.Struct))
-		if len(fields.Fields) == 0 {
-			p.P("return %s == nil && %s == nil", this, that)
+		if isNamed {
+			fields := derive.Fields(g.TypesMap, strct)
+			if len(fields.Fields) == 0 {
+				p.P("return %s == nil && %s == nil", this, that)
+				return nil
+			}
+			if fields.Reflect {
+				p.P(`thisv := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, this)
+				p.P(`thatv := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, that)
+			}
+			p.P("return (%s == nil && %s == nil) ||", this, that)
+			p.In()
+			p.P("%s != nil && %s != nil &&", this, that)
+			for i, field := range fields.Fields {
+				fieldType := field.Type
+				var thisField, thatField string
+				if !field.Private() {
+					thisField, thatField = field.Name(this, nil), field.Name(that, nil)
+				} else {
+					thisField, thatField = field.Name("thisv", g.unsafePkg), field.Name("thatv", g.unsafePkg)
+				}
+				fieldStr, err := g.field(thisField, thatField, fieldType)
+				if err != nil {
+					return err
+				}
+				if (i + 1) != len(fields.Fields) {
+					fieldStr += " &&"
+				}
+				if i == 0 {
+					p.In()
+				}
+				p.P(fieldStr)
+			}
+			p.Out()
+			p.Out()
 			return nil
 		}
-		if fields.Reflect {
-			p.P(`thisv := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, this)
-			p.P(`thatv := `+g.reflectPkg()+`.Indirect(`+g.reflectPkg()+`.ValueOf(%s))`, that)
-		}
-		p.P("return (%s == nil && %s == nil) ||", this, that)
-		p.In()
-		p.P("%s != nil && %s != nil &&", this, that)
-		for i, field := range fields.Fields {
-			fieldType := field.Type
-			var thisField, thatField string
-			if !field.Private() {
-				thisField, thatField = field.Name(this, nil), field.Name(that, nil)
-			} else {
-				thisField, thatField = field.Name("thisv", g.unsafePkg), field.Name("thatv", g.unsafePkg)
-			}
-			fieldStr, err := g.field(thisField, thatField, fieldType)
-			if err != nil {
-				return err
-			}
-			if (i + 1) != len(fields.Fields) {
-				fieldStr += " &&"
-			}
-			if i == 0 {
-				p.In()
-			}
-			p.P(fieldStr)
-		}
-		p.Out()
-		p.Out()
-		return nil
 	case *types.Struct:
 		if canEqual(ttyp) {
 			p.P("return %s == %s", this, that)
 			return nil
 		}
-	case *types.Named:
-		fieldStr, err := g.field("&"+this, "&"+that, types.NewPointer(ttyp))
-		if err != nil {
-			return err
+		if _, isNamed := typ.(*types.Named); isNamed {
+			fieldStr, err := g.field("&"+this, "&"+that, types.NewPointer(ttyp))
+			if err != nil {
+				return err
+			}
+			p.P("return " + fieldStr)
+			return nil
 		}
-		p.P("return " + fieldStr)
-		return nil
 	case *types.Slice:
 		p.P("if %s == nil || %s == nil {", this, that)
 		p.In()

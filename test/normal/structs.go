@@ -471,3 +471,27 @@ func (this *FieldWithStructWithPrivateFields) Compare(that *FieldWithStructWithP
 func (this *FieldWithStructWithPrivateFields) CopyTo(that *FieldWithStructWithPrivateFields) {
 	deriveCopyToPtrToFieldWithStructWithPrivateFields(this, that)
 }
+
+type Enums struct {
+	Enum             MyEnum
+	PtrToEnum        *MyEnum
+	SliceToEnum      []MyEnum
+	SliceToPtrToEnum []*MyEnum
+	MapToEnum        map[int32]MyEnum
+	EnumToMap        map[MyEnum]int32
+	ArrayEnum        [2]MyEnum
+}
+
+type MyEnum int32
+
+func (this *Enums) Equal(that *Enums) bool {
+	return deriveEqualPtrToEnums(this, that)
+}
+
+func (this *Enums) Compare(that *Enums) int {
+	return deriveComparePtrToEnums(this, that)
+}
+
+func (this *Enums) CopyTo(that *Enums) {
+	deriveCopyToPtrToEnums(this, that)
+}

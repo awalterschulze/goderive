@@ -45,6 +45,7 @@ func TestCompareStructs(t *testing.T) {
 		&StructWithStructFieldWithoutEqualMethod{},
 		&StructWithStructWithFromAnotherPackage{},
 		&FieldWithStructWithPrivateFields{},
+		&Enums{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

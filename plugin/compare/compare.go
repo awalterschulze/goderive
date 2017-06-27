@@ -163,7 +163,7 @@ func (g *compare) genFunc(typ types.Type) error {
 
 func (g *compare) genStatement(typ types.Type, this, that string) error {
 	p := g.printer
-	switch ttyp := typ.(type) {
+	switch ttyp := typ.Underlying().(type) {
 	case *types.Pointer:
 		p.P("if %s == nil {", this)
 		p.In()
@@ -181,12 +181,13 @@ func (g *compare) genStatement(typ types.Type, this, that string) error {
 		p.Out()
 		p.P("}")
 		reftyp := ttyp.Elem()
-		named, ok := reftyp.(*types.Named)
-		if !ok {
+		//_, isNamed := reftyp.(*types.Named)
+		strct, isStruct := reftyp.Underlying().(*types.Struct)
+		if !isStruct {
 			p.P("return %s(*%s, *%s)", g.GetFuncName(reftyp), this, that)
 			return nil
 		}
-		fields := derive.Fields(g.TypesMap, named.Underlying().(*types.Struct))
+		fields := derive.Fields(g.TypesMap, strct)
 		if fields.Reflect {
 			p.P(`thisv := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(` + this + `))`)
 			p.P(`thatv := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(` + that + `))`)
@@ -213,6 +214,7 @@ func (g *compare) genStatement(typ types.Type, this, that string) error {
 		}
 		p.P("return 0")
 		return nil
+		fmt.Printf("unnamed struct %v\n", g.TypeString(typ))
 	case *types.Basic:
 		switch ttyp.Kind() {
 		case types.String:
@@ -272,13 +274,15 @@ func (g *compare) genStatement(typ types.Type, this, that string) error {
 			p.P("return 0")
 		}
 		return nil
-	case *types.Named:
-		fieldStr, err := g.field("&"+this, "&"+that, types.NewPointer(ttyp))
-		if err != nil {
-			return err
+	case *types.Struct:
+		if _, isNamed := typ.(*types.Named); isNamed {
+			fieldStr, err := g.field("&"+this, "&"+that, types.NewPointer(typ))
+			if err != nil {
+				return err
+			}
+			p.P("return " + fieldStr)
+			return nil
 		}
-		p.P("return " + fieldStr)
-		return nil
 	case *types.Slice:
 		p.P("if %s == nil {", this)
 		p.In()

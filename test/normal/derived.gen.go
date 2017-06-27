@@ -721,7 +721,7 @@ func deriveComparePtrToEnums(this, that *Enums) int {
 	if that == nil {
 		return 1
 	}
-	if c := deriveComparePtrToMyEnum(&this.Enum, &that.Enum); c != 0 {
+	if c := deriveCompareMyEnum(this.Enum, that.Enum); c != 0 {
 		return c
 	}
 	if c := deriveComparePtrToMyEnum(this.PtrToEnum, that.PtrToEnum); c != 0 {
@@ -755,7 +755,7 @@ func deriveComparePtrToNamedTypes(this, that *NamedTypes) int {
 	if that == nil {
 		return 1
 	}
-	if c := deriveComparePtrToMySlice(&this.Slice, &that.Slice); c != 0 {
+	if c := deriveCompareSliceOfint64(this.Slice, that.Slice); c != 0 {
 		return c
 	}
 	if c := deriveComparePtrToMySlice(this.PtrToSlice, that.PtrToSlice); c != 0 {
@@ -5279,6 +5279,17 @@ func deriveComparePtrToextra_PrivateFieldAndNoEqualMethod(this, that *extra.Priv
 	return 0
 }
 
+func deriveCompareMyEnum(this, that MyEnum) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
 func deriveComparePtrToMyEnum(this, that *MyEnum) int {
 	if this == nil {
 		if that == nil {
@@ -5309,7 +5320,7 @@ func deriveCompareSliceOfMyEnum(this, that []MyEnum) int {
 		return 1
 	}
 	for i := 0; i < len(this); i++ {
-		if c := deriveComparePtrToMyEnum(&this[i], &that[i]); c != 0 {
+		if c := deriveCompareMyEnum(this[i], that[i]); c != 0 {
 			return c
 		}
 	}
@@ -5363,7 +5374,7 @@ func deriveCompareMapOfint32ToMyEnum(this, that map[int32]MyEnum) int {
 		if thiskey == thatkey {
 			thisvalue := this[thiskey]
 			thatvalue := that[thatkey]
-			if c := deriveComparePtrToMyEnum(&thisvalue, &thatvalue); c != 0 {
+			if c := deriveCompareMyEnum(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -5402,7 +5413,7 @@ func deriveCompareMapOfMyEnumToint32(this, that map[MyEnum]int32) int {
 				return c
 			}
 		} else {
-			if c := deriveComparePtrToMyEnum(&thiskey, &thatkey); c != 0 {
+			if c := deriveCompareMyEnum(thiskey, thatkey); c != 0 {
 				return c
 			}
 		}
@@ -5418,7 +5429,7 @@ func deriveCompareArray2OfMyEnum(this, that [2]MyEnum) int {
 		return 1
 	}
 	for i := 0; i < len(this); i++ {
-		if c := deriveComparePtrToMyEnum(&this[i], &that[i]); c != 0 {
+		if c := deriveCompareMyEnum(this[i], that[i]); c != 0 {
 			return c
 		}
 	}
@@ -5455,7 +5466,7 @@ func deriveCompareSliceOfMySlice(this, that []MySlice) int {
 		return 1
 	}
 	for i := 0; i < len(this); i++ {
-		if c := deriveComparePtrToMySlice(&this[i], &that[i]); c != 0 {
+		if c := deriveCompareSliceOfint64(this[i], that[i]); c != 0 {
 			return c
 		}
 	}
@@ -7404,17 +7415,6 @@ func deriveCompareMapOfintToint(this, that map[int]int) int {
 			if c := deriveCompareint(thiskey, thatkey); c != 0 {
 				return c
 			}
-		}
-	}
-	return 0
-}
-
-func deriveCompareMyEnum(this, that MyEnum) int {
-	if this != that {
-		if this < that {
-			return -1
-		} else {
-			return 1
 		}
 	}
 	return 0

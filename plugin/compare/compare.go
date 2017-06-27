@@ -424,7 +424,7 @@ func wrap(value string) string {
 }
 
 func (this *compare) field(thisField, thatField string, fieldType types.Type) (string, error) {
-	switch typ := fieldType.(type) {
+	switch typ := fieldType.Underlying().(type) {
 	case *types.Basic:
 		if typ.Kind() == types.String {
 			return fmt.Sprintf("%s.Compare(%s, %s)", this.stringsPkg(), thisField, thatField), nil
@@ -447,8 +447,9 @@ func (this *compare) field(thisField, thatField string, fieldType types.Type) (s
 			return fmt.Sprintf("%s.Compare(%s, %s)", this.bytesPkg(), thisField, thatField), nil
 		}
 		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
-	case *types.Named:
-		if hasCompareMethod(typ) {
+	case *types.Struct:
+		named, isNamed := fieldType.(*types.Named)
+		if isNamed && hasCompareMethod(named) {
 			return fmt.Sprintf("%s.Compare(&%s)", thisField, thatField), nil
 		} else {
 			return this.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))

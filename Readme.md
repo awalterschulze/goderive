@@ -78,7 +78,8 @@ goderive can be run from the command line:
 
 [And you can customize function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/customprefix/Makefile)
 
-If you want you can let goderive rename your functions using the `-autoname` and `-dedup` flags.  If these flags are not used goderive will not touch your code and rather return an error.
+You can let goderive rename your functions using the `-autoname` and `-dedup` flags.
+If these flags are not used, goderive will not touch your code and rather return an error.
 
 ## Customization
 

@@ -66,7 +66,7 @@ func deriveEqual(this, that *MyStruct) bool {
 }
 ```
 
-## How to run goderive
+## How to run
 
 goderive can be run from the command line:
 
@@ -76,9 +76,9 @@ goderive can be run from the command line:
 
 [You can also run goderive using go generate](https://github.com/awalterschulze/goderive/blob/master/example/gogenerate/example.go) 
 
-[You can also customize function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/customprefix/Makefile)
+[And you can customize function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/customprefix/Makefile)
 
-And you can let goderive rename your functions using the `-autoname` and `-dedup` flags.
+If you want you can let goderive rename your functions using the `-autoname` and `-dedup` flags.  If these flags are not used goderive will not touch your code and rather return an error.
 
 
 

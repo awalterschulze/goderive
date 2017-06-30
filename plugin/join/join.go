@@ -35,19 +35,19 @@ func NewPlugin() derive.Plugin {
 // New is a constructor for the join code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
-	return &join{
+	return &gen{
 		TypesMap: typesMap,
 		printer:  p,
 	}
 }
 
-type join struct {
+type gen struct {
 	derive.TypesMap
 	printer  derive.Printer
 	bytesPkg derive.Import
 }
 
-func (this *join) Add(name string, typs []types.Type) (string, error) {
+func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 1 {
 		return "", fmt.Errorf("%s does not have one argument", name)
 	}
@@ -63,7 +63,7 @@ func (this *join) Add(name string, typs []types.Type) (string, error) {
 	return this.SetFuncName(name, elemType)
 }
 
-func (this *join) Generate() error {
+func (this *gen) Generate() error {
 	for _, typs := range this.ToGenerate() {
 		if err := this.genFuncFor(typs[0]); err != nil {
 			return err
@@ -72,7 +72,7 @@ func (this *join) Generate() error {
 	return nil
 }
 
-func (this *join) genFuncFor(typ types.Type) error {
+func (this *gen) genFuncFor(typ types.Type) error {
 	p := this.printer
 	this.Generating(typ)
 	typStr := this.TypeString(typ)

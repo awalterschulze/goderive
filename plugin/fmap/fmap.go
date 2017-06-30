@@ -35,19 +35,19 @@ func NewPlugin() derive.Plugin {
 // New is a constructor for the fmap code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
-	return &fmap{
+	return &gen{
 		TypesMap: typesMap,
 		printer:  p,
 	}
 }
 
-type fmap struct {
+type gen struct {
 	derive.TypesMap
 	printer  derive.Printer
 	bytesPkg derive.Import
 }
 
-func (this *fmap) Add(name string, typs []types.Type) (string, error) {
+func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
@@ -77,7 +77,7 @@ func (this *fmap) Add(name string, typs []types.Type) (string, error) {
 	return this.SetFuncName(name, inTyp, outTyp)
 }
 
-func (this *fmap) Generate() error {
+func (this *gen) Generate() error {
 	for _, typs := range this.ToGenerate() {
 		if err := this.genFuncFor(typs[0], typs[1]); err != nil {
 			return err
@@ -86,7 +86,7 @@ func (this *fmap) Generate() error {
 	return nil
 }
 
-func (this *fmap) genFuncFor(in, out types.Type) error {
+func (this *gen) genFuncFor(in, out types.Type) error {
 	p := this.printer
 	this.Generating(in, out)
 	inStr := this.TypeString(in)

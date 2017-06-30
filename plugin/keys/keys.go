@@ -32,25 +32,25 @@ func NewPlugin() derive.Plugin {
 // New is a constructor for the keys code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
-	return &keys{
+	return &gen{
 		TypesMap: typesMap,
 		printer:  p,
 	}
 }
 
-type keys struct {
+type gen struct {
 	derive.TypesMap
 	printer derive.Printer
 }
 
-func (this *keys) Add(name string, typs []types.Type) (string, error) {
+func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 1 {
 		return "", fmt.Errorf("%s does not have one argument", name)
 	}
 	return this.SetFuncName(name, typs[0])
 }
 
-func (this *keys) Generate() error {
+func (this *gen) Generate() error {
 	for _, typs := range this.ToGenerate() {
 		typ := typs[0]
 		mapType, ok := typ.(*types.Map)
@@ -64,7 +64,7 @@ func (this *keys) Generate() error {
 	return nil
 }
 
-func (this *keys) genFuncFor(typ *types.Map) error {
+func (this *gen) genFuncFor(typ *types.Map) error {
 	p := this.printer
 	this.Generating(typ)
 	typeStr := this.TypeString(typ)

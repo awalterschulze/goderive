@@ -79,7 +79,7 @@ func NewPlugin() derive.Plugin {
 // New is a constructor for the equal code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
-	return &equal{
+	return &gen{
 		TypesMap:   typesMap,
 		printer:    p,
 		bytesPkg:   p.NewImport("bytes"),
@@ -88,7 +88,7 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 	}
 }
 
-type equal struct {
+type gen struct {
 	derive.TypesMap
 	printer    derive.Printer
 	bytesPkg   derive.Import
@@ -96,7 +96,7 @@ type equal struct {
 	unsafePkg  derive.Import
 }
 
-func (this *equal) Add(name string, typs []types.Type) (string, error) {
+func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
@@ -107,7 +107,7 @@ func (this *equal) Add(name string, typs []types.Type) (string, error) {
 	return this.SetFuncName(name, typs[0])
 }
 
-func (this *equal) Generate() error {
+func (this *gen) Generate() error {
 	for _, typs := range this.ToGenerate() {
 		if err := this.genFunc(typs[0]); err != nil {
 			return err
@@ -116,7 +116,7 @@ func (this *equal) Generate() error {
 	return nil
 }
 
-func (g *equal) genFunc(typ types.Type) error {
+func (g *gen) genFunc(typ types.Type) error {
 	p := g.printer
 	g.Generating(typ)
 	typeStr := g.TypeString(typ)
@@ -131,7 +131,7 @@ func (g *equal) genFunc(typ types.Type) error {
 	return nil
 }
 
-func (g *equal) genStatement(typ types.Type, this, that string) error {
+func (g *gen) genStatement(typ types.Type, this, that string) error {
 	p := g.printer
 	switch ttyp := typ.Underlying().(type) {
 	case *types.Basic:
@@ -357,7 +357,7 @@ func equalMethodInputParam(typ *types.Named) *types.Type {
 	return nil
 }
 
-func (this *equal) field(thisField, thatField string, fieldType types.Type) (string, error) {
+func (this *gen) field(thisField, thatField string, fieldType types.Type) (string, error) {
 	if canEqual(fieldType) {
 		return fmt.Sprintf("%s == %s", thisField, thatField), nil
 	}

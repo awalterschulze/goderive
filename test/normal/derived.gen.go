@@ -2867,6 +2867,34 @@ func deriveMinStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	return m
 }
 
+func deriveMaxInt64s(list []int64, def int64) int64 {
+	if len(list) == 0 {
+		return def
+	}
+	m := list[0]
+	list = list[1:]
+	for i, v := range list {
+		if v > m {
+			m = list[i]
+		}
+	}
+	return m
+}
+
+func deriveMaxStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
+	if len(list) == 0 {
+		return def
+	}
+	m := list[0]
+	list = list[1:]
+	for i, v := range list {
+		if deriveComparePtrToBuiltInTypes(v, m) > 0 {
+			m = list[i]
+		}
+	}
+	return m
+}
+
 func deriveComparebool(this, that bool) int {
 	if this == that {
 		return 0

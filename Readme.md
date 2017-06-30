@@ -16,6 +16,7 @@ Tool Functions:
   - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort) `deriveSort([]T) []T`
   - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set) `deriveSet([]T) map[T]struct{}`
   - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min) `deriveMin(list []T, default T) (min T)`
+  - [Max](http://godoc.org/github.com/awalterschulze/goderive/plugin/max) `deriveMax(list []T, default T) (max T)`
 
 Functional Functions:
 

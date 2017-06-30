@@ -12,10 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package min contains the implementation of the min plugin, which generates the deriveMin function.
-// The deriveMin function returns the minimum value in a slice.
-//   func deriveMin(default T, list []T) (min T)
-package min
+// Package max contains the implementation of the max plugin, which generates the deriveMax function.
+// The deriveMax function returns the maximum value in a slice.
+//   func deriveMax(default T, list []T) (max T)
+package max
 
 import (
 	"fmt"
@@ -24,13 +24,13 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-// NewPlugin creates a new min plugin.
-// This function returns the plugin name, default prefix and a constructor for the min code generator.
+// NewPlugin creates a new max plugin.
+// This function returns the plugin name, default prefix and a constructor for the max code generator.
 func NewPlugin() derive.Plugin {
-	return derive.NewPlugin("min", "deriveMin", New)
+	return derive.NewPlugin("max", "deriveMax", New)
 }
 
-// New is a constructor for the min code generator.
+// New is a constructor for the max code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &gen{
@@ -93,9 +93,9 @@ func (this *gen) genFuncFor(typ *types.Slice) error {
 	p.In()
 	switch etyp.(type) {
 	case *types.Basic:
-		p.P("if v < m {")
+		p.P("if v > m {")
 	default:
-		p.P("if %s(v, m) < 0 {", this.compare.GetFuncName(etyp))
+		p.P("if %s(v, m) > 0 {", this.compare.GetFuncName(etyp))
 	}
 	p.In()
 	p.P("m = list[i]")

@@ -8,19 +8,19 @@ Deep Functions:
 
   - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal) `deriveEqual(T, T) bool`
   - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare) `deriveCompare(T, T) int`
-  - [CopyTo](http://godoc.org/github.com/awalterschulze/goderive/plugin/copyto) `deriveCopyTo(*T, *T)`
+  - [CopyTo](http://godoc.org/github.com/awalterschulze/goderive/plugin/copyto) `deriveCopyTo(src *T, dst *T)`
 
 Tool Functions:
 
   - [Keys](http://godoc.org/github.com/awalterschulze/goderive/plugin/keys) `deriveKeys(map[K]V) []K`
   - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort) `deriveSort([]T) []T`
-  - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set) `deriveMin([]T) map[T]struct{}`
-  - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min) `deriveMin([]T) T`
+  - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set) `deriveSet([]T) map[T]struct{}`
+  - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min) `deriveMin(list []T, default T) (min T)`
 
 Functional Functions:
 
-  - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)
-  - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join)
+  - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap) `deriveFmap(f(A) B, []A) []B`
+  - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join) `deriveJoin([][]T) []T`
 
 When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and

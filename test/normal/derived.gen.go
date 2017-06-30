@@ -2740,6 +2740,14 @@ func deriveKeysForFmap(m map[int]string) []int {
 	return keys
 }
 
+func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
+	keys := make([]int64, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
 func deriveKeysForMapStringToString(m map[string]string) []string {
 	keys := make([]string, 0, len(m))
 	for key, _ := range m {
@@ -2816,6 +2824,14 @@ func deriveFmapSS(f func(string) []string, list []string) [][]string {
 		out[i] = f(elem)
 	}
 	return out
+}
+
+func deriveSetInt64s(list []int64) map[int64]struct{} {
+	set := make(map[int64]struct{}, len(list))
+	for _, v := range list {
+		set[v] = struct{}{}
+	}
+	return set
 }
 
 func deriveComparebool(this, that bool) int {

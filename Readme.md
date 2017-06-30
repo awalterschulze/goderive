@@ -14,6 +14,7 @@ Tool Functions:
 
   - [Keys](http://godoc.org/github.com/awalterschulze/goderive/plugin/keys)
   - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort)
+  - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set)
 
 Functional Functions:
 

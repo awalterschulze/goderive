@@ -25,6 +25,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/fmap"
 	"github.com/awalterschulze/goderive/plugin/join"
 	"github.com/awalterschulze/goderive/plugin/keys"
+	"github.com/awalterschulze/goderive/plugin/set"
 	"github.com/awalterschulze/goderive/plugin/sort"
 )
 
@@ -40,6 +41,7 @@ func main() {
 		keys.NewPlugin(),
 		sort.NewPlugin(),
 		copyto.NewPlugin(),
+		set.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

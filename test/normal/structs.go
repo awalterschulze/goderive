@@ -523,12 +523,11 @@ func (this *NamedTypes) CopyTo(that *NamedTypes) {
 }
 
 type Time struct {
-	T time.Time
-	P *time.Time
-}
-
-func (this *Time) Equal(that *Time) bool {
-	return deriveEqualPtrToTime(this, that)
+	T   time.Time
+	P   *time.Time
+	Ts  []time.Time
+	TPs []*time.Time
+	MT  map[int]time.Time
 }
 
 func (this *Time) Generate(rand *rand.Rand, size int) reflect.Value {
@@ -545,4 +544,28 @@ func (this *Time) Generate(rand *rand.Rand, size int) reflect.Value {
 	t := time.Unix(0, rand.Int63())
 	this.P = &t
 	return reflect.ValueOf(this)
+}
+
+func (this *Time) Equal(that *Time) bool {
+	return deriveEqualPtrToTime(this, that)
+}
+
+type Duration struct {
+	D   time.Duration
+	P   *time.Duration
+	Ds  []time.Duration
+	DPs []*time.Duration
+	MD  map[int]time.Duration
+}
+
+func (this *Duration) Equal(that *Duration) bool {
+	return deriveEqualPtrToDuration(this, that)
+}
+
+func (this *Duration) Compare(that *Duration) int {
+	return deriveComparePtrToDuration(this, that)
+}
+
+func (this *Duration) CopyTo(that *Duration) {
+	deriveCopyToPtrToDuration(this, that)
 }

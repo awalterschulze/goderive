@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+	"time"
 	"unsafe"
 )
 
@@ -762,6 +763,34 @@ func deriveComparePtrToNamedTypes(this, that *NamedTypes) int {
 		return c
 	}
 	if c := deriveCompareSliceOfMySlice(this.SliceToSlice, that.SliceToSlice); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveComparePtrToDuration(this, that *Duration) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if c := deriveComparetime_Duration(this.D, that.D); c != 0 {
+		return c
+	}
+	if c := deriveComparePtrTotime_Duration(this.P, that.P); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOftime_Duration(this.Ds, that.Ds); c != 0 {
+		return c
+	}
+	if c := deriveCompareSliceOfPtrTotime_Duration(this.DPs, that.DPs); c != 0 {
+		return c
+	}
+	if c := deriveCompareMapOfintTotime_Duration(this.MD, that.MD); c != 0 {
 		return c
 	}
 	return 0
@@ -2231,6 +2260,58 @@ func deriveCopyToPtrToNamedTypes(this, that *NamedTypes) {
 	}
 }
 
+func deriveCopyToPtrToDuration(this, that *Duration) {
+	that.D = this.D
+	if this.P == nil {
+		that.P = nil
+	} else {
+		that.P = new(time.Duration)
+		*that.P = *this.P
+	}
+	if this.Ds == nil {
+		that.Ds = nil
+	} else {
+		if that.Ds != nil {
+			if len(this.Ds) > len(that.Ds) {
+				if cap(that.Ds) >= len(this.Ds) {
+					that.Ds = (that.Ds)[:len(this.Ds)]
+				} else {
+					that.Ds = make([]time.Duration, len(this.Ds))
+				}
+			} else if len(this.Ds) < len(that.Ds) {
+				that.Ds = (that.Ds)[:len(this.Ds)]
+			}
+		} else {
+			that.Ds = make([]time.Duration, len(this.Ds))
+		}
+		copy(that.Ds, this.Ds)
+	}
+	if this.DPs == nil {
+		that.DPs = nil
+	} else {
+		if that.DPs != nil {
+			if len(this.DPs) > len(that.DPs) {
+				if cap(that.DPs) >= len(this.DPs) {
+					that.DPs = (that.DPs)[:len(this.DPs)]
+				} else {
+					that.DPs = make([]*time.Duration, len(this.DPs))
+				}
+			} else if len(this.DPs) < len(that.DPs) {
+				that.DPs = (that.DPs)[:len(this.DPs)]
+			}
+		} else {
+			that.DPs = make([]*time.Duration, len(this.DPs))
+		}
+		deriveCopyToSliceOfPtrTotime_Duration(this.DPs, that.DPs)
+	}
+	if this.MD != nil {
+		that.MD = make(map[int]time.Duration, len(this.MD))
+		deriveCopyToMapOfintTotime_Duration(this.MD, that.MD)
+	} else {
+		that.MD = nil
+	}
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -2507,7 +2588,20 @@ func deriveEqualPtrToTime(this, that *Time) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.T.Equal(that.T) &&
-			((this.P == nil && that.P == nil) || (this.P != nil && that.P != nil && (*(this.P)).Equal(*(that.P))))
+			((this.P == nil && that.P == nil) || (this.P != nil && that.P != nil && (*(this.P)).Equal(*(that.P)))) &&
+			deriveEqualSliceOftime_Time(this.Ts, that.Ts) &&
+			deriveEqualSliceOfPtrTotime_Time(this.TPs, that.TPs) &&
+			deriveEqualMapOfintTotime_Time(this.MT, that.MT)
+}
+
+func deriveEqualPtrToDuration(this, that *Duration) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.D == that.D &&
+			deriveEqualPtrTotime_Duration(this.P, that.P) &&
+			deriveEqualSliceOftime_Duration(this.Ds, that.Ds) &&
+			deriveEqualSliceOfPtrTotime_Duration(this.DPs, that.DPs) &&
+			deriveEqualMapOfintTotime_Duration(this.MD, that.MD)
 }
 
 func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
@@ -5480,6 +5574,113 @@ func deriveCompareSliceOfMySlice(this, that []MySlice) int {
 	return 0
 }
 
+func deriveComparetime_Duration(this, that time.Duration) int {
+	if this != that {
+		if this < that {
+			return -1
+		} else {
+			return 1
+		}
+	}
+	return 0
+}
+
+func deriveComparePtrTotime_Duration(this, that *time.Duration) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return deriveComparetime_Duration(*this, *that)
+}
+
+func deriveCompareSliceOftime_Duration(this, that []time.Duration) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparetime_Duration(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareSliceOfPtrTotime_Duration(this, that []*time.Duration) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveComparePtrTotime_Duration(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+func deriveCompareMapOfintTotime_Duration(this, that map[int]time.Duration) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedInts(deriveKeysMapOfintTotime_Duration(this))
+	thatkeys := deriveSortedInts(deriveKeysMapOfintTotime_Duration(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveComparetime_Duration(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := deriveCompareint(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
 func deriveCopyToSliceOfPtrTobool(this, that []*bool) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -6045,6 +6246,23 @@ func deriveCopyToSliceOfMySlice(this, that []MySlice) {
 			}
 			copy(that[this_i], this_value)
 		}
+	}
+}
+
+func deriveCopyToSliceOfPtrTotime_Duration(this, that []*time.Duration) {
+	for this_i, this_value := range this {
+		if this_value == nil {
+			that[this_i] = nil
+		} else {
+			that[this_i] = new(time.Duration)
+			*that[this_i] = *this_value
+		}
+	}
+}
+
+func deriveCopyToMapOfintTotime_Duration(this, that map[int]time.Duration) {
+	for this_key, this_value := range this {
+		that[this_key] = this_value
 	}
 }
 
@@ -7213,6 +7431,114 @@ func deriveEqualSliceOfMySlice(this, that []MySlice) bool {
 	return true
 }
 
+func deriveEqualSliceOftime_Time(this, that []time.Time) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i].Equal(that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfPtrTotime_Time(this, that []*time.Time) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && (*(this[i])).Equal(*(that[i])))) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfintTotime_Time(this, that map[int]time.Time) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v.Equal(thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualPtrTotime_Duration(this, that *time.Duration) bool {
+	if this == nil && that == nil {
+		return true
+	}
+	if this != nil && that != nil {
+		return *this == *that
+	}
+	return false
+}
+
+func deriveEqualSliceOftime_Duration(this, that []time.Duration) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualSliceOfPtrTotime_Duration(this, that []*time.Duration) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqualPtrTotime_Duration(this[i], that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqualMapOfintTotime_Duration(this, that map[int]time.Duration) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
 func deriveSortSliceOfuint8(list []uint8) []uint8 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
@@ -7367,6 +7693,14 @@ func deriveKeysMapOfint32ToMyEnum(m map[int32]MyEnum) []int32 {
 
 func deriveKeysMapOfMyEnumToint32(m map[MyEnum]int32) []MyEnum {
 	keys := make([]MyEnum, 0, len(m))
+	for key, _ := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveKeysMapOfintTotime_Duration(m map[int]time.Duration) []int {
+	keys := make([]int, 0, len(m))
 	for key, _ := range m {
 		keys = append(keys, key)
 	}

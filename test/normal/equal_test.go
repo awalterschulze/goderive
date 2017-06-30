@@ -49,6 +49,7 @@ func TestEqualStructs(t *testing.T) {
 		&Enums{},
 		&NamedTypes{},
 		&Time{},
+		&Duration{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

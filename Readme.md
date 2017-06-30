@@ -65,3 +65,20 @@ func deriveEqual(this, that *MyStruct) bool {
         (this.StringPtr != nil && that.StringPtr != nil && *(this.StringPtr) == *(that.StringPtr)))
 }
 ```
+
+## How to run goderive
+
+goderive can be run from the command line:
+
+`goderive ./...`
+
+, using the same path semantics as the go tool.
+
+[You can also run goderive using go generate](https://github.com/awalterschulze/goderive/blob/master/example/gogenerate/example.go) 
+
+[You can also customize function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/customprefix/Makefile)
+
+And you can let goderive rename your functions using the `-autoname` and `-dedup` flags.
+
+
+

@@ -57,7 +57,7 @@ func TestSortedMapKeysInt(t *testing.T) {
 func TestSortedMapKeysInt64s(t *testing.T) {
 	var m map[int64]int64
 	m = random(m).(map[int64]int64)
-	keys := deriveSortedInt64s(deriveKeysForMapInt64ToInt64(m))
+	keys := deriveSortInt64s(deriveKeysForMapInt64ToInt64(m))
 	if len(keys) != len(m) {
 		t.Fatalf("length of keys: want %d got %d", len(m), len(keys))
 	}

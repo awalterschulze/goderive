@@ -6,15 +6,16 @@
 
 Deep Functions:
 
-  - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal)
-  - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare)
-  - [CopyTo](http://godoc.org/github.com/awalterschulze/goderive/plugin/copyto)
+  - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal) `deriveEqual(T, T) bool`
+  - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare) `deriveCompare(T, T) int`
+  - [CopyTo](http://godoc.org/github.com/awalterschulze/goderive/plugin/copyto) `deriveCopyTo(*T, *T)`
 
 Tool Functions:
 
-  - [Keys](http://godoc.org/github.com/awalterschulze/goderive/plugin/keys)
-  - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort)
-  - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set)
+  - [Keys](http://godoc.org/github.com/awalterschulze/goderive/plugin/keys) `deriveKeys(map[K]V) []K`
+  - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort) `deriveSort([]T) []T`
+  - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set) `deriveMin([]T) map[T]struct{}`
+  - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min) `deriveMin([]T) T`
 
 Functional Functions:
 

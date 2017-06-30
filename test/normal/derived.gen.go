@@ -2722,13 +2722,18 @@ func deriveSortedInts(list []int) []int {
 	return list
 }
 
-func deriveSortedStrings(list []string) []string {
-	sort.Strings(list)
+func deriveSortInt64s(list []int64) []int64 {
+	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
-func deriveSortedInt64s(list []int64) []int64 {
-	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
+func deriveSortStructs(list []*BuiltInTypes) []*BuiltInTypes {
+	sort.Slice(list, func(i, j int) bool { return deriveComparePtrToBuiltInTypes(list[i], list[j]) < 0 })
+	return list
+}
+
+func deriveSortedStrings(list []string) []string {
+	sort.Strings(list)
 	return list
 }
 
@@ -2832,6 +2837,34 @@ func deriveSetInt64s(list []int64) map[int64]struct{} {
 		set[v] = struct{}{}
 	}
 	return set
+}
+
+func deriveMinInt64s(list []int64, def int64) int64 {
+	if len(list) == 0 {
+		return def
+	}
+	m := list[0]
+	list = list[1:]
+	for i, v := range list {
+		if v < m {
+			m = list[i]
+		}
+	}
+	return m
+}
+
+func deriveMinStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
+	if len(list) == 0 {
+		return def
+	}
+	m := list[0]
+	list = list[1:]
+	for i, v := range list {
+		if deriveComparePtrToBuiltInTypes(v, m) < 0 {
+			m = list[i]
+		}
+	}
+	return m
 }
 
 func deriveComparebool(this, that bool) int {

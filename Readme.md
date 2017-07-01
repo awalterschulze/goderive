@@ -26,7 +26,7 @@ Functional Functions:
 
 When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and
-  - has a prefix predefined prefix.
+  - has a predefined prefix.
 
 Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.  
 

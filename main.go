@@ -20,6 +20,7 @@ import (
 
 	"github.com/awalterschulze/goderive/derive"
 	"github.com/awalterschulze/goderive/plugin/compare"
+	"github.com/awalterschulze/goderive/plugin/contains"
 	"github.com/awalterschulze/goderive/plugin/copyto"
 	"github.com/awalterschulze/goderive/plugin/equal"
 	"github.com/awalterschulze/goderive/plugin/fmap"
@@ -46,6 +47,7 @@ func main() {
 		set.NewPlugin(),
 		min.NewPlugin(),
 		max.NewPlugin(),
+		contains.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

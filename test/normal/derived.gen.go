@@ -12,6 +12,24 @@ import (
 	"unsafe"
 )
 
+func deriveContainsInt64(list []int64, item int64) bool {
+	for _, v := range list {
+		if v == item {
+			return true
+		}
+	}
+	return false
+}
+
+func deriveContainsStruct(list []*BuiltInTypes, item *BuiltInTypes) bool {
+	for _, v := range list {
+		if deriveEqualPtrToBuiltInTypes(v, item) {
+			return true
+		}
+	}
+	return false
+}
+
 func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2737,16 +2755,16 @@ func deriveSortedStrings(list []string) []string {
 	return list
 }
 
-func deriveKeysForFmap(m map[int]string) []int {
-	keys := make([]int, 0, len(m))
+func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
+	keys := make([]int64, 0, len(m))
 	for key, _ := range m {
 		keys = append(keys, key)
 	}
 	return keys
 }
 
-func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
-	keys := make([]int64, 0, len(m))
+func deriveKeysForFmap(m map[int]string) []int {
+	keys := make([]int, 0, len(m))
 	for key, _ := range m {
 		keys = append(keys, key)
 	}

@@ -893,6 +893,38 @@ func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 	return 0
 }
 
+func deriveUniqueInt64s(list []int64) []int64 {
+	if len(list) == 0 {
+		return nil
+	}
+	u := 1
+	for i := 1; i < len(list); i++ {
+		if !deriveContainsInt64s(list[:u], list[i]) {
+			if i != u {
+				list[u] = list[i]
+			}
+			u++
+		}
+	}
+	return list[:u]
+}
+
+func deriveUniqueStructs(list []*BuiltInTypes) []*BuiltInTypes {
+	if len(list) == 0 {
+		return nil
+	}
+	u := 1
+	for i := 1; i < len(list); i++ {
+		if !deriveContainsStruct(list[:u], list[i]) {
+			if i != u {
+				list[u] = list[i]
+			}
+			u++
+		}
+	}
+	return list[:u]
+}
+
 func deriveFilter(pred func(int) bool, list []int) []int {
 	out := make([]int, 0, len(list))
 	for i, elem := range list {

@@ -34,6 +34,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/sort"
 	"github.com/awalterschulze/goderive/plugin/takewhile"
 	"github.com/awalterschulze/goderive/plugin/union"
+	"github.com/awalterschulze/goderive/plugin/unique"
 )
 
 var autoname = flag.Bool("autoname", false, "rename functions that are conflicting with other functions")
@@ -56,6 +57,7 @@ func main() {
 		union.NewPlugin(),
 		filter.NewPlugin(),
 		takewhile.NewPlugin(),
+		unique.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

@@ -26,6 +26,7 @@ Functional Functions:
   - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap) `deriveFmap(f(A) B, []A) []B`
   - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join) `deriveJoin([][]T) []T`
   - [Filter](http://godoc.org/github.com/awalterschulze/goderive/plugin/filter) `deriveFilter(f(T) bool, []T) []T`
+  - [TakeWhile](http://godoc.org/github.com/awalterschulze/goderive/plugin/takewhile) `deriveTakeWhile(f(T) bool, []T) []T`
 
 When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and

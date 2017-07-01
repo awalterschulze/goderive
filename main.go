@@ -32,6 +32,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/min"
 	"github.com/awalterschulze/goderive/plugin/set"
 	"github.com/awalterschulze/goderive/plugin/sort"
+	"github.com/awalterschulze/goderive/plugin/takewhile"
 	"github.com/awalterschulze/goderive/plugin/union"
 )
 
@@ -54,6 +55,7 @@ func main() {
 		intersect.NewPlugin(),
 		union.NewPlugin(),
 		filter.NewPlugin(),
+		takewhile.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

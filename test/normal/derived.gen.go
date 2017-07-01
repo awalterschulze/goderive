@@ -12,6 +12,17 @@ import (
 	"unsafe"
 )
 
+func deriveTakeWhile(pred func(int) bool, list []int) []int {
+	out := make([]int, 0, len(list))
+	for i, elem := range list {
+		if !pred(elem) {
+			break
+		}
+		out = append(out, list[i])
+	}
+	return out
+}
+
 func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{} {
 	intersect := make(map[int64]struct{}, deriveMinInt(len(this), len(that)))
 	for k, _ := range this {

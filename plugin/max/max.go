@@ -14,7 +14,8 @@
 
 // Package max contains the implementation of the max plugin, which generates the deriveMax function.
 // The deriveMax function returns the maximum value in a slice.
-//   func deriveMax(default T, list []T) (max T)
+//   func deriveMax(list []T, default T) (max T)
+//   func deriveMax(T, T) T
 package max
 
 import (
@@ -50,32 +51,60 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
+	if types.Identical(typs[0], typs[1]) {
+		return this.SetFuncName(name, typs[0], typs[1])
+	}
 	sliceType, ok := typs[0].(*types.Slice)
 	if !ok {
-		return "", fmt.Errorf("%s, the first argument, %s, is not of type slice", name, typs[1])
+		return "", fmt.Errorf("%s, the first argument, %s, is not of type slice", name, typs[0])
 	}
 	if !types.AssignableTo(typs[1], sliceType.Elem()) {
 		return "", fmt.Errorf("%s, the second argument, %s, is not is assignable to an element that of the slice type %s", name, typs[1], typs[0])
 	}
-	return this.SetFuncName(name, typs[0])
+	return this.SetFuncName(name, typs[0], typs[1])
 }
 
 func (this *gen) Generate(typs []types.Type) error {
-	typ := typs[0]
-	sliceType, ok := typ.(*types.Slice)
-	if !ok {
-		return fmt.Errorf("%s, the first argument, %s, is not of type slice", this.GetFuncName(typ), typ)
+	if types.Identical(typs[0], typs[1]) {
+		return this.genTwo(typs[0], typs[1])
 	}
-	return this.genFuncFor(sliceType)
+	sliceType, ok := typs[0].(*types.Slice)
+	if !ok {
+		return fmt.Errorf("%s, the first argument, %s, is not of type slice", this.GetFuncName(typs[0], typs[1]), typs[0])
+	}
+	return this.genSlice(sliceType, typs[1])
 }
 
-func (this *gen) genFuncFor(typ *types.Slice) error {
+func (this *gen) genTwo(typ, typ2 types.Type) error {
 	p := this.printer
-	this.Generating(typ)
+	this.Generating(typ, typ2)
+	typeStr := this.TypeString(typ)
+	p.P("")
+	p.P("func %s(a, b %s) %s {", this.GetFuncName(typ, typ2), typeStr, typeStr)
+	p.In()
+	switch typ.(type) {
+	case *types.Basic:
+		p.P("if a > b {")
+	default:
+		p.P("if %s(a, b) > 0 {", this.compare.GetFuncName(typ))
+	}
+	p.In()
+	p.P("return a")
+	p.Out()
+	p.P("}")
+	p.P("return b")
+	p.Out()
+	p.P("}")
+	return nil
+}
+
+func (this *gen) genSlice(typ *types.Slice, typ2 types.Type) error {
+	p := this.printer
+	this.Generating(typ, typ2)
 	etyp := typ.Elem()
 	typeStr := this.TypeString(etyp)
 	p.P("")
-	p.P("func %s(list []%s, def %s) %s {", this.GetFuncName(typ), typeStr, typeStr, typeStr)
+	p.P("func %s(list []%s, def %s) %s {", this.GetFuncName(typ, typ2), typeStr, typeStr, typeStr)
 	p.In()
 	p.P("if len(list) == 0 {")
 	p.In()

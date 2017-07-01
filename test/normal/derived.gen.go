@@ -13,7 +13,7 @@ import (
 )
 
 func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{} {
-	intersect := make(map[int64]struct{})
+	intersect := make(map[int64]struct{}, deriveMinInt(len(this), len(that)))
 	for k, _ := range this {
 		if _, ok := that[k]; ok {
 			intersect[k] = struct{}{}
@@ -23,7 +23,7 @@ func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{
 }
 
 func deriveIntersectOfInt64s(this, that []int64) []int64 {
-	intersect := []int64{}
+	intersect := make([]int64, 0, deriveMinInt(len(this), len(that)))
 	for i, v := range this {
 		if deriveContainsInt64s(that, v) {
 			intersect = append(intersect, this[i])
@@ -2891,6 +2891,13 @@ func deriveMinInt64s(list []int64, def int64) int64 {
 	return m
 }
 
+func deriveMinInt(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
 func deriveMinStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	if len(list) == 0 {
 		return def
@@ -2917,6 +2924,13 @@ func deriveMaxInt64s(list []int64, def int64) int64 {
 		}
 	}
 	return m
+}
+
+func deriveMaxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 func deriveMaxStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {

@@ -33,6 +33,18 @@ func TestMinInt64(t *testing.T) {
 	}
 }
 
+func TestMin2Int64(t *testing.T) {
+	if m := deriveMinInt(1, 2); m != 1 {
+		t.Fatalf("min should be 1, but its %d", m)
+	}
+	var v int
+	a := random(v).(int)
+	b := random(v).(int)
+	if deriveMinInt(a, b) != deriveMinInt(b, a) {
+		t.Fatal("min is unsemetric")
+	}
+}
+
 func TestMinStruct(t *testing.T) {
 	var list []*BuiltInTypes
 	list = random(list).([]*BuiltInTypes)

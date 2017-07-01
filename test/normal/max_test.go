@@ -33,6 +33,18 @@ func TestMaxInt64(t *testing.T) {
 	}
 }
 
+func TestMax2Int64(t *testing.T) {
+	if m := deriveMaxInt(1, 2); m != 2 {
+		t.Fatalf("min should be 2, but its %d", m)
+	}
+	var v int
+	a := random(v).(int)
+	b := random(v).(int)
+	if deriveMaxInt(a, b) != deriveMaxInt(b, a) {
+		t.Fatal("min is unsemetric")
+	}
+}
+
 func TestMaxStruct(t *testing.T) {
 	var list []*BuiltInTypes
 	list = random(list).([]*BuiltInTypes)

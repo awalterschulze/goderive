@@ -60,7 +60,7 @@ func (this *typesMap) Prefix() string {
 }
 
 func (this *typesMap) TypeString(typ types.Type) string {
-	return types.TypeString(typ, this.qual)
+	return types.TypeString(types.Default(typ), this.qual)
 }
 
 func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, error) {
@@ -139,7 +139,7 @@ func (this *typesMap) Done() bool {
 func (this *typesMap) nameOf(typs []types.Type) string {
 	ss := make([]string, len(typs))
 	for i, typ := range typs {
-		ss[i] = typeName(typ, this.qual)
+		ss[i] = typeName(types.Default(typ), this.qual)
 	}
 	return strings.Join(ss, ",")
 }

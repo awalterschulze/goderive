@@ -12,12 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package fmap contains the implementation of the fmap plugin, which generates the deriveFmap function.
-// The deriveFmap function applies a given function to each element of a list, returning a list of results in the same order.
-// More things to come:
-//	- currently only slices are supported, think about supporting other types and not just slices
-//	- think about functions without a return type
-package fmap
+// Package filter contains the implementation of the filter plugin, which generates the deriveFilter function.
+// The deriveFilter function applies a predicate to each element of a list, returning a list of filtered results in the same order.
+//   func deriveFilter(func (T) bool, []T) []T
+package filter
 
 import (
 	"fmt"
@@ -26,13 +24,13 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-// NewPlugin creates a new fmap plugin.
-// This function returns the plugin name, default prefix and a constructor for the fmap code generator.
+// NewPlugin creates a new filter plugin.
+// This function returns the plugin name, default prefix and a constructor for the filter code generator.
 func NewPlugin() derive.Plugin {
-	return derive.NewPlugin("fmap", "deriveFmap", New)
+	return derive.NewPlugin("filter", "deriveFilter", New)
 }
 
-// New is a constructor for the fmap code generator.
+// New is a constructor for the filter code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &gen{
@@ -73,25 +71,31 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 		return "", fmt.Errorf("%s, the function argument does not have a single result, but has %d resulting parameters", name, res.Len())
 	}
 	outTyp := res.At(0).Type()
-	return this.SetFuncName(name, inTyp, outTyp)
+	if !types.Identical(outTyp, types.Typ[types.Bool]) {
+		return "", fmt.Errorf("%s, the function argument has a single result, but %s is not a bool", name, outTyp)
+	}
+	return this.SetFuncName(name, inTyp)
 }
 
 func (this *gen) Generate(typs []types.Type) error {
-	return this.genFuncFor(typs[0], typs[1])
+	return this.genFuncFor(typs[0])
 }
 
-func (this *gen) genFuncFor(in, out types.Type) error {
+func (this *gen) genFuncFor(in types.Type) error {
 	p := this.printer
-	this.Generating(in, out)
+	this.Generating(in)
 	inStr := this.TypeString(in)
-	outStr := this.TypeString(out)
 	p.P("")
-	p.P("func %s(f func(%s) %s, list []%s) []%s {", this.GetFuncName(in, out), inStr, outStr, inStr, outStr)
+	p.P("func %s(pred func(%s) bool, list []%s) []%s {", this.GetFuncName(in), inStr, inStr, inStr)
 	p.In()
-	p.P("out := make([]%s, len(list))", outStr)
+	p.P("out := make([]%s, 0, len(list))", inStr)
 	p.P("for i, elem := range list {")
 	p.In()
-	p.P("out[i] = f(elem)")
+	p.P("if pred(elem) {")
+	p.In()
+	p.P("out = append(out, list[i])")
+	p.Out()
+	p.P("}")
 	p.Out()
 	p.P("}")
 	p.P("return out")

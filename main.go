@@ -23,6 +23,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/contains"
 	"github.com/awalterschulze/goderive/plugin/copyto"
 	"github.com/awalterschulze/goderive/plugin/equal"
+	"github.com/awalterschulze/goderive/plugin/filter"
 	"github.com/awalterschulze/goderive/plugin/fmap"
 	"github.com/awalterschulze/goderive/plugin/intersect"
 	"github.com/awalterschulze/goderive/plugin/join"
@@ -52,6 +53,7 @@ func main() {
 		contains.NewPlugin(),
 		intersect.NewPlugin(),
 		union.NewPlugin(),
+		filter.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

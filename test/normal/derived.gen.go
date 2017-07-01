@@ -882,6 +882,16 @@ func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 	return 0
 }
 
+func deriveFilter(pred func(int) bool, list []int) []int {
+	out := make([]int, 0, len(list))
+	for i, elem := range list {
+		if pred(elem) {
+			out = append(out, list[i])
+		}
+	}
+	return out
+}
+
 func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
 	that.Bool = this.Bool
 	that.Byte = this.Byte

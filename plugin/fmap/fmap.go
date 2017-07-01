@@ -77,13 +77,8 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	return this.SetFuncName(name, inTyp, outTyp)
 }
 
-func (this *gen) Generate() error {
-	for _, typs := range this.ToGenerate() {
-		if err := this.genFuncFor(typs[0], typs[1]); err != nil {
-			return err
-		}
-	}
-	return nil
+func (this *gen) Generate(typs []types.Type) error {
+	return this.genFuncFor(typs[0], typs[1])
 }
 
 func (this *gen) genFuncFor(in, out types.Type) error {

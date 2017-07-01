@@ -56,18 +56,13 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	return this.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate() error {
-	for _, typs := range this.ToGenerate() {
-		typ := typs[0]
-		sliceType, ok := typ.(*types.Slice)
-		if !ok {
-			return fmt.Errorf("%s, the first argument, %s, is not of type slice", this.GetFuncName(typ), this.TypeString(typ))
-		}
-		if err := this.genFuncFor(sliceType); err != nil {
-			return err
-		}
+func (this *gen) Generate(typs []types.Type) error {
+	typ := typs[0]
+	sliceType, ok := typ.(*types.Slice)
+	if !ok {
+		return fmt.Errorf("%s, the first argument, %s, is not of type slice", this.GetFuncName(typ), this.TypeString(typ))
 	}
-	return nil
+	return this.genFuncFor(sliceType)
 }
 
 func (this *gen) genFuncFor(typ *types.Slice) error {

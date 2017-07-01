@@ -50,18 +50,13 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	return this.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate() error {
-	for _, typs := range this.ToGenerate() {
-		typ := typs[0]
-		mapType, ok := typ.(*types.Map)
-		if !ok {
-			return fmt.Errorf("%s, the first argument, %s, is not of type map", this.GetFuncName(typ), typ)
-		}
-		if err := this.genFuncFor(mapType); err != nil {
-			return err
-		}
+func (this *gen) Generate(typs []types.Type) error {
+	typ := typs[0]
+	mapType, ok := typ.(*types.Map)
+	if !ok {
+		return fmt.Errorf("%s, the first argument, %s, is not of type map", this.GetFuncName(typ), typ)
 	}
-	return nil
+	return this.genFuncFor(mapType)
 }
 
 func (this *gen) genFuncFor(typ *types.Map) error {

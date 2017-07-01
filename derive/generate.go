@@ -193,8 +193,11 @@ func (pkg *pkg) Print() error {
 func (pkg *pkg) Generate() error {
 	for !pkg.Done() {
 		for _, plugin := range pkg.plugins {
-			if err := pkg.generators[plugin.Name()].Generate(); err != nil {
-				return fmt.Errorf(plugin.Name() + ":" + err.Error())
+			g := pkg.generators[plugin.Name()]
+			for _, typs := range g.ToGenerate() {
+				if err := g.Generate(typs); err != nil {
+					return fmt.Errorf(plugin.Name() + ":" + err.Error())
+				}
 			}
 		}
 	}

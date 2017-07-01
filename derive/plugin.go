@@ -28,7 +28,7 @@ type Plugin interface {
 type Generator interface {
 	TypesMap
 	Add(name string, typs []types.Type) (string, error)
-	Generate() error
+	Generate(typs []types.Type) error
 }
 
 type Dependency interface {

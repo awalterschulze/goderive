@@ -107,13 +107,8 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	return this.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate() error {
-	for _, typs := range this.ToGenerate() {
-		if err := this.genFunc(typs[0]); err != nil {
-			return err
-		}
-	}
-	return nil
+func (this *gen) Generate(typs []types.Type) error {
+	return this.genFunc(typs[0])
 }
 
 func hasCompareMethod(typ *types.Named) bool {

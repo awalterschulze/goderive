@@ -101,6 +101,11 @@ func (this *Call) HasUndefined() bool {
 		if this.Args[i] == nil {
 			return true
 		}
+		if basic, ok := this.Args[i].(*types.Basic); ok {
+			if basic.Kind() == types.Invalid {
+				return true
+			}
+		}
 	}
 	return false
 }

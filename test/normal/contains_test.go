@@ -26,13 +26,13 @@ func TestContainsInt64(t *testing.T) {
 		return
 	}
 	item := list[rand.Intn(len(list))]
-	if !deriveContainsInt64(list, item) {
+	if !deriveContainsInt64s(list, item) {
 		t.Fatalf("%v is not contained in %v", item, list)
 	}
 	s := deriveSetInt64s(list)
 	delete(s, item)
 	l := deriveKeysForInt64s(s)
-	if deriveContainsInt64(l, item) {
+	if deriveContainsInt64s(l, item) {
 		t.Fatalf("%v is contained in %v", item, l)
 	}
 }

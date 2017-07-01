@@ -12,7 +12,27 @@ import (
 	"unsafe"
 )
 
-func deriveContainsInt64(list []int64, item int64) bool {
+func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{} {
+	intersect := make(map[int64]struct{})
+	for k, _ := range this {
+		if _, ok := that[k]; ok {
+			intersect[k] = struct{}{}
+		}
+	}
+	return intersect
+}
+
+func deriveIntersectOfInt64s(this, that []int64) []int64 {
+	intersect := []int64{}
+	for i, v := range this {
+		if deriveContainsInt64s(that, v) {
+			intersect = append(intersect, this[i])
+		}
+	}
+	return intersect
+}
+
+func deriveContainsInt64s(list []int64, item int64) bool {
 	for _, v := range list {
 		if v == item {
 			return true

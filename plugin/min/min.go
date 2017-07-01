@@ -52,7 +52,7 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	}
 	sliceType, ok := typs[0].(*types.Slice)
 	if !ok {
-		return "", fmt.Errorf("%s, the first argument, %s, is not of type slice", name, typs[1])
+		return "", fmt.Errorf("%s, the first argument, %s, is not of type slice", name, typs[0])
 	}
 	if !types.AssignableTo(typs[1], sliceType.Elem()) {
 		return "", fmt.Errorf("%s, the second argument, %s, is not is assignable to an element that of the slice type %s", name, typs[1], typs[0])

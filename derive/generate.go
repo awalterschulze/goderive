@@ -159,7 +159,7 @@ func (pkg *pkg) Add(call *Call) (string, error) {
 		generator := pkg.generators[p.Name()]
 		name, err := generator.Add(call.Name, call.Args)
 		if err != nil {
-			return "", fmt.Errorf("%s: %v", p.Name(), err)
+			return "", fmt.Errorf("Add Error: %s: %v", p.Name(), err)
 		}
 		return name, nil
 	}
@@ -196,7 +196,7 @@ func (pkg *pkg) Generate() error {
 			g := pkg.generators[plugin.Name()]
 			for _, typs := range g.ToGenerate() {
 				if err := g.Generate(typs); err != nil {
-					return fmt.Errorf(plugin.Name() + ":" + err.Error())
+					return fmt.Errorf("Generator Error: " + plugin.Name() + ":" + err.Error())
 				}
 			}
 		}

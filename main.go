@@ -24,6 +24,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/copyto"
 	"github.com/awalterschulze/goderive/plugin/equal"
 	"github.com/awalterschulze/goderive/plugin/fmap"
+	"github.com/awalterschulze/goderive/plugin/intersect"
 	"github.com/awalterschulze/goderive/plugin/join"
 	"github.com/awalterschulze/goderive/plugin/keys"
 	"github.com/awalterschulze/goderive/plugin/max"
@@ -48,6 +49,7 @@ func main() {
 		min.NewPlugin(),
 		max.NewPlugin(),
 		contains.NewPlugin(),
+		intersect.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

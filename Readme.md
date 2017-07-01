@@ -18,7 +18,7 @@ Tool Functions:
   - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min) `deriveMin(list []T, default T) (min T)`
   - [Max](http://godoc.org/github.com/awalterschulze/goderive/plugin/max) `deriveMax(list []T, default T) (max T)`
   - [Contains](http://godoc.org/github.com/awalterschulze/goderive/plugin/contains) `deriveContains([]T, T) bool`
-  - [Intersect](http://godoc.org/github.com/awalterschulze/goderive/plugin/intersect) `deriveIntersect([]T, []T) []T` or `deriveIntersect(map[T]struct{}, map[T]struct{}) map[T]struct{}`
+  - [Intersect](http://godoc.org/github.com/awalterschulze/goderive/plugin/intersect) `deriveIntersect(a, b []T) []T` or `deriveIntersect(a, b map[T]struct{}) map[T]struct{}`
 
 Functional Functions:
 

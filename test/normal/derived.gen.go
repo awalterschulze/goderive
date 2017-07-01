@@ -2350,6 +2350,22 @@ func deriveCopyToPtrToDuration(this, that *Duration) {
 	}
 }
 
+func deriveUnionSetOfInt64s(union, that map[int64]struct{}) map[int64]struct{} {
+	for k, _ := range that {
+		union[k] = struct{}{}
+	}
+	return union
+}
+
+func deriveUnionOfInt64s(union, that []int64) []int64 {
+	for i, v := range that {
+		if !deriveContainsInt64s(union, v) {
+			union = append(union, that[i])
+		}
+	}
+	return union
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&

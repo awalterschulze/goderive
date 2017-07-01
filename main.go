@@ -31,6 +31,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/min"
 	"github.com/awalterschulze/goderive/plugin/set"
 	"github.com/awalterschulze/goderive/plugin/sort"
+	"github.com/awalterschulze/goderive/plugin/union"
 )
 
 var autoname = flag.Bool("autoname", false, "rename functions that are conflicting with other functions")
@@ -50,6 +51,7 @@ func main() {
 		max.NewPlugin(),
 		contains.NewPlugin(),
 		intersect.NewPlugin(),
+		union.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

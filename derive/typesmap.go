@@ -64,7 +64,7 @@ func (this *typesMap) TypeString(typ types.Type) string {
 }
 
 func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, error) {
-	typsName := this.nameOf(typs)
+	typsName := nameOf(typs, this.qual)
 	if fName, ok := this.typsToFunc[typsName]; ok {
 		if fName == funcName {
 			return funcName, nil
@@ -93,7 +93,7 @@ func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, 
 }
 
 func (this *typesMap) GetFuncName(typs ...types.Type) string {
-	name := this.nameOf(typs)
+	name := nameOf(typs, this.qual)
 	if f, ok := this.typsToFunc[name]; ok {
 		return f
 	}
@@ -108,12 +108,12 @@ func (this *typesMap) GetFuncName(typs ...types.Type) string {
 }
 
 func (this *typesMap) Generating(typs ...types.Type) {
-	name := this.nameOf(typs)
+	name := nameOf(typs, this.qual)
 	this.generated[name] = true
 }
 
 func (this *typesMap) isGenerated(typs []types.Type) bool {
-	name := this.nameOf(typs)
+	name := nameOf(typs, this.qual)
 	return this.generated[name]
 }
 
@@ -136,16 +136,16 @@ func (this *typesMap) Done() bool {
 	return true
 }
 
-func (this *typesMap) nameOf(typs []types.Type) string {
+func nameOf(typs []types.Type, qual types.Qualifier) string {
 	ss := make([]string, len(typs))
 	for i, typ := range typs {
-		ss[i] = typeName(types.Default(typ), this.qual)
+		ss[i] = typeName(types.Default(typ), qual)
 	}
 	return strings.Join(ss, ",")
 }
 
 func (this *typesMap) funcOf(typs []types.Type) string {
-	return this.prefix + strings.Replace(this.nameOf(typs), "$", "", -1)
+	return this.prefix + strings.Replace(nameOf(typs, this.qual), "$", "", -1)
 }
 
 func typeName(typ types.Type, qual types.Qualifier) string {
@@ -159,6 +159,16 @@ func typeName(typ types.Type, qual types.Qualifier) string {
 		return "SliceOf" + typeName(t.Elem(), qual)
 	case *types.Map:
 		return "MapOf" + typeName(t.Key(), qual) + "To" + typeName(t.Elem(), qual)
+	case *types.Signature:
+		params := make([]types.Type, t.Params().Len())
+		for i := range params {
+			params[i] = t.Params().At(i).Type()
+		}
+		returns := make([]types.Type, t.Results().Len())
+		for i := range returns {
+			returns[i] = t.Results().At(i).Type()
+		}
+		return "FuncOf" + nameOf(params, qual) + "___" + nameOf(returns, qual)
 	}
 	// The dollar helps to make sure that typenames cannot be faked by the user.
 	return "$" + strings.Replace(types.TypeString(typ, qual), ".", "_", -1)

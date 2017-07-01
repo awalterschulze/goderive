@@ -2938,6 +2938,18 @@ func deriveFmapSS(f func(string) []string, list []string) [][]string {
 	return out
 }
 
+func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interface{}, data []byte) error {
+	return func(v interface{}, data []byte) error {
+		return f(data, v)
+	}
+}
+
+func deriveFlip3(f func(a int, b string, c bool) string) func(b string, a int, c bool) string {
+	return func(b string, a int, c bool) string {
+		return f(a, b, c)
+	}
+}
+
 func deriveSetInt64s(list []int64) map[int64]struct{} {
 	set := make(map[int64]struct{}, len(list))
 	for _, v := range list {

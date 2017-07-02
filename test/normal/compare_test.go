@@ -27,6 +27,7 @@ func compare(this, that interface{}) int {
 
 func TestCompareStructs(t *testing.T) {
 	structs := []interface{}{
+		&Empty{},
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
 		&SliceOfBuiltInTypes{},

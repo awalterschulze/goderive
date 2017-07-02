@@ -61,6 +61,19 @@ func deriveContainsStruct(list []*BuiltInTypes, item *BuiltInTypes) bool {
 	return false
 }
 
+func deriveComparePtrToEmpty(this, that *Empty) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	return 0
+}
+
 func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -933,6 +946,9 @@ func deriveFilter(pred func(int) bool, list []int) []int {
 		}
 	}
 	return out
+}
+
+func deriveCopyToPtrToEmpty(this, that *Empty) {
 }
 
 func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
@@ -2419,6 +2435,10 @@ func deriveUnionOfInt64s(union, that []int64) []int64 {
 	return union
 }
 
+func deriveEqualPtrToEmpty(this, that *Empty) bool {
+	return (this == nil && that == nil) || (this != nil) && (that != nil)
+}
+
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -2824,14 +2844,6 @@ func deriveEqual1(this, that BuiltInTypes) bool {
 	return this == that
 }
 
-func deriveCurryCurried(f func(b string, c bool) string) func(b string) func(c bool) string {
-	return func(b string) func(c bool) string {
-		return func(c bool) string {
-			return f(b, c)
-		}
-	}
-}
-
 func deriveCurryMarshal(f func(data []byte, v interface{}) error) func(data []byte) func(v interface{}) error {
 	return func(data []byte) func(v interface{}) error {
 		return func(v interface{}) error {
@@ -2844,6 +2856,14 @@ func deriveCurry3(f func(a int, b string, c bool) string) func(a int) func(b str
 	return func(a int) func(b string, c bool) string {
 		return func(b string, c bool) string {
 			return f(a, b, c)
+		}
+	}
+}
+
+func deriveCurryCurried(f func(b string, c bool) string) func(b string) func(c bool) string {
+	return func(b string) func(c bool) string {
+		return func(c bool) string {
+			return f(b, c)
 		}
 	}
 }

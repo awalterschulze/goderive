@@ -27,6 +27,7 @@ func equal(this, that interface{}) bool {
 
 func TestEqualStructs(t *testing.T) {
 	structs := []interface{}{
+		&Empty{},
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
 		&SliceOfBuiltInTypes{},

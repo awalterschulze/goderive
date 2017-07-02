@@ -26,6 +26,7 @@ func copyto(this, that interface{}) {
 
 func TestCloneStructs(t *testing.T) {
 	structs := []interface{}{
+		&Empty{},
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
 		&SliceOfBuiltInTypes{},

@@ -160,7 +160,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		if isNamed {
 			fields := derive.Fields(g.TypesMap, strct)
 			if len(fields.Fields) == 0 {
-				p.P("return %s == nil && %s == nil", this, that)
+				p.P("return (%s == nil && %s == nil) || (%s != nil) && (%s != nil)", this, that, this, that)
 				return nil
 			}
 			if fields.Reflect {

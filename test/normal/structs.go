@@ -22,6 +22,20 @@ import (
 	"github.com/awalterschulze/goderive/test/extra"
 )
 
+type Empty struct{}
+
+func (this *Empty) Equal(that *Empty) bool {
+	return deriveEqualPtrToEmpty(this, that)
+}
+
+func (this *Empty) Compare(that *Empty) int {
+	return deriveComparePtrToEmpty(this, that)
+}
+
+func (this *Empty) CopyTo(that *Empty) {
+	deriveCopyToPtrToEmpty(this, that)
+}
+
 type BuiltInTypes struct {
 	Bool       bool
 	Byte       byte

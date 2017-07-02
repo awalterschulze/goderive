@@ -35,6 +35,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/set"
 	"github.com/awalterschulze/goderive/plugin/sort"
 	"github.com/awalterschulze/goderive/plugin/takewhile"
+	"github.com/awalterschulze/goderive/plugin/uncurry"
 	"github.com/awalterschulze/goderive/plugin/union"
 	"github.com/awalterschulze/goderive/plugin/unique"
 )
@@ -62,6 +63,7 @@ func main() {
 		unique.NewPlugin(),
 		flip.NewPlugin(),
 		curry.NewPlugin(),
+		uncurry.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

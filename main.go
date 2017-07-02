@@ -22,6 +22,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/compare"
 	"github.com/awalterschulze/goderive/plugin/contains"
 	"github.com/awalterschulze/goderive/plugin/copyto"
+	"github.com/awalterschulze/goderive/plugin/curry"
 	"github.com/awalterschulze/goderive/plugin/equal"
 	"github.com/awalterschulze/goderive/plugin/filter"
 	"github.com/awalterschulze/goderive/plugin/flip"
@@ -60,6 +61,7 @@ func main() {
 		takewhile.NewPlugin(),
 		unique.NewPlugin(),
 		flip.NewPlugin(),
+		curry.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

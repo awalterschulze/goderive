@@ -2824,6 +2824,30 @@ func deriveEqual1(this, that BuiltInTypes) bool {
 	return this == that
 }
 
+func deriveCurryCurried(f func(b string, c bool) string) func(b string) func(c bool) string {
+	return func(b string) func(c bool) string {
+		return func(c bool) string {
+			return f(b, c)
+		}
+	}
+}
+
+func deriveCurryMarshal(f func(data []byte, v interface{}) error) func(data []byte) func(v interface{}) error {
+	return func(data []byte) func(v interface{}) error {
+		return func(v interface{}) error {
+			return f(data, v)
+		}
+	}
+}
+
+func deriveCurry3(f func(a int, b string, c bool) string) func(a int) func(b string, c bool) string {
+	return func(a int) func(b string, c bool) string {
+		return func(b string, c bool) string {
+			return f(a, b, c)
+		}
+	}
+}
+
 func deriveSortedInts(list []int) []int {
 	sort.Ints(list)
 	return list

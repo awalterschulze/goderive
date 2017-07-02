@@ -29,6 +29,7 @@ Functional Functions:
   - [Filter](http://godoc.org/github.com/awalterschulze/goderive/plugin/filter) `deriveFilter(f(T) bool, []T) []T`
   - [TakeWhile](http://godoc.org/github.com/awalterschulze/goderive/plugin/takewhile) `deriveTakeWhile(f(T) bool, []T) []T`
   - [Flip](http://godoc.org/github.com/awalterschulze/goderive/plugin/flip) `deriveFlip(f func(A, B, ...) T) func(B, A, ...) T`
+  - [Curry](http://godoc.org/github.com/awalterschulze/goderive/plugin/curry) `deriveCurry(f func(A, B, ...) T) func(A) func(B, ...) T`
 
 When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and

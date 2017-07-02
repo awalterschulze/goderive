@@ -12,10 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package flip contains the implementation of the flip plugin, which generates the deriveFlip function.
-// The deriveFlip function flips the first two parameters of the input function.
-//   deriveFlip(f func(A, B, ...) T) func(B, A, ...) T
-package flip
+// Package curry contains the implementation of the curry plugin, which generates the deriveCurry function.
+// The deriveCurry function curries the first two parameters of the input function.
+//   deriveCurry(f func(A, B, ...) T) func(A) func(B, ...) T
+package curry
 
 import (
 	"fmt"
@@ -25,13 +25,13 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-// NewPlugin creates a new flip plugin.
-// This function returns the plugin name, default prefix and a constructor for the flip code generator.
+// NewPlugin creates a new curry plugin.
+// This function returns the plugin name, default prefix and a constructor for the curry code generator.
 func NewPlugin() derive.Plugin {
-	return derive.NewPlugin("flip", "deriveFlip", New)
+	return derive.NewPlugin("curry", "deriveCurry", New)
 }
 
-// New is a constructor for the flip code generator.
+// New is a constructor for the curry code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &gen{
@@ -68,11 +68,12 @@ func (this *gen) Generate(typs []types.Type) error {
 	return this.genFuncFor(sig)
 }
 
-func flipSig(sig *types.Signature) *types.Signature {
-	flipped := vars(sig.Params())
-	flipped[0], flipped[1] = flipped[1], flipped[0]
-	ps := types.NewTuple(flipped...)
-	return types.NewSignature(sig.Recv(), ps, sig.Results(), sig.Variadic())
+func currySig(sig *types.Signature) (first *types.Var, returnFunc *types.Signature) {
+	vs := vars(sig.Params())
+	first = vs[0]
+	second := types.NewTuple(vs[1:]...)
+	returnFunc = types.NewSignature(nil, second, sig.Results(), sig.Variadic())
+	return first, returnFunc
 }
 
 func vars(tup *types.Tuple) []*types.Var {
@@ -96,15 +97,20 @@ func (this *gen) genFuncFor(ftyp *types.Signature) error {
 	this.Generating(ftyp)
 	fStr := this.TypeString(ftyp)
 	funcName := this.GetFuncName(ftyp)
-	gtyp := flipSig(ftyp)
+	firstVar, gtyp := currySig(ftyp)
+	firstStr := this.TypeString(types.NewTuple(firstVar))
 	gStr := this.TypeString(gtyp)
 	p.P("")
-	p.P("func %s(f %s) %s {", funcName, fStr, gStr)
+	p.P("func %s(f %s) func%s %s {", funcName, fStr, firstStr, gStr)
+	p.In()
+	p.P("return func%s %s {", firstStr, gStr)
 	p.In()
 	p.P("return %s {", gStr)
 	p.In()
 	as := varnames(ftyp.Params())
 	p.P("return f(%s)", strings.Join(as, ", "))
+	p.Out()
+	p.P("}")
 	p.Out()
 	p.P("}")
 	p.Out()

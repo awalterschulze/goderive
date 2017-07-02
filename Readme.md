@@ -97,3 +97,12 @@ You can also create your own vanity binary.
 Including your own generators and/or customization of function prefixes, etc.
 This should be easy to figure out by looking at [main.go](https://github.com/awalterschulze/goderive/blob/master/main.go)
 
+## Inspired By
+
+Haskell's deriving
+
+## Users
+
+These projects use goderive:
+
+  - [katydid](https://github.com/katydid/katydid)

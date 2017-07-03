@@ -18,7 +18,7 @@
 //
 // When goderive walks over your code it is looking for a function that:
 //  - was not implemented (or was previously derived) and
-//  - has a prefix predefined prefix.
+//  - has a predefined prefix.
 //
 // In the following code the deriveCompare function will be found, because
 // it was not implemented and it has a prefix deriveCompare.

@@ -25,7 +25,7 @@ func deriveTakeWhile(pred func(int) bool, list []int) []int {
 
 func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{} {
 	intersect := make(map[int64]struct{}, deriveMinInt(len(this), len(that)))
-	for k, _ := range this {
+	for k := range this {
 		if _, ok := that[k]; ok {
 			intersect[k] = struct{}{}
 		}

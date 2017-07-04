@@ -86,7 +86,7 @@ func (this *gen) genMap(typ *types.Map) error {
 	p.In()
 	minFunc := this.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])
 	p.P("intersect := make(map[%s]struct{}, %s(len(this), len(that)))", typeStr, minFunc)
-	p.P("for k, _ := range this {")
+	p.P("for k := range this {")
 	p.In()
 	p.P("if _, ok := that[k]; ok {")
 	p.In()

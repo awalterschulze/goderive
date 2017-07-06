@@ -78,6 +78,7 @@ func deriveEqual(this, that *MyStruct) bool {
 More Examples:
 
   - [Equal](https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal)
+  - [Compare](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compare)
 
 ## How to run
 

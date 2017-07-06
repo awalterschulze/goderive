@@ -79,6 +79,7 @@ More Examples:
 
   - [Equal](https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal)
   - [Compare](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compare)
+  - [CopyTo](https://github.com/awalterschulze/goderive/tree/master/example/plugin/copyto)
 
 ## How to run
 

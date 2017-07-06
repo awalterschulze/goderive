@@ -28,6 +28,7 @@ type TypesMap interface {
 	ToGenerate() [][]types.Type
 	Prefix() string
 	TypeString(typ types.Type) string
+	IsExternal(typ *types.Named) bool
 	Done() bool
 }
 
@@ -61,6 +62,11 @@ func (this *typesMap) Prefix() string {
 
 func (this *typesMap) TypeString(typ types.Type) string {
 	return types.TypeString(types.Default(typ), this.qual)
+}
+
+func (this *typesMap) IsExternal(typ *types.Named) bool {
+	q := this.qual(typ.Obj().Pkg())
+	return q != ""
 }
 
 func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, error) {

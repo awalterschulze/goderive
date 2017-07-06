@@ -25,13 +25,14 @@ type Named struct {
 }
 
 type Field struct {
-	name    string
-	Type    types.Type
-	typeStr func() string
+	name     string
+	external bool
+	Type     types.Type
+	typeStr  func() string
 }
 
 func (f *Field) Name(recv string, unsafePkg Import) string {
-	if !f.Private() {
+	if !f.Private() || !f.external {
 		return recv + "." + f.name
 	}
 	return `*(*` + f.typeStr() + `)(` + unsafePkg() + `.Pointer(` + recv + `.FieldByName("` + f.name + `").UnsafeAddr()))`
@@ -41,7 +42,7 @@ func (f *Field) Private() bool {
 	return strings.ToLower(f.name[0:1]) == f.name[0:1]
 }
 
-func Fields(typesMap TypesMap, typ *types.Struct) *Named {
+func Fields(typesMap TypesMap, typ *types.Struct, external bool) *Named {
 	numFields := typ.NumFields()
 	n := &Named{
 		Fields: make([]*Field, numFields),
@@ -51,14 +52,17 @@ func Fields(typesMap TypesMap, typ *types.Struct) *Named {
 		fieldType := field.Type()
 		fieldName := field.Name()
 		n.Fields[i] = &Field{
-			name: fieldName,
-			Type: fieldType,
+			name:     fieldName,
+			external: external,
+			Type:     fieldType,
 			typeStr: func() string {
 				return typesMap.TypeString(fieldType)
 			},
 		}
 		if n.Fields[i].Private() {
-			n.Reflect = true
+			if external {
+				n.Reflect = true
+			}
 		}
 	}
 	return n

@@ -162,6 +162,76 @@ func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
 	return 0
 }
 
+func deriveComparePtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if c := deriveComparebool(this.privateBool, that.privateBool); c != 0 {
+		return c
+	}
+	if c := deriveComparebyte(this.privateByte, that.privateByte); c != 0 {
+		return c
+	}
+	if c := deriveCompareComplex64(this.privateComplex128, that.privateComplex128); c != 0 {
+		return c
+	}
+	if c := deriveCompareComplex32(this.privateComplex64, that.privateComplex64); c != 0 {
+		return c
+	}
+	if c := deriveComparefloat64(this.privateFloat64, that.privateFloat64); c != 0 {
+		return c
+	}
+	if c := deriveComparefloat32(this.privateFloat32, that.privateFloat32); c != 0 {
+		return c
+	}
+	if c := deriveCompareint(this.privateInt, that.privateInt); c != 0 {
+		return c
+	}
+	if c := deriveCompareint16(this.privateInt16, that.privateInt16); c != 0 {
+		return c
+	}
+	if c := deriveCompareint32(this.privateInt32, that.privateInt32); c != 0 {
+		return c
+	}
+	if c := deriveCompareint64(this.privateInt64, that.privateInt64); c != 0 {
+		return c
+	}
+	if c := deriveCompareint8(this.privateInt8, that.privateInt8); c != 0 {
+		return c
+	}
+	if c := deriveComparerune(this.privateRune, that.privateRune); c != 0 {
+		return c
+	}
+	if c := strings.Compare(this.privateString, that.privateString); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint(this.privateUint, that.privateUint); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint16(this.privateUint16, that.privateUint16); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint32(this.privateUint32, that.privateUint32); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint64(this.privateUint64, that.privateUint64); c != 0 {
+		return c
+	}
+	if c := deriveCompareuint8(this.privateUint8, that.privateUint8); c != 0 {
+		return c
+	}
+	if c := deriveCompareuintptr(this.privateUintPtr, that.privateUintPtr); c != 0 {
+		return c
+	}
+	return 0
+}
+
 func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -989,6 +1059,28 @@ func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
 	that.Uint64 = this.Uint64
 	that.Uint8 = this.Uint8
 	that.UintPtr = this.UintPtr
+}
+
+func deriveCopyToPtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) {
+	that.privateBool = this.privateBool
+	that.privateByte = this.privateByte
+	that.privateComplex128 = this.privateComplex128
+	that.privateComplex64 = this.privateComplex64
+	that.privateFloat64 = this.privateFloat64
+	that.privateFloat32 = this.privateFloat32
+	that.privateInt = this.privateInt
+	that.privateInt16 = this.privateInt16
+	that.privateInt32 = this.privateInt32
+	that.privateInt64 = this.privateInt64
+	that.privateInt8 = this.privateInt8
+	that.privateRune = this.privateRune
+	that.privateString = this.privateString
+	that.privateUint = this.privateUint
+	that.privateUint16 = this.privateUint16
+	that.privateUint32 = this.privateUint32
+	that.privateUint64 = this.privateUint64
+	that.privateUint8 = this.privateUint8
+	that.privateUintPtr = this.privateUintPtr
 }
 
 func deriveCopyToPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) {
@@ -2481,6 +2573,30 @@ func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 			this.UintPtr == that.UintPtr
 }
 
+func deriveEqualPtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.privateBool == that.privateBool &&
+			this.privateByte == that.privateByte &&
+			this.privateComplex128 == that.privateComplex128 &&
+			this.privateComplex64 == that.privateComplex64 &&
+			this.privateFloat64 == that.privateFloat64 &&
+			this.privateFloat32 == that.privateFloat32 &&
+			this.privateInt == that.privateInt &&
+			this.privateInt16 == that.privateInt16 &&
+			this.privateInt32 == that.privateInt32 &&
+			this.privateInt64 == that.privateInt64 &&
+			this.privateInt8 == that.privateInt8 &&
+			this.privateRune == that.privateRune &&
+			this.privateString == that.privateString &&
+			this.privateUint == that.privateUint &&
+			this.privateUint16 == that.privateUint16 &&
+			this.privateUint32 == that.privateUint32 &&
+			this.privateUint64 == that.privateUint64 &&
+			this.privateUint8 == that.privateUint8 &&
+			this.privateUintPtr == that.privateUintPtr
+}
+
 func deriveEqualPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -2733,10 +2849,7 @@ func deriveEqualPtrToTime(this, that *Time) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.T.Equal(that.T) &&
-			((this.P == nil && that.P == nil) || (this.P != nil && that.P != nil && (*(this.P)).Equal(*(that.P)))) &&
-			deriveEqualSliceOftime_Time(this.Ts, that.Ts) &&
-			deriveEqualSliceOfPtrTotime_Time(this.TPs, that.TPs) &&
-			deriveEqualMapOfintTotime_Time(this.MT, that.MT)
+			((this.P == nil && that.P == nil) || (this.P != nil && that.P != nil && (*(this.P)).Equal(*(that.P))))
 }
 
 func deriveEqualPtrToDuration(this, that *Duration) bool {
@@ -7697,55 +7810,6 @@ func deriveEqualSliceOfMySlice(this, that []MySlice) bool {
 	}
 	for i := 0; i < len(this); i++ {
 		if !(deriveEqualSliceOfint64(this[i], that[i])) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualSliceOftime_Time(this, that []time.Time) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !(this[i].Equal(that[i])) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualSliceOfPtrTotime_Time(this, that []*time.Time) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for i := 0; i < len(this); i++ {
-		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && (*(this[i])).Equal(*(that[i])))) {
-			return false
-		}
-	}
-	return true
-}
-
-func deriveEqualMapOfintTotime_Time(this, that map[int]time.Time) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v.Equal(thatv)) {
 			return false
 		}
 	}

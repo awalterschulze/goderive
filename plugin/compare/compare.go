@@ -176,13 +176,14 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.Out()
 		p.P("}")
 		reftyp := ttyp.Elem()
-		//_, isNamed := reftyp.(*types.Named)
+		named, isNamed := reftyp.(*types.Named)
 		strct, isStruct := reftyp.Underlying().(*types.Struct)
-		if !isStruct {
+		if !isStruct || !isNamed {
 			p.P("return %s(*%s, *%s)", g.GetFuncName(reftyp), this, that)
 			return nil
 		}
-		fields := derive.Fields(g.TypesMap, strct)
+		external := g.TypesMap.IsExternal(named)
+		fields := derive.Fields(g.TypesMap, strct, external)
 		if fields.Reflect {
 			p.P(`thisv := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(` + this + `))`)
 			p.P(`thatv := ` + g.reflectPkg() + `.Indirect(` + g.reflectPkg() + `.ValueOf(` + that + `))`)
@@ -190,12 +191,12 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		for _, field := range fields.Fields {
 			fieldType := field.Type
 			var thisField, thatField string
-			if !field.Private() {
-				thisField = field.Name(this, nil)
-				thatField = field.Name(that, nil)
-			} else {
+			if field.Private() && external {
 				thisField = field.Name("thisv", g.unsafePkg)
 				thatField = field.Name("thatv", g.unsafePkg)
+			} else {
+				thisField = field.Name(this, nil)
+				thatField = field.Name(that, nil)
 			}
 			fieldStr, err := g.field(thisField, thatField, fieldType)
 			if err != nil {

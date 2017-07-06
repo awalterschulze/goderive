@@ -70,6 +70,40 @@ func (this *BuiltInTypes) CopyTo(that *BuiltInTypes) {
 	deriveCopyToPtrToBuiltInTypes(this, that)
 }
 
+type PrivateBuiltInTypes struct {
+	privateBool       bool
+	privateByte       byte
+	privateComplex128 complex128
+	privateComplex64  complex64
+	privateFloat64    float64
+	privateFloat32    float32
+	privateInt        int
+	privateInt16      int16
+	privateInt32      int32
+	privateInt64      int64
+	privateInt8       int8
+	privateRune       rune
+	privateString     string
+	privateUint       uint
+	privateUint16     uint16
+	privateUint32     uint32
+	privateUint64     uint64
+	privateUint8      uint8
+	privateUintPtr    uintptr
+}
+
+func (this *PrivateBuiltInTypes) Equal(that *PrivateBuiltInTypes) bool {
+	return deriveEqualPtrToPrivateBuiltInTypes(this, that)
+}
+
+func (this *PrivateBuiltInTypes) Compare(that *PrivateBuiltInTypes) int {
+	return deriveComparePtrToPrivateBuiltInTypes(this, that)
+}
+
+func (this *PrivateBuiltInTypes) CopyTo(that *PrivateBuiltInTypes) {
+	deriveCopyToPtrToPrivateBuiltInTypes(this, that)
+}
+
 type PtrToBuiltInTypes struct {
 	Bool       *bool
 	Byte       *byte
@@ -537,11 +571,11 @@ func (this *NamedTypes) CopyTo(that *NamedTypes) {
 }
 
 type Time struct {
-	T   time.Time
-	P   *time.Time
-	Ts  []time.Time
-	TPs []*time.Time
-	MT  map[int]time.Time
+	T time.Time
+	P *time.Time
+	// Ts  []time.Time
+	// TPs []*time.Time
+	// MT  map[int]time.Time
 }
 
 func (this *Time) Generate(rand *rand.Rand, size int) reflect.Value {

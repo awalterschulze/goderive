@@ -190,18 +190,21 @@ func (pkg *pkg) Print() error {
 	return f.Close()
 }
 
-func (pkg *pkg) Generate() error {
+func (pkg *pkg) Generate() (bool, error) {
+	generated := false
 	for !pkg.Done() {
 		for _, plugin := range pkg.plugins {
 			g := pkg.generators[plugin.Name()]
 			for _, typs := range g.ToGenerate() {
 				if err := g.Generate(typs); err != nil {
-					return fmt.Errorf("Generator Error: " + plugin.Name() + ":" + err.Error())
+					return false, fmt.Errorf("Generator Error: " + plugin.Name() + ":" + err.Error())
+				} else {
+					generated = true
 				}
 			}
 		}
 	}
-	return nil
+	return generated, nil
 }
 
 func (pg *program) Generate() error {
@@ -215,29 +218,21 @@ func (pg *program) Generate() error {
 
 func (pg *program) generatePackage(pkgInfo *loader.PackageInfo) error {
 	path := pkgInfo.Pkg.Path()
-	prevNumUndefined := -1
-	for {
+	generated := true
+	var undefined []*ast.CallExpr
+	for generated {
 		pkgGen, err := pg.NewPackage(pkgInfo)
 		if err != nil {
 			return err
 		}
-		undefined := pkgGen.undefined
+		undefined = pkgGen.undefined
 
-		if len(undefined) > 0 {
-			if prevNumUndefined == len(undefined) {
-				ss := make([]string, len(undefined))
-				for i, c := range undefined {
-					ss[i] = types.ExprString(c)
-				}
-				return fmt.Errorf("cannot generate: %s", strings.Join(ss, ","))
-			}
-		}
-		prevNumUndefined = len(undefined)
 		for _, c := range undefined {
 			log.Printf("could not yet generate: %s", types.ExprString(c))
 		}
 
-		if err := pkgGen.Generate(); err != nil {
+		generated, err = pkgGen.Generate()
+		if err != nil {
 			return err
 		}
 
@@ -254,6 +249,16 @@ func (pg *program) generatePackage(pkgInfo *loader.PackageInfo) error {
 		if err != nil {
 			return err
 		}
+		pg.program = thisprogram
 		pkgInfo = thisprogram.Package(path)
 	}
+
+	if len(undefined) > 0 && !generated {
+		ss := make([]string, len(undefined))
+		for i, c := range undefined {
+			ss[i] = types.ExprString(c)
+		}
+		return fmt.Errorf("cannot generate: %s", strings.Join(ss, ","))
+	}
+	return nil
 }

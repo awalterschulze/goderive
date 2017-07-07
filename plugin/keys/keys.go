@@ -14,6 +14,7 @@
 
 // Package keys contains the implementation of the keys plugin, which generates the deriveKeys function.
 // The deriveKeys function returns a map's keys as a slice.
+// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/keys
 package keys
 
 import (

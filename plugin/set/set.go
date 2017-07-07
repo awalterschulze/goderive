@@ -14,6 +14,7 @@
 
 // Package set contains the implementation of the set plugin, which generates the deriveSet function.
 //   func deriveSet([]T) map[T]struct{}
+// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/set
 package set
 
 import (

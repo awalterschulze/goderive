@@ -7,6 +7,7 @@ example:
 	rm ./keys/derived.gen.go || true
 	rm ./sort/derived.gen.go || true
 	rm ./unique/derived.gen.go || true
+	rm ./set/derived.gen.go || true
 	goderive ./...
 	go test -v ./...
 	go install github.com/awalterschulze/goderive/example/plugin/cmd/goderive-genreadme
@@ -16,3 +17,4 @@ example:
 	goderive-genreadme ./keys
 	goderive-genreadme ./sort
 	goderive-genreadme ./unique
+	goderive-genreadme ./set

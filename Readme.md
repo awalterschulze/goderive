@@ -83,6 +83,7 @@ More Examples:
   - [Keys](https://github.com/awalterschulze/goderive/tree/master/example/plugin/keys)
   - [Sort](https://github.com/awalterschulze/goderive/tree/master/example/plugin/sort)
   - [Unique](https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique)
+  - [Set](https://github.com/awalterschulze/goderive/tree/master/example/plugin/set)
 
 ## How to run
 

@@ -81,6 +81,7 @@ More Examples:
   - [Compare](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compare)
   - [CopyTo](https://github.com/awalterschulze/goderive/tree/master/example/plugin/copyto)
   - [Keys](https://github.com/awalterschulze/goderive/tree/master/example/plugin/keys)
+  - [Sort](https://github.com/awalterschulze/goderive/tree/master/example/plugin/sort)
 
 ## How to run
 

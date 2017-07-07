@@ -5,6 +5,7 @@ example:
 	rm ./compare/derived.gen.go || true
 	rm ./copyto/derived.gen.go || true
 	rm ./keys/derived.gen.go || true
+	rm ./sort/derived.gen.go || true
 	goderive ./...
 	go test -v ./...
 	go install github.com/awalterschulze/goderive/example/plugin/cmd/goderive-genreadme
@@ -12,3 +13,4 @@ example:
 	goderive-genreadme ./compare
 	goderive-genreadme ./copyto
 	goderive-genreadme ./keys
+	goderive-genreadme ./sort

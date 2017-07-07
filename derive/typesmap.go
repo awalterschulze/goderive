@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"go/types"
 	"strconv"
-	"strings"
 )
 
 type TypesMap interface {
@@ -36,8 +35,7 @@ type typesMap struct {
 	qual       types.Qualifier
 	prefix     string
 	generated  map[string]bool
-	funcToTyps map[string]string
-	typsToFunc map[string]string
+	funcToTyps map[string][]types.Type
 	typss      [][]types.Type
 	autoname   bool
 	dedup      bool
@@ -48,8 +46,7 @@ func newTypesMap(qual types.Qualifier, prefix string, autoname bool, dedup bool)
 		qual:       qual,
 		prefix:     prefix,
 		generated:  make(map[string]bool),
-		funcToTyps: make(map[string]string),
-		typsToFunc: make(map[string]string),
+		funcToTyps: make(map[string][]types.Type),
 		typss:      nil,
 		autoname:   autoname,
 		dedup:      dedup,
@@ -70,8 +67,7 @@ func (this *typesMap) IsExternal(typ *types.Named) bool {
 }
 
 func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, error) {
-	typsName := nameOf(typs, this.qual)
-	if fName, ok := this.typsToFunc[typsName]; ok {
+	if fName, ok := this.nameOf(typs); ok {
 		if fName == funcName {
 			return funcName, nil
 		}
@@ -80,46 +76,98 @@ func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, 
 		}
 		return "", fmt.Errorf("ambigious function names for type %s = (%s | %s)", typs, fName, funcName)
 	}
-	if tName, ok := this.funcToTyps[funcName]; ok {
-		if tName == typsName {
+	if ts, ok := this.funcToTyps[funcName]; ok {
+		if eq(ts, typs) {
 			return funcName, nil
 		}
 		if this.autoname {
 			return this.GetFuncName(typs...), nil
 		}
-		return "", fmt.Errorf("conflicting function names %s = (%s | %s)", funcName, tName, typsName)
+		return "", fmt.Errorf("conflicting function names %s", funcName)
 	}
-	if _, ok := this.generated[typsName]; !ok {
-		this.generated[typsName] = false
-	}
-	this.typsToFunc[typsName] = funcName
-	this.funcToTyps[funcName] = typsName
+	this.funcToTyps[funcName] = typs
 	this.typss = append(this.typss, typs)
 	return funcName, nil
 }
 
 func (this *typesMap) GetFuncName(typs ...types.Type) string {
-	name := nameOf(typs, this.qual)
-	if f, ok := this.typsToFunc[name]; ok {
-		return f
+	name, ok := this.nameOf(typs)
+	if !ok {
+		name = this.newName(typs)
+		this.SetFuncName(name, typs...)
 	}
-	funcName := this.funcOf(typs)
+	return name
+}
+
+func (this *typesMap) newName(typs []types.Type) string {
+	funcName := this.prefix
 	_, exists := this.funcToTyps[funcName]
+	i := 0
+	name := ""
+	if len(typs) > 0 {
+		switch t := typs[0].(type) {
+		case *types.Named:
+			name = t.Obj().Name()
+		case *types.Basic:
+			switch t.Kind() {
+			case types.Bool, types.Int, types.Int8, types.Int16, types.Int32, types.Int64,
+				types.Uint, types.Uint8, types.Uint16, types.Uint32, types.Uint64,
+				types.Float32, types.Float64, types.String:
+				name = this.TypeString(t)
+			}
+		}
+	}
 	for exists {
-		funcName += "_"
+		if i > len(name) {
+			funcName = this.prefix + "_" + name + strconv.Itoa(i)
+		} else {
+			funcName = this.prefix + "_" + name[:i]
+		}
+		i++
 		_, exists = this.funcToTyps[funcName]
 	}
-	this.SetFuncName(funcName, typs...)
 	return funcName
 }
 
+func eq(this, that []types.Type) bool {
+	if len(this) != len(that) {
+		return false
+	}
+	for i, t := range this {
+		if !types.Identical(t, that[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *typesMap) nameOf(typs []types.Type) (string, bool) {
+	for _, t := range typs {
+		if n, ok := t.(*types.Named); ok {
+			this.qual(n.Obj().Pkg())
+		}
+	}
+	for name, ts := range this.funcToTyps {
+		if eq(typs, ts) {
+			return name, true
+		}
+	}
+	return "", false
+}
+
 func (this *typesMap) Generating(typs ...types.Type) {
-	name := nameOf(typs, this.qual)
+	name, ok := this.nameOf(typs)
+	if !ok {
+		panic("wtf")
+	}
 	this.generated[name] = true
 }
 
 func (this *typesMap) isGenerated(typs []types.Type) bool {
-	name := nameOf(typs, this.qual)
+	name, ok := this.nameOf(typs)
+	if !ok {
+		return false
+	}
 	return this.generated[name]
 }
 
@@ -140,42 +188,4 @@ func (this *typesMap) Done() bool {
 		}
 	}
 	return true
-}
-
-func nameOf(typs []types.Type, qual types.Qualifier) string {
-	ss := make([]string, len(typs))
-	for i, typ := range typs {
-		ss[i] = typeName(types.Default(typ), qual)
-	}
-	return strings.Join(ss, ",")
-}
-
-func (this *typesMap) funcOf(typs []types.Type) string {
-	return this.prefix + strings.Replace(nameOf(typs, this.qual), "$", "", -1)
-}
-
-func typeName(typ types.Type, qual types.Qualifier) string {
-	switch t := typ.(type) {
-	case *types.Pointer:
-		return "PtrTo" + typeName(t.Elem(), qual)
-	case *types.Array:
-		sizeStr := strconv.Itoa(int(t.Len()))
-		return "Array" + sizeStr + "Of" + typeName(t.Elem(), qual)
-	case *types.Slice:
-		return "SliceOf" + typeName(t.Elem(), qual)
-	case *types.Map:
-		return "MapOf" + typeName(t.Key(), qual) + "To" + typeName(t.Elem(), qual)
-	case *types.Signature:
-		params := make([]types.Type, t.Params().Len())
-		for i := range params {
-			params[i] = t.Params().At(i).Type()
-		}
-		returns := make([]types.Type, t.Results().Len())
-		for i := range returns {
-			returns[i] = t.Results().At(i).Type()
-		}
-		return "FuncOf" + nameOf(params, qual) + "___" + nameOf(returns, qual)
-	}
-	// The dollar helps to make sure that typenames cannot be faked by the user.
-	return "$" + strings.Replace(types.TypeString(typ, qual), ".", "_", -1)
 }

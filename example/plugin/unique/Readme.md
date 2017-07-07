@@ -28,7 +28,7 @@ func deriveUnique(list []*Visitor) []*Visitor {
 	}
 	u := 1
 	for i := 1; i < len(list); i++ {
-		if !deriveContainsSliceOfPtrToVisitor(list[:u], list[i]) {
+		if !deriveContains(list[:u], list[i]) {
 			if i != u {
 				list[u] = list[i]
 			}
@@ -38,16 +38,16 @@ func deriveUnique(list []*Visitor) []*Visitor {
 	return list[:u]
 }
 
-func deriveContainsSliceOfPtrToVisitor(list []*Visitor, item *Visitor) bool {
+func deriveContains(list []*Visitor, item *Visitor) bool {
 	for _, v := range list {
-		if deriveEqualPtrToVisitor(v, item) {
+		if deriveEqual(v, item) {
 			return true
 		}
 	}
 	return false
 }
 
-func deriveEqualPtrToVisitor(this, that *Visitor) bool {
+func deriveEqual(this, that *Visitor) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			((this.UserName == nil && that.UserName == nil) || (this.UserName != nil && that.UserName != nil && *(this.UserName) == *(that.UserName))) &&

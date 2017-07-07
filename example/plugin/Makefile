@@ -1,6 +1,14 @@
 .PHONY: example
 example:
+	make clean
 	go install github.com/awalterschulze/goderive
+	goderive ./...
+	go test -v ./...
+	go install github.com/awalterschulze/goderive/example/plugin/cmd/goderive-genreadme
+	goderive-genreadme ./equal ./compare ./copyto ./keys ./sort ./unique ./set
+
+.PHONY: clean
+clean:
 	rm ./equal/derived.gen.go || true
 	rm ./compare/derived.gen.go || true
 	rm ./copyto/derived.gen.go || true
@@ -8,13 +16,3 @@ example:
 	rm ./sort/derived.gen.go || true
 	rm ./unique/derived.gen.go || true
 	rm ./set/derived.gen.go || true
-	goderive ./...
-	go test -v ./...
-	go install github.com/awalterschulze/goderive/example/plugin/cmd/goderive-genreadme
-	goderive-genreadme ./equal
-	goderive-genreadme ./compare
-	goderive-genreadme ./copyto
-	goderive-genreadme ./keys
-	goderive-genreadme ./sort
-	goderive-genreadme ./unique
-	goderive-genreadme ./set

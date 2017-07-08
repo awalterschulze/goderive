@@ -3129,6 +3129,14 @@ func deriveFmap(f func(int) int, list []int) []int {
 	return out
 }
 
+func deriveFmapString(f func(rune) bool, ss string) []bool {
+	out := make([]bool, len([]rune(ss)))
+	for i, elem := range ss {
+		out[i] = f(elem)
+	}
+	return out
+}
+
 func deriveFmapSS(f func(string) []string, list []string) [][]string {
 	out := make([][]string, len(list))
 	for i, elem := range list {

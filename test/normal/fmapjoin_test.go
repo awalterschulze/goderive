@@ -28,6 +28,14 @@ func TestFmap(t *testing.T) {
 	}
 }
 
+func TestFmapString(t *testing.T) {
+	got := deriveFmapString(func(r rune) bool { return r == 'a' }, "abc")
+	want := []bool{true, false, false}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("got %v, want %v", got, want)
+	}
+}
+
 func TestJoin(t *testing.T) {
 	got := deriveJoin([][]int{{1, 2}, {3, 4}})
 	want := []int{1, 2, 3, 4}

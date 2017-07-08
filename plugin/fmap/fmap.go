@@ -15,6 +15,7 @@
 // Package fmap contains the implementation of the fmap plugin, which generates the deriveFmap function.
 //
 // The deriveFmap function applies a given function to each element of a list, returning a list of results in the same order.
+//   deriveFmap(func(A) B, []A) []B
 //
 // More things to come:
 //	- currently only slices are supported, think about supporting other types and not just slices
@@ -59,8 +60,45 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 			return "", err
 		}
 		return this.SetFuncName(name, typs...)
+	case *types.Basic:
+		_, err := this.stringOut(name, typs)
+		if err != nil {
+			return "", err
+		}
+		return this.SetFuncName(name, typs...)
 	}
 	return "", fmt.Errorf("unsupported type %s, not a slice", typs[1])
+}
+
+func (this *gen) stringOut(name string, typs []types.Type) (outTyp types.Type, err error) {
+	typs[1] = types.Default(typs[1])
+	basic, ok := typs[1].(*types.Basic)
+	if !ok {
+		return nil, fmt.Errorf("%s, the second argument, %s, is not of type basic", name, this.TypeString(typs[1]))
+	}
+	if basic.Kind() != types.String {
+		return nil, fmt.Errorf("%s, the second argument, %v, is not a string", name, basic)
+	}
+	sig, ok := typs[0].(*types.Signature)
+	if !ok {
+		return nil, fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[0]))
+	}
+	params := sig.Params()
+	if params.Len() != 1 {
+		return nil, fmt.Errorf("%s, the second argument is a function, but wanted a function with one argument", name)
+	}
+	elemTyp := types.Typ[types.Rune]
+	inTyp := params.At(0).Type()
+	if !types.Identical(inTyp, elemTyp) {
+		return nil, fmt.Errorf("%s the function input type is not of type rune != %s",
+			name, elemTyp)
+	}
+	res := sig.Results()
+	if res.Len() != 1 {
+		return nil, fmt.Errorf("%s, the function argument does not have a single result, but has %d resulting parameters", name, res.Len())
+	}
+	outTyp = res.At(0).Type()
+	return outTyp, nil
 }
 
 func (this *gen) sliceInOut(name string, typs []types.Type) (inTyp types.Type, outTyp types.Type, err error) {
@@ -94,6 +132,8 @@ func (this *gen) Generate(typs []types.Type) error {
 	switch typs[1].(type) {
 	case *types.Slice:
 		return this.genSlice(typs)
+	case *types.Basic:
+		return this.genString(typs)
 	}
 	return fmt.Errorf("unsupported type %s, not a slice", typs[1])
 }
@@ -113,6 +153,30 @@ func (this *gen) genSlice(typs []types.Type) error {
 	p.In()
 	p.P("out := make([]%s, len(list))", outStr)
 	p.P("for i, elem := range list {")
+	p.In()
+	p.P("out[i] = f(elem)")
+	p.Out()
+	p.P("}")
+	p.P("return out")
+	p.Out()
+	p.P("}")
+	return nil
+}
+
+func (this *gen) genString(typs []types.Type) error {
+	name := this.GetFuncName(typs...)
+	out, err := this.stringOut(name, typs)
+	if err != nil {
+		return err
+	}
+	this.Generating(typs...)
+	p := this.printer
+	outStr := this.TypeString(out)
+	p.P("")
+	p.P("func %s(f func(rune) %s, ss string) []%s {", name, outStr, outStr)
+	p.In()
+	p.P("out := make([]%s, len([]rune(ss)))", outStr)
+	p.P("for i, elem := range ss {")
 	p.In()
 	p.P("out[i] = f(elem)")
 	p.Out()

@@ -13,7 +13,9 @@
 //  limitations under the License.
 
 // Package join contains the implementation of the join plugin, which generates the deriveJoin function.
+//
 // The deriveJoin function joins a slice of slices into a single slice.
+//
 // More things to come:
 //	- currently only slices are supported, think about supporting other types and not just slices
 //	- what about []string and not just [][]string as in the current example.

@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 // Package any contains the implementation of the any plugin, which generates the deriveAny function.
+//
 // The deriveAny function applies a predicate to each element of a list, returning a whether any of the items matched the predicate.
 //   func deriveAny(func (T) bool, []T) bool
 package any

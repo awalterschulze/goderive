@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 // Package uncurry contains the implementation of the uncurry plugin, which generates the deriveUncurry function.
+//
 // The deriveUncurry function uncurries the input function.
 //   deriveUncurry(f func(A) func(B, ...) T) func(A, B, ...) T
 package uncurry

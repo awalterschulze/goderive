@@ -13,10 +13,12 @@
 //  limitations under the License.
 
 // Package sort contains the implementation of the sort plugin, which generates the deriveSort function.
-// This feature requires Go 1.8
+//
 // The deriveSort function is useful for deterministically ranging over maps when used with deriveKeys.
 // deriveSort supports only the types that deriveCompare supports, since it uses it for sorting.
+//
 // Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/sort
+//
 // Even though sort returns a list it also mutates the input list.
 package sort
 

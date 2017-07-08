@@ -13,7 +13,9 @@
 //  limitations under the License.
 
 // Package fmap contains the implementation of the fmap plugin, which generates the deriveFmap function.
+//
 // The deriveFmap function applies a given function to each element of a list, returning a list of results in the same order.
+//
 // More things to come:
 //	- currently only slices are supported, think about supporting other types and not just slices
 //	- think about functions without a return type

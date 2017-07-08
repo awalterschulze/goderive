@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 // Package curry contains the implementation of the curry plugin, which generates the deriveCurry function.
+//
 // The deriveCurry function curries the first two parameters of the input function.
 //   deriveCurry(f func(A, B, ...) T) func(A) func(B, ...) T
 package curry

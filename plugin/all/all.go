@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 // Package all contains the implementation of the all plugin, which generates the deriveAll function.
+//
 // The deriveAll function applies a predicate to each element of a list, returning a whether all items matched the predicate.
 //   func deriveAll(func (T) bool, []T) bool
 package all

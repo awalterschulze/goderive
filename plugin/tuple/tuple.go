@@ -13,9 +13,10 @@
 //  limitations under the License.
 
 // Package tuple contains the implementation of the tuple plugin, which generates the deriveTuple function.
+//
 // The deriveTuple function takes its input parameters and returns a function that returns those parameters.
 //   deriveTuple(A, B, ...) func() (A, B, ...)
-// It is useful, since a tuple is not a first class citizen in go, but a function that returns a tuple is.
+// deriveTuple is useful, since a tuple is not a first class citizen in go, but a function that returns a tuple is.
 package tuple
 
 import (

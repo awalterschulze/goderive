@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 // Package filter contains the implementation of the filter plugin, which generates the deriveFilter function.
+//
 // The deriveFilter function applies a predicate to each element of a list, returning a list of filtered results in the same order.
 //   func deriveFilter(func (T) bool, []T) []T
 package filter

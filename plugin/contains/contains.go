@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 // Package contains contains the implementation of the contains plugin, which generates the deriveContains function.
+//
 // The deriveContains function returns whether a value is contained in a slice.
 //   func deriveContains([]T, T) bool
 package contains

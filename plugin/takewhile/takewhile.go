@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 // Package takewhile contains the implementation of the takewhile plugin, which generates the deriveTakeWhile function.
+//
 // The deriveTakeWhile function returns the elements of the input list until the predicate fails.
 //   func deriveTakeWhile(func (T) bool, []T) []T
 package takewhile

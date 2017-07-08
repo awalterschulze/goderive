@@ -13,10 +13,13 @@
 //  limitations under the License.
 
 // Package unique contains the implementation of the unique plugin, which generates the deriveUnique function.
+//
 // The deriveUnique function returns a list of unique elements.
 //   deriveUnique([]T) []T
+//
 // Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique
-// deriveUnique also mutates the list in place.
+//
+// deriveUnique mutates the list in place.
 package unique
 
 import (

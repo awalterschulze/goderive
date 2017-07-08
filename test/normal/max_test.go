@@ -22,7 +22,10 @@ import (
 func TestMaxInt64(t *testing.T) {
 	var list []int64
 	list = random(list).([]int64)
-	max := deriveMaxInt64s(list, int64(math.MaxInt64))
+	for len(list) == 0 {
+		list = random(list).([]int64)
+	}
+	max := deriveMaxInt64s(list, list[0])
 	sorted := deriveSortInt64s(list)
 	othermax := int64(math.MinInt64)
 	if len(sorted) > 0 {

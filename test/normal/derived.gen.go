@@ -61,12 +61,6 @@ func deriveContainsStruct(list []*BuiltInTypes, item *BuiltInTypes) bool {
 	return false
 }
 
-func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c bool) string {
-	return func(b string, c bool) string {
-		return f(b)(c)
-	}
-}
-
 func deriveUncurryMarshal(f func(data []byte) func(v interface{}) error) func(data []byte, v interface{}) error {
 	return func(data []byte, v interface{}) error {
 		return f(data)(v)
@@ -76,6 +70,12 @@ func deriveUncurryMarshal(f func(data []byte) func(v interface{}) error) func(da
 func deriveUncurry3(f func(a int) func(b string, c bool) string) func(a int, b string, c bool) string {
 	return func(a int, b string, c bool) string {
 		return f(a)(b, c)
+	}
+}
+
+func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c bool) string {
+	return func(b string, c bool) string {
+		return f(b)(c)
 	}
 }
 

@@ -3203,6 +3203,24 @@ func deriveMaxStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	return m
 }
 
+func deriveAny(pred func(int) bool, list []int) bool {
+	for _, elem := range list {
+		if pred(elem) {
+			return true
+		}
+	}
+	return false
+}
+
+func deriveAll(pred func(int) bool, list []int) bool {
+	for _, elem := range list {
+		if !pred(elem) {
+			return false
+		}
+	}
+	return true
+}
+
 func deriveCompare(this, that bool) int {
 	if this == that {
 		return 0

@@ -52,43 +52,64 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
+	switch typs[1].(type) {
+	case *types.Slice:
+		_, _, err := this.sliceInOut(name, typs)
+		if err != nil {
+			return "", err
+		}
+		return this.SetFuncName(name, typs...)
+	}
+	return "", fmt.Errorf("unsupported type %s, not a slice", typs[1])
+}
+
+func (this *gen) sliceInOut(name string, typs []types.Type) (inTyp types.Type, outTyp types.Type, err error) {
 	sliceTyp, ok := typs[1].(*types.Slice)
 	if !ok {
-		return "", fmt.Errorf("%s, the second argument, %s, is not of type slice", name, this.TypeString(typs[1]))
+		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type slice", name, this.TypeString(typs[1]))
 	}
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return "", fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[0]))
+		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() != 1 {
-		return "", fmt.Errorf("%s, the second argument is a function, but wanted a function with one argument", name)
+		return nil, nil, fmt.Errorf("%s, the second argument is a function, but wanted a function with one argument", name)
 	}
 	elemTyp := sliceTyp.Elem()
-	inTyp := params.At(0).Type()
+	inTyp = params.At(0).Type()
 	if !types.Identical(inTyp, elemTyp) {
-		return "", fmt.Errorf("%s the function input type and slice element type are different %s != %s",
+		return nil, nil, fmt.Errorf("%s the function input type and slice element type are different %s != %s",
 			name, inTyp, elemTyp)
 	}
 	res := sig.Results()
 	if res.Len() != 1 {
-		return "", fmt.Errorf("%s, the function argument does not have a single result, but has %d resulting parameters", name, res.Len())
+		return nil, nil, fmt.Errorf("%s, the function argument does not have a single result, but has %d resulting parameters", name, res.Len())
 	}
-	outTyp := res.At(0).Type()
-	return this.SetFuncName(name, inTyp, outTyp)
+	outTyp = res.At(0).Type()
+	return inTyp, outTyp, nil
 }
 
 func (this *gen) Generate(typs []types.Type) error {
-	return this.genFuncFor(typs[0], typs[1])
+	switch typs[1].(type) {
+	case *types.Slice:
+		return this.genSlice(typs)
+	}
+	return fmt.Errorf("unsupported type %s, not a slice", typs[1])
 }
 
-func (this *gen) genFuncFor(in, out types.Type) error {
+func (this *gen) genSlice(typs []types.Type) error {
+	name := this.GetFuncName(typs...)
+	in, out, err := this.sliceInOut(name, typs)
+	if err != nil {
+		return err
+	}
+	this.Generating(typs...)
 	p := this.printer
-	this.Generating(in, out)
 	inStr := this.TypeString(in)
 	outStr := this.TypeString(out)
 	p.P("")
-	p.P("func %s(f func(%s) %s, list []%s) []%s {", this.GetFuncName(in, out), inStr, outStr, inStr, outStr)
+	p.P("func %s(f func(%s) %s, list []%s) []%s {", name, inStr, outStr, inStr, outStr)
 	p.In()
 	p.P("out := make([]%s, len(list))", outStr)
 	p.P("for i, elem := range list {")

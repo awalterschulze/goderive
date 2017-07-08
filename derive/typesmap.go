@@ -168,7 +168,7 @@ func (this *typesMap) nameOf(typs []types.Type) (string, bool) {
 func (this *typesMap) Generating(typs ...types.Type) {
 	name, ok := this.nameOf(typs)
 	if !ok {
-		panic("wtf")
+		panic(fmt.Sprintf("generating unknown %s for types: %v", this.prefix, typs))
 	}
 	this.generated[name] = true
 }

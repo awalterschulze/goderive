@@ -151,7 +151,10 @@ func eq(this, that []types.Type) bool {
 func (this *typesMap) nameOf(typs []types.Type) (string, bool) {
 	for _, t := range typs {
 		if n, ok := t.(*types.Named); ok {
-			this.qual(n.Obj().Pkg())
+			pkg := n.Obj().Pkg()
+			if pkg != nil {
+				this.qual(pkg)
+			}
 		}
 	}
 	for name, ts := range this.funcToTyps {

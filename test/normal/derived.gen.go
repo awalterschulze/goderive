@@ -61,6 +61,12 @@ func deriveContainsStruct(list []*BuiltInTypes, item *BuiltInTypes) bool {
 	return false
 }
 
+func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c bool) string {
+	return func(b string, c bool) string {
+		return f(b)(c)
+	}
+}
+
 func deriveUncurryMarshal(f func(data []byte) func(v interface{}) error) func(data []byte, v interface{}) error {
 	return func(data []byte, v interface{}) error {
 		return f(data)(v)
@@ -70,12 +76,6 @@ func deriveUncurryMarshal(f func(data []byte) func(v interface{}) error) func(da
 func deriveUncurry3(f func(a int) func(b string, c bool) string) func(a int, b string, c bool) string {
 	return func(a int, b string, c bool) string {
 		return f(a)(b, c)
-	}
-}
-
-func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c bool) string {
-	return func(b string, c bool) string {
-		return f(b)(c)
 	}
 }
 
@@ -2543,6 +2543,30 @@ func deriveUnionOfInt64s(union, that []int64) []int64 {
 		}
 	}
 	return union
+}
+
+func deriveTuple1(v0 int) func() int {
+	return func() int {
+		return v0
+	}
+}
+
+func deriveTuple2(v0 int, v1 string) func() (int, string) {
+	return func() (int, string) {
+		return v0, v1
+	}
+}
+
+func deriveTuple3(v0 int, v1 string, v2 *BuiltInTypes) func() (int, string, *BuiltInTypes) {
+	return func() (int, string, *BuiltInTypes) {
+		return v0, v1, v2
+	}
+}
+
+func deriveTupleError(v0 []byte, v1 error) func() ([]byte, error) {
+	return func() ([]byte, error) {
+		return v0, v1
+	}
 }
 
 func deriveEqualPtrToEmpty(this, that *Empty) bool {

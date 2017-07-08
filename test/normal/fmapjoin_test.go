@@ -44,6 +44,14 @@ func TestJoin(t *testing.T) {
 	}
 }
 
+func TestJoinString(t *testing.T) {
+	got := deriveJoinString([]string{"abc", "cde"})
+	want := "abccde"
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("got %v, want %v", got, want)
+	}
+}
+
 func TestFmapJoin(t *testing.T) {
 	ss := []string{"a,b", "c,d"}
 	split := func(s string) []string {

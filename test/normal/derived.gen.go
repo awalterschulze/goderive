@@ -3098,6 +3098,10 @@ func deriveJoin(list [][]int) []int {
 	return res
 }
 
+func deriveJoinString(list []string) string {
+	return strings.Join(list, "")
+}
+
 func deriveJoinSS(list [][]string) []string {
 	if list == nil {
 		return nil

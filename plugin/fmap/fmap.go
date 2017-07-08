@@ -67,7 +67,7 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 		}
 		return this.SetFuncName(name, typs...)
 	}
-	return "", fmt.Errorf("unsupported type %s, not a slice", typs[1])
+	return "", fmt.Errorf("unsupported type %s, not a slice or a string", typs[1])
 }
 
 func (this *gen) stringOut(name string, typs []types.Type) (outTyp types.Type, err error) {
@@ -135,7 +135,7 @@ func (this *gen) Generate(typs []types.Type) error {
 	case *types.Basic:
 		return this.genString(typs)
 	}
-	return fmt.Errorf("unsupported type %s, not a slice", typs[1])
+	return fmt.Errorf("unsupported type %s, not a slice or a string", typs[1])
 }
 
 func (this *gen) genSlice(typs []types.Type) error {

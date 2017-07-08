@@ -38,43 +38,100 @@ func NewPlugin() derive.Plugin {
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &gen{
-		TypesMap: typesMap,
-		printer:  p,
+		TypesMap:   typesMap,
+		printer:    p,
+		stringsPkg: p.NewImport("strings"),
 	}
 }
 
 type gen struct {
 	derive.TypesMap
-	printer  derive.Printer
-	bytesPkg derive.Import
+	printer    derive.Printer
+	stringsPkg derive.Import
 }
 
 func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 1 {
 		return "", fmt.Errorf("%s does not have one argument", name)
 	}
+	switch t := typs[0].(type) {
+	case *types.Slice:
+		switch t.Elem().(type) {
+		case *types.Slice:
+			_, err := this.sliceType(name, typs)
+			if err != nil {
+				return "", err
+			}
+			return this.SetFuncName(name, typs...)
+		case *types.Basic:
+			err := this.stringType(name, typs)
+			if err != nil {
+				return "", err
+			}
+			return this.SetFuncName(name, typs...)
+		}
+	}
+	return "", fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
+}
+
+func (this *gen) sliceType(name string, typs []types.Type) (types.Type, error) {
+	if len(typs) != 1 {
+		return nil, fmt.Errorf("%s does not have one argument", name)
+	}
 	sliceTyp, ok := typs[0].(*types.Slice)
 	if !ok {
-		return "", fmt.Errorf("%s, the argument, %s, is not of type slice", name, typs[0])
+		return nil, fmt.Errorf("%s, the argument, %s, is not of type slice", name, typs[0])
 	}
 	sliceOfSliceTyp, ok := sliceTyp.Elem().(*types.Slice)
 	if !ok {
-		return "", fmt.Errorf("%s, the argument, %s, is not of type slice of slice", name, typs[0])
+		return nil, fmt.Errorf("%s, the argument, %s, is not of type slice of slice", name, typs[0])
 	}
 	elemType := sliceOfSliceTyp.Elem()
-	return this.SetFuncName(name, elemType)
+	return elemType, nil
+}
+
+func (this *gen) stringType(name string, typs []types.Type) error {
+	if len(typs) != 1 {
+		return fmt.Errorf("%s does not have one argument", name)
+	}
+	sliceTyp, ok := typs[0].(*types.Slice)
+	if !ok {
+		return fmt.Errorf("%s, the argument, %s, is not of type slice", name, typs[0])
+	}
+	basic, ok := sliceTyp.Elem().(*types.Basic)
+	if !ok {
+		return fmt.Errorf("%s, the argument, %s, is not of a slice of type basic", name, typs[0])
+	}
+	if basic.Kind() != types.String {
+		return fmt.Errorf("%s, the argument, %s, is not of a slice of string", name, typs[0])
+	}
+	return nil
 }
 
 func (this *gen) Generate(typs []types.Type) error {
-	return this.genFuncFor(typs[0])
+	switch t := typs[0].(type) {
+	case *types.Slice:
+		switch t.Elem().(type) {
+		case *types.Slice:
+			return this.genSlice(typs)
+		case *types.Basic:
+			return this.genString(typs)
+		}
+	}
+	return fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
 }
 
-func (this *gen) genFuncFor(typ types.Type) error {
+func (this *gen) genSlice(typs []types.Type) error {
 	p := this.printer
-	this.Generating(typ)
-	typStr := this.TypeString(typ)
+	this.Generating(typs...)
+	name := this.GetFuncName(typs...)
+	elemTyp, err := this.sliceType(name, typs)
+	if err != nil {
+		return err
+	}
+	typStr := this.TypeString(elemTyp)
 	p.P("")
-	p.P("func %s(list [][]%s) []%s {", this.GetFuncName(typ), typStr, typStr)
+	p.P("func %s(list [][]%s) []%s {", name, typStr, typStr)
 	p.In()
 	p.P("if list == nil {")
 	p.In()
@@ -94,6 +151,19 @@ func (this *gen) genFuncFor(typ types.Type) error {
 	p.Out()
 	p.P("}")
 	p.P("return res")
+	p.Out()
+	p.P("}")
+	return nil
+}
+
+func (this *gen) genString(typs []types.Type) error {
+	p := this.printer
+	this.Generating(typs...)
+	name := this.GetFuncName(typs...)
+	p.P("")
+	p.P("func %s(list []string) string {", name)
+	p.In()
+	p.P("return %s.Join(list, \"\")", this.stringsPkg())
 	p.Out()
 	p.P("}")
 	return nil

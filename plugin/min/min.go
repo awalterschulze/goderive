@@ -13,9 +13,18 @@
 //  limitations under the License.
 
 // Package min contains the implementation of the min plugin, which generates the deriveMin function.
-// The deriveMin function returns the minimum value in a slice.
-//   func deriveMin(list []T, default T) (min T)
+// The deriveMin function returns the minimum of two arguments.
 //   func deriveMin(T, T) T
+// deriveMin is a generic version of
+//   math.Min(x, y float64) float64
+// and preferable over abusing math.Min, for not float64 types:
+// https://mrekucci.blogspot.nl/2015/07/dont-abuse-mathmax-mathmin.html
+//
+// It can also return the minimum element in a list.
+//   func deriveMin(list []T, default T) (min T)
+// A default value is provided for the empty list.
+//
+// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/min
 package min
 
 import (

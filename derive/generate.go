@@ -75,35 +75,40 @@ func (p *plugins) Load(paths []string) (*program, error) {
 	}, nil
 }
 
-func (p *program) NewPackage(pkgInfo *loader.PackageInfo) (*pkg, error) {
+func union(this, that map[string]struct{}) map[string]struct{} {
+	for k := range that {
+		this[k] = struct{}{}
+	}
+	return this
+}
+
+func NewPackage(program *loader.Program, pkgInfo *loader.PackageInfo, plugins []Plugin, autoname, dedup bool) (*pkg, error) {
+	fileInfos := NewFileInfos(program, pkgInfo)
+	reserved := make(map[string]struct{})
+	for _, fileFuncs := range fileInfos {
+		reserved = union(reserved, fileFuncs.funcNames)
+	}
+
 	printer := newPrinter(pkgInfo.Pkg.Name())
 	qual := newQualifier(printer, pkgInfo.Pkg)
-	typesmaps := make(map[string]TypesMap, len(p.plugins))
-	deps := make(map[string]Dependency, len(p.plugins))
-	for _, plugin := range p.plugins {
-		tm := newTypesMap(qual, plugin.GetPrefix(), p.autoname, p.dedup)
+	typesmaps := make(map[string]TypesMap, len(plugins))
+	deps := make(map[string]Dependency, len(plugins))
+	for _, plugin := range plugins {
+		tm := newTypesMap(qual, plugin.GetPrefix(), reserved, autoname, dedup)
 		deps[plugin.Name()] = tm
 		typesmaps[plugin.Name()] = tm
 	}
-	generators := make(map[string]Generator, len(p.plugins))
-	for _, plugin := range p.plugins {
+	generators := make(map[string]Generator, len(plugins))
+	for _, plugin := range plugins {
 		generators[plugin.Name()] = plugin.New(typesmaps[plugin.Name()], printer, deps)
 	}
-	pkg := &pkg{pkgInfo, p.plugins, generators, printer, nil}
-	for _, file := range pkgInfo.Files {
-		astFile := p.program.Fset.File(file.Pos())
-		if astFile == nil {
-			continue
-		}
-		fullpath := astFile.Name()
-		_, fname := filepath.Split(fullpath)
-		if fname == derivedFilename {
-			continue
-		}
+	pkg := &pkg{pkgInfo, plugins, generators, printer, nil}
+	for _, fileInfo := range fileInfos {
 
-		calls := findUndefinedOrDerivedFuncs(p.program, pkgInfo, file)
 		changed := false
+		calls := append(fileInfo.undefined, fileInfo.derived...)
 		for _, call := range calls {
+			// log.Printf("call: %v", call.Name)
 			if call.HasUndefined() {
 				pkg.undefined = append(pkg.undefined, call.Expr)
 				continue
@@ -115,7 +120,7 @@ func (p *program) NewPackage(pkgInfo *loader.PackageInfo) (*pkg, error) {
 			generated := len(name) > 0
 			if generated {
 				if name != call.Name {
-					if !p.autoname && !p.dedup {
+					if !autoname && !dedup {
 						panic("unreachable: function names cannot be changed if it is not allowed by the user")
 					}
 					changed = true
@@ -126,17 +131,18 @@ func (p *program) NewPackage(pkgInfo *loader.PackageInfo) (*pkg, error) {
 				pkg.undefined = append(pkg.undefined, call.Expr)
 			}
 		}
+
 		if changed {
-			info, err := os.Stat(fullpath)
+			info, err := os.Stat(fileInfo.fullpath)
 			if err != nil {
-				return nil, fmt.Errorf("stat %s: %v", fullpath, err)
+				return nil, fmt.Errorf("stat %s: %v", fileInfo.fullpath, err)
 			}
-			f, err := os.OpenFile(fullpath, os.O_WRONLY, info.Mode())
+			f, err := os.OpenFile(fileInfo.fullpath, os.O_WRONLY, info.Mode())
 			if err != nil {
-				return nil, fmt.Errorf("opening %s: %v", fullpath, err)
+				return nil, fmt.Errorf("opening %s: %v", fileInfo.fullpath, err)
 			}
-			if err := format.Node(f, p.program.Fset, file); err != nil {
-				return nil, fmt.Errorf("formatting %s: %v", fullpath, err)
+			if err := format.Node(f, program.Fset, fileInfo.astFile); err != nil {
+				return nil, fmt.Errorf("formatting %s: %v", fileInfo.fullpath, err)
 			}
 		}
 	}
@@ -208,8 +214,13 @@ func (pkg *pkg) Generate() (bool, error) {
 }
 
 func (pg *program) Generate() error {
-	for _, pkgInfo := range pg.program.InitialPackages() {
-		if err := pg.generatePackage(pkgInfo); err != nil {
+	pkgInfos := pg.program.InitialPackages()
+
+	// sort.Slice(pkgInfos, func(i, j int) bool {
+	// 	return pkgInfos[i].String() < pkgInfos[j].String()
+	// })
+	for i := range pkgInfos {
+		if err := pg.generatePackage(pkgInfos[i]); err != nil {
 			return err
 		}
 	}
@@ -218,10 +229,16 @@ func (pg *program) Generate() error {
 
 func (pg *program) generatePackage(pkgInfo *loader.PackageInfo) error {
 	path := pkgInfo.Pkg.Path()
+	// ss := make([]string, len(pkgInfo.Files))
+	// for i := range pkgInfo.Files {
+	// 	ss[i] = pg.program.Fset.File(pkgInfo.Files[i].Pos()).Name()
+	// }
+	// log.Printf("package: %s, files %d: %s", path, len(pkgInfo.Files), strings.Join(ss, ", "))
 	generated := true
 	var undefined []*ast.CallExpr
+	thisprogram := pg.program
 	for generated {
-		pkgGen, err := pg.NewPackage(pkgInfo)
+		pkgGen, err := NewPackage(thisprogram, pkgInfo, pg.plugins, pg.autoname, pg.dedup)
 		if err != nil {
 			return err
 		}
@@ -245,11 +262,10 @@ func (pg *program) generatePackage(pkgInfo *loader.PackageInfo) error {
 		}
 
 		// reload path with newly generated code, with the hope that some types are now inferable.
-		thisprogram, err := load(path)
+		thisprogram, err = load(path)
 		if err != nil {
 			return err
 		}
-		pg.program = thisprogram
 		pkgInfo = thisprogram.Package(path)
 	}
 

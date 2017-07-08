@@ -24,17 +24,51 @@ import (
 
 const derivedFilename = "derived.gen.go"
 
-func findUndefinedOrDerivedFuncs(program *loader.Program, pkgInfo *loader.PackageInfo, file *ast.File) []*Call {
-	f := &finder{program, pkgInfo, nil, nil}
-	for _, d := range file.Decls {
-		ast.Walk(f, d)
+type fileInfo struct {
+	astFile   *ast.File
+	fullpath  string
+	undefined []*Call
+	derived   []*Call
+	funcNames map[string]struct{}
+}
+
+func NewFileInfos(program *loader.Program, pkgInfo *loader.PackageInfo) []*fileInfo {
+	files := []*fileInfo{}
+	for i := range pkgInfo.Files {
+		astFile := pkgInfo.Files[i]
+		file := program.Fset.File(astFile.Pos())
+		if file == nil {
+			panic("unknown file")
+		}
+		fullpath := file.Name()
+		// log.Printf("filename: %s", fullpath)
+		_, fname := filepath.Split(fullpath)
+		if fname == derivedFilename {
+			continue
+		}
+
+		f := &finder{program, pkgInfo, nil, nil, make(map[string]struct{})}
+		for _, d := range astFile.Decls {
+			ast.Walk(f, d)
+		}
+		undefined := make([]*Call, len(f.undefined))
+		for i := range f.undefined {
+			undefined[i] = newCall(pkgInfo, f.undefined[i])
+		}
+		derived := make([]*Call, len(f.derived))
+		for i := range f.derived {
+			derived[i] = newCall(pkgInfo, f.derived[i])
+		}
+
+		files = append(files, &fileInfo{
+			astFile:   pkgInfo.Files[i],
+			fullpath:  fullpath,
+			undefined: undefined,
+			derived:   derived,
+			funcNames: f.funcNames,
+		})
 	}
-	callExprs := append(f.undefined, f.derived...)
-	calls := make([]*Call, len(callExprs))
-	for i := range callExprs {
-		calls[i] = newCall(pkgInfo, callExprs[i])
-	}
-	return calls
+	return files
 }
 
 type finder struct {
@@ -42,6 +76,7 @@ type finder struct {
 	pkgInfo   *loader.PackageInfo
 	undefined []*ast.CallExpr
 	derived   []*ast.CallExpr
+	funcNames map[string]struct{}
 }
 
 func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
@@ -58,15 +93,20 @@ func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
 		this.undefined = append(this.undefined, call)
 		return this
 	}
+	if _, ok := def.(*types.Builtin); ok {
+		return this
+	}
 	file := this.program.Fset.File(def.Pos())
 	if file == nil {
-		// probably a builtin function, for example panic.
+		// probably a cast, for example float64()
 		return this
 	}
 	_, filename := filepath.Split(file.Name())
 	if filename == derivedFilename {
 		this.derived = append(this.derived, call)
+		return this
 	}
+	this.funcNames[fn.Name] = struct{}{}
 	return this
 }
 

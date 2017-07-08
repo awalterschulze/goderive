@@ -5812,7 +5812,7 @@ func deriveCompare_122(this, that *MySlice) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompare_My(*this, *that)
+	return deriveCompare_27(*this, *that)
 }
 
 func deriveCompare_123(this, that []MySlice) int {
@@ -7905,30 +7905,6 @@ func deriveCompare_129(this, that map[int]int) int {
 			if c := deriveCompare_i(thiskey, thatkey); c != 0 {
 				return c
 			}
-		}
-	}
-	return 0
-}
-
-func deriveCompare_My(this, that MySlice) int {
-	if this == nil {
-		if that == nil {
-			return 0
-		}
-		return -1
-	}
-	if that == nil {
-		return 1
-	}
-	if len(this) != len(that) {
-		if len(this) < len(that) {
-			return -1
-		}
-		return 1
-	}
-	for i := 0; i < len(this); i++ {
-		if c := deriveCompare_int6(this[i], that[i]); c != 0 {
-			return c
 		}
 	}
 	return 0

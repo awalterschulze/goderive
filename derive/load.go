@@ -26,6 +26,7 @@ func load(paths ...string) (*loader.Program, error) {
 		ParserMode:  parser.ParseComments,
 		AllowErrors: true,
 	}
+	conf.TypeChecker.Error = func(err error) {}
 	rest, err := conf.FromArgs(paths, true)
 	if err != nil {
 		return nil, fmt.Errorf("could not parse arguments: %s", err)

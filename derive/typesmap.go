@@ -37,17 +37,19 @@ type typesMap struct {
 	generated  map[string]bool
 	funcToTyps map[string][]types.Type
 	typss      [][]types.Type
+	reserved   map[string]struct{}
 	autoname   bool
 	dedup      bool
 }
 
-func newTypesMap(qual types.Qualifier, prefix string, autoname bool, dedup bool) TypesMap {
+func newTypesMap(qual types.Qualifier, prefix string, reserved map[string]struct{}, autoname bool, dedup bool) TypesMap {
 	return &typesMap{
 		qual:       qual,
 		prefix:     prefix,
 		generated:  make(map[string]bool),
 		funcToTyps: make(map[string][]types.Type),
 		typss:      nil,
+		reserved:   reserved,
 		autoname:   autoname,
 		dedup:      dedup,
 	}
@@ -67,6 +69,7 @@ func (this *typesMap) IsExternal(typ *types.Named) bool {
 }
 
 func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, error) {
+	// log.Printf("SetFuncName: %s(%v)", funcName, typs)
 	if fName, ok := this.nameOf(typs); ok {
 		if fName == funcName {
 			return funcName, nil
@@ -83,7 +86,7 @@ func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, 
 		if this.autoname {
 			return this.GetFuncName(typs...), nil
 		}
-		return "", fmt.Errorf("conflicting function names %s", funcName)
+		return "", fmt.Errorf("conflicting function names %s(%v) and %s(%v)", funcName, ts, funcName, typs)
 	}
 	this.funcToTyps[funcName] = typs
 	this.typss = append(this.typss, typs)
@@ -91,18 +94,17 @@ func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, 
 }
 
 func (this *typesMap) GetFuncName(typs ...types.Type) string {
+	// log.Printf("GetFuncName: %v", typs)
 	name, ok := this.nameOf(typs)
 	if !ok {
 		name = this.newName(typs)
 		this.SetFuncName(name, typs...)
 	}
+	// log.Printf("GotFuncName: %s(%v)", name, typs)
 	return name
 }
 
 func (this *typesMap) newName(typs []types.Type) string {
-	funcName := this.prefix
-	_, exists := this.funcToTyps[funcName]
-	i := 0
 	name := ""
 	if len(typs) > 0 {
 		switch t := typs[0].(type) {
@@ -117,7 +119,11 @@ func (this *typesMap) newName(typs []types.Type) string {
 			}
 		}
 	}
-	for exists {
+	i := 0
+	funcName := this.prefix
+	_, exists := this.funcToTyps[funcName]
+	_, isreserved := this.reserved[funcName]
+	for exists || isreserved {
 		if i > len(name) {
 			funcName = this.prefix + "_" + name + strconv.Itoa(i)
 		} else {
@@ -125,6 +131,7 @@ func (this *typesMap) newName(typs []types.Type) string {
 		}
 		i++
 		_, exists = this.funcToTyps[funcName]
+		_, isreserved = this.reserved[funcName]
 	}
 	return funcName
 }
@@ -134,7 +141,7 @@ func eq(this, that []types.Type) bool {
 		return false
 	}
 	for i, t := range this {
-		if !types.Identical(t, that[i]) {
+		if !types.AssignableTo(types.Default(t), types.Default(that[i])) {
 			return false
 		}
 	}

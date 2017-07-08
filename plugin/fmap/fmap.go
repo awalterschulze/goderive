@@ -16,10 +16,11 @@
 //
 // The deriveFmap function applies a given function to each element of a list, returning a list of results in the same order.
 //   deriveFmap(func(A) B, []A) []B
+//   deriveFmap(func(rune) B, string) []B
 //
-// More things to come:
-//	- currently only slices are supported, think about supporting other types and not just slices
-//	- think about functions without a return type
+// deriveFmap can also be applied to a function that returns a value and an error.
+//   deriveFmap(func(A) B, func() (A, error)) (B, error)
+// deriveFmap will propogate the error and not apply the first function to the result of the second function, if the second function returns an error.
 package fmap
 
 import (
@@ -66,8 +67,89 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 			return "", err
 		}
 		return this.SetFuncName(name, typs...)
+	case *types.Signature:
+		_, _, err := this.errorInOut(name, typs)
+		if err != nil {
+			return "", err
+		}
+		return this.SetFuncName(name, typs...)
 	}
 	return "", fmt.Errorf("unsupported type %s, not a slice or a string", typs[1])
+}
+
+func isError(t types.Type) bool {
+	typ, ok := t.(*types.Named)
+	if !ok {
+		return false
+	}
+	if typ.Obj().Name() == "error" {
+		return true
+	}
+	for i := 0; i < typ.NumMethods(); i++ {
+		meth := typ.Method(i)
+		if meth.Name() != "Error" {
+			continue
+		}
+		sig, ok := meth.Type().(*types.Signature)
+		if !ok {
+			// impossible, but lets check anyway
+			continue
+		}
+		if sig.Params().Len() != 0 {
+			continue
+		}
+		res := sig.Results()
+		if res.Len() != 1 {
+			continue
+		}
+		b, ok := res.At(0).Type().(*types.Basic)
+		if !ok {
+			continue
+		}
+		if b.Kind() != types.String {
+			continue
+		}
+		return true
+	}
+	return false
+}
+
+func (this *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, outTyp types.Type, err error) {
+	esig, ok := typs[1].(*types.Signature)
+	if !ok {
+		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[1]))
+	}
+	eparams := esig.Params()
+	if eparams.Len() != 0 {
+		return nil, nil, fmt.Errorf("%s, the second argument is a function, but wanted a function with zero arguments", name)
+	}
+	eres := esig.Results()
+	if eres.Len() != 2 {
+		return nil, nil, fmt.Errorf("%s, the second function argument does not have two results, but has %d resulting parameters", name, eres.Len())
+	}
+	if !isError(eres.At(1).Type()) {
+		return nil, nil, fmt.Errorf("%s, the second argument is a function, but its second argument is not an error: %s", name, eres.At(1).Type())
+	}
+	elemTyp := eres.At(0).Type()
+	sig, ok := typs[0].(*types.Signature)
+	if !ok {
+		return nil, nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, this.TypeString(typs[0]))
+	}
+	params := sig.Params()
+	if params.Len() != 1 {
+		return nil, nil, fmt.Errorf("%s, the first argument is a function, but wanted a function with one argument", name)
+	}
+	inTyp = params.At(0).Type()
+	if !types.Identical(inTyp, elemTyp) {
+		return nil, nil, fmt.Errorf("%s the function input type is not of type rune != %s",
+			name, elemTyp)
+	}
+	res := sig.Results()
+	if res.Len() != 1 {
+		return nil, nil, fmt.Errorf("%s, the function argument does not have a single result, but has %d resulting parameters", name, res.Len())
+	}
+	outTyp = res.At(0).Type()
+	return inTyp, outTyp, nil
 }
 
 func (this *gen) stringOut(name string, typs []types.Type) (outTyp types.Type, err error) {
@@ -81,11 +163,11 @@ func (this *gen) stringOut(name string, typs []types.Type) (outTyp types.Type, e
 	}
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return nil, fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[0]))
+		return nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, this.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() != 1 {
-		return nil, fmt.Errorf("%s, the second argument is a function, but wanted a function with one argument", name)
+		return nil, fmt.Errorf("%s, the first argument is a function, but wanted a function with one argument", name)
 	}
 	elemTyp := types.Typ[types.Rune]
 	inTyp := params.At(0).Type()
@@ -108,11 +190,11 @@ func (this *gen) sliceInOut(name string, typs []types.Type) (inTyp types.Type, o
 	}
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[0]))
+		return nil, nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, this.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() != 1 {
-		return nil, nil, fmt.Errorf("%s, the second argument is a function, but wanted a function with one argument", name)
+		return nil, nil, fmt.Errorf("%s, the first argument is a function, but wanted a function with one argument", name)
 	}
 	elemTyp := sliceTyp.Elem()
 	inTyp = params.At(0).Type()
@@ -134,6 +216,8 @@ func (this *gen) Generate(typs []types.Type) error {
 		return this.genSlice(typs)
 	case *types.Basic:
 		return this.genString(typs)
+	case *types.Signature:
+		return this.genError(typs)
 	}
 	return fmt.Errorf("unsupported type %s, not a slice or a string", typs[1])
 }
@@ -182,6 +266,45 @@ func (this *gen) genString(typs []types.Type) error {
 	p.Out()
 	p.P("}")
 	p.P("return out")
+	p.Out()
+	p.P("}")
+	return nil
+}
+
+func zero(typ types.Type) string {
+	switch t := typ.(type) {
+	case *types.Basic:
+		switch t.Kind() {
+		case types.String:
+			return ""
+		default:
+			return "0"
+		}
+	}
+	return "nil"
+}
+
+func (this *gen) genError(typs []types.Type) error {
+	name := this.GetFuncName(typs...)
+	in, out, err := this.errorInOut(name, typs)
+	if err != nil {
+		return err
+	}
+	this.Generating(typs...)
+	p := this.printer
+	inStr := this.TypeString(in)
+	outStr := this.TypeString(out)
+
+	p.P("")
+	p.P("func %s(f func(%s) %s, g func() (%s, error)) (%s, error) {", name, inStr, outStr, inStr, outStr)
+	p.In()
+	p.P("v, err := g()")
+	p.P("if err != nil {")
+	p.In()
+	p.P("return %s, err", zero(out))
+	p.Out()
+	p.P("}")
+	p.P("return f(v), nil")
 	p.Out()
 	p.P("}")
 	return nil

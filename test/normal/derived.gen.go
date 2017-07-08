@@ -3149,6 +3149,14 @@ func deriveFmapSS(f func(string) []string, list []string) [][]string {
 	return out
 }
 
+func deriveFmapError(f func(int) int64, g func() (int, error)) (int64, error) {
+	v, err := g()
+	if err != nil {
+		return 0, err
+	}
+	return f(v), nil
+}
+
 func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interface{}, data []byte) error {
 	return func(v interface{}, data []byte) error {
 		return f(data, v)

@@ -63,3 +63,20 @@ func TestFmapJoin(t *testing.T) {
 		t.Fatalf("got %v, want %v", got, want)
 	}
 }
+
+func TestFmapError(t *testing.T) {
+	f := func() (int, error) {
+		return 1, nil
+	}
+	add := func(i int) int64 {
+		return int64(i + 1)
+	}
+	got, err := deriveFmapError(add, f)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	want := int64(2)
+	if got != want {
+		t.Fatalf("got %d, want %d", got, want)
+	}
+}

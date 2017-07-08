@@ -13,9 +13,18 @@
 //  limitations under the License.
 
 // Package max contains the implementation of the max plugin, which generates the deriveMax function.
-// The deriveMax function returns the maximum value in a slice.
-//   func deriveMax(list []T, default T) (max T)
+// The deriveMax function returns the maximum of two arguments.
 //   func deriveMax(T, T) T
+// deriveMax is a generic version of
+//   math.Max(x, y float64) float64
+// and preferable over abusing math.Max, for not float64 types:
+// https://mrekucci.blogspot.nl/2015/07/dont-abuse-mathmax-mathmin.html
+//
+// It can also return the maximum element in a list.
+//   func deriveMax(list []T, default T) (max T)
+// A default value is provided for the empty list.
+//
+// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/max
 package max
 
 import (

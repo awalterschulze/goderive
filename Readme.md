@@ -85,6 +85,7 @@ More Examples:
   - [Unique](https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique)
   - [Set](https://github.com/awalterschulze/goderive/tree/master/example/plugin/set)
   - [Min](https://github.com/awalterschulze/goderive/tree/master/example/plugin/min)
+  - [Max](https://github.com/awalterschulze/goderive/tree/master/example/plugin/max)
 
 ## How to run
 

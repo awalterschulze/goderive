@@ -9,22 +9,22 @@
 			"revisionTime": "2016-11-30T08:01:11Z"
 		},
 		{
-			"checksumSHA1": "SoOfjYDw7R1N1P2aHxIjXYFmWUo=",
+			"checksumSHA1": "p3gWsy4fQOSXGRMUHr3TnmVFias=",
 			"path": "golang.org/x/tools/go/ast/astutil",
-			"revision": "44492e23b4afd3e75591994228422613777ee4ee",
-			"revisionTime": "2017-02-09T09:43:25Z"
+			"revision": "e011c1062a41d0e2614279f1dc8cf7f1bf6aaac3",
+			"revisionTime": "2017-05-12T20:54:58Z"
 		},
 		{
-			"checksumSHA1": "VtflDqIRy6TlpT4Dbwr55lxmsh8=",
+			"checksumSHA1": "AnXFEvmaJ7w2Q7hWPcLUmCbPgq0=",
 			"path": "golang.org/x/tools/go/buildutil",
-			"revision": "44492e23b4afd3e75591994228422613777ee4ee",
-			"revisionTime": "2017-02-09T09:43:25Z"
+			"revision": "e011c1062a41d0e2614279f1dc8cf7f1bf6aaac3",
+			"revisionTime": "2017-05-12T20:54:58Z"
 		},
 		{
-			"checksumSHA1": "7lF1vQ7O3i4Lk19amETdLazbDBU=",
+			"checksumSHA1": "3HnsDHAsl+izX3j9xpU6veKrWpk=",
 			"path": "golang.org/x/tools/go/loader",
-			"revision": "44492e23b4afd3e75591994228422613777ee4ee",
-			"revisionTime": "2017-02-09T09:43:25Z"
+			"revision": "e011c1062a41d0e2614279f1dc8cf7f1bf6aaac3",
+			"revisionTime": "2017-05-12T20:54:58Z"
 		}
 	],
 	"rootPath": "github.com/awalterschulze/goderive"

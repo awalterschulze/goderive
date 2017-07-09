@@ -8,7 +8,10 @@ Deep Functions:
 
   - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal) `deriveEqual(T, T) bool`
   - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare) `deriveCompare(T, T) int`
-  - [CopyTo](http://godoc.org/github.com/awalterschulze/goderive/plugin/copyto) `deriveCopyTo(src *T, dst *T)` or `deriveCopyTo(src []T, dst []T)` or `deriveCopyTo(src map[A]B, dst map[A]B)`
+  - [CopyTo](http://godoc.org/github.com/awalterschulze/goderive/plugin/copyto) 
+    - `deriveCopyTo(src *T, dst *T)`
+    - `deriveCopyTo(src []T, dst []T)`
+    - `deriveCopyTo(src map[A]B, dst map[A]B)`
 
 Tool Functions:
 
@@ -16,11 +19,19 @@ Tool Functions:
   - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort) `deriveSort([]T) []T`
   - [Unique](http://godoc.org/github.com/awalterschulze/goderive/plugin/unique) `deriveUnique([]T) []T`
   - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set) `deriveSet([]T) map[T]struct{}`
-  - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min) `deriveMin(list []T, default T) (min T)` or `deriveMin(T, T) T`
-  - [Max](http://godoc.org/github.com/awalterschulze/goderive/plugin/max) `deriveMax(list []T, default T) (max T)` or `deriveMax(T, T) T`
+  - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min) 
+    - `deriveMin(list []T, default T) (min T)`
+    - `deriveMin(T, T) T`
+  - [Max](http://godoc.org/github.com/awalterschulze/goderive/plugin/max) 
+    - `deriveMax(list []T, default T) (max T)`
+    - `deriveMax(T, T) T`
   - [Contains](http://godoc.org/github.com/awalterschulze/goderive/plugin/contains) `deriveContains([]T, T) bool`
-  - [Intersect](http://godoc.org/github.com/awalterschulze/goderive/plugin/intersect) `deriveIntersect(a, b []T) []T` or `deriveIntersect(a, b map[T]struct{}) map[T]struct{}`
-  - [Union](http://godoc.org/github.com/awalterschulze/goderive/plugin/union) `deriveUnion(a, b []T) []T` or `deriveUnion(a, b map[T]struct{}) map[T]struct{}`
+  - [Intersect](http://godoc.org/github.com/awalterschulze/goderive/plugin/intersect) 
+    - `deriveIntersect(a, b []T) []T`
+    - `deriveIntersect(a, b map[T]struct{}) map[T]struct{}`
+  - [Union](http://godoc.org/github.com/awalterschulze/goderive/plugin/union) 
+    - `deriveUnion(a, b []T) []T`
+    - `deriveUnion(a, b map[T]struct{}) map[T]struct{}`
 
 Functional Functions:
 
@@ -31,7 +42,9 @@ Functional Functions:
     - `deriveFmap(func(A) (B, error), func() (A, error)) (func() (B, error), error)`
     - `deriveFmap(func(A), func() (A, error)) error`
     - `deriveFmap(func(A) (B, c, d, ...), func() (A, error)) (func() (B, c, d, ...), error)`
-  - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join) `deriveJoin([][]T) []T` or `deriveJoin([]string) string`
+  - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join) 
+    - `deriveJoin([][]T) []T`
+    - `deriveJoin([]string) string`
   - [Filter](http://godoc.org/github.com/awalterschulze/goderive/plugin/filter) `deriveFilter(pred func(T) bool, []T) []T`
   - [All](http://godoc.org/github.com/awalterschulze/goderive/plugin/all) `deriveAll(pred func(T) bool, []T) bool`
   - [Any](http://godoc.org/github.com/awalterschulze/goderive/plugin/any) `deriveAny(pred func(T) bool, []T) bool`

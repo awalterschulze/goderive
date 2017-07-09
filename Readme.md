@@ -45,6 +45,8 @@ Functional Functions:
   - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join) 
     - `deriveJoin([][]T) []T`
     - `deriveJoin([]string) string`
+    - `deriveJoin(func() (T, error), error) func() (T, error)`
+    - `deriveJoin(func() (T, ..., error), error) func() (T, ..., error)`
   - [Filter](http://godoc.org/github.com/awalterschulze/goderive/plugin/filter) `deriveFilter(pred func(T) bool, []T) []T`
   - [All](http://godoc.org/github.com/awalterschulze/goderive/plugin/all) `deriveAll(pred func(T) bool, []T) bool`
   - [Any](http://godoc.org/github.com/awalterschulze/goderive/plugin/any) `deriveAny(pred func(T) bool, []T) bool`

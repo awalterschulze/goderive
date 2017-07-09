@@ -83,43 +83,6 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	return "", fmt.Errorf("unsupported type %s, not a slice or a string", typs[1])
 }
 
-func isError(t types.Type) bool {
-	typ, ok := t.(*types.Named)
-	if !ok {
-		return false
-	}
-	if typ.Obj().Name() == "error" {
-		return true
-	}
-	for i := 0; i < typ.NumMethods(); i++ {
-		meth := typ.Method(i)
-		if meth.Name() != "Error" {
-			continue
-		}
-		sig, ok := meth.Type().(*types.Signature)
-		if !ok {
-			// impossible, but lets check anyway
-			continue
-		}
-		if sig.Params().Len() != 0 {
-			continue
-		}
-		res := sig.Results()
-		if res.Len() != 1 {
-			continue
-		}
-		b, ok := res.At(0).Type().(*types.Basic)
-		if !ok {
-			continue
-		}
-		if b.Kind() != types.String {
-			continue
-		}
-		return true
-	}
-	return false
-}
-
 func (this *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, outs *types.Tuple, err error) {
 	esig, ok := typs[1].(*types.Signature)
 	if !ok {
@@ -133,7 +96,7 @@ func (this *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, o
 	if eres.Len() != 2 {
 		return nil, nil, fmt.Errorf("%s, the second function argument does not have two results, but has %d resulting parameters", name, eres.Len())
 	}
-	if !isError(eres.At(1).Type()) {
+	if !derive.IsError(eres.At(1).Type()) {
 		return nil, nil, fmt.Errorf("%s, the second argument is a function, but its second argument is not an error: %s", name, eres.At(1).Type())
 	}
 	elemTyp := eres.At(0).Type()
@@ -273,19 +236,6 @@ func (this *gen) genString(typs []types.Type) error {
 	return nil
 }
 
-func zero(typ types.Type) string {
-	switch t := typ.(type) {
-	case *types.Basic:
-		switch t.Kind() {
-		case types.String:
-			return ""
-		default:
-			return "0"
-		}
-	}
-	return "nil"
-}
-
 func (this *gen) genError(typs []types.Type) error {
 	name := this.GetFuncName(typs...)
 	in, out, err := this.errorInOut(name, typs)
@@ -314,7 +264,7 @@ func (this *gen) genError(typs []types.Type) error {
 	case 1:
 		t := out.At(0).Type()
 		outStr := this.TypeString(t)
-		zeroStr := zero(t)
+		zeroStr := derive.Zero(t)
 		p.P("func %s(f func(%s) %s, g func() (%s, error)) (%s, error) {", name, inStr, outStr, inStr, outStr)
 		p.In()
 		p.P("v, err := g()")

@@ -17,11 +17,17 @@
 // The deriveJoin function joins a slice of slices into a single slice.
 //    deriveJoin([][]T) []T
 //    deriveJoin([]string) string
+//
+// The deriveJoin function also joins two tuples, both with errors, into a single tuple with a single error.
+//    deriveJoin(func() (T, error), error) func() (T, error)
+//    deriveJoin(func() error, error) func() error
+//    deriveJoin(func() (T, ..., error), error) func() (T, ..., error)
 package join
 
 import (
 	"fmt"
 	"go/types"
+	"strings"
 
 	"github.com/awalterschulze/goderive/derive"
 )
@@ -49,8 +55,8 @@ type gen struct {
 }
 
 func (this *gen) Add(name string, typs []types.Type) (string, error) {
-	if len(typs) != 1 {
-		return "", fmt.Errorf("%s does not have one argument", name)
+	if len(typs) == 0 {
+		return "", fmt.Errorf("%s does not have at least one argument", name)
 	}
 	switch t := typs[0].(type) {
 	case *types.Slice:
@@ -68,8 +74,43 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 			}
 			return this.SetFuncName(name, typs...)
 		}
+	case *types.Signature:
+		_, err := this.errorType(name, typs)
+		if err != nil {
+			return "", err
+		}
+		return this.SetFuncName(name, typs...)
 	}
 	return "", fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
+}
+
+func (this *gen) errorType(name string, typs []types.Type) ([]types.Type, error) {
+	if len(typs) != 2 {
+		return nil, fmt.Errorf("%s does not have two arguments", name)
+	}
+	sig, ok := typs[0].(*types.Signature)
+	if !ok {
+		return nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, typs[0])
+	}
+	if !derive.IsError(typs[1]) {
+		return nil, fmt.Errorf("%s, the second argument, %s, is not of type error", name, typs[1])
+	}
+	if sig.Params().Len() != 0 {
+		return nil, fmt.Errorf("%s, the first argument is a function, but it has parameters %v", name, sig.Params())
+	}
+	res := sig.Results()
+	if res.Len() == 0 {
+		return nil, fmt.Errorf("%s, the first argument is a function, but it has no results", name)
+	}
+	last := res.At(res.Len() - 1)
+	if !derive.IsError(last.Type()) {
+		return nil, fmt.Errorf("%s, the first argument is a function, but its last result is not an error: %v", name, last.Type())
+	}
+	outTyps := make([]types.Type, res.Len()-1)
+	for i := range outTyps {
+		outTyps[i] = res.At(i).Type()
+	}
+	return outTyps, nil
 }
 
 func (this *gen) sliceType(name string, typs []types.Type) (types.Type, error) {
@@ -115,8 +156,52 @@ func (this *gen) Generate(typs []types.Type) error {
 		case *types.Basic:
 			return this.genString(typs)
 		}
+	case *types.Signature:
+		return this.genError(typs)
 	}
 	return fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
+}
+
+func (this *gen) genError(typs []types.Type) error {
+	p := this.printer
+	this.Generating(typs...)
+	name := this.GetFuncName(typs...)
+	outTyps, err := this.errorType(name, typs)
+	if err != nil {
+		return err
+	}
+	p.P("")
+	if len(outTyps) == 0 {
+		p.P("func %s(f func() error, err error) error {", name)
+		p.In()
+		p.P("if err != nil {")
+		p.In()
+		p.P("return err")
+		p.Out()
+		p.P("}")
+		p.P("return f()")
+		p.Out()
+		p.P("}")
+	} else {
+		outs := make([]string, len(outTyps))
+		zeros := make([]string, len(outTyps))
+		for i := range outTyps {
+			outs[i] = this.TypeString(outTyps[i])
+			zeros[i] = derive.Zero(outTyps[i])
+		}
+		outStr := strings.Join(outs, ", ")
+		p.P("func %s(f func() (%s, error), err error) (%s, error) {", name, outStr, outStr)
+		p.In()
+		p.P("if err != nil {")
+		p.In()
+		p.P("return %s, err", strings.Join(zeros, ", "))
+		p.Out()
+		p.P("}")
+		p.P("return f()")
+		p.Out()
+		p.P("}")
+	}
+	return nil
 }
 
 func (this *gen) genSlice(typs []types.Type) error {

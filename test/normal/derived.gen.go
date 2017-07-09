@@ -3117,6 +3117,27 @@ func deriveJoinString(list []string) string {
 	return strings.Join(list, "")
 }
 
+func deriveJoinJustError(f func() error, err error) error {
+	if err != nil {
+		return err
+	}
+	return f()
+}
+
+func deriveJoinErrorAndString(f func() (string, error), err error) (string, error) {
+	if err != nil {
+		return "", err
+	}
+	return f()
+}
+
+func deriveJoinErrorAndValues(f func() (string, int, error), err error) (string, int, error) {
+	if err != nil {
+		return "", 0, err
+	}
+	return f()
+}
+
 func deriveFmapForKeys(f func(int) string, list []int) []string {
 	out := make([]string, len(list))
 	for i, elem := range list {

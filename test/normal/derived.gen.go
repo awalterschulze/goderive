@@ -3083,6 +3083,21 @@ func deriveKeysForMapInt64ToInt64(m map[int64]int64) []int64 {
 	return keys
 }
 
+func deriveJoinSS(list [][]string) []string {
+	if list == nil {
+		return nil
+	}
+	l := 0
+	for _, elem := range list {
+		l += len(elem)
+	}
+	res := make([]string, 0, l)
+	for _, elem := range list {
+		res = append(res, elem...)
+	}
+	return res
+}
+
 func deriveJoin(list [][]int) []int {
 	if list == nil {
 		return nil
@@ -3100,21 +3115,6 @@ func deriveJoin(list [][]int) []int {
 
 func deriveJoinString(list []string) string {
 	return strings.Join(list, "")
-}
-
-func deriveJoinSS(list [][]string) []string {
-	if list == nil {
-		return nil
-	}
-	l := 0
-	for _, elem := range list {
-		l += len(elem)
-	}
-	res := make([]string, 0, l)
-	for _, elem := range list {
-		res = append(res, elem...)
-	}
-	return res
 }
 
 func deriveFmapForKeys(f func(int) string, list []int) []string {
@@ -3136,14 +3136,6 @@ func deriveFmap(f func(int) int, list []int) []int {
 func deriveFmapString(f func(rune) bool, ss string) []bool {
 	out := make([]bool, len([]rune(ss)))
 	for i, elem := range ss {
-		out[i] = f(elem)
-	}
-	return out
-}
-
-func deriveFmapSS(f func(string) []string, list []string) [][]string {
-	out := make([][]string, len(list))
-	for i, elem := range list {
 		out[i] = f(elem)
 	}
 	return out
@@ -3180,6 +3172,14 @@ func deriveFmapMore(f func(string) (int, string, error), g func() (string, error
 		return nil, err
 	}
 	return deriveTuple_(f(v)), nil
+}
+
+func deriveFmapSS(f func(string) []string, list []string) [][]string {
+	out := make([][]string, len(list))
+	for i, elem := range list {
+		out[i] = f(elem)
+	}
+	return out
 }
 
 func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interface{}, data []byte) error {

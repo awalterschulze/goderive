@@ -16,17 +16,20 @@ package test
 
 import (
 	"reflect"
-	"strings"
 	"testing"
 )
 
-func TestFmapJoin(t *testing.T) {
-	ss := []string{"a,b", "c,d"}
-	split := func(s string) []string {
-		return strings.Split(s, ",")
+func TestJoin(t *testing.T) {
+	got := deriveJoin([][]int{{1, 2}, {3, 4}})
+	want := []int{1, 2, 3, 4}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("got %v, want %v", got, want)
 	}
-	got := deriveJoinSS(deriveFmapSS(split, ss))
-	want := []string{"a", "b", "c", "d"}
+}
+
+func TestJoinString(t *testing.T) {
+	got := deriveJoinString([]string{"abc", "cde"})
+	want := "abccde"
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("got %v, want %v", got, want)
 	}

@@ -20,12 +20,16 @@
 //
 // deriveFmap can also be applied to a function that returns a value and an error.
 //   deriveFmap(func(A) B, func() (A, error)) (B, error)
+//   deriveFmap(func(A) (B, error), func() (A, error)) (func() (B, error), error)
+//   deriveFmap(func(A), func() (A, error)) error
+//   deriveFmap(func(A) (B, c, d, ...), func() (A, error)) (func() (B, c, d, ...), error)
 // deriveFmap will propogate the error and not apply the first function to the result of the second function, if the second function returns an error.
 package fmap
 
 import (
 	"fmt"
 	"go/types"
+	"strings"
 
 	"github.com/awalterschulze/goderive/derive"
 )
@@ -42,12 +46,14 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 	return &gen{
 		TypesMap: typesMap,
 		printer:  p,
+		tuple:    deps["tuple"],
 	}
 }
 
 type gen struct {
 	derive.TypesMap
 	printer derive.Printer
+	tuple   derive.Dependency
 }
 
 func (this *gen) Add(name string, typs []types.Type) (string, error) {
@@ -114,7 +120,7 @@ func isError(t types.Type) bool {
 	return false
 }
 
-func (this *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, outTyp types.Type, err error) {
+func (this *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, outs *types.Tuple, err error) {
 	esig, ok := typs[1].(*types.Signature)
 	if !ok {
 		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[1]))
@@ -145,11 +151,7 @@ func (this *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, o
 			name, elemTyp)
 	}
 	res := sig.Results()
-	if res.Len() != 1 {
-		return nil, nil, fmt.Errorf("%s, the function argument does not have a single result, but has %d resulting parameters", name, res.Len())
-	}
-	outTyp = res.At(0).Type()
-	return inTyp, outTyp, nil
+	return inTyp, res, nil
 }
 
 func (this *gen) stringOut(name string, typs []types.Type) (outTyp types.Type, err error) {
@@ -293,19 +295,56 @@ func (this *gen) genError(typs []types.Type) error {
 	this.Generating(typs...)
 	p := this.printer
 	inStr := this.TypeString(in)
-	outStr := this.TypeString(out)
-
 	p.P("")
-	p.P("func %s(f func(%s) %s, g func() (%s, error)) (%s, error) {", name, inStr, outStr, inStr, outStr)
-	p.In()
-	p.P("v, err := g()")
-	p.P("if err != nil {")
-	p.In()
-	p.P("return %s, err", zero(out))
-	p.Out()
-	p.P("}")
-	p.P("return f(v), nil")
-	p.Out()
-	p.P("}")
+	switch out.Len() {
+	case 0:
+		p.P("func %s(f func(%s), g func() (%s, error)) error {", name, inStr, inStr)
+		p.In()
+		p.P("v, err := g()")
+		p.P("if err != nil {")
+		p.In()
+		p.P("return err")
+		p.Out()
+		p.P("}")
+		p.P("f(v)")
+		p.P("return nil")
+		p.Out()
+		p.P("}")
+		return nil
+	case 1:
+		t := out.At(0).Type()
+		outStr := this.TypeString(t)
+		zeroStr := zero(t)
+		p.P("func %s(f func(%s) %s, g func() (%s, error)) (%s, error) {", name, inStr, outStr, inStr, outStr)
+		p.In()
+		p.P("v, err := g()")
+		p.P("if err != nil {")
+		p.In()
+		p.P("return %s, err", zeroStr)
+		p.Out()
+		p.P("}")
+		p.P("return f(v), nil")
+		p.Out()
+		p.P("}")
+	default:
+		outTyps := make([]types.Type, out.Len())
+		outTypStrs := make([]string, out.Len())
+		for i := range outTyps {
+			outTyps[i] = out.At(i).Type()
+			outTypStrs[i] = this.TypeString(outTyps[i])
+		}
+		outStr := strings.Join(outTypStrs, ", ")
+		p.P("func %s(f func(%s) (%s), g func() (%s, error)) (func() (%s), error) {", name, inStr, outStr, inStr, outStr)
+		p.In()
+		p.P("v, err := g()")
+		p.P("if err != nil {")
+		p.In()
+		p.P("return nil, err")
+		p.Out()
+		p.P("}")
+		p.P("return %s(f(v)), nil", this.tuple.GetFuncName(outTyps...))
+		p.Out()
+		p.P("}")
+	}
 	return nil
 }

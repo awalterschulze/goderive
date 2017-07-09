@@ -15,7 +15,9 @@
 package test
 
 import (
+	"errors"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -77,6 +79,94 @@ func TestFmapError(t *testing.T) {
 	}
 	want := int64(2)
 	if got != want {
+		t.Fatalf("got %d, want %d", got, want)
+	}
+}
+
+func TestFmapErrorError(t *testing.T) {
+	t.Run("no error", func(t *testing.T) {
+		num := func() (string, error) {
+			return "1", nil
+		}
+		gotf, err := deriveFmapEE(strconv.Atoi, num)
+		if err != nil {
+			t.Fatal(err)
+		}
+		got, err := gotf()
+		if err != nil {
+			t.Fatal(err)
+		}
+		want := 1
+		if got != want {
+			t.Fatalf("got %d, want %d", got, want)
+		}
+	})
+	t.Run("first error", func(t *testing.T) {
+		num := func() (string, error) {
+			return "", errors.New("hey")
+		}
+		gotf, err := deriveFmapEE(strconv.Atoi, num)
+		if err == nil {
+			t.Fatal("expected error")
+		}
+		if gotf != nil {
+			t.Fatal("expected nil func")
+		}
+	})
+	t.Run("second error", func(t *testing.T) {
+		num := func() (string, error) {
+			return "a", nil
+		}
+		gotf, err := deriveFmapEE(strconv.Atoi, num)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := gotf(); err == nil {
+			t.Fatal("expected error")
+		}
+	})
+}
+
+func TestFmapZeroError(t *testing.T) {
+	num := func() (string, error) {
+		return "1", nil
+	}
+	got := ""
+	print := func(s string) {
+		got = s
+	}
+	err := deriveFmapPrint(print, num)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := "1"
+	if got != want {
+		t.Fatalf("got %s, want %s", got, want)
+	}
+}
+
+func TestFmapMoreParamsError(t *testing.T) {
+	num := func() (string, error) {
+		return "1", nil
+	}
+	conv := func(s string) (int, string, error) {
+		i, err := strconv.Atoi(s)
+		return i, s, err
+	}
+	gotf, err := deriveFmapMore(conv, num)
+	if err != nil {
+		t.Fatal(err)
+	}
+	goti, got, err := gotf()
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := "1"
+	wanti := 1
+	if got != want {
+		t.Fatalf("got %s, want %s", got, want)
+	}
+	if goti != wanti {
 		t.Fatalf("got %d, want %d", got, want)
 	}
 }

@@ -3157,6 +3157,31 @@ func deriveFmapError(f func(int) int64, g func() (int, error)) (int64, error) {
 	return f(v), nil
 }
 
+func deriveFmapEE(f func(string) (int, error), g func() (string, error)) (func() (int, error), error) {
+	v, err := g()
+	if err != nil {
+		return nil, err
+	}
+	return deriveTuple(f(v)), nil
+}
+
+func deriveFmapPrint(f func(string), g func() (string, error)) error {
+	v, err := g()
+	if err != nil {
+		return err
+	}
+	f(v)
+	return nil
+}
+
+func deriveFmapMore(f func(string) (int, string, error), g func() (string, error)) (func() (int, string, error), error) {
+	v, err := g()
+	if err != nil {
+		return nil, err
+	}
+	return deriveTuple_(f(v)), nil
+}
+
 func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interface{}, data []byte) error {
 	return func(v interface{}, data []byte) error {
 		return f(data, v)
@@ -6568,6 +6593,18 @@ func deriveCopyTo_41(this, that []*time.Duration) {
 func deriveCopyTo_42(this, that map[int]time.Duration) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
+	}
+}
+
+func deriveTuple(v0 int, v1 error) func() (int, error) {
+	return func() (int, error) {
+		return v0, v1
+	}
+}
+
+func deriveTuple_(v0 int, v1 string, v2 error) func() (int, string, error) {
+	return func() (int, string, error) {
+		return v0, v1, v2
 	}
 }
 

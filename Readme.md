@@ -24,7 +24,13 @@ Tool Functions:
 
 Functional Functions:
 
-  - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap) `deriveFmap(func(A) B, []A) []B` or `deriveFmap(func(rune) B, string) []B` or `deriveFmap(func(A) B, func() (A, error)) (B, error)`
+  - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap) 
+    - `deriveFmap(func(A) B, []A) []B`
+    - `deriveFmap(func(rune) B, string) []B` 
+    - `deriveFmap(func(A) B, func() (A, error)) (B, error)`
+    - `deriveFmap(func(A) (B, error), func() (A, error)) (func() (B, error), error)`
+    - `deriveFmap(func(A), func() (A, error)) error`
+    - `deriveFmap(func(A) (B, c, d, ...), func() (A, error)) (func() (B, c, d, ...), error)`
   - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join) `deriveJoin([][]T) []T` or `deriveJoin([]string) string`
   - [Filter](http://godoc.org/github.com/awalterschulze/goderive/plugin/filter) `deriveFilter(pred func(T) bool, []T) []T`
   - [All](http://godoc.org/github.com/awalterschulze/goderive/plugin/all) `deriveAll(pred func(T) bool, []T) bool`

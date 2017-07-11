@@ -55,6 +55,7 @@ Functional Functions:
   - [Curry](http://godoc.org/github.com/awalterschulze/goderive/plugin/curry) `deriveCurry(f func(A, B, ...) T) func(A) func(B, ...) T`
   - [Uncurry](http://godoc.org/github.com/awalterschulze/goderive/plugin/uncurry) `deriveUncurry(f func(A) func(B, ...) T) func(A, B, ...) T`
   - [Tuple](http://godoc.org/github.com/awalterschulze/goderive/plugin/tuple) `deriveTuple(A, B, ...) func() (A, B, ...)`
+  - [Bind](http://godoc.org/github.com/awalterschulze/goderive/plugin/bind) `deriveBind(func() (A, error), func(A) (B, error)) (B, error)`
 
 When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and

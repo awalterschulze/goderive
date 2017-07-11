@@ -3230,6 +3230,16 @@ func deriveFlip3(f func(a int, b string, c bool) string) func(b string, a int, c
 	}
 }
 
+func deriveBind(f func() (string, error), g func(string) (float64, error)) func() (float64, error) {
+	return func() (float64, error) {
+		b0, err := f()
+		if err != nil {
+			return 0, err
+		}
+		return g(b0)
+	}
+}
+
 func deriveSetInt64s(list []int64) map[int64]struct{} {
 	set := make(map[int64]struct{}, len(list))
 	for _, v := range list {

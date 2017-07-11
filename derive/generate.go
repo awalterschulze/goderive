@@ -235,17 +235,22 @@ func (pg *program) generatePackage(pkgInfo *loader.PackageInfo) error {
 	// }
 	// log.Printf("package: %s, files %d: %s", path, len(pkgInfo.Files), strings.Join(ss, ", "))
 	generated := true
-	var undefined []*ast.CallExpr
+	var undefined string
 	thisprogram := pg.program
 	for generated {
 		pkgGen, err := NewPackage(thisprogram, pkgInfo, pg.plugins, pg.autoname, pg.dedup)
 		if err != nil {
 			return err
 		}
-		undefined = pkgGen.undefined
 
-		for _, c := range undefined {
-			log.Printf("could not yet generate: %s", types.ExprString(c))
+		us := make([]string, len(pkgGen.undefined))
+		for i, u := range pkgGen.undefined {
+			us[i] = types.ExprString(u)
+		}
+		sort.Strings(us)
+
+		for _, u := range us {
+			log.Printf("could not yet generate: %s", u)
 		}
 
 		generated, err = pkgGen.Generate()
@@ -257,9 +262,15 @@ func (pg *program) generatePackage(pkgInfo *loader.PackageInfo) error {
 			return err
 		}
 
-		if len(undefined) == 0 {
+		if len(us) == 0 {
 			return nil
 		}
+
+		newundefined := strings.Join(us, ";")
+		if newundefined == undefined {
+			break
+		}
+		undefined = newundefined
 
 		// reload path with newly generated code, with the hope that some types are now inferable.
 		thisprogram, err = load(path)
@@ -270,11 +281,7 @@ func (pg *program) generatePackage(pkgInfo *loader.PackageInfo) error {
 	}
 
 	if len(undefined) > 0 && !generated {
-		ss := make([]string, len(undefined))
-		for i, c := range undefined {
-			ss[i] = types.ExprString(c)
-		}
-		return fmt.Errorf("cannot generate: %s", strings.Join(ss, ","))
+		return fmt.Errorf("cannot generate: %s", undefined)
 	}
 	return nil
 }

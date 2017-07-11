@@ -38,7 +38,7 @@ func TestFmapJoinError(t *testing.T) {
 		return "1", nil
 	}
 	parseInt := func(i string) (int64, error) {
-		ii, err := strconv.Atoi(i)
+		ii, err := strconv.ParseInt(i, 10, 64)
 		return int64(ii), err
 	}
 	got, err := deriveJoinEE(deriveFmapEE64(parseInt, read))

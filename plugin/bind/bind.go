@@ -15,7 +15,9 @@
 // Package bind contains the implementation of the bind plugin, which generates the deriveBind function.
 //
 // The deriveBind function composes a tuple containing an error and a function taking the value as input and returning its result, which also returns an error.
-//    deriveBind(func() (A, error), func(A) (B, error)) func() (B, error)
+//    deriveBind(func() (A, error), func(A) (B, error)) (B, error)
+//    deriveBind(func(A) (B, error), func(B) (C, error)) func(A) (C, error)
+//    deriveBind(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)
 package bind
 
 import (
@@ -165,38 +167,71 @@ func (this *gen) genError(typs []types.Type) error {
 	cterrs := append(append([]string{}, cts...), "error")
 	a, b, c := strings.Join(ats, ", "), strings.Join(bterrs, ", "), strings.Join(cterrs, ", ")
 	p.P("")
-	p.P("func %s(f func(%s) %s, g func(%s) %s) func(%s) %s {",
-		name, a, wrap(b), strings.Join(bts, ", "), wrap(c), a, wrap(c))
-	p.In()
 
-	avars := vars("a", len(ats))
-	avartyps := zip(avars, ats)
-	p.P("return func(%s) %s {", strings.Join(avartyps, ", "), wrap(c))
-	p.In()
-	bvars := vars("b", len(bts))
-	bvarserr := append(append([]string{}, bvars...), "err")
-	p.P("%s := f(%s)", strings.Join(bvarserr, ", "), strings.Join(avars, ", "))
+	if len(ats) > 0 {
 
-	p.P("if err != nil {")
-	p.In()
+		p.P("func %s(f func(%s) %s, g func(%s) %s) func(%s) %s {",
+			name, a, wrap(b), strings.Join(bts, ", "), wrap(c), a, wrap(c))
+		p.In()
 
-	zeros := make([]string, len(cs))
-	for i := range cs {
-		zeros[i] = derive.Zero(cs[i])
+		avars := vars("a", len(ats))
+		avartyps := zip(avars, ats)
+		p.P("return func(%s) %s {", strings.Join(avartyps, ", "), wrap(c))
+		p.In()
+		bvars := vars("b", len(bts))
+		bvarserr := append(append([]string{}, bvars...), "err")
+		p.P("%s := f(%s)", strings.Join(bvarserr, ", "), strings.Join(avars, ", "))
+
+		p.P("if err != nil {")
+		p.In()
+
+		zeros := make([]string, len(cs))
+		for i := range cs {
+			zeros[i] = derive.Zero(cs[i])
+		}
+		ret := append(zeros, "err")
+		p.P("return %s", strings.Join(ret, ", "))
+
+		p.Out()
+		p.P("}")
+
+		p.P("return g(%s)", strings.Join(bvars, ", "))
+
+		p.Out()
+		p.P("}")
+
+		p.Out()
+		p.P("}")
+
+	} else {
+
+		p.P("func %s(f func() %s, g func(%s) %s) %s {",
+			name, wrap(b), strings.Join(bts, ", "), wrap(c), wrap(c))
+		p.In()
+
+		bvars := vars("b", len(bts))
+		bvarserr := append(append([]string{}, bvars...), "err")
+		p.P("%s := f()", strings.Join(bvarserr, ", "))
+
+		p.P("if err != nil {")
+		p.In()
+
+		zeros := make([]string, len(cs))
+		for i := range cs {
+			zeros[i] = derive.Zero(cs[i])
+		}
+		ret := append(zeros, "err")
+		p.P("return %s", strings.Join(ret, ", "))
+
+		p.Out()
+		p.P("}")
+
+		p.P("return g(%s)", strings.Join(bvars, ", "))
+
+		p.Out()
+		p.P("}")
+
 	}
-	ret := append(zeros, "err")
-	p.P("return %s", strings.Join(ret, ", "))
-
-	p.Out()
-	p.P("}")
-
-	p.P("return g(%s)", strings.Join(bvars, ", "))
-
-	p.Out()
-	p.P("}")
-
-	p.Out()
-	p.P("}")
 
 	return nil
 }

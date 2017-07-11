@@ -3230,13 +3230,31 @@ func deriveFlip3(f func(a int, b string, c bool) string) func(b string, a int, c
 	}
 }
 
-func deriveBind(f func() (string, error), g func(string) (float64, error)) func() (float64, error) {
-	return func() (float64, error) {
-		b0, err := f()
+func deriveBind(f func() (string, error), g func(string) (float64, error)) (float64, error) {
+	b0, err := f()
+	if err != nil {
+		return 0, err
+	}
+	return g(b0)
+}
+
+func deriveBindA(f func(string) (string, error), g func(string) (float64, error)) func(string) (float64, error) {
+	return func(a0 string) (float64, error) {
+		b0, err := f(a0)
 		if err != nil {
 			return 0, err
 		}
 		return g(b0)
+	}
+}
+
+func deriveBind2(f func(string, string) ([]string, string, error), g func([]string, string) (float64, error)) func(string, string) (float64, error) {
+	return func(a0 string, a1 string) (float64, error) {
+		b0, b1, err := f(a0, a1)
+		if err != nil {
+			return 0, err
+		}
+		return g(b0, b1)
 	}
 }
 

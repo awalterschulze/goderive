@@ -15,7 +15,7 @@
 // Package bind contains the implementation of the bind plugin, which generates the deriveBind function.
 //
 // The deriveBind function composes a tuple containing an error and a function taking the value as input and returning its result, which also returns an error.
-//    deriveBind(func() (A, error), func(A) (B, error)) (B, error)
+//    deriveBind(func() (A, error), func(A) (B, error)) func() (B, error)
 package bind
 
 import (

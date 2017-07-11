@@ -80,6 +80,17 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 			return "", err
 		}
 		return this.SetFuncName(name, typs...)
+	case *types.Tuple:
+		if t.Len() == 2 {
+			ts := make([]types.Type, 2)
+			ts[0] = t.At(0).Type()
+			ts[1] = t.At(1).Type()
+			_, err := this.errorType(name, ts)
+			if err != nil {
+				return "", err
+			}
+			return this.SetFuncName(name, ts...)
+		}
 	}
 	return "", fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
 }
@@ -158,8 +169,15 @@ func (this *gen) Generate(typs []types.Type) error {
 		}
 	case *types.Signature:
 		return this.genError(typs)
+	case *types.Tuple:
+		if t.Len() == 2 {
+			ts := make([]types.Type, 2)
+			ts[0] = t.At(0).Type()
+			ts[1] = t.At(1).Type()
+			return this.genError(ts)
+		}
 	}
-	return fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
+	return fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string) or (a function and error)", typs[0])
 }
 
 func (this *gen) genError(typs []types.Type) error {

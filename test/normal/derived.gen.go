@@ -3083,6 +3083,13 @@ func deriveKeysForMapInt64ToInt64(m map[int64]int64) []int64 {
 	return keys
 }
 
+func deriveJoinEE(f func() (int64, error), err error) (int64, error) {
+	if err != nil {
+		return 0, err
+	}
+	return f()
+}
+
 func deriveJoinSS(list [][]string) []string {
 	if list == nil {
 		return nil
@@ -3201,6 +3208,14 @@ func deriveFmapSS(f func(string) []string, list []string) [][]string {
 		out[i] = f(elem)
 	}
 	return out
+}
+
+func deriveFmapEE64(f func(string) (int64, error), g func() (string, error)) (func() (int64, error), error) {
+	v, err := g()
+	if err != nil {
+		return nil, err
+	}
+	return deriveTuple_i(f(v)), nil
 }
 
 func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interface{}, data []byte) error {
@@ -6626,6 +6641,12 @@ func deriveTuple(v0 int, v1 error) func() (int, error) {
 func deriveTuple_(v0 int, v1 string, v2 error) func() (int, string, error) {
 	return func() (int, string, error) {
 		return v0, v1, v2
+	}
+}
+
+func deriveTuple_i(v0 int64, v1 error) func() (int64, error) {
+	return func() (int64, error) {
+		return v0, v1
 	}
 }
 

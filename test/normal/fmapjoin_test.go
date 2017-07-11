@@ -16,6 +16,7 @@ package test
 
 import (
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -29,5 +30,23 @@ func TestFmapJoin(t *testing.T) {
 	want := []string{"a", "b", "c", "d"}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("got %v, want %v", got, want)
+	}
+}
+
+func TestFmapJoinError(t *testing.T) {
+	read := func() (string, error) {
+		return "1", nil
+	}
+	parseInt := func(i string) (int64, error) {
+		ii, err := strconv.Atoi(i)
+		return int64(ii), err
+	}
+	got, err := deriveJoinEE(deriveFmapEE64(parseInt, read))
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := int64(1)
+	if got != want {
+		t.Fatalf("got %d, want %d", got, want)
 	}
 }

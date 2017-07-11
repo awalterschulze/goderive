@@ -3083,13 +3083,6 @@ func deriveKeysForMapInt64ToInt64(m map[int64]int64) []int64 {
 	return keys
 }
 
-func deriveJoinEE(f func() (int64, error), err error) (int64, error) {
-	if err != nil {
-		return 0, err
-	}
-	return f()
-}
-
 func deriveJoinSS(list [][]string) []string {
 	if list == nil {
 		return nil
@@ -3103,6 +3096,13 @@ func deriveJoinSS(list [][]string) []string {
 		res = append(res, elem...)
 	}
 	return res
+}
+
+func deriveJoinEE(f func() (int64, error), err error) (int64, error) {
+	if err != nil {
+		return 0, err
+	}
+	return f()
 }
 
 func deriveJoin(list [][]int) []int {

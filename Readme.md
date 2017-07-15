@@ -140,7 +140,9 @@ This should be easy to figure out by looking at [main.go](https://github.com/awa
 
 ## Inspired By
 
-Haskell's deriving
+  - Haskell's deriving
+  - Robert Griesemer's talk [Prototype your design!](https://www.youtube.com/watch?v=vLxX3yZmw5Q)
+  - [go/types](https://golang.org/pkg/go/types/) standard library
 
 ## Users
 

@@ -15,7 +15,8 @@ example:
 		./set \
 		./min \
 		./max \
-		./contains
+		./contains \
+		./intersect
 
 .PHONY: clean
 clean:
@@ -29,3 +30,4 @@ clean:
 	rm ./min/derived.gen.go || true
 	rm ./max/derived.gen.go || true
 	rm ./contains/derived.gen.go || true
+	rm ./intersect/derived.gen.go || true

@@ -115,6 +115,7 @@ More Examples:
   - [Min](https://github.com/awalterschulze/goderive/tree/master/example/plugin/min)
   - [Max](https://github.com/awalterschulze/goderive/tree/master/example/plugin/max)
   - [Contains](https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains)
+  - [Intersect](https://github.com/awalterschulze/goderive/tree/master/example/plugin/intersect)
 
 ## How to run
 

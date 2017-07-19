@@ -56,15 +56,25 @@ type Import func() string
 
 func (p *printer) NewImport(path string) Import {
 	return func() string {
+
+		// transform vendored import
+		lastvendor := strings.LastIndex(path, "/vendor/")
+		if lastvendor != -1 {
+			lastvendor = lastvendor + 8
+			path = path[lastvendor:]
+		}
+
+		// create import alias
 		fullpath := strings.Map(badToUnderscore, path)
 		fullpaths := strings.Split(fullpath, "_")
-		shortpath := fullpaths[len(fullpaths)-1]
-		if _, ok := p.imports[shortpath]; !ok {
-			p.imports[shortpath] = path
-			return shortpath
+		alias := fullpaths[len(fullpaths)-1]
+
+		if _, ok := p.imports[alias]; !ok {
+			p.imports[alias] = path
+			return alias
 		}
-		if p.imports[shortpath] == path {
-			return shortpath
+		if p.imports[alias] == path {
+			return alias
 		}
 		if path2, ok := p.imports[fullpath]; ok {
 			if path2 != path {

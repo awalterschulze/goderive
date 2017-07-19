@@ -145,6 +145,7 @@ func NewPackage(program *loader.Program, pkgInfo *loader.PackageInfo, plugins []
 				return nil, fmt.Errorf("formatting %s: %v", fileInfo.fullpath, err)
 			}
 		}
+
 	}
 	return pkg, nil
 }
@@ -181,12 +182,17 @@ func (pkg *pkg) Done() bool {
 	return true
 }
 
-func (pkg *pkg) Print() error {
-	if !pkg.printer.HasContent() {
-		return nil
-	}
+func (pkg *pkg) HasContent() bool {
+	return pkg.printer.HasContent()
+}
+
+func (pkg *pkg) Filename() string {
 	pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkg.info.Pkg.Path())
-	f, err := os.Create(filepath.Join(pkgpath, derivedFilename))
+	return filepath.Join(pkgpath, derivedFilename)
+}
+
+func (pkg *pkg) Print() error {
+	f, err := os.Create(pkg.Filename())
 	if err != nil {
 		return err
 	}
@@ -194,6 +200,18 @@ func (pkg *pkg) Print() error {
 		return err
 	}
 	return f.Close()
+}
+
+func (pkg *pkg) Delete() error {
+	filename := pkg.Filename()
+	_, err := os.Stat(filename)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return fmt.Errorf("stat %s: %v", filename, err)
+	}
+	return os.Remove(filename)
 }
 
 func (pkg *pkg) Generate() (bool, error) {
@@ -258,8 +276,15 @@ func (pg *program) generatePackage(pkgInfo *loader.PackageInfo) error {
 			return err
 		}
 
-		if err := pkgGen.Print(); err != nil {
-			return err
+		if pkgGen.HasContent() {
+			if err := pkgGen.Print(); err != nil {
+				return err
+			}
+		} else {
+			// When the file has no content it should be removed.
+			if err := pkgGen.Delete(); err != nil {
+				return err
+			}
 		}
 
 		if len(us) == 0 {

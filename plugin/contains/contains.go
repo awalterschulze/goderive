@@ -16,6 +16,8 @@
 //
 // The deriveContains function returns whether a value is contained in a slice.
 //   func deriveContains([]T, T) bool
+//
+// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains
 package contains
 
 import (

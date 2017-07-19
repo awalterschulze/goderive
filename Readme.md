@@ -114,6 +114,7 @@ More Examples:
   - [Set](https://github.com/awalterschulze/goderive/tree/master/example/plugin/set)
   - [Min](https://github.com/awalterschulze/goderive/tree/master/example/plugin/min)
   - [Max](https://github.com/awalterschulze/goderive/tree/master/example/plugin/max)
+  - [Contains](https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains)
 
 ## How to run
 

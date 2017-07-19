@@ -116,6 +116,7 @@ More Examples:
   - [Max](https://github.com/awalterschulze/goderive/tree/master/example/plugin/max)
   - [Contains](https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains)
   - [Intersect](https://github.com/awalterschulze/goderive/tree/master/example/plugin/intersect)
+  - [Union](https://github.com/awalterschulze/goderive/tree/master/example/plugin/union)
 
 ## How to run
 

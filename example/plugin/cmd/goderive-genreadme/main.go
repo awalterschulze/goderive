@@ -14,8 +14,16 @@ import (
 func main() {
 	log.SetFlags(0)
 	flag.Parse()
-	paths := flag.Args()
-	for _, path := range paths {
+	dir := flag.Args()[0]
+	infos, err := ioutil.ReadDir(dir)
+	if err != nil {
+		panic(err)
+	}
+	for _, info := range infos {
+		if !info.IsDir() {
+			continue
+		}
+		path := filepath.Join(dir, info.Name())
 		log.Printf("scanning %s", path)
 		files, err := ioutil.ReadDir(path)
 		if err != nil {
@@ -42,13 +50,16 @@ func main() {
 			}
 		}
 		if generatedCode == nil {
-			panic("did not find derived.gen.go in " + path)
+			//did not find derived.gen.go
+			continue
 		}
 		if docCode == nil {
-			panic("did not find Readme.md in " + path)
+			//did not find Readme.md
+			continue
 		}
 		if implCode == nil {
-			panic("did not find any other go files in " + path)
+			//did not find any other go files
+			continue
 		}
 		docs := bytes.Split(docCode, []byte("```"))
 		docs[1] = append([]byte("go\n"), implCode...)

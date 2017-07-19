@@ -5,29 +5,8 @@ example:
 	goderive ./...
 	go test -v ./...
 	go install github.com/awalterschulze/goderive/example/plugin/cmd/goderive-genreadme
-	goderive-genreadme \
-		./equal \
-		./compare \
-		./copyto \
-		./keys \
-		./sort \
-		./unique \
-		./set \
-		./min \
-		./max \
-		./contains \
-		./intersect
+	goderive-genreadme .
 
 .PHONY: clean
 clean:
-	rm ./equal/derived.gen.go || true
-	rm ./compare/derived.gen.go || true
-	rm ./copyto/derived.gen.go || true
-	rm ./keys/derived.gen.go || true
-	rm ./sort/derived.gen.go || true
-	rm ./unique/derived.gen.go || true
-	rm ./set/derived.gen.go || true
-	rm ./min/derived.gen.go || true
-	rm ./max/derived.gen.go || true
-	rm ./contains/derived.gen.go || true
-	rm ./intersect/derived.gen.go || true
+	find . -type f -name "derived.gen.go" -exec rm -f {} \;

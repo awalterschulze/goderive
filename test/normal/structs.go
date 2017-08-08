@@ -36,6 +36,10 @@ func (this *Empty) CopyTo(that *Empty) {
 	deriveCopyToPtrToEmpty(this, that)
 }
 
+func (this *Empty) GoString() string {
+	return deriveGoStringEmpty(this)
+}
+
 type BuiltInTypes struct {
 	Bool       bool
 	Byte       byte
@@ -68,6 +72,10 @@ func (this *BuiltInTypes) Compare(that *BuiltInTypes) int {
 
 func (this *BuiltInTypes) CopyTo(that *BuiltInTypes) {
 	deriveCopyToPtrToBuiltInTypes(this, that)
+}
+
+func (this *BuiltInTypes) GoString() string {
+	return deriveGoStringBuiltInTypes(this)
 }
 
 type PrivateBuiltInTypes struct {

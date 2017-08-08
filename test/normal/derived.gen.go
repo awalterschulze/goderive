@@ -4,13 +4,15 @@ package test
 
 import (
 	"bytes"
-	extra "github.com/awalterschulze/goderive/test/extra"
+	"fmt"
 	"reflect"
 	"sort"
 	"strings"
 	"time"
 	"unsafe"
 	"vendortest"
+
+	extra "github.com/awalterschulze/goderive/test/extra"
 )
 
 func deriveTakeWhile(pred func(int) bool, list []int) []int {
@@ -42,6 +44,43 @@ func deriveIntersectOfInt64s(this, that []int64) []int64 {
 		}
 	}
 	return intersect
+}
+
+func deriveGoStringEmpty(this *Empty) string {
+	buf := bytes.NewBuffer(nil)
+	if this == nil {
+		fmt.Fprintf(buf, "nil\n")
+	} else {
+		fmt.Fprintf(buf, "&Empty{}\n")
+	}
+	return buf.String()
+}
+
+func deriveGoStringBuiltInTypes(this *BuiltInTypes) string {
+	buf := bytes.NewBuffer(nil)
+	if this == nil {
+		fmt.Fprintf(buf, "nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &BuiltInTypes{}\n")
+		fmt.Fprintf(buf, "this.Bool = %v\n", this.Bool)
+		fmt.Fprintf(buf, "this.Byte = %v\n", this.Byte)
+		fmt.Fprintf(buf, "this.Float64 = %v\n", this.Float64)
+		fmt.Fprintf(buf, "this.Float32 = %v\n", this.Float32)
+		fmt.Fprintf(buf, "this.Int = %v\n", this.Int)
+		fmt.Fprintf(buf, "this.Int16 = %v\n", this.Int16)
+		fmt.Fprintf(buf, "this.Int32 = %v\n", this.Int32)
+		fmt.Fprintf(buf, "this.Int64 = %v\n", this.Int64)
+		fmt.Fprintf(buf, "this.Int8 = %v\n", this.Int8)
+		fmt.Fprintf(buf, "this.Rune = %v\n", this.Rune)
+		fmt.Fprintf(buf, "this.Uint = %v\n", this.Uint)
+		fmt.Fprintf(buf, "this.Uint16 = %v\n", this.Uint16)
+		fmt.Fprintf(buf, "this.Uint32 = %v\n", this.Uint32)
+		fmt.Fprintf(buf, "this.Uint64 = %v\n", this.Uint64)
+		fmt.Fprintf(buf, "this.Uint8 = %v\n", this.Uint8)
+		fmt.Fprintf(buf, "this.UintPtr = %v\n", this.UintPtr)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	return buf.String()
 }
 
 func deriveContainsInt64s(list []int64, item int64) bool {

@@ -38,7 +38,8 @@ func NewFileInfos(program *loader.Program, pkgInfo *loader.PackageInfo) []*fileI
 		astFile := pkgInfo.Files[i]
 		file := program.Fset.File(astFile.Pos())
 		if file == nil {
-			panic("unknown file")
+			// probably derived.gen.go has non parsable code.
+			continue
 		}
 		fullpath := file.Name()
 		// log.Printf("filename: %s", fullpath)

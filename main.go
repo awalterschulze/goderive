@@ -30,6 +30,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/filter"
 	"github.com/awalterschulze/goderive/plugin/flip"
 	"github.com/awalterschulze/goderive/plugin/fmap"
+	"github.com/awalterschulze/goderive/plugin/gostring"
 	"github.com/awalterschulze/goderive/plugin/intersect"
 	"github.com/awalterschulze/goderive/plugin/join"
 	"github.com/awalterschulze/goderive/plugin/keys"
@@ -72,6 +73,7 @@ func main() {
 		any.NewPlugin(),
 		tuple.NewPlugin(),
 		bind.NewPlugin(),
+		gostring.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

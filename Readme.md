@@ -55,7 +55,7 @@ Functional Functions:
   - [Curry](http://godoc.org/github.com/awalterschulze/goderive/plugin/curry) `deriveCurry(f func(A, B, ...) T) func(A) func(B, ...) T`
   - [Uncurry](http://godoc.org/github.com/awalterschulze/goderive/plugin/uncurry) `deriveUncurry(f func(A) func(B, ...) T) func(A, B, ...) T`
   - [Tuple](http://godoc.org/github.com/awalterschulze/goderive/plugin/tuple) `deriveTuple(A, B, ...) func() (A, B, ...)`
-  - [Bind](http://godoc.org/github.com/awalterschulze/goderive/plugin/compose) 
+  - [Compose](http://godoc.org/github.com/awalterschulze/goderive/plugin/compose) 
     - `deriveCompose(func() (A, error), func(A) (B, error)) (B, error)`
     - `deriveCompose(func(A) (B, error), func(B) (C, error)) func(A) (C, error)`
     - `deriveCompose(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)`

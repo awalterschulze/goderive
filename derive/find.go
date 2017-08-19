@@ -41,7 +41,7 @@ func NewFileInfos(program *loader.Program, pkgInfo *loader.PackageInfo) []*fileI
 			panic("unknown file")
 		}
 		fullpath := file.Name()
-		// log.Printf("filename: %s", fullpath)
+
 		_, fname := filepath.Split(fullpath)
 		if fname == derivedFilename {
 			continue

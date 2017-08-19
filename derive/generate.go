@@ -110,25 +110,32 @@ func NewPackage(program *loader.Program, pkgInfo *loader.PackageInfo, plugins []
 		for _, call := range calls {
 			// log.Printf("call: %v", call.Name)
 			if call.HasUndefined() {
-				pkg.undefined = append(pkg.undefined, call.Expr)
+				// Only functions that are supported by a code generator plugin should be added to undefined.
+				// Otherwise things like functions like casts will get into the undefined loop and result in
+				// an error, where a function could not be generated.
+				for _, plugin := range plugins {
+					if strings.HasPrefix(call.Name, plugin.GetPrefix()) {
+						pkg.undefined = append(pkg.undefined, call.Expr)
+						break
+					}
+				}
 				continue
 			}
 			name, err := pkg.Add(call)
 			if err != nil {
 				return nil, err
 			}
-			generated := len(name) > 0
-			if generated {
-				if name != call.Name {
-					if !autoname && !dedup {
-						panic("unreachable: function names cannot be changed if it is not allowed by the user")
-					}
-					changed = true
-					log.Printf("changing function call name from %s to %s", call.Name, name)
-					call.Expr.Fun = ast.NewIdent(name)
+			if len(name) == 0 {
+				// this call did not match any prefixes of any code generator and is undefined.
+				continue
+			}
+			if name != call.Name {
+				if !autoname && !dedup {
+					panic("unreachable: function names cannot be changed if it is not allowed by the user")
 				}
-			} else {
-				pkg.undefined = append(pkg.undefined, call.Expr)
+				changed = true
+				log.Printf("changing function call name from %s to %s", call.Name, name)
+				call.Expr.Fun = ast.NewIdent(name)
 			}
 		}
 
@@ -222,9 +229,8 @@ func (pkg *pkg) Generate() (bool, error) {
 			for _, typs := range g.ToGenerate() {
 				if err := g.Generate(typs); err != nil {
 					return false, fmt.Errorf("Generator Error: " + plugin.Name() + ":" + err.Error())
-				} else {
-					generated = true
 				}
+				generated = true
 			}
 		}
 	}

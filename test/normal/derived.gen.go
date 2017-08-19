@@ -80,6 +80,34 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 	}
 }
 
+func deriveCompose(f func() (string, error), g func(string) (float64, error)) (float64, error) {
+	b0, err := f()
+	if err != nil {
+		return 0, err
+	}
+	return g(b0)
+}
+
+func deriveComposeA(f func(string) (string, error), g func(string) (float64, error)) func(string) (float64, error) {
+	return func(a0 string) (float64, error) {
+		b0, err := f(a0)
+		if err != nil {
+			return 0, err
+		}
+		return g(b0)
+	}
+}
+
+func deriveCompose2(f func(string, string) ([]string, string, error), g func([]string, string) (float64, error)) func(string, string) (float64, error) {
+	return func(a0 string, a1 string) (float64, error) {
+		b0, b1, err := f(a0, a1)
+		if err != nil {
+			return 0, err
+		}
+		return g(b0, b1)
+	}
+}
+
 func deriveComparePtrToEmpty(this, that *Empty) int {
 	if this == nil {
 		if that == nil {
@@ -3234,34 +3262,6 @@ func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interfac
 func deriveFlip3(f func(a int, b string, c bool) string) func(b string, a int, c bool) string {
 	return func(b string, a int, c bool) string {
 		return f(a, b, c)
-	}
-}
-
-func deriveBind(f func() (string, error), g func(string) (float64, error)) (float64, error) {
-	b0, err := f()
-	if err != nil {
-		return 0, err
-	}
-	return g(b0)
-}
-
-func deriveBindA(f func(string) (string, error), g func(string) (float64, error)) func(string) (float64, error) {
-	return func(a0 string) (float64, error) {
-		b0, err := f(a0)
-		if err != nil {
-			return 0, err
-		}
-		return g(b0)
-	}
-}
-
-func deriveBind2(f func(string, string) ([]string, string, error), g func([]string, string) (float64, error)) func(string, string) (float64, error) {
-	return func(a0 string, a1 string) (float64, error) {
-		b0, b1, err := f(a0, a1)
-		if err != nil {
-			return 0, err
-		}
-		return g(b0, b1)
 	}
 }
 

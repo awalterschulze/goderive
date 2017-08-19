@@ -12,13 +12,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package bind contains the implementation of the bind plugin, which generates the deriveBind function.
+// Package compose contains the implementation of the compose plugin, which generates the deriveCompose function.
 //
-// The deriveBind function composes a tuple containing an error and a function taking the value as input and returning its result, which also returns an error.
-//    deriveBind(func() (A, error), func(A) (B, error)) (B, error)
-//    deriveBind(func(A) (B, error), func(B) (C, error)) func(A) (C, error)
-//    deriveBind(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)
-package bind
+// The deriveCompose function composes a tuple containing an error and a function taking the value as input and returning its result, which also returns an error.
+//    deriveCompose(func() (A, error), func(A) (B, error)) (B, error)
+//    deriveCompose(func(A) (B, error), func(B) (C, error)) func(A) (C, error)
+//    deriveCompose(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)
+package compose
 
 import (
 	"fmt"
@@ -29,13 +29,13 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-// NewPlugin creates a new bind plugin.
-// This function returns the plugin name, default prefix and a constructor for the bind code generator.
+// NewPlugin creates a new compose plugin.
+// This function returns the plugin name, default prefix and a constructor for the compose code generator.
 func NewPlugin() derive.Plugin {
-	return derive.NewPlugin("bind", "deriveBind", New)
+	return derive.NewPlugin("compose", "deriveCompose", New)
 }
 
-// New is a constructor for the bind code generator.
+// New is a constructor for the compose code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &gen{

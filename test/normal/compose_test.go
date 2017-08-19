@@ -20,14 +20,14 @@ import (
 	"testing"
 )
 
-func TestBind(t *testing.T) {
+func TestCompose(t *testing.T) {
 	read := func() (string, error) {
 		return "1", nil
 	}
 	parseFloat := func(i string) (float64, error) {
 		return strconv.ParseFloat(i, 64)
 	}
-	got, err := deriveBind(read, parseFloat)
+	got, err := deriveCompose(read, parseFloat)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -37,14 +37,14 @@ func TestBind(t *testing.T) {
 	}
 }
 
-func TestBindA(t *testing.T) {
+func TestComposeA(t *testing.T) {
 	read := func(s string) (string, error) {
 		return s, nil
 	}
 	parseFloat := func(i string) (float64, error) {
 		return strconv.ParseFloat(i, 64)
 	}
-	parse := deriveBindA(read, parseFloat)
+	parse := deriveComposeA(read, parseFloat)
 	got, err := parse("1")
 	if err != nil {
 		t.Fatal(err)
@@ -55,7 +55,7 @@ func TestBindA(t *testing.T) {
 	}
 }
 
-func TestBind2(t *testing.T) {
+func TestCompose2(t *testing.T) {
 	read := func(s string, z string) ([]string, string, error) {
 		return []string{s, z}, s + z, nil
 	}
@@ -65,7 +65,7 @@ func TestBind2(t *testing.T) {
 		}
 		return strconv.ParseFloat(s, 64)
 	}
-	parse := deriveBind2(read, parseFloat)
+	parse := deriveCompose2(read, parseFloat)
 	got, err := parse("1", "2")
 	if err != nil {
 		t.Fatal(err)

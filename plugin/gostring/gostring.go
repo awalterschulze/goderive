@@ -180,11 +180,37 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		} else {
 			p.P("for i := range %s {", this)
 			p.In()
-			goStringElm := g.GetFuncName(elmTyp)
-			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", goStringElm+"("+this+"[i])")
+			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", g.GetFuncName(elmTyp)+"("+this+"[i])")
 			p.Out()
 			p.P("}")
 		}
+		return nil
+	case *types.Map:
+		p.P("if %s != nil {", this)
+		p.In()
+		elmTyp := typ.Elem()
+		keyTyp := typ.Key()
+		_, isBasicElm := elmTyp.(*types.Basic)
+		_, isBasicKey := keyTyp.(*types.Basic)
+		if isBasicElm && isBasicKey {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
+		} else if isBasicKey {
+			p.P("%s.Fprintf(buf, \"%s = make(%s)\\n\")", g.fmtPkg(), this, g.TypeString(typ))
+			p.P("for k, v := range %s {", this)
+			p.In()
+			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%#v", "%s", "k", g.GetFuncName(elmTyp)+"(v)")
+			p.Out()
+			p.P("}")
+		} else {
+			p.P("%s.Fprintf(buf, \"%s = make(%s)\\n\")", g.fmtPkg(), this, g.TypeString(typ))
+			p.P("for k, v := range %s {", this)
+			p.In()
+			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%s", "%s", g.GetFuncName(elmTyp)+"(k)", g.GetFuncName(elmTyp)+"(v)")
+			p.Out()
+			p.P("}")
+		}
+		p.Out()
+		p.P("}")
 		return nil
 	}
 	return fmt.Errorf("unsupported field type %#v", fieldType)

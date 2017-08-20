@@ -323,6 +323,10 @@ func (this *MapsOfSimplerBuiltInTypes) CopyTo(that *MapsOfSimplerBuiltInTypes) {
 	deriveCopyToPtrToMapsOfSimplerBuiltInTypes(this, that)
 }
 
+func (this *MapsOfSimplerBuiltInTypes) GoString() string {
+	return deriveGoStringMapsOfSimplerBuiltInTypes(this)
+}
+
 type MapsOfBuiltInTypes struct {
 	BoolToString          map[bool]string
 	StringToBool          map[string]bool

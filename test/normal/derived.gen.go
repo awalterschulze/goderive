@@ -45,6 +45,39 @@ func deriveIntersectOfInt64s(this, that []int64) []int64 {
 	return intersect
 }
 
+func deriveGoStringArrayOfBuiltInTypes(this *ArrayOfBuiltInTypes) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *ArrayOfBuiltInTypes {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &ArrayOfBuiltInTypes{}\n")
+		fmt.Fprintf(buf, "this.Bool = %#v\n", this.Bool)
+		fmt.Fprintf(buf, "this.Byte = %#v\n", this.Byte)
+		fmt.Fprintf(buf, "this.Complex128 = %#v\n", this.Complex128)
+		fmt.Fprintf(buf, "this.Complex64 = %#v\n", this.Complex64)
+		fmt.Fprintf(buf, "this.Float64 = %#v\n", this.Float64)
+		fmt.Fprintf(buf, "this.Float32 = %#v\n", this.Float32)
+		fmt.Fprintf(buf, "this.Int = %#v\n", this.Int)
+		fmt.Fprintf(buf, "this.Int16 = %#v\n", this.Int16)
+		fmt.Fprintf(buf, "this.Int32 = %#v\n", this.Int32)
+		fmt.Fprintf(buf, "this.Int64 = %#v\n", this.Int64)
+		fmt.Fprintf(buf, "this.Int8 = %#v\n", this.Int8)
+		fmt.Fprintf(buf, "this.Rune = %#v\n", this.Rune)
+		fmt.Fprintf(buf, "this.String = %#v\n", this.String)
+		fmt.Fprintf(buf, "this.Uint = %#v\n", this.Uint)
+		fmt.Fprintf(buf, "this.Uint16 = %#v\n", this.Uint16)
+		fmt.Fprintf(buf, "this.Uint32 = %#v\n", this.Uint32)
+		fmt.Fprintf(buf, "this.Uint64 = %#v\n", this.Uint64)
+		fmt.Fprintf(buf, "this.Uint8 = %#v\n", this.Uint8)
+		fmt.Fprintf(buf, "this.UintPtr = %#v\n", this.UintPtr)
+		fmt.Fprintf(buf, "this.AnotherBoolOfDifferentSize = %#v\n", this.AnotherBoolOfDifferentSize)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
 func deriveGoStringEmpty(this *Empty) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *Empty {\n")

@@ -18,7 +18,6 @@ package gostring
 import (
 	"fmt"
 	"go/types"
-	"strings"
 
 	"github.com/awalterschulze/goderive/derive"
 )
@@ -117,7 +116,6 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 			} else {
 				g.W("%s := &%s{}", this, g.TypeString(reftyp))
 				for _, field := range fields.Fields {
-					// fieldType := field.Type
 					if field.Private() {
 						return fmt.Errorf("private fields not supported, found %s in %v", field.Name("", nil), named)
 					}
@@ -141,44 +139,7 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 	case *types.Map:
 
 	}
-	return fmt.Errorf("unsupported type: %#v", typ)
-}
-
-var replacer = strings.NewReplacer(".", "Dot", "*", "Ptr", "(", "", ")", "", "&", "Ref")
-
-func newVar(this string) string {
-	that := replacer.Replace(this)
-	return that + "TmP"
-}
-
-func hasGoStringMethod(typ *types.Named) bool {
-	for i := 0; i < typ.NumMethods(); i++ {
-		meth := typ.Method(i)
-		if meth.Name() != "GoString" {
-			continue
-		}
-		sig, ok := meth.Type().(*types.Signature)
-		if !ok {
-			// impossible, but lets check anyway
-			continue
-		}
-		if sig.Params().Len() != 0 {
-			continue
-		}
-		res := sig.Results()
-		if res.Len() != 1 {
-			continue
-		}
-		b, ok := res.At(0).Type().(*types.Basic)
-		if !ok {
-			continue
-		}
-		if b.Kind() != types.String {
-			continue
-		}
-		return true
-	}
-	return false
+	return fmt.Errorf("unsupported root type: %#v", typ)
 }
 
 func (g *gen) genField(fieldType types.Type, this string) error {
@@ -190,15 +151,6 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 	case *types.Pointer:
 		p.P("if %s != nil {", this)
 		p.In()
-		// refTyp := typ.Elem()
-		// if named, ok := ref.(*types.Named); ok {
-		// 	if hasGoStringMethod(named) {
-		// 		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), tmpvar, "%s", this+".GoString()")
-		// 		p.Out()
-		// 		p.P("}")
-		// 		return nil
-		// 	}
-		// }
 		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(typ)+"("+this+")")
 		p.Out()
 		p.P("}")
@@ -221,6 +173,19 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		p.Out()
 		p.P("}")
 		return nil
+	case *types.Array:
+		elmTyp := typ.Elem()
+		if _, isBasic := elmTyp.(*types.Basic); isBasic {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
+		} else {
+			p.P("for i := range %s {", this)
+			p.In()
+			goStringElm := g.GetFuncName(elmTyp)
+			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", goStringElm+"("+this+"[i])")
+			p.Out()
+			p.P("}")
+		}
+		return nil
 	}
-	return fmt.Errorf("unsupported type %#v", fieldType)
+	return fmt.Errorf("unsupported field type %#v", fieldType)
 }

@@ -347,6 +347,10 @@ func (this *MapsOfBuiltInTypes) CopyTo(that *MapsOfBuiltInTypes) {
 	deriveCopyToPtrToMapsOfBuiltInTypes(this, that)
 }
 
+func (this *MapsOfBuiltInTypes) GoString() string {
+	return deriveGoStringMapsOfBuiltInTypes(this)
+}
+
 type SliceToSlice struct {
 	Ints    [][]int
 	Strings [][]string

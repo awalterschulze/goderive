@@ -45,18 +45,27 @@ func deriveIntersectOfInt64s(this, that []int64) []int64 {
 	return intersect
 }
 
-func deriveGoStringMapsOfSimplerBuiltInTypes(this *MapsOfSimplerBuiltInTypes) string {
+func deriveGoStringMapsOfBuiltInTypes(this *MapsOfBuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
-	fmt.Fprintf(buf, "func() *MapsOfSimplerBuiltInTypes {\n")
+	fmt.Fprintf(buf, "func() *MapsOfBuiltInTypes {\n")
 	if this == nil {
 		fmt.Fprintf(buf, "return nil\n")
 	} else {
-		fmt.Fprintf(buf, "this := &MapsOfSimplerBuiltInTypes{}\n")
-		if this.StringToUint32 != nil {
-			fmt.Fprintf(buf, "this.StringToUint32 = %#v\n", this.StringToUint32)
+		fmt.Fprintf(buf, "this := &MapsOfBuiltInTypes{}\n")
+		if this.BoolToString != nil {
+			fmt.Fprintf(buf, "this.BoolToString = %#v\n", this.BoolToString)
 		}
-		if this.Uint64ToInt64 != nil {
-			fmt.Fprintf(buf, "this.Uint64ToInt64 = %#v\n", this.Uint64ToInt64)
+		if this.StringToBool != nil {
+			fmt.Fprintf(buf, "this.StringToBool = %#v\n", this.StringToBool)
+		}
+		if this.Complex128ToComplex64 != nil {
+			fmt.Fprintf(buf, "this.Complex128ToComplex64 = %#v\n", this.Complex128ToComplex64)
+		}
+		if this.Float64ToUint32 != nil {
+			fmt.Fprintf(buf, "this.Float64ToUint32 = %#v\n", this.Float64ToUint32)
+		}
+		if this.Uint16ToUint8 != nil {
+			fmt.Fprintf(buf, "this.Uint16ToUint8 = %#v\n", this.Uint16ToUint8)
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -474,6 +483,25 @@ func deriveGoStringArrayOfPtrToBuiltInTypes(this *ArrayOfPtrToBuiltInTypes) stri
 		}
 		for i := range this.AnotherBoolOfDifferentSize {
 			fmt.Fprintf(buf, "this.AnotherBoolOfDifferentSize[%d] = %s\n", i, deriveGoString(this.AnotherBoolOfDifferentSize[i]))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoStringMapsOfSimplerBuiltInTypes(this *MapsOfSimplerBuiltInTypes) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *MapsOfSimplerBuiltInTypes {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &MapsOfSimplerBuiltInTypes{}\n")
+		if this.StringToUint32 != nil {
+			fmt.Fprintf(buf, "this.StringToUint32 = %#v\n", this.StringToUint32)
+		}
+		if this.Uint64ToInt64 != nil {
+			fmt.Fprintf(buf, "this.Uint64ToInt64 = %#v\n", this.Uint64ToInt64)
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}

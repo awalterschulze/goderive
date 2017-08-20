@@ -15,6 +15,9 @@
 package test
 
 import (
+	"bytes"
+	"encoding/gob"
+	"fmt"
 	"go/parser"
 	"go/token"
 	"os"
@@ -32,6 +35,7 @@ func TestGoString(t *testing.T) {
 		&Empty{},
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
+		&SliceOfBuiltInTypes{},
 	}
 	filename := "gostring_gen_test.go"
 	f, err := os.Create(filename)
@@ -42,14 +46,18 @@ func TestGoString(t *testing.T) {
 	f.WriteString("\n")
 	f.WriteString("import (\n")
 	f.WriteString("\t\"testing\"\n")
+	f.WriteString("\t\"encoding/gob\"\n")
+	f.WriteString("\t\"bytes\"\n")
+	f.WriteString("\t\"reflect\"\n")
 	f.WriteString(")\n")
 	f.WriteString("\n")
 	f.WriteString("func TestGeneratedGoString(t *testing.T) {\n")
-	for _, this := range structs {
-		desc := reflect.TypeOf(this).Elem().Name()
+	for _, empty := range structs {
+		desc := reflect.TypeOf(empty).Elem().Name()
 		t.Run(desc, func(t *testing.T) {
+			first := true
 			for i := 0; i < 100; i++ {
-				this = random(this).(gostringer)
+				this := random(empty).(gostringer)
 				s := this.GoString()
 				content := `package main
 				func main() {
@@ -60,8 +68,45 @@ func TestGoString(t *testing.T) {
 				if _, err := parser.ParseFile(fset, "main.go", content, parser.AllErrors); err != nil {
 					t.Fatalf("parse error: %v, given input <%s>", err, s)
 				}
-				if i == 0 {
-					f.WriteString(s)
+				if first {
+					if this != nil {
+						first = false
+						fmt.Fprintf(f, "t.Run(%q, func(t *testing.T) {\n", desc)
+						buf := bytes.NewBuffer(nil)
+						enc := gob.NewEncoder(buf)
+						if err := enc.Encode(this); err != nil {
+							t.Fatal(err)
+						}
+						fmt.Fprintf(f, "data := %#v\n", buf.Bytes())
+
+						f.WriteString("gotbeforegob := " + s)
+						f.WriteString("buf := bytes.NewBuffer(data)\n")
+
+						f.WriteString("dec := gob.NewDecoder(buf)\n")
+						fmt.Fprintf(f, "want := %#v\n", empty)
+						f.WriteString("if err := dec.Decode(want); err != nil {\n")
+						f.WriteString("t.Fatal(err)\n")
+						f.WriteString("}\n")
+
+						//gob sees nil and empty slices as the same thing.
+						f.WriteString("equalizer := bytes.NewBuffer(nil)\n")
+						f.WriteString("enc := gob.NewEncoder(equalizer)\n")
+						f.WriteString("dec = gob.NewDecoder(equalizer)\n")
+						f.WriteString("enc.Encode(gotbeforegob)\n")
+						fmt.Fprintf(f, "got := %#v\n", empty)
+						f.WriteString("if err := dec.Decode(got); err != nil {\n")
+						f.WriteString("t.Fatal(err)\n")
+						f.WriteString("}\n")
+
+						f.WriteString("if !reflect.DeepEqual(got, want) {\n")
+						f.WriteString("if got != nil && want != nil {\n")
+						f.WriteString("t.Fatalf(\"got %#v != want %#v\", *got, *want)\n")
+						f.WriteString("} else {\n")
+						f.WriteString("t.Fatalf(\"got %#v != want %#v\", got, want)\n")
+						f.WriteString("}\n")
+						f.WriteString("}\n")
+						f.WriteString("})\n")
+					}
 				}
 			}
 		})

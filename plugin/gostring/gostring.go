@@ -142,11 +142,11 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 	return fmt.Errorf("unsupported type: %#v", typ)
 }
 
-var replacer = strings.NewReplacer(".", "_", "*", "_", "(", "_", ")", "_", "&", "_")
+var replacer = strings.NewReplacer(".", "Dot", "*", "Ptr", "(", "", ")", "", "&", "Ref")
 
 func newVar(this string) string {
 	that := replacer.Replace(this)
-	return that + "_tmp"
+	return that + "TmP"
 }
 
 func hasGoStringMethod(typ *types.Named) bool {
@@ -203,10 +203,20 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		p.Out()
 		p.P("}")
 		return nil
-		// case *types.Array:
-		// 	return fmt.Sprintf("%s(%s)", this.GetFuncName(typ), thisField), nil
-		// case *types.Slice:
-		// 	return fmt.Sprintf("%s(%s)", this.GetFuncName(typ), thisField), nil
+	// case *types.Array:
+	// 	return fmt.Sprintf("%s(%s)", this.GetFuncName(typ), thisField), nil
+	case *types.Slice:
+		p.P("if %s != nil {", this)
+		p.In()
+		p.P("%s.Fprintf(buf, \"%s = make(%s, %s)\\n\", %s)", g.fmtPkg(), this, g.TypeString(typ), "%d", "len("+this+")")
+		p.P("for i := range %s {", this)
+		p.In()
+		p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%#v", "i", this+"[i]")
+		p.Out()
+		p.P("}")
+		p.Out()
+		p.P("}")
+		return nil
 		// case *types.Map:
 		// 	return fmt.Sprintf("%s(%s)", this.GetFuncName(typ), thisField), nil
 		// case *types.Struct:

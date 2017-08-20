@@ -48,7 +48,9 @@ func TestContainsStruct(t *testing.T) {
 		t.Fatalf("%v is not contained in %v", item, list)
 	}
 	var newitem *BuiltInTypes
-	newitem = random(newitem).(*BuiltInTypes)
+	for newitem == nil {
+		newitem = random(newitem).(*BuiltInTypes)
+	}
 	if deriveContainsStruct(list, newitem) {
 		t.Fatalf("%v is contained in %v", newitem, list)
 	}

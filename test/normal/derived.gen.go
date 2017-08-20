@@ -47,18 +47,21 @@ func deriveIntersectOfInt64s(this, that []int64) []int64 {
 
 func deriveGoStringEmpty(this *Empty) string {
 	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *Empty {\n")
 	if this == nil {
-		fmt.Fprintf(buf, "nil\n")
+		fmt.Fprintf(buf, "return nil\n")
 	} else {
-		fmt.Fprintf(buf, "&Empty{}\n")
+		fmt.Fprintf(buf, "return &Empty{}\n")
 	}
+	fmt.Fprintf(buf, "}()\n")
 	return buf.String()
 }
 
 func deriveGoStringBuiltInTypes(this *BuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *BuiltInTypes {\n")
 	if this == nil {
-		fmt.Fprintf(buf, "nil\n")
+		fmt.Fprintf(buf, "return nil\n")
 	} else {
 		fmt.Fprintf(buf, "this := &BuiltInTypes{}\n")
 		fmt.Fprintf(buf, "this.Bool = %#v\n", this.Bool)
@@ -82,93 +85,96 @@ func deriveGoStringBuiltInTypes(this *BuiltInTypes) string {
 		fmt.Fprintf(buf, "this.UintPtr = %#v\n", this.UintPtr)
 		fmt.Fprintf(buf, "return this\n")
 	}
+	fmt.Fprintf(buf, "}()\n")
 	return buf.String()
 }
 
 func deriveGoStringPtrToBuiltInTypes(this *PtrToBuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *PtrToBuiltInTypes {\n")
 	if this == nil {
-		fmt.Fprintf(buf, "nil\n")
+		fmt.Fprintf(buf, "return nil\n")
 	} else {
 		fmt.Fprintf(buf, "this := &PtrToBuiltInTypes{}\n")
 		if this.Bool != nil {
-			fmt.Fprintf(buf, "this_Bool_tmp := %#v\n", *this.Bool)
-			fmt.Fprintf(buf, "this.Bool = *this_Bool_tmp\n")
+			fmt.Fprintf(buf, "this_Bool_tmp := bool(%#v)\n", *this.Bool)
+			fmt.Fprintf(buf, "this.Bool = &this_Bool_tmp\n")
 		}
 		if this.Byte != nil {
-			fmt.Fprintf(buf, "this_Byte_tmp := %#v\n", *this.Byte)
-			fmt.Fprintf(buf, "this.Byte = *this_Byte_tmp\n")
+			fmt.Fprintf(buf, "this_Byte_tmp := byte(%#v)\n", *this.Byte)
+			fmt.Fprintf(buf, "this.Byte = &this_Byte_tmp\n")
 		}
 		if this.Complex128 != nil {
-			fmt.Fprintf(buf, "this_Complex128_tmp := %#v\n", *this.Complex128)
-			fmt.Fprintf(buf, "this.Complex128 = *this_Complex128_tmp\n")
+			fmt.Fprintf(buf, "this_Complex128_tmp := complex128(%#v)\n", *this.Complex128)
+			fmt.Fprintf(buf, "this.Complex128 = &this_Complex128_tmp\n")
 		}
 		if this.Complex64 != nil {
-			fmt.Fprintf(buf, "this_Complex64_tmp := %#v\n", *this.Complex64)
-			fmt.Fprintf(buf, "this.Complex64 = *this_Complex64_tmp\n")
+			fmt.Fprintf(buf, "this_Complex64_tmp := complex64(%#v)\n", *this.Complex64)
+			fmt.Fprintf(buf, "this.Complex64 = &this_Complex64_tmp\n")
 		}
 		if this.Float64 != nil {
-			fmt.Fprintf(buf, "this_Float64_tmp := %#v\n", *this.Float64)
-			fmt.Fprintf(buf, "this.Float64 = *this_Float64_tmp\n")
+			fmt.Fprintf(buf, "this_Float64_tmp := float64(%#v)\n", *this.Float64)
+			fmt.Fprintf(buf, "this.Float64 = &this_Float64_tmp\n")
 		}
 		if this.Float32 != nil {
-			fmt.Fprintf(buf, "this_Float32_tmp := %#v\n", *this.Float32)
-			fmt.Fprintf(buf, "this.Float32 = *this_Float32_tmp\n")
+			fmt.Fprintf(buf, "this_Float32_tmp := float32(%#v)\n", *this.Float32)
+			fmt.Fprintf(buf, "this.Float32 = &this_Float32_tmp\n")
 		}
 		if this.Int != nil {
-			fmt.Fprintf(buf, "this_Int_tmp := %#v\n", *this.Int)
-			fmt.Fprintf(buf, "this.Int = *this_Int_tmp\n")
+			fmt.Fprintf(buf, "this_Int_tmp := int(%#v)\n", *this.Int)
+			fmt.Fprintf(buf, "this.Int = &this_Int_tmp\n")
 		}
 		if this.Int16 != nil {
-			fmt.Fprintf(buf, "this_Int16_tmp := %#v\n", *this.Int16)
-			fmt.Fprintf(buf, "this.Int16 = *this_Int16_tmp\n")
+			fmt.Fprintf(buf, "this_Int16_tmp := int16(%#v)\n", *this.Int16)
+			fmt.Fprintf(buf, "this.Int16 = &this_Int16_tmp\n")
 		}
 		if this.Int32 != nil {
-			fmt.Fprintf(buf, "this_Int32_tmp := %#v\n", *this.Int32)
-			fmt.Fprintf(buf, "this.Int32 = *this_Int32_tmp\n")
+			fmt.Fprintf(buf, "this_Int32_tmp := int32(%#v)\n", *this.Int32)
+			fmt.Fprintf(buf, "this.Int32 = &this_Int32_tmp\n")
 		}
 		if this.Int64 != nil {
-			fmt.Fprintf(buf, "this_Int64_tmp := %#v\n", *this.Int64)
-			fmt.Fprintf(buf, "this.Int64 = *this_Int64_tmp\n")
+			fmt.Fprintf(buf, "this_Int64_tmp := int64(%#v)\n", *this.Int64)
+			fmt.Fprintf(buf, "this.Int64 = &this_Int64_tmp\n")
 		}
 		if this.Int8 != nil {
-			fmt.Fprintf(buf, "this_Int8_tmp := %#v\n", *this.Int8)
-			fmt.Fprintf(buf, "this.Int8 = *this_Int8_tmp\n")
+			fmt.Fprintf(buf, "this_Int8_tmp := int8(%#v)\n", *this.Int8)
+			fmt.Fprintf(buf, "this.Int8 = &this_Int8_tmp\n")
 		}
 		if this.Rune != nil {
-			fmt.Fprintf(buf, "this_Rune_tmp := %#v\n", *this.Rune)
-			fmt.Fprintf(buf, "this.Rune = *this_Rune_tmp\n")
+			fmt.Fprintf(buf, "this_Rune_tmp := rune(%#v)\n", *this.Rune)
+			fmt.Fprintf(buf, "this.Rune = &this_Rune_tmp\n")
 		}
 		if this.String != nil {
-			fmt.Fprintf(buf, "this_String_tmp := %#v\n", *this.String)
-			fmt.Fprintf(buf, "this.String = *this_String_tmp\n")
+			fmt.Fprintf(buf, "this_String_tmp := string(%#v)\n", *this.String)
+			fmt.Fprintf(buf, "this.String = &this_String_tmp\n")
 		}
 		if this.Uint != nil {
-			fmt.Fprintf(buf, "this_Uint_tmp := %#v\n", *this.Uint)
-			fmt.Fprintf(buf, "this.Uint = *this_Uint_tmp\n")
+			fmt.Fprintf(buf, "this_Uint_tmp := uint(%#v)\n", *this.Uint)
+			fmt.Fprintf(buf, "this.Uint = &this_Uint_tmp\n")
 		}
 		if this.Uint16 != nil {
-			fmt.Fprintf(buf, "this_Uint16_tmp := %#v\n", *this.Uint16)
-			fmt.Fprintf(buf, "this.Uint16 = *this_Uint16_tmp\n")
+			fmt.Fprintf(buf, "this_Uint16_tmp := uint16(%#v)\n", *this.Uint16)
+			fmt.Fprintf(buf, "this.Uint16 = &this_Uint16_tmp\n")
 		}
 		if this.Uint32 != nil {
-			fmt.Fprintf(buf, "this_Uint32_tmp := %#v\n", *this.Uint32)
-			fmt.Fprintf(buf, "this.Uint32 = *this_Uint32_tmp\n")
+			fmt.Fprintf(buf, "this_Uint32_tmp := uint32(%#v)\n", *this.Uint32)
+			fmt.Fprintf(buf, "this.Uint32 = &this_Uint32_tmp\n")
 		}
 		if this.Uint64 != nil {
-			fmt.Fprintf(buf, "this_Uint64_tmp := %#v\n", *this.Uint64)
-			fmt.Fprintf(buf, "this.Uint64 = *this_Uint64_tmp\n")
+			fmt.Fprintf(buf, "this_Uint64_tmp := uint64(%#v)\n", *this.Uint64)
+			fmt.Fprintf(buf, "this.Uint64 = &this_Uint64_tmp\n")
 		}
 		if this.Uint8 != nil {
-			fmt.Fprintf(buf, "this_Uint8_tmp := %#v\n", *this.Uint8)
-			fmt.Fprintf(buf, "this.Uint8 = *this_Uint8_tmp\n")
+			fmt.Fprintf(buf, "this_Uint8_tmp := uint8(%#v)\n", *this.Uint8)
+			fmt.Fprintf(buf, "this.Uint8 = &this_Uint8_tmp\n")
 		}
 		if this.UintPtr != nil {
-			fmt.Fprintf(buf, "this_UintPtr_tmp := %#v\n", *this.UintPtr)
-			fmt.Fprintf(buf, "this.UintPtr = *this_UintPtr_tmp\n")
+			fmt.Fprintf(buf, "this_UintPtr_tmp := uintptr(%#v)\n", *this.UintPtr)
+			fmt.Fprintf(buf, "this.UintPtr = &this_UintPtr_tmp\n")
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
+	fmt.Fprintf(buf, "}()\n")
 	return buf.String()
 }
 

@@ -68,9 +68,11 @@ func (g *gen) genFunc(typ types.Type) error {
 	p.P("func %s(this %s) string {", g.GetFuncName(typ), typeStr)
 	p.In()
 	p.P("buf := %s.NewBuffer(nil)", g.bytesPkg())
+	p.P("%s.Fprintf(buf, \"func() %s {\\n\")", g.fmtPkg(), typeStr)
 	if err := g.genStatement(typ, "this"); err != nil {
 		return err
 	}
+	p.P("%s.Fprintf(buf, \"}()\\n\")", g.fmtPkg())
 	p.P("return buf.String()")
 	p.Out()
 	p.P("}")
@@ -95,7 +97,7 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 	case *types.Pointer:
 		p.P("if %s == nil {", this)
 		p.In()
-		g.W("nil")
+		g.W("return nil")
 		p.Out()
 		p.P("} else {")
 		p.In()
@@ -109,7 +111,7 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 			external := g.TypesMap.IsExternal(named)
 			fields := derive.Fields(g.TypesMap, strct, external)
 			if len(fields.Fields) == 0 {
-				g.W("&%s{}", g.TypeString(reftyp))
+				g.W("return &%s{}", g.TypeString(reftyp))
 			} else {
 				g.W("%s := &%s{}", this, g.TypeString(reftyp))
 				for _, field := range fields.Fields {
@@ -186,8 +188,7 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 	case *types.Pointer:
 		p.P("if %s != nil {", this)
 		p.In()
-		// ref := typ.Elem()
-		_ = typ
+		refTyp := typ.Elem()
 		tmpvar := newVar(this)
 		// if named, ok := ref.(*types.Named); ok {
 		// 	if hasGoStringMethod(named) {
@@ -197,8 +198,8 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		// 		return nil
 		// 	}
 		// }
-		p.P("%s.Fprintf(buf, \"%s := %s\\n\", %s)", g.fmtPkg(), tmpvar, "%#v", "*"+this)
-		p.P("%s.Fprintf(buf, \"%s = %s\\n\")", g.fmtPkg(), this, "*"+tmpvar)
+		p.P("%s.Fprintf(buf, \"%s := %s(%s)\\n\", %s)", g.fmtPkg(), tmpvar, g.TypeString(refTyp), "%#v", "*"+this)
+		p.P("%s.Fprintf(buf, \"%s = %s\\n\")", g.fmtPkg(), this, "&"+tmpvar)
 		p.Out()
 		p.P("}")
 		return nil

@@ -2,8 +2,12 @@
 derived.gen.go:
 	goderive ./...
 
+.PHONY: clean
+clean:
+	rm gostring_gen_test.go || true
+
 .PHONY: test
-test: derived.gen.go gofmt
+test: clean derived.gen.go gofmt
 	go test -v ./...
 
 .PHONY: gofmt

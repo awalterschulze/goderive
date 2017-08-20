@@ -82,11 +82,6 @@ func (g *gen) W(format string, a ...interface{}) {
 	g.printer.P("%s.Fprintf(buf, \"%s\\n\")", g.fmtPkg(), s)
 }
 
-func (g *gen) Field(fieldName string) {
-	s := "%v"
-	g.printer.P("fmt.Fprintf(buf, \"%s = %s\\n\", %s)", fieldName, s, fieldName)
-}
-
 func (g *gen) P(format string, a ...interface{}) {
 	g.printer.P(format, a...)
 }
@@ -123,11 +118,9 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 						return fmt.Errorf("private fields not supported, found %s in %v", field.Name("", nil), named)
 					}
 					thisField := field.Name(this, nil)
-					g.Field(thisField)
-					// err := g.genField(fieldType, thisField)
-					// if err != nil {
-					// 	return err
-					// }
+					if err := g.genField(field.Type, thisField); err != nil {
+						return err
+					}
 				}
 				g.W("return %s", this)
 			}
@@ -186,18 +179,9 @@ func hasGoStringMethod(typ *types.Named) bool {
 func (g *gen) genField(fieldType types.Type, this string) error {
 	switch typ := fieldType.Underlying().(type) {
 	case *types.Basic:
-		switch typ.Kind() {
-		case types.Float32:
-			g.P("%s = %s.FormatFloat(float64(%s), 'f', -1, 32))", this, g.strconvPkg(), this)
-			g.W("%s = %s", this, this)
-		// case types.Float64:
-		// 	return this.strconvPkg() + ".FormatFloat(" + thisField + ", 'f', -1, 64)", nil
-		default:
-			// TODO make a faster version without sync.Mutex for each basic type
-			g.W("%s = ")
-			g.P("%s = fmt.Sprintf(\"%#v\", %s)", this, this)
-			g.W("%s = %s", this, this)
-		}
+		g.printer.P("fmt.Fprintf(buf, \"%s = %s\\n\", %s)", this, "%#v", this)
+		_ = typ
+		return nil
 		// case *types.Pointer:
 		// 	ref := typ.Elem()
 		// 	if named, ok := ref.(*types.Named); ok {

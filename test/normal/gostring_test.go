@@ -18,7 +18,6 @@ import (
 	"go/parser"
 	"go/token"
 	"reflect"
-	"strings"
 	"testing"
 )
 
@@ -45,9 +44,6 @@ func TestGoString(t *testing.T) {
 				fset := token.NewFileSet()
 				if _, err := parser.ParseFile(fset, "main.go", content, parser.AllErrors); err != nil {
 					t.Fatalf("parse error: %v, given input <%s>", err, s)
-				}
-				if strings.Contains(s, "x0") {
-					t.Fatalf("printed a pointer instead of a value in %s", s)
 				}
 				if i == 0 {
 					t.Log(s)

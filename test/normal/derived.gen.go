@@ -5,14 +5,13 @@ package test
 import (
 	"bytes"
 	"fmt"
+	extra "github.com/awalterschulze/goderive/test/extra"
 	"reflect"
 	"sort"
 	"strings"
 	"time"
 	"unsafe"
 	"vendortest"
-
-	extra "github.com/awalterschulze/goderive/test/extra"
 )
 
 func deriveTakeWhile(pred func(int) bool, list []int) []int {
@@ -64,6 +63,8 @@ func deriveGoStringBuiltInTypes(this *BuiltInTypes) string {
 		fmt.Fprintf(buf, "this := &BuiltInTypes{}\n")
 		fmt.Fprintf(buf, "this.Bool = %v\n", this.Bool)
 		fmt.Fprintf(buf, "this.Byte = %v\n", this.Byte)
+		fmt.Fprintf(buf, "this.Complex128 = %v\n", this.Complex128)
+		fmt.Fprintf(buf, "this.Complex64 = %v\n", this.Complex64)
 		fmt.Fprintf(buf, "this.Float64 = %v\n", this.Float64)
 		fmt.Fprintf(buf, "this.Float32 = %v\n", this.Float32)
 		fmt.Fprintf(buf, "this.Int = %v\n", this.Int)
@@ -72,6 +73,7 @@ func deriveGoStringBuiltInTypes(this *BuiltInTypes) string {
 		fmt.Fprintf(buf, "this.Int64 = %v\n", this.Int64)
 		fmt.Fprintf(buf, "this.Int8 = %v\n", this.Int8)
 		fmt.Fprintf(buf, "this.Rune = %v\n", this.Rune)
+		fmt.Fprintf(buf, "this.String = %v\n", this.String)
 		fmt.Fprintf(buf, "this.Uint = %v\n", this.Uint)
 		fmt.Fprintf(buf, "this.Uint16 = %v\n", this.Uint16)
 		fmt.Fprintf(buf, "this.Uint32 = %v\n", this.Uint32)
@@ -116,6 +118,34 @@ func deriveUncurry3(f func(a int) func(b string, c bool) string) func(a int, b s
 func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c bool) string {
 	return func(b string, c bool) string {
 		return f(b)(c)
+	}
+}
+
+func deriveCompose(f func() (string, error), g func(string) (float64, error)) (float64, error) {
+	b0, err := f()
+	if err != nil {
+		return 0, err
+	}
+	return g(b0)
+}
+
+func deriveComposeA(f func(string) (string, error), g func(string) (float64, error)) func(string) (float64, error) {
+	return func(a0 string) (float64, error) {
+		b0, err := f(a0)
+		if err != nil {
+			return 0, err
+		}
+		return g(b0)
+	}
+}
+
+func deriveCompose2(f func(string, string) ([]string, string, error), g func([]string, string) (float64, error)) func(string, string) (float64, error) {
+	return func(a0 string, a1 string) (float64, error) {
+		b0, b1, err := f(a0, a1)
+		if err != nil {
+			return 0, err
+		}
+		return g(b0, b1)
 	}
 }
 
@@ -3273,34 +3303,6 @@ func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interfac
 func deriveFlip3(f func(a int, b string, c bool) string) func(b string, a int, c bool) string {
 	return func(b string, a int, c bool) string {
 		return f(a, b, c)
-	}
-}
-
-func deriveBind(f func() (string, error), g func(string) (float64, error)) (float64, error) {
-	b0, err := f()
-	if err != nil {
-		return 0, err
-	}
-	return g(b0)
-}
-
-func deriveBindA(f func(string) (string, error), g func(string) (float64, error)) func(string) (float64, error) {
-	return func(a0 string) (float64, error) {
-		b0, err := f(a0)
-		if err != nil {
-			return 0, err
-		}
-		return g(b0)
-	}
-}
-
-func deriveBind2(f func(string, string) ([]string, string, error), g func([]string, string) (float64, error)) func(string, string) (float64, error) {
-	return func(a0 string, a1 string) (float64, error) {
-		b0, b1, err := f(a0, a1)
-		if err != nil {
-			return 0, err
-		}
-		return g(b0, b1)
 	}
 }
 

@@ -21,8 +21,8 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 	"github.com/awalterschulze/goderive/plugin/all"
 	"github.com/awalterschulze/goderive/plugin/any"
-	"github.com/awalterschulze/goderive/plugin/bind"
 	"github.com/awalterschulze/goderive/plugin/compare"
+	"github.com/awalterschulze/goderive/plugin/compose"
 	"github.com/awalterschulze/goderive/plugin/contains"
 	"github.com/awalterschulze/goderive/plugin/copyto"
 	"github.com/awalterschulze/goderive/plugin/curry"
@@ -72,8 +72,8 @@ func main() {
 		all.NewPlugin(),
 		any.NewPlugin(),
 		tuple.NewPlugin(),
-		bind.NewPlugin(),
 		gostring.NewPlugin(),
+		compose.NewPlugin(),
 	}
 	flags := make(map[string]*string)
 	for _, p := range plugins {

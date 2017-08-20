@@ -42,7 +42,7 @@ func NewFileInfos(program *loader.Program, pkgInfo *loader.PackageInfo) []*fileI
 			continue
 		}
 		fullpath := file.Name()
-		// log.Printf("filename: %s", fullpath)
+
 		_, fname := filepath.Split(fullpath)
 		if fname == derivedFilename {
 			continue

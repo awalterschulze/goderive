@@ -302,6 +302,10 @@ func (this *ArrayOfPtrToBuiltInTypes) CopyTo(that *ArrayOfPtrToBuiltInTypes) {
 	deriveCopyToPtrToArrayOfPtrToBuiltInTypes(this, that)
 }
 
+func (this *ArrayOfPtrToBuiltInTypes) GoString() string {
+	return deriveGoStringArrayOfPtrToBuiltInTypes(this)
+}
+
 type MapsOfSimplerBuiltInTypes struct {
 	StringToUint32 map[string]uint32
 	Uint64ToInt64  map[uint8]int64

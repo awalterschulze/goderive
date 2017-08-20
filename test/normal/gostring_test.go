@@ -38,6 +38,7 @@ func TestGoString(t *testing.T) {
 		&SliceOfBuiltInTypes{},
 		&SliceOfPtrToBuiltInTypes{},
 		&ArrayOfBuiltInTypes{},
+		&ArrayOfPtrToBuiltInTypes{},
 	}
 	filename := "gostring_gen_test.go"
 	f, err := os.Create(filename)

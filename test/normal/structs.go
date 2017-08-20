@@ -222,6 +222,10 @@ func (this *SliceOfPtrToBuiltInTypes) CopyTo(that *SliceOfPtrToBuiltInTypes) {
 	deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that)
 }
 
+func (this *SliceOfPtrToBuiltInTypes) GoString() string {
+	return deriveGoStringSliceOfPtrToBuiltInTypes(this)
+}
+
 type ArrayOfBuiltInTypes struct {
 	Bool       [1]bool
 	Byte       [2]byte

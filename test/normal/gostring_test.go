@@ -36,6 +36,7 @@ func TestGoString(t *testing.T) {
 		&BuiltInTypes{},
 		&PtrToBuiltInTypes{},
 		&SliceOfBuiltInTypes{},
+		&SliceOfPtrToBuiltInTypes{},
 	}
 	filename := "gostring_gen_test.go"
 	f, err := os.Create(filename)
@@ -68,44 +69,56 @@ func TestGoString(t *testing.T) {
 				if _, err := parser.ParseFile(fset, "main.go", content, parser.AllErrors); err != nil {
 					t.Fatalf("parse error: %v, given input <%s>", err, s)
 				}
+				if ss, ok := this.(*SliceOfPtrToBuiltInTypes); i == 0 && ok {
+					t.Logf("%#v", *ss)
+					t.Log(s)
+				}
 				if first {
-					if this != nil {
+					// If gob has not been able to encode any of 10 random variables,
+					// then I guess its time to move on to a simpler test.
+					if i == 10 {
 						first = false
 						fmt.Fprintf(f, "t.Run(%q, func(t *testing.T) {\n", desc)
+						f.WriteString(s)
+						f.WriteString("})\n")
+					} else if !reflect.ValueOf(this).IsNil() {
 						buf := bytes.NewBuffer(nil)
 						enc := gob.NewEncoder(buf)
-						if err := enc.Encode(this); err != nil {
-							t.Fatal(err)
+						// Suprisingly many things that gob cannot encode.
+						if err := enc.Encode(this); err == nil {
+							first = false
+							fmt.Fprintf(f, "t.Run(%q, func(t *testing.T) {\n", desc)
+
+							fmt.Fprintf(f, "data := %#v\n", buf.Bytes())
+
+							f.WriteString("gotbeforegob := " + s)
+							f.WriteString("buf := bytes.NewBuffer(data)\n")
+
+							f.WriteString("dec := gob.NewDecoder(buf)\n")
+							fmt.Fprintf(f, "want := %#v\n", empty)
+							f.WriteString("if err := dec.Decode(want); err != nil {\n")
+							f.WriteString("t.Fatal(err)\n")
+							f.WriteString("}\n")
+
+							//gob sees nil and empty slices as the same thing.
+							f.WriteString("equalizer := bytes.NewBuffer(nil)\n")
+							f.WriteString("enc := gob.NewEncoder(equalizer)\n")
+							f.WriteString("dec = gob.NewDecoder(equalizer)\n")
+							f.WriteString("enc.Encode(gotbeforegob)\n")
+							fmt.Fprintf(f, "got := %#v\n", empty)
+							f.WriteString("if err := dec.Decode(got); err != nil {\n")
+							f.WriteString("t.Fatal(err)\n")
+							f.WriteString("}\n")
+
+							f.WriteString("if !reflect.DeepEqual(got, want) {\n")
+							f.WriteString("if got != nil && want != nil {\n")
+							f.WriteString("t.Fatalf(\"got %#v != want %#v\", *got, *want)\n")
+							f.WriteString("} else {\n")
+							f.WriteString("t.Fatalf(\"got %#v != want %#v\", got, want)\n")
+							f.WriteString("}\n")
+							f.WriteString("}\n")
+							f.WriteString("})\n")
 						}
-						fmt.Fprintf(f, "data := %#v\n", buf.Bytes())
-
-						f.WriteString("gotbeforegob := " + s)
-						f.WriteString("buf := bytes.NewBuffer(data)\n")
-
-						f.WriteString("dec := gob.NewDecoder(buf)\n")
-						fmt.Fprintf(f, "want := %#v\n", empty)
-						f.WriteString("if err := dec.Decode(want); err != nil {\n")
-						f.WriteString("t.Fatal(err)\n")
-						f.WriteString("}\n")
-
-						//gob sees nil and empty slices as the same thing.
-						f.WriteString("equalizer := bytes.NewBuffer(nil)\n")
-						f.WriteString("enc := gob.NewEncoder(equalizer)\n")
-						f.WriteString("dec = gob.NewDecoder(equalizer)\n")
-						f.WriteString("enc.Encode(gotbeforegob)\n")
-						fmt.Fprintf(f, "got := %#v\n", empty)
-						f.WriteString("if err := dec.Decode(got); err != nil {\n")
-						f.WriteString("t.Fatal(err)\n")
-						f.WriteString("}\n")
-
-						f.WriteString("if !reflect.DeepEqual(got, want) {\n")
-						f.WriteString("if got != nil && want != nil {\n")
-						f.WriteString("t.Fatalf(\"got %#v != want %#v\", *got, *want)\n")
-						f.WriteString("} else {\n")
-						f.WriteString("t.Fatalf(\"got %#v != want %#v\", got, want)\n")
-						f.WriteString("}\n")
-						f.WriteString("}\n")
-						f.WriteString("})\n")
 					}
 				}
 			}

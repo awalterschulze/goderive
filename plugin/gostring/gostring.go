@@ -92,7 +92,7 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 	p := g.printer
 	switch ttyp := typ.Underlying().(type) {
 	case *types.Basic:
-		g.genField(typ, this)
+		p.P("%s.Fprintf(buf, \"return %s\\n\", %s)", g.fmtPkg(), "%#v", this)
 		return nil
 	case *types.Pointer:
 		p.P("if %s == nil {", this)
@@ -106,7 +106,9 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 		named, isNamed := reftyp.(*types.Named)
 		strct, isStruct := reftyp.Underlying().(*types.Struct)
 		if !isStruct {
-			g.genStatement(reftyp, thisref)
+			g.W("%s := new(%s)", this, g.TypeString(reftyp))
+			g.genField(reftyp, thisref)
+			g.W("return %s", this)
 		} else if isNamed {
 			external := g.TypesMap.IsExternal(named)
 			fields := derive.Fields(g.TypesMap, strct, external)
@@ -188,8 +190,7 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 	case *types.Pointer:
 		p.P("if %s != nil {", this)
 		p.In()
-		refTyp := typ.Elem()
-		tmpvar := newVar(this)
+		// refTyp := typ.Elem()
 		// if named, ok := ref.(*types.Named); ok {
 		// 	if hasGoStringMethod(named) {
 		// 		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), tmpvar, "%s", this+".GoString()")
@@ -198,36 +199,28 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		// 		return nil
 		// 	}
 		// }
-		p.P("%s.Fprintf(buf, \"%s := %s(%s)\\n\", %s)", g.fmtPkg(), tmpvar, g.TypeString(refTyp), "%#v", "*"+this)
-		p.P("%s.Fprintf(buf, \"%s = %s\\n\")", g.fmtPkg(), this, "&"+tmpvar)
+		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(typ)+"("+this+")")
 		p.Out()
 		p.P("}")
 		return nil
-	// case *types.Array:
-	// 	return fmt.Sprintf("%s(%s)", this.GetFuncName(typ), thisField), nil
 	case *types.Slice:
 		p.P("if %s != nil {", this)
 		p.In()
-		p.P("%s.Fprintf(buf, \"%s = make(%s, %s)\\n\", %s)", g.fmtPkg(), this, g.TypeString(typ), "%d", "len("+this+")")
-		p.P("for i := range %s {", this)
-		p.In()
-		p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%#v", "i", this+"[i]")
-		p.Out()
-		p.P("}")
+		elmTyp := typ.Elem()
+		if _, isBasic := elmTyp.(*types.Basic); isBasic {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
+		} else {
+			p.P("%s.Fprintf(buf, \"%s = make(%s, %s)\\n\", %s)", g.fmtPkg(), this, g.TypeString(typ), "%d", "len("+this+")")
+			p.P("for i := range %s {", this)
+			p.In()
+			goStringElm := g.GetFuncName(elmTyp)
+			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", goStringElm+"("+this+"[i])")
+			p.Out()
+			p.P("}")
+		}
 		p.Out()
 		p.P("}")
 		return nil
-		// case *types.Map:
-		// 	return fmt.Sprintf("%s(%s)", this.GetFuncName(typ), thisField), nil
-		// case *types.Struct:
-		// 	if named, isNamed := fieldType.(*types.Named); isNamed {
-		// 		if hasGoStringMethod(named) {
-		// 			return fmt.Sprintf("%s.GoString()", thisField), nil
-		// 		}
-		// 	}
-		// 	return fmt.Sprintf("%s(%s)", this.GetFuncName(typ), thisField), nil
-		// }
-		// *Chan, *Tuple, *Signature, *Interface, *Struct
 	}
 	return fmt.Errorf("unsupported type %#v", fieldType)
 }

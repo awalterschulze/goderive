@@ -97,80 +97,61 @@ func deriveGoStringPtrToBuiltInTypes(this *PtrToBuiltInTypes) string {
 	} else {
 		fmt.Fprintf(buf, "this := &PtrToBuiltInTypes{}\n")
 		if this.Bool != nil {
-			fmt.Fprintf(buf, "thisDotBoolTmP := bool(%#v)\n", *this.Bool)
-			fmt.Fprintf(buf, "this.Bool = &thisDotBoolTmP\n")
+			fmt.Fprintf(buf, "this.Bool = %s\n", deriveGoString(this.Bool))
 		}
 		if this.Byte != nil {
-			fmt.Fprintf(buf, "thisDotByteTmP := byte(%#v)\n", *this.Byte)
-			fmt.Fprintf(buf, "this.Byte = &thisDotByteTmP\n")
+			fmt.Fprintf(buf, "this.Byte = %s\n", deriveGoString_(this.Byte))
 		}
 		if this.Complex128 != nil {
-			fmt.Fprintf(buf, "thisDotComplex128TmP := complex128(%#v)\n", *this.Complex128)
-			fmt.Fprintf(buf, "this.Complex128 = &thisDotComplex128TmP\n")
+			fmt.Fprintf(buf, "this.Complex128 = %s\n", deriveGoString_1(this.Complex128))
 		}
 		if this.Complex64 != nil {
-			fmt.Fprintf(buf, "thisDotComplex64TmP := complex64(%#v)\n", *this.Complex64)
-			fmt.Fprintf(buf, "this.Complex64 = &thisDotComplex64TmP\n")
+			fmt.Fprintf(buf, "this.Complex64 = %s\n", deriveGoString_2(this.Complex64))
 		}
 		if this.Float64 != nil {
-			fmt.Fprintf(buf, "thisDotFloat64TmP := float64(%#v)\n", *this.Float64)
-			fmt.Fprintf(buf, "this.Float64 = &thisDotFloat64TmP\n")
+			fmt.Fprintf(buf, "this.Float64 = %s\n", deriveGoString_3(this.Float64))
 		}
 		if this.Float32 != nil {
-			fmt.Fprintf(buf, "thisDotFloat32TmP := float32(%#v)\n", *this.Float32)
-			fmt.Fprintf(buf, "this.Float32 = &thisDotFloat32TmP\n")
+			fmt.Fprintf(buf, "this.Float32 = %s\n", deriveGoString_4(this.Float32))
 		}
 		if this.Int != nil {
-			fmt.Fprintf(buf, "thisDotIntTmP := int(%#v)\n", *this.Int)
-			fmt.Fprintf(buf, "this.Int = &thisDotIntTmP\n")
+			fmt.Fprintf(buf, "this.Int = %s\n", deriveGoString_5(this.Int))
 		}
 		if this.Int16 != nil {
-			fmt.Fprintf(buf, "thisDotInt16TmP := int16(%#v)\n", *this.Int16)
-			fmt.Fprintf(buf, "this.Int16 = &thisDotInt16TmP\n")
+			fmt.Fprintf(buf, "this.Int16 = %s\n", deriveGoString_6(this.Int16))
 		}
 		if this.Int32 != nil {
-			fmt.Fprintf(buf, "thisDotInt32TmP := int32(%#v)\n", *this.Int32)
-			fmt.Fprintf(buf, "this.Int32 = &thisDotInt32TmP\n")
+			fmt.Fprintf(buf, "this.Int32 = %s\n", deriveGoString_7(this.Int32))
 		}
 		if this.Int64 != nil {
-			fmt.Fprintf(buf, "thisDotInt64TmP := int64(%#v)\n", *this.Int64)
-			fmt.Fprintf(buf, "this.Int64 = &thisDotInt64TmP\n")
+			fmt.Fprintf(buf, "this.Int64 = %s\n", deriveGoString_8(this.Int64))
 		}
 		if this.Int8 != nil {
-			fmt.Fprintf(buf, "thisDotInt8TmP := int8(%#v)\n", *this.Int8)
-			fmt.Fprintf(buf, "this.Int8 = &thisDotInt8TmP\n")
+			fmt.Fprintf(buf, "this.Int8 = %s\n", deriveGoString_9(this.Int8))
 		}
 		if this.Rune != nil {
-			fmt.Fprintf(buf, "thisDotRuneTmP := rune(%#v)\n", *this.Rune)
-			fmt.Fprintf(buf, "this.Rune = &thisDotRuneTmP\n")
+			fmt.Fprintf(buf, "this.Rune = %s\n", deriveGoString_7(this.Rune))
 		}
 		if this.String != nil {
-			fmt.Fprintf(buf, "thisDotStringTmP := string(%#v)\n", *this.String)
-			fmt.Fprintf(buf, "this.String = &thisDotStringTmP\n")
+			fmt.Fprintf(buf, "this.String = %s\n", deriveGoString_10(this.String))
 		}
 		if this.Uint != nil {
-			fmt.Fprintf(buf, "thisDotUintTmP := uint(%#v)\n", *this.Uint)
-			fmt.Fprintf(buf, "this.Uint = &thisDotUintTmP\n")
+			fmt.Fprintf(buf, "this.Uint = %s\n", deriveGoString_11(this.Uint))
 		}
 		if this.Uint16 != nil {
-			fmt.Fprintf(buf, "thisDotUint16TmP := uint16(%#v)\n", *this.Uint16)
-			fmt.Fprintf(buf, "this.Uint16 = &thisDotUint16TmP\n")
+			fmt.Fprintf(buf, "this.Uint16 = %s\n", deriveGoString_12(this.Uint16))
 		}
 		if this.Uint32 != nil {
-			fmt.Fprintf(buf, "thisDotUint32TmP := uint32(%#v)\n", *this.Uint32)
-			fmt.Fprintf(buf, "this.Uint32 = &thisDotUint32TmP\n")
+			fmt.Fprintf(buf, "this.Uint32 = %s\n", deriveGoString_13(this.Uint32))
 		}
 		if this.Uint64 != nil {
-			fmt.Fprintf(buf, "thisDotUint64TmP := uint64(%#v)\n", *this.Uint64)
-			fmt.Fprintf(buf, "this.Uint64 = &thisDotUint64TmP\n")
+			fmt.Fprintf(buf, "this.Uint64 = %s\n", deriveGoString_14(this.Uint64))
 		}
 		if this.Uint8 != nil {
-			fmt.Fprintf(buf, "thisDotUint8TmP := uint8(%#v)\n", *this.Uint8)
-			fmt.Fprintf(buf, "this.Uint8 = &thisDotUint8TmP\n")
+			fmt.Fprintf(buf, "this.Uint8 = %s\n", deriveGoString_(this.Uint8))
 		}
 		if this.UintPtr != nil {
-			fmt.Fprintf(buf, "thisDotUintPtrTmP := uintptr(%#v)\n", *this.UintPtr)
-			fmt.Fprintf(buf, "this.UintPtr = &thisDotUintPtrTmP\n")
+			fmt.Fprintf(buf, "this.UintPtr = %s\n", deriveGoString_15(this.UintPtr))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -186,117 +167,187 @@ func deriveGoStringSliceOfBuiltInTypes(this *SliceOfBuiltInTypes) string {
 	} else {
 		fmt.Fprintf(buf, "this := &SliceOfBuiltInTypes{}\n")
 		if this.Bool != nil {
-			fmt.Fprintf(buf, "this.Bool = make([]bool, %d)\n", len(this.Bool))
+			fmt.Fprintf(buf, "this.Bool = %#v\n", this.Bool)
+		}
+		if this.Byte != nil {
+			fmt.Fprintf(buf, "this.Byte = %#v\n", this.Byte)
+		}
+		if this.Complex128 != nil {
+			fmt.Fprintf(buf, "this.Complex128 = %#v\n", this.Complex128)
+		}
+		if this.Complex64 != nil {
+			fmt.Fprintf(buf, "this.Complex64 = %#v\n", this.Complex64)
+		}
+		if this.Float64 != nil {
+			fmt.Fprintf(buf, "this.Float64 = %#v\n", this.Float64)
+		}
+		if this.Float32 != nil {
+			fmt.Fprintf(buf, "this.Float32 = %#v\n", this.Float32)
+		}
+		if this.Int != nil {
+			fmt.Fprintf(buf, "this.Int = %#v\n", this.Int)
+		}
+		if this.Int16 != nil {
+			fmt.Fprintf(buf, "this.Int16 = %#v\n", this.Int16)
+		}
+		if this.Int32 != nil {
+			fmt.Fprintf(buf, "this.Int32 = %#v\n", this.Int32)
+		}
+		if this.Int64 != nil {
+			fmt.Fprintf(buf, "this.Int64 = %#v\n", this.Int64)
+		}
+		if this.Int8 != nil {
+			fmt.Fprintf(buf, "this.Int8 = %#v\n", this.Int8)
+		}
+		if this.Rune != nil {
+			fmt.Fprintf(buf, "this.Rune = %#v\n", this.Rune)
+		}
+		if this.String != nil {
+			fmt.Fprintf(buf, "this.String = %#v\n", this.String)
+		}
+		if this.Uint != nil {
+			fmt.Fprintf(buf, "this.Uint = %#v\n", this.Uint)
+		}
+		if this.Uint16 != nil {
+			fmt.Fprintf(buf, "this.Uint16 = %#v\n", this.Uint16)
+		}
+		if this.Uint32 != nil {
+			fmt.Fprintf(buf, "this.Uint32 = %#v\n", this.Uint32)
+		}
+		if this.Uint64 != nil {
+			fmt.Fprintf(buf, "this.Uint64 = %#v\n", this.Uint64)
+		}
+		if this.Uint8 != nil {
+			fmt.Fprintf(buf, "this.Uint8 = %#v\n", this.Uint8)
+		}
+		if this.UintPtr != nil {
+			fmt.Fprintf(buf, "this.UintPtr = %#v\n", this.UintPtr)
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoStringSliceOfPtrToBuiltInTypes(this *SliceOfPtrToBuiltInTypes) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *SliceOfPtrToBuiltInTypes {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &SliceOfPtrToBuiltInTypes{}\n")
+		if this.Bool != nil {
+			fmt.Fprintf(buf, "this.Bool = make([]*bool, %d)\n", len(this.Bool))
 			for i := range this.Bool {
-				fmt.Fprintf(buf, "this.Bool[%d] = %#v\n", i, this.Bool[i])
+				fmt.Fprintf(buf, "this.Bool[%d] = %s\n", i, deriveGoString(this.Bool[i]))
 			}
 		}
 		if this.Byte != nil {
-			fmt.Fprintf(buf, "this.Byte = make([]byte, %d)\n", len(this.Byte))
+			fmt.Fprintf(buf, "this.Byte = make([]*byte, %d)\n", len(this.Byte))
 			for i := range this.Byte {
-				fmt.Fprintf(buf, "this.Byte[%d] = %#v\n", i, this.Byte[i])
+				fmt.Fprintf(buf, "this.Byte[%d] = %s\n", i, deriveGoString_(this.Byte[i]))
 			}
 		}
 		if this.Complex128 != nil {
-			fmt.Fprintf(buf, "this.Complex128 = make([]complex128, %d)\n", len(this.Complex128))
+			fmt.Fprintf(buf, "this.Complex128 = make([]*complex128, %d)\n", len(this.Complex128))
 			for i := range this.Complex128 {
-				fmt.Fprintf(buf, "this.Complex128[%d] = %#v\n", i, this.Complex128[i])
+				fmt.Fprintf(buf, "this.Complex128[%d] = %s\n", i, deriveGoString_1(this.Complex128[i]))
 			}
 		}
 		if this.Complex64 != nil {
-			fmt.Fprintf(buf, "this.Complex64 = make([]complex64, %d)\n", len(this.Complex64))
+			fmt.Fprintf(buf, "this.Complex64 = make([]*complex64, %d)\n", len(this.Complex64))
 			for i := range this.Complex64 {
-				fmt.Fprintf(buf, "this.Complex64[%d] = %#v\n", i, this.Complex64[i])
+				fmt.Fprintf(buf, "this.Complex64[%d] = %s\n", i, deriveGoString_2(this.Complex64[i]))
 			}
 		}
 		if this.Float64 != nil {
-			fmt.Fprintf(buf, "this.Float64 = make([]float64, %d)\n", len(this.Float64))
+			fmt.Fprintf(buf, "this.Float64 = make([]*float64, %d)\n", len(this.Float64))
 			for i := range this.Float64 {
-				fmt.Fprintf(buf, "this.Float64[%d] = %#v\n", i, this.Float64[i])
+				fmt.Fprintf(buf, "this.Float64[%d] = %s\n", i, deriveGoString_3(this.Float64[i]))
 			}
 		}
 		if this.Float32 != nil {
-			fmt.Fprintf(buf, "this.Float32 = make([]float32, %d)\n", len(this.Float32))
+			fmt.Fprintf(buf, "this.Float32 = make([]*float32, %d)\n", len(this.Float32))
 			for i := range this.Float32 {
-				fmt.Fprintf(buf, "this.Float32[%d] = %#v\n", i, this.Float32[i])
+				fmt.Fprintf(buf, "this.Float32[%d] = %s\n", i, deriveGoString_4(this.Float32[i]))
 			}
 		}
 		if this.Int != nil {
-			fmt.Fprintf(buf, "this.Int = make([]int, %d)\n", len(this.Int))
+			fmt.Fprintf(buf, "this.Int = make([]*int, %d)\n", len(this.Int))
 			for i := range this.Int {
-				fmt.Fprintf(buf, "this.Int[%d] = %#v\n", i, this.Int[i])
+				fmt.Fprintf(buf, "this.Int[%d] = %s\n", i, deriveGoString_5(this.Int[i]))
 			}
 		}
 		if this.Int16 != nil {
-			fmt.Fprintf(buf, "this.Int16 = make([]int16, %d)\n", len(this.Int16))
+			fmt.Fprintf(buf, "this.Int16 = make([]*int16, %d)\n", len(this.Int16))
 			for i := range this.Int16 {
-				fmt.Fprintf(buf, "this.Int16[%d] = %#v\n", i, this.Int16[i])
+				fmt.Fprintf(buf, "this.Int16[%d] = %s\n", i, deriveGoString_6(this.Int16[i]))
 			}
 		}
 		if this.Int32 != nil {
-			fmt.Fprintf(buf, "this.Int32 = make([]int32, %d)\n", len(this.Int32))
+			fmt.Fprintf(buf, "this.Int32 = make([]*int32, %d)\n", len(this.Int32))
 			for i := range this.Int32 {
-				fmt.Fprintf(buf, "this.Int32[%d] = %#v\n", i, this.Int32[i])
+				fmt.Fprintf(buf, "this.Int32[%d] = %s\n", i, deriveGoString_7(this.Int32[i]))
 			}
 		}
 		if this.Int64 != nil {
-			fmt.Fprintf(buf, "this.Int64 = make([]int64, %d)\n", len(this.Int64))
+			fmt.Fprintf(buf, "this.Int64 = make([]*int64, %d)\n", len(this.Int64))
 			for i := range this.Int64 {
-				fmt.Fprintf(buf, "this.Int64[%d] = %#v\n", i, this.Int64[i])
+				fmt.Fprintf(buf, "this.Int64[%d] = %s\n", i, deriveGoString_8(this.Int64[i]))
 			}
 		}
 		if this.Int8 != nil {
-			fmt.Fprintf(buf, "this.Int8 = make([]int8, %d)\n", len(this.Int8))
+			fmt.Fprintf(buf, "this.Int8 = make([]*int8, %d)\n", len(this.Int8))
 			for i := range this.Int8 {
-				fmt.Fprintf(buf, "this.Int8[%d] = %#v\n", i, this.Int8[i])
+				fmt.Fprintf(buf, "this.Int8[%d] = %s\n", i, deriveGoString_9(this.Int8[i]))
 			}
 		}
 		if this.Rune != nil {
-			fmt.Fprintf(buf, "this.Rune = make([]rune, %d)\n", len(this.Rune))
+			fmt.Fprintf(buf, "this.Rune = make([]*rune, %d)\n", len(this.Rune))
 			for i := range this.Rune {
-				fmt.Fprintf(buf, "this.Rune[%d] = %#v\n", i, this.Rune[i])
+				fmt.Fprintf(buf, "this.Rune[%d] = %s\n", i, deriveGoString_7(this.Rune[i]))
 			}
 		}
 		if this.String != nil {
-			fmt.Fprintf(buf, "this.String = make([]string, %d)\n", len(this.String))
+			fmt.Fprintf(buf, "this.String = make([]*string, %d)\n", len(this.String))
 			for i := range this.String {
-				fmt.Fprintf(buf, "this.String[%d] = %#v\n", i, this.String[i])
+				fmt.Fprintf(buf, "this.String[%d] = %s\n", i, deriveGoString_10(this.String[i]))
 			}
 		}
 		if this.Uint != nil {
-			fmt.Fprintf(buf, "this.Uint = make([]uint, %d)\n", len(this.Uint))
+			fmt.Fprintf(buf, "this.Uint = make([]*uint, %d)\n", len(this.Uint))
 			for i := range this.Uint {
-				fmt.Fprintf(buf, "this.Uint[%d] = %#v\n", i, this.Uint[i])
+				fmt.Fprintf(buf, "this.Uint[%d] = %s\n", i, deriveGoString_11(this.Uint[i]))
 			}
 		}
 		if this.Uint16 != nil {
-			fmt.Fprintf(buf, "this.Uint16 = make([]uint16, %d)\n", len(this.Uint16))
+			fmt.Fprintf(buf, "this.Uint16 = make([]*uint16, %d)\n", len(this.Uint16))
 			for i := range this.Uint16 {
-				fmt.Fprintf(buf, "this.Uint16[%d] = %#v\n", i, this.Uint16[i])
+				fmt.Fprintf(buf, "this.Uint16[%d] = %s\n", i, deriveGoString_12(this.Uint16[i]))
 			}
 		}
 		if this.Uint32 != nil {
-			fmt.Fprintf(buf, "this.Uint32 = make([]uint32, %d)\n", len(this.Uint32))
+			fmt.Fprintf(buf, "this.Uint32 = make([]*uint32, %d)\n", len(this.Uint32))
 			for i := range this.Uint32 {
-				fmt.Fprintf(buf, "this.Uint32[%d] = %#v\n", i, this.Uint32[i])
+				fmt.Fprintf(buf, "this.Uint32[%d] = %s\n", i, deriveGoString_13(this.Uint32[i]))
 			}
 		}
 		if this.Uint64 != nil {
-			fmt.Fprintf(buf, "this.Uint64 = make([]uint64, %d)\n", len(this.Uint64))
+			fmt.Fprintf(buf, "this.Uint64 = make([]*uint64, %d)\n", len(this.Uint64))
 			for i := range this.Uint64 {
-				fmt.Fprintf(buf, "this.Uint64[%d] = %#v\n", i, this.Uint64[i])
+				fmt.Fprintf(buf, "this.Uint64[%d] = %s\n", i, deriveGoString_14(this.Uint64[i]))
 			}
 		}
 		if this.Uint8 != nil {
-			fmt.Fprintf(buf, "this.Uint8 = make([]uint8, %d)\n", len(this.Uint8))
+			fmt.Fprintf(buf, "this.Uint8 = make([]*uint8, %d)\n", len(this.Uint8))
 			for i := range this.Uint8 {
-				fmt.Fprintf(buf, "this.Uint8[%d] = %#v\n", i, this.Uint8[i])
+				fmt.Fprintf(buf, "this.Uint8[%d] = %s\n", i, deriveGoString_(this.Uint8[i]))
 			}
 		}
 		if this.UintPtr != nil {
-			fmt.Fprintf(buf, "this.UintPtr = make([]uintptr, %d)\n", len(this.UintPtr))
+			fmt.Fprintf(buf, "this.UintPtr = make([]*uintptr, %d)\n", len(this.UintPtr))
 			for i := range this.UintPtr {
-				fmt.Fprintf(buf, "this.UintPtr[%d] = %#v\n", i, this.UintPtr[i])
+				fmt.Fprintf(buf, "this.UintPtr[%d] = %s\n", i, deriveGoString_15(this.UintPtr[i]))
 			}
 		}
 		fmt.Fprintf(buf, "return this\n")
@@ -3620,6 +3671,244 @@ func deriveAll(pred func(int) bool, list []int) bool {
 		}
 	}
 	return true
+}
+
+func deriveGoString(this *bool) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *bool {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(bool)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_(this *byte) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *byte {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(byte)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_1(this *complex128) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *complex128 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(complex128)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_2(this *complex64) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *complex64 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(complex64)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_3(this *float64) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *float64 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(float64)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_4(this *float32) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *float32 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(float32)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_5(this *int) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *int {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(int)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_6(this *int16) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *int16 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(int16)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_7(this *int32) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *int32 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(int32)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_8(this *int64) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *int64 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(int64)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_9(this *int8) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *int8 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(int8)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_10(this *string) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *string {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(string)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_11(this *uint) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *uint {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(uint)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_12(this *uint16) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *uint16 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(uint16)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_13(this *uint32) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *uint32 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(uint32)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_14(this *uint64) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *uint64 {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(uint64)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_15(this *uintptr) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *uintptr {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(uintptr)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
 }
 
 func deriveCompare(this, that bool) int {

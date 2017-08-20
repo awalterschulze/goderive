@@ -69,7 +69,7 @@ func (g *gen) genFunc(typ types.Type) error {
 	p.In()
 	p.P("buf := %s.NewBuffer(nil)", g.bytesPkg())
 	if err := g.genStatement(typ, "this"); err != nil {
-		return nil
+		return err
 	}
 	p.P("return buf.String()")
 	p.Out()
@@ -140,10 +140,11 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 	return fmt.Errorf("unsupported type: %#v", typ)
 }
 
-func prepend(before, after string) string {
-	bs := strings.Split(before, ".")
-	b := strings.Replace(bs[0], "*", "", -1)
-	return b + "_" + after
+var replacer = strings.NewReplacer(".", "_", "*", "_", "(", "_", ")", "_", "&", "_")
+
+func newVar(this string) string {
+	that := replacer.Replace(this)
+	return that + "_tmp"
 }
 
 func hasGoStringMethod(typ *types.Named) bool {
@@ -177,19 +178,30 @@ func hasGoStringMethod(typ *types.Named) bool {
 }
 
 func (g *gen) genField(fieldType types.Type, this string) error {
+	p := g.printer
 	switch typ := fieldType.Underlying().(type) {
 	case *types.Basic:
-		g.printer.P("fmt.Fprintf(buf, \"%s = %s\\n\", %s)", this, "%#v", this)
-		_ = typ
+		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
 		return nil
-		// case *types.Pointer:
-		// 	ref := typ.Elem()
-		// 	if named, ok := ref.(*types.Named); ok {
-		// 		if hasGoStringMethod(named) {
-		// 			return fmt.Sprintf("%s.GoString()", thisField), nil
-		// 		}
+	case *types.Pointer:
+		p.P("if %s != nil {", this)
+		p.In()
+		// ref := typ.Elem()
+		_ = typ
+		tmpvar := newVar(this)
+		// if named, ok := ref.(*types.Named); ok {
+		// 	if hasGoStringMethod(named) {
+		// 		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), tmpvar, "%s", this+".GoString()")
+		// 		p.Out()
+		// 		p.P("}")
+		// 		return nil
 		// 	}
-		// 	return fmt.Sprintf("%s(%s)", this.GetFuncName(typ), thisField), nil
+		// }
+		p.P("%s.Fprintf(buf, \"%s := %s\\n\", %s)", g.fmtPkg(), tmpvar, "%#v", "*"+this)
+		p.P("%s.Fprintf(buf, \"%s = %s\\n\")", g.fmtPkg(), this, "*"+tmpvar)
+		p.Out()
+		p.P("}")
+		return nil
 		// case *types.Array:
 		// 	return fmt.Sprintf("%s(%s)", this.GetFuncName(typ), thisField), nil
 		// case *types.Slice:

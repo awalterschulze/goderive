@@ -29,6 +29,7 @@ func TestGoString(t *testing.T) {
 	structs := []gostringer{
 		&Empty{},
 		&BuiltInTypes{},
+		&PtrToBuiltInTypes{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

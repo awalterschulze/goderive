@@ -626,6 +626,10 @@ func (this *Enums) CopyTo(that *Enums) {
 	deriveCopyToPtrToEnums(this, that)
 }
 
+func (this *Enums) GoString() string {
+	return deriveGoStringEnums(this)
+}
+
 type NamedTypes struct {
 	Slice        MySlice
 	PtrToSlice   *MySlice

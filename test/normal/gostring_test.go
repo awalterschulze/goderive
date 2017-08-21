@@ -51,7 +51,7 @@ func TestGoString(t *testing.T) {
 		&StructWithStructFieldWithoutEqualMethod{},
 		&StructWithStructWithFromAnotherPackage{},
 		// &FieldWithStructWithPrivateFields{},
-		// &Enums{},
+		&Enums{},
 		// &NamedTypes{},
 		// &Duration{},
 	}

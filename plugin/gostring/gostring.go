@@ -117,7 +117,7 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 				g.W("%s := &%s{}", this, g.TypeString(reftyp))
 				for _, field := range fields.Fields {
 					if field.Private() {
-						return fmt.Errorf("private fields not supported, found %s in %v", field.Name("", nil), named)
+						return fmt.Errorf("private fields not supported, found %s in %v", field.DebugName(), g.TypeString(typ))
 					}
 					thisField := field.Name(this, nil)
 					if err := g.genField(field.Type, thisField); err != nil {
@@ -135,7 +135,7 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 		g.W("%s := &%s{}", this, g.TypeString(typ))
 		for _, field := range fields.Fields {
 			if field.Private() {
-				return fmt.Errorf("private fields not supported, found %s in %v", field.Name("", nil), g.TypeString(typ))
+				return fmt.Errorf("private fields not supported, found %s in %v", field.DebugName(), g.TypeString(typ))
 			}
 			thisField := field.Name(this, nil)
 			if err := g.genField(field.Type, thisField); err != nil {

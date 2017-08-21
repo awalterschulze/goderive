@@ -38,6 +38,10 @@ func (f *Field) Name(recv string, unsafePkg Import) string {
 	return `*(*` + f.typeStr() + `)(` + unsafePkg() + `.Pointer(` + recv + `.FieldByName("` + f.name + `").UnsafeAddr()))`
 }
 
+func (f *Field) DebugName() string {
+	return f.name
+}
+
 func (f *Field) Private() bool {
 	return strings.ToLower(f.name[0:1]) == f.name[0:1]
 }

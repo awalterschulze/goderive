@@ -480,6 +480,10 @@ func (this *RecursiveType) CopyTo(that *RecursiveType) {
 	deriveCopyToPtrToRecursiveType(this, that)
 }
 
+func (this *RecursiveType) GoString() string {
+	return deriveGoStringRecursiveType(this)
+}
+
 type EmbeddedStruct1 struct {
 	Name
 	*Structs
@@ -497,6 +501,10 @@ func (this *EmbeddedStruct1) CopyTo(that *EmbeddedStruct1) {
 	deriveCopyToPtrToEmbeddedStruct1(this, that)
 }
 
+func (this *EmbeddedStruct1) GoString() string {
+	return deriveGoStringEmbeddedStruct1(this)
+}
+
 type EmbeddedStruct2 struct {
 	Structs
 	*Name
@@ -512,6 +520,10 @@ func (this *EmbeddedStruct2) Compare(that *EmbeddedStruct2) int {
 
 func (this *EmbeddedStruct2) CopyTo(that *EmbeddedStruct2) {
 	deriveCopyToPtrToEmbeddedStruct2(this, that)
+}
+
+func (this *EmbeddedStruct2) GoString() string {
+	return deriveGoStringEmbeddedStruct2(this)
 }
 
 type UnnamedStruct struct {

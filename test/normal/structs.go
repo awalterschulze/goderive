@@ -557,6 +557,10 @@ func (this *StructWithStructFieldWithoutEqualMethod) CopyTo(that *StructWithStru
 	deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(this, that)
 }
 
+func (this *StructWithStructFieldWithoutEqualMethod) GoString() string {
+	return deriveGoStringStructWithStructFieldWithoutEqualMethod(this)
+}
+
 type StructWithoutEqualMethod struct {
 	Num int64
 }
@@ -576,6 +580,10 @@ func (this *StructWithStructWithFromAnotherPackage) Compare(that *StructWithStru
 
 func (this *StructWithStructWithFromAnotherPackage) CopyTo(that *StructWithStructWithFromAnotherPackage) {
 	deriveCopyToPtrToStructWithStructWithFromAnotherPackage(this, that)
+}
+
+func (this *StructWithStructWithFromAnotherPackage) GoString() string {
+	return deriveGoStringStructWithStructWithFromAnotherPackage(this)
 }
 
 type FieldWithStructWithPrivateFields struct {

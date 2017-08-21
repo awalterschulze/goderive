@@ -48,8 +48,8 @@ func TestGoString(t *testing.T) {
 		&RecursiveType{},
 		&EmbeddedStruct1{},
 		&EmbeddedStruct2{},
-		// &StructWithStructFieldWithoutEqualMethod{},
-		// &StructWithStructWithFromAnotherPackage{},
+		&StructWithStructFieldWithoutEqualMethod{},
+		&StructWithStructWithFromAnotherPackage{},
 		// &FieldWithStructWithPrivateFields{},
 		// &Enums{},
 		// &NamedTypes{},
@@ -67,6 +67,7 @@ func TestGoString(t *testing.T) {
 	f.WriteString("\t\"encoding/gob\"\n")
 	f.WriteString("\t\"bytes\"\n")
 	f.WriteString("\t\"reflect\"\n")
+	f.WriteString("\textra \"github.com/awalterschulze/goderive/test/extra\"\n")
 	f.WriteString(")\n")
 	f.WriteString("\n")
 	f.WriteString("func TestGeneratedGoString(t *testing.T) {\n")

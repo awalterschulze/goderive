@@ -46,3 +46,7 @@ func (this *qual) Qualifier(p *types.Package) string {
 	}
 	return this.imported[p]()
 }
+
+func bypassQual(p *types.Package) string {
+	return makeAlias(unvendor(p.Path()))
+}

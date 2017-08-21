@@ -59,15 +59,20 @@ func (this *gen) Generate(typs []types.Type) error {
 	return this.genFunc(typs[0])
 }
 
+type bypass interface {
+	TypeStringBypass(types.Type) string
+}
+
 func (g *gen) genFunc(typ types.Type) error {
 	p := g.printer
 	g.Generating(typ)
-	typeStr := g.TypeString(typ)
+	typeStr := g.TypesMap.TypeString(typ)
+	gotypeStr := g.TypesMap.(bypass).TypeStringBypass(typ)
 	p.P("")
 	p.P("func %s(this %s) string {", g.GetFuncName(typ), typeStr)
 	p.In()
 	p.P("buf := %s.NewBuffer(nil)", g.bytesPkg())
-	p.P("%s.Fprintf(buf, \"func() %s {\\n\")", g.fmtPkg(), typeStr)
+	p.P("%s.Fprintf(buf, \"func() %s {\\n\")", g.fmtPkg(), gotypeStr)
 	if err := g.genStatement(typ, "this"); err != nil {
 		return err
 	}

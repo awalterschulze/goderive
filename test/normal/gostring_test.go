@@ -52,15 +52,16 @@ func TestGoString(t *testing.T) {
 		&StructWithStructWithFromAnotherPackage{},
 		// &FieldWithStructWithPrivateFields{},
 		&Enums{},
-		// &NamedTypes{},
-		// &Duration{},
+		&NamedTypes{},
+		// &Time{},
+		&Duration{},
 	}
 	filename := "gostring_gen_test.go"
 	f, err := os.Create(filename)
 	if err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString("package test\n")
+	f.WriteString("package test_test\n")
 	f.WriteString("\n")
 	f.WriteString("import (\n")
 	f.WriteString("\t\"testing\"\n")
@@ -68,6 +69,7 @@ func TestGoString(t *testing.T) {
 	f.WriteString("\t\"bytes\"\n")
 	f.WriteString("\t\"reflect\"\n")
 	f.WriteString("\textra \"github.com/awalterschulze/goderive/test/extra\"\n")
+	f.WriteString("\test \"github.com/awalterschulze/goderive/test/normal\"\n")
 	f.WriteString(")\n")
 	f.WriteString("\n")
 	f.WriteString("func TestGeneratedGoString(t *testing.T) {\n")

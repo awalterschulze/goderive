@@ -48,6 +48,7 @@ func TestCompareStructs(t *testing.T) {
 		&FieldWithStructWithPrivateFields{},
 		&Enums{},
 		&NamedTypes{},
+		// &Time{},
 		&Duration{},
 	}
 	for _, this := range structs {

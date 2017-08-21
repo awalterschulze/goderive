@@ -650,6 +650,10 @@ func (this *NamedTypes) CopyTo(that *NamedTypes) {
 	deriveCopyToPtrToNamedTypes(this, that)
 }
 
+func (this *NamedTypes) GoString() string {
+	return deriveGoStringNamedTypes(this)
+}
+
 type Time struct {
 	T time.Time
 	P *time.Time
@@ -696,4 +700,8 @@ func (this *Duration) Compare(that *Duration) int {
 
 func (this *Duration) CopyTo(that *Duration) {
 	deriveCopyToPtrToDuration(this, that)
+}
+
+func (this *Duration) GoString() string {
+	return deriveGoStringDuration(this)
 }

@@ -54,20 +54,32 @@ func badToUnderscore(r rune) rune {
 
 type Import func() string
 
+func unvendor(path string) string {
+	// transform vendored import
+	lastvendor := strings.LastIndex(path, "/vendor/")
+	if lastvendor != -1 {
+		lastvendor = lastvendor + 8
+		path = path[lastvendor:]
+	}
+	return path
+}
+
+func makeFullpath(path string) string {
+	return strings.Map(badToUnderscore, path)
+}
+
+func makeAlias(path string) string {
+	// create import alias
+	fullpath := strings.Map(badToUnderscore, path)
+	fullpaths := strings.Split(fullpath, "_")
+	return fullpaths[len(fullpaths)-1]
+}
+
 func (p *printer) NewImport(path string) Import {
 	return func() string {
-
-		// transform vendored import
-		lastvendor := strings.LastIndex(path, "/vendor/")
-		if lastvendor != -1 {
-			lastvendor = lastvendor + 8
-			path = path[lastvendor:]
-		}
-
-		// create import alias
-		fullpath := strings.Map(badToUnderscore, path)
-		fullpaths := strings.Split(fullpath, "_")
-		alias := fullpaths[len(fullpaths)-1]
+		path = unvendor(path)
+		fullpath := makeFullpath(path)
+		alias := makeAlias(path)
 
 		if _, ok := p.imports[alias]; !ok {
 			p.imports[alias] = path

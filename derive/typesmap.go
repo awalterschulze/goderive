@@ -63,6 +63,10 @@ func (this *typesMap) TypeString(typ types.Type) string {
 	return types.TypeString(types.Default(typ), this.qual)
 }
 
+func (this *typesMap) TypeStringBypass(typ types.Type) string {
+	return types.TypeString(types.Default(typ), bypassQual)
+}
+
 func (this *typesMap) IsExternal(typ *types.Named) bool {
 	q := this.qual(typ.Obj().Pkg())
 	return q != ""

@@ -231,9 +231,12 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 			p.P("}")
 		} else {
 			p.P("%s.Fprintf(buf, \"%s = make(%s)\\n\")", g.fmtPkg(), this, g.TypeString(typ))
+			p.P("i := 0")
 			p.P("for k, v := range %s {", this)
 			p.In()
-			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%s", "%s", g.GetFuncName(elmTyp)+"(k)", g.GetFuncName(elmTyp)+"(v)")
+			p.P("%s.Fprintf(buf, \"key%s := %s\\n\", %s, %s)", g.fmtPkg(), "%d", "%s", "i", g.GetFuncName(keyTyp)+"(k)")
+			p.P("%s.Fprintf(buf, \"%s[key%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", g.GetFuncName(elmTyp)+"(v)")
+			p.P("i++")
 			p.Out()
 			p.P("}")
 		}

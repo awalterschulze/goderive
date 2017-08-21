@@ -459,6 +459,10 @@ func (this *MapWithStructs) CopyTo(that *MapWithStructs) {
 	deriveCopyToPtrToMapWithStructs(this, that)
 }
 
+func (this *MapWithStructs) GoString() string {
+	return deriveGoStringMapWithStructs(this)
+}
+
 type RecursiveType struct {
 	Bytes []byte
 	N     map[int]RecursiveType

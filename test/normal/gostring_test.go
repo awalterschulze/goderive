@@ -44,6 +44,16 @@ func TestGoString(t *testing.T) {
 		&SliceToSlice{},
 		&PtrTo{},
 		&Structs{},
+		&MapWithStructs{},
+		// &RecursiveType{},
+		// &EmbeddedStruct1{},
+		// &EmbeddedStruct2{},
+		// &StructWithStructFieldWithoutEqualMethod{},
+		// &StructWithStructWithFromAnotherPackage{},
+		// &FieldWithStructWithPrivateFields{},
+		// &Enums{},
+		// &NamedTypes{},
+		// &Duration{},
 	}
 	filename := "gostring_gen_test.go"
 	f, err := os.Create(filename)

@@ -392,6 +392,10 @@ func (this *PtrTo) CopyTo(that *PtrTo) {
 	deriveCopyToPtrToPtrTo(this, that)
 }
 
+func (this *PtrTo) GoString() string {
+	return deriveGoStringPtrTo(this)
+}
+
 type Name struct {
 	Name string
 }
@@ -406,6 +410,10 @@ func (this *Name) Compare(that *Name) int {
 
 func (this *Name) CopyTo(that *Name) {
 	deriveCopyToPtrToName(this, that)
+}
+
+func (this *Name) GoString() string {
+	return deriveGoStringName(this)
 }
 
 type Structs struct {
@@ -425,6 +433,10 @@ func (this *Structs) Compare(that *Structs) int {
 
 func (this *Structs) CopyTo(that *Structs) {
 	deriveCopyToPtrToStructs(this, that)
+}
+
+func (this *Structs) GoString() string {
+	return deriveGoStringStructs(this)
 }
 
 type MapWithStructs struct {

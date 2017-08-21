@@ -540,6 +540,74 @@ func deriveGoStringSliceToSlice(this *SliceToSlice) string {
 	return buf.String()
 }
 
+func deriveGoStringPtrTo(this *PtrTo) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *PtrTo {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &PtrTo{}\n")
+		if this.Basic != nil {
+			fmt.Fprintf(buf, "this.Basic = %s\n", deriveGoString_5(this.Basic))
+		}
+		if this.Slice != nil {
+			fmt.Fprintf(buf, "this.Slice = %s\n", deriveGoString_19(this.Slice))
+		}
+		if this.Array != nil {
+			fmt.Fprintf(buf, "this.Array = %s\n", deriveGoString_20(this.Array))
+		}
+		if this.Map != nil {
+			fmt.Fprintf(buf, "this.Map = %s\n", deriveGoString_21(this.Map))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoStringName(this *Name) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *Name {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &Name{}\n")
+		fmt.Fprintf(buf, "this.Name = %#v\n", this.Name)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoStringStructs(this *Structs) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *Structs {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &Structs{}\n")
+		fmt.Fprintf(buf, "this.Struct = %s\n", deriveGoString_N(this.Struct))
+		if this.PtrToStruct != nil {
+			fmt.Fprintf(buf, "this.PtrToStruct = %s\n", deriveGoStringName(this.PtrToStruct))
+		}
+		if this.SliceOfStructs != nil {
+			fmt.Fprintf(buf, "this.SliceOfStructs = make([]Name, %d)\n", len(this.SliceOfStructs))
+			for i := range this.SliceOfStructs {
+				fmt.Fprintf(buf, "this.SliceOfStructs[%d] = %s\n", i, deriveGoString_N(this.SliceOfStructs[i]))
+			}
+		}
+		if this.SliceToPtrOfStruct != nil {
+			fmt.Fprintf(buf, "this.SliceToPtrOfStruct = make([]*Name, %d)\n", len(this.SliceToPtrOfStruct))
+			for i := range this.SliceToPtrOfStruct {
+				fmt.Fprintf(buf, "this.SliceToPtrOfStruct[%d] = %s\n", i, deriveGoStringName(this.SliceToPtrOfStruct[i]))
+			}
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
 func deriveContainsInt64s(list []int64, item int64) bool {
 	for _, v := range list {
 		if v == item {
@@ -4125,6 +4193,62 @@ func deriveGoString_18(this []*int) string {
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_19(this *[]int) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *[]int {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new([]int)\n")
+		if *this != nil {
+			fmt.Fprintf(buf, "*this = %#v\n", *this)
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_20(this *[4]int) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *[4]int {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new([4]int)\n")
+		fmt.Fprintf(buf, "*this = %#v\n", *this)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_21(this *map[int]int) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *map[int]int {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := new(map[int]int)\n")
+		if *this != nil {
+			fmt.Fprintf(buf, "*this = %#v\n", *this)
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoString_N(this Name) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() Name {\n")
+	fmt.Fprintf(buf, "this := &Name{}\n")
+	fmt.Fprintf(buf, "this.Name = %#v\n", this.Name)
+	fmt.Fprintf(buf, "return *this\n")
 	fmt.Fprintf(buf, "}()\n")
 	return buf.String()
 }

@@ -108,8 +108,8 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 			g.W("%s := new(%s)", this, g.TypeString(reftyp))
 			g.genField(reftyp, thisref)
 			g.W("return %s", this)
-		} else if isNamed {
-			external := g.TypesMap.IsExternal(named)
+		} else {
+			external := isNamed && g.TypesMap.IsExternal(named)
 			fields := derive.Fields(g.TypesMap, strct, external)
 			if len(fields.Fields) == 0 {
 				g.W("return &%s{}", g.TypeString(reftyp))
@@ -131,7 +131,19 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 		p.P("}")
 		return nil
 	case *types.Struct:
-
+		fields := derive.Fields(g.TypesMap, ttyp, false)
+		g.W("%s := &%s{}", this, g.TypeString(typ))
+		for _, field := range fields.Fields {
+			if field.Private() {
+				return fmt.Errorf("private fields not supported, found %s in %v", field.Name("", nil), g.TypeString(typ))
+			}
+			thisField := field.Name(this, nil)
+			if err := g.genField(field.Type, thisField); err != nil {
+				return err
+			}
+		}
+		g.W("return *%s", this)
+		return nil
 	case *types.Slice:
 		p.P("if %s != nil {", this)
 		p.In()
@@ -142,8 +154,7 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 			p.P("%s.Fprintf(buf, \"%s := make(%s, %s)\\n\", %s)", g.fmtPkg(), this, g.TypeString(ttyp), "%d", "len("+this+")")
 			p.P("for i := range %s {", this)
 			p.In()
-			goStringElm := g.GetFuncName(elmTyp)
-			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", goStringElm+"("+this+"[i])")
+			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", g.GetFuncName(elmTyp)+"("+this+"[i])")
 			p.Out()
 			p.P("}")
 			g.W("return %s", this)
@@ -228,6 +239,9 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		}
 		p.Out()
 		p.P("}")
+		return nil
+	case *types.Struct:
+		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
 		return nil
 	}
 	return fmt.Errorf("unsupported field type %#v", fieldType)

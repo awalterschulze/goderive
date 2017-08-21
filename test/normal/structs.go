@@ -369,6 +369,10 @@ func (this *SliceToSlice) CopyTo(that *SliceToSlice) {
 	deriveCopyToPtrToSliceToSlice(this, that)
 }
 
+func (this *SliceToSlice) GoString() string {
+	return deriveGoStringSliceToSlice(this)
+}
+
 type PtrTo struct {
 	Basic *int
 	Slice *[]int

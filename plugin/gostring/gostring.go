@@ -133,7 +133,24 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 	case *types.Struct:
 
 	case *types.Slice:
-
+		p.P("if %s != nil {", this)
+		p.In()
+		elmTyp := ttyp.Elem()
+		if _, isBasic := elmTyp.(*types.Basic); isBasic {
+			p.P("%s.Fprintf(buf, \"return %s\\n\", %s)", g.fmtPkg(), "%#v", this)
+		} else {
+			p.P("%s.Fprintf(buf, \"%s := make(%s, %s)\\n\", %s)", g.fmtPkg(), this, g.TypeString(ttyp), "%d", "len("+this+")")
+			p.P("for i := range %s {", this)
+			p.In()
+			goStringElm := g.GetFuncName(elmTyp)
+			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", goStringElm+"("+this+"[i])")
+			p.Out()
+			p.P("}")
+			g.W("return %s", this)
+		}
+		p.Out()
+		p.P("}")
+		return nil
 	case *types.Array:
 
 	case *types.Map:

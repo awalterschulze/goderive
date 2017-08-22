@@ -251,19 +251,7 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 	case *types.Slice:
 		p.P("if %s != nil {", this)
 		p.In()
-		elmTyp := typ.Elem()
-		if _, isBasic := elmTyp.(*types.Basic); isBasic {
-			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
-		} else {
-			gotypeStr := g.TypeString(typ)
-			p.P("%s.Fprintf(buf, \"%s = make(%s, %s)\\n\", %s)", g.fmtPkg(), this, gotypeStr, "%d", "len("+this+")")
-			p.P("for i := range %s {", this)
-			p.In()
-			goStringElm := g.GetFuncName(elmTyp)
-			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", goStringElm+"("+this+"[i])")
-			p.Out()
-			p.P("}")
-		}
+		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
 		p.Out()
 		p.P("}")
 		return nil
@@ -271,7 +259,11 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
 		return nil
 	case *types.Map:
+		p.P("if %s != nil {", this)
+		p.In()
 		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
+		p.Out()
+		p.P("}")
 		return nil
 	case *types.Struct:
 		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")

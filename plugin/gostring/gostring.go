@@ -156,7 +156,11 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 		g.W("return *%s", this)
 		return nil
 	case *types.Slice:
-		p.P("if %s != nil {", this)
+		p.P("if %s == nil {", this)
+		p.In()
+		g.W("return nil")
+		p.Out()
+		p.P("} else {")
 		p.In()
 		elmTyp := ttyp.Elem()
 		if _, isBasic := elmTyp.(*types.Basic); isBasic {
@@ -177,7 +181,43 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 	case *types.Array:
 
 	case *types.Map:
-
+		p.P("if %s == nil {", this)
+		p.In()
+		g.W("return nil")
+		p.Out()
+		p.P("} else {")
+		p.In()
+		elmTyp := ttyp.Elem()
+		keyTyp := ttyp.Key()
+		_, isBasicElm := elmTyp.(*types.Basic)
+		_, isBasicKey := keyTyp.(*types.Basic)
+		if isBasicElm && isBasicKey {
+			p.P("%s.Fprintf(buf, \"return %s\\n\", %s)", g.fmtPkg(), "%#v", this)
+		} else if isBasicKey {
+			gotypeStr := g.TypeString(typ)
+			p.P("%s.Fprintf(buf, \"%s := make(%s)\\n\")", g.fmtPkg(), this, gotypeStr)
+			p.P("for k, v := range %s {", this)
+			p.In()
+			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%#v", "%s", "k", g.GetFuncName(elmTyp)+"(v)")
+			p.Out()
+			p.P("}")
+			g.W("return %s", this)
+		} else {
+			gotypeStr := g.TypeString(typ)
+			p.P("%s.Fprintf(buf, \"%s := make(%s)\\n\")", g.fmtPkg(), this, gotypeStr)
+			p.P("i := 0")
+			p.P("for k, v := range %s {", this)
+			p.In()
+			p.P("%s.Fprintf(buf, \"key%s := %s\\n\", %s, %s)", g.fmtPkg(), "%d", "%s", "i", g.GetFuncName(keyTyp)+"(k)")
+			p.P("%s.Fprintf(buf, \"%s[key%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", g.GetFuncName(elmTyp)+"(v)")
+			p.P("i++")
+			p.Out()
+			p.P("}")
+			g.W("return %s", this)
+		}
+		p.Out()
+		p.P("}")
+		return nil
 	}
 	return fmt.Errorf("unsupported root type: %#v", typ)
 }
@@ -227,36 +267,7 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		}
 		return nil
 	case *types.Map:
-		p.P("if %s != nil {", this)
-		p.In()
-		elmTyp := typ.Elem()
-		keyTyp := typ.Key()
-		_, isBasicElm := elmTyp.(*types.Basic)
-		_, isBasicKey := keyTyp.(*types.Basic)
-		if isBasicElm && isBasicKey {
-			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
-		} else if isBasicKey {
-			gotypeStr := g.TypeString(typ)
-			p.P("%s.Fprintf(buf, \"%s = make(%s)\\n\")", g.fmtPkg(), this, gotypeStr)
-			p.P("for k, v := range %s {", this)
-			p.In()
-			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%#v", "%s", "k", g.GetFuncName(elmTyp)+"(v)")
-			p.Out()
-			p.P("}")
-		} else {
-			gotypeStr := g.TypeString(typ)
-			p.P("%s.Fprintf(buf, \"%s = make(%s)\\n\")", g.fmtPkg(), this, gotypeStr)
-			p.P("i := 0")
-			p.P("for k, v := range %s {", this)
-			p.In()
-			p.P("%s.Fprintf(buf, \"key%s := %s\\n\", %s, %s)", g.fmtPkg(), "%d", "%s", "i", g.GetFuncName(keyTyp)+"(k)")
-			p.P("%s.Fprintf(buf, \"%s[key%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", g.GetFuncName(elmTyp)+"(v)")
-			p.P("i++")
-			p.Out()
-			p.P("}")
-		}
-		p.Out()
-		p.P("}")
+		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
 		return nil
 	case *types.Struct:
 		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")

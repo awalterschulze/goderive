@@ -59,6 +59,10 @@ func (this *gen) Generate(typs []types.Type) error {
 	return this.genFunc(typs[0])
 }
 
+func (g *gen) TypeString(typ types.Type) string {
+	return g.TypesMap.(bypass).TypeStringBypass(typ)
+}
+
 type bypass interface {
 	TypeStringBypass(types.Type) string
 }
@@ -67,7 +71,7 @@ func (g *gen) genFunc(typ types.Type) error {
 	p := g.printer
 	g.Generating(typ)
 	typeStr := g.TypesMap.TypeString(typ)
-	gotypeStr := g.TypesMap.(bypass).TypeStringBypass(typ)
+	gotypeStr := g.TypeString(typ)
 	p.P("")
 	p.P("func %s(this %s) string {", g.GetFuncName(typ), typeStr)
 	p.In()
@@ -114,12 +118,13 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 			g.genField(reftyp, thisref)
 			g.W("return %s", this)
 		} else {
+			gotypeStr := g.TypeString(reftyp)
 			external := isNamed && g.TypesMap.IsExternal(named)
 			fields := derive.Fields(g.TypesMap, strct, external)
 			if len(fields.Fields) == 0 {
-				g.W("return &%s{}", g.TypeString(reftyp))
+				g.W("return &%s{}", gotypeStr)
 			} else {
-				g.W("%s := &%s{}", this, g.TypeString(reftyp))
+				g.W("%s := &%s{}", this, gotypeStr)
 				for _, field := range fields.Fields {
 					if field.Private() {
 						return fmt.Errorf("private fields not supported, found %s in %v", field.DebugName(), g.TypeString(typ))
@@ -137,7 +142,8 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 		return nil
 	case *types.Struct:
 		fields := derive.Fields(g.TypesMap, ttyp, false)
-		g.W("%s := &%s{}", this, g.TypeString(typ))
+		gotypeStr := g.TypeString(typ)
+		g.W("%s := &%s{}", this, gotypeStr)
 		for _, field := range fields.Fields {
 			if field.Private() {
 				return fmt.Errorf("private fields not supported, found %s in %v", field.DebugName(), g.TypeString(typ))
@@ -156,7 +162,8 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 		if _, isBasic := elmTyp.(*types.Basic); isBasic {
 			p.P("%s.Fprintf(buf, \"return %s\\n\", %s)", g.fmtPkg(), "%#v", this)
 		} else {
-			p.P("%s.Fprintf(buf, \"%s := make(%s, %s)\\n\", %s)", g.fmtPkg(), this, g.TypeString(ttyp), "%d", "len("+this+")")
+			gotypeStr := g.TypeString(ttyp)
+			p.P("%s.Fprintf(buf, \"%s := make(%s, %s)\\n\", %s)", g.fmtPkg(), this, gotypeStr, "%d", "len("+this+")")
 			p.P("for i := range %s {", this)
 			p.In()
 			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", g.GetFuncName(elmTyp)+"("+this+"[i])")
@@ -195,7 +202,8 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		if _, isBasic := elmTyp.(*types.Basic); isBasic {
 			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
 		} else {
-			p.P("%s.Fprintf(buf, \"%s = make(%s, %s)\\n\", %s)", g.fmtPkg(), this, g.TypeString(typ), "%d", "len("+this+")")
+			gotypeStr := g.TypeString(typ)
+			p.P("%s.Fprintf(buf, \"%s = make(%s, %s)\\n\", %s)", g.fmtPkg(), this, gotypeStr, "%d", "len("+this+")")
 			p.P("for i := range %s {", this)
 			p.In()
 			goStringElm := g.GetFuncName(elmTyp)
@@ -228,14 +236,16 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		if isBasicElm && isBasicKey {
 			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
 		} else if isBasicKey {
-			p.P("%s.Fprintf(buf, \"%s = make(%s)\\n\")", g.fmtPkg(), this, g.TypeString(typ))
+			gotypeStr := g.TypeString(typ)
+			p.P("%s.Fprintf(buf, \"%s = make(%s)\\n\")", g.fmtPkg(), this, gotypeStr)
 			p.P("for k, v := range %s {", this)
 			p.In()
 			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%#v", "%s", "k", g.GetFuncName(elmTyp)+"(v)")
 			p.Out()
 			p.P("}")
 		} else {
-			p.P("%s.Fprintf(buf, \"%s = make(%s)\\n\")", g.fmtPkg(), this, g.TypeString(typ))
+			gotypeStr := g.TypeString(typ)
+			p.P("%s.Fprintf(buf, \"%s = make(%s)\\n\")", g.fmtPkg(), this, gotypeStr)
 			p.P("i := 0")
 			p.P("for k, v := range %s {", this)
 			p.In()

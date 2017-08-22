@@ -48,5 +48,5 @@ func (this *qual) Qualifier(p *types.Package) string {
 }
 
 func bypassQual(p *types.Package) string {
-	return makeAlias(unvendor(p.Path()))
+	return p.Name()
 }

@@ -179,7 +179,20 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 		p.P("}")
 		return nil
 	case *types.Array:
-
+		elmTyp := ttyp.Elem()
+		if _, isBasic := elmTyp.(*types.Basic); isBasic {
+			p.P("%s.Fprintf(buf, \"return %s\\n\", %s)", g.fmtPkg(), "%#v", this)
+		} else {
+			gotypeStr := g.TypeString(typ)
+			p.P("%s.Fprintf(buf, \"%s := %s{}\\n\")", g.fmtPkg(), this, gotypeStr)
+			p.P("for i := range %s {", this)
+			p.In()
+			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", g.GetFuncName(elmTyp)+"("+this+"[i])")
+			p.Out()
+			p.P("}")
+			g.W("return %s", this)
+		}
+		return nil
 	case *types.Map:
 		p.P("if %s == nil {", this)
 		p.In()
@@ -255,16 +268,7 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 		p.P("}")
 		return nil
 	case *types.Array:
-		elmTyp := typ.Elem()
-		if _, isBasic := elmTyp.(*types.Basic); isBasic {
-			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
-		} else {
-			p.P("for i := range %s {", this)
-			p.In()
-			p.P("%s.Fprintf(buf, \"%s[%s] = %s\\n\", %s, %s)", g.fmtPkg(), this, "%d", "%s", "i", g.GetFuncName(elmTyp)+"("+this+"[i])")
-			p.Out()
-			p.P("}")
-		}
+		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
 		return nil
 	case *types.Map:
 		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")

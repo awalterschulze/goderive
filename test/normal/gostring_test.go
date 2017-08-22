@@ -172,45 +172,51 @@ func TestGoStringInline(t *testing.T) {
 			parse(t, deriveGoStringIntSlices(this))
 		}
 	})
+	t.Run("intarray", func(t *testing.T) {
+		for i := 0; i < 100; i++ {
+			this := random([10]int{}).([10]int)
+			parse(t, deriveGoStringIntArray(this))
+		}
+	})
 	t.Run("mapinttoint", func(t *testing.T) {
 		for i := 0; i < 100; i++ {
 			this := random(map[int]int{}).(map[int]int)
 			parse(t, deriveGoStringMapOfIntToInt(this))
 		}
 	})
-	// t.Run("intptr", func(t *testing.T) {
-	// 	for i := 0; i < 100; i++ {
-	// 		var intptr *int
-	// 		this := random(intptr).(*int)
-	// 		parse(t, deriveGoStringIntPtr(this))
-	// 	}
-	// })
-	// t.Run("ptrtoslice", func(t *testing.T) {
-	// 	for i := 0; i < 100; i++ {
-	// 		var intptr *[]int
-	// 		this := random(intptr).(*[]int)
-	// 		parse(t, deriveGoStringIntPtrSlice(this))
-	// 	}
-	// })
-	// t.Run("ptrtoarray", func(t *testing.T) {
-	// 	for i := 0; i < 100; i++ {
-	// 		var intptr *[10]int
-	// 		this := random(intptr).(*[10]int)
-	// 		parse(t, deriveGoStringIntPtrArray(this))
-	// 	}
-	// })
-	// t.Run("ptrtomap", func(t *testing.T) {
-	// 	for i := 0; i < 100; i++ {
-	// 		var intptr *map[int]int
-	// 		this := random(intptr).(*map[int]int)
-	// 		parse(t, deriveGoStringIntPtrMap(this))
-	// 	}
-	// })
-	// t.Run("structnoptr", func(t *testing.T) {
-	// 	for i := 0; i < 100; i++ {
-	// 		var strct BuiltInTypes
-	// 		this := random(strct).(BuiltInTypes)
-	// 		parse(t, deriveGoStringNoPointerStruct(this))
-	// 	}
-	// })
+	t.Run("intptr", func(t *testing.T) {
+		for i := 0; i < 100; i++ {
+			var intptr *int
+			this := random(intptr).(*int)
+			parse(t, deriveGoStringIntPtr(this))
+		}
+	})
+	t.Run("ptrtoslice", func(t *testing.T) {
+		for i := 0; i < 100; i++ {
+			var intptr *[]int
+			this := random(intptr).(*[]int)
+			parse(t, deriveGoStringIntPtrSlice(this))
+		}
+	})
+	t.Run("ptrtoarray", func(t *testing.T) {
+		for i := 0; i < 100; i++ {
+			var intptr *[10]int
+			this := random(intptr).(*[10]int)
+			parse(t, deriveGoStringIntPtrArray(this))
+		}
+	})
+	t.Run("ptrtomap", func(t *testing.T) {
+		for i := 0; i < 100; i++ {
+			var intptr *map[int]int
+			this := random(intptr).(*map[int]int)
+			parse(t, deriveGoStringIntPtrMap(this))
+		}
+	})
+	t.Run("structnoptr", func(t *testing.T) {
+		for i := 0; i < 100; i++ {
+			var strct BuiltInTypes
+			this := random(strct).(BuiltInTypes)
+			parse(t, deriveGoStringNoPointerStruct(this))
+		}
+	})
 }

@@ -27,6 +27,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/contains"
 	"github.com/awalterschulze/goderive/plugin/copyto"
 	"github.com/awalterschulze/goderive/plugin/curry"
+	"github.com/awalterschulze/goderive/plugin/do"
 	"github.com/awalterschulze/goderive/plugin/equal"
 	"github.com/awalterschulze/goderive/plugin/filter"
 	"github.com/awalterschulze/goderive/plugin/flip"
@@ -77,6 +78,7 @@ func main() {
 		tuple.NewPlugin(),
 		gostring.NewPlugin(),
 		compose.NewPlugin(),
+		do.NewPlugin(),
 	}
 	log.SetFlags(0)
 	flag.Parse()

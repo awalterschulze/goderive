@@ -153,4 +153,4 @@ This should be easy to figure out by looking at [main.go](https://github.com/awa
 
 These projects use goderive:
 
-  - [katydid](https://github.com/katydid/katydid)
+  - [katydid](https://github.com/katydid/katydid/blob/master/relapse/ast/derived.gen.go)

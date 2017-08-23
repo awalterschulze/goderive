@@ -28,13 +28,13 @@ goderive will generate the following code:
 package copyto
 
 // deriveCopyTo recursively copies the contents of src into dst.
-func deriveCopyTo(this, that *MyStruct) {
-	that.Int64 = this.Int64
-	if this.StringPtr == nil {
-		that.StringPtr = nil
+func deriveCopyTo(src, dst *MyStruct) {
+	dst.Int64 = src.Int64
+	if src.StringPtr == nil {
+		dst.StringPtr = nil
 	} else {
-		that.StringPtr = new(string)
-		*that.StringPtr = *this.StringPtr
+		dst.StringPtr = new(string)
+		*dst.StringPtr = *src.StringPtr
 	}
 }
 ```

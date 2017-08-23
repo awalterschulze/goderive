@@ -1831,1520 +1831,1520 @@ func deriveFilter(pred func(int) bool, list []int) []int {
 }
 
 // deriveCopyToPtrToEmpty recursively copies the contents of src into dst.
-func deriveCopyToPtrToEmpty(this, that *Empty) {
+func deriveCopyToPtrToEmpty(src, dst *Empty) {
 }
 
 // deriveCopyToPtrToBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
-	that.Bool = this.Bool
-	that.Byte = this.Byte
-	that.Complex128 = this.Complex128
-	that.Complex64 = this.Complex64
-	that.Float64 = this.Float64
-	that.Float32 = this.Float32
-	that.Int = this.Int
-	that.Int16 = this.Int16
-	that.Int32 = this.Int32
-	that.Int64 = this.Int64
-	that.Int8 = this.Int8
-	that.Rune = this.Rune
-	that.String = this.String
-	that.Uint = this.Uint
-	that.Uint16 = this.Uint16
-	that.Uint32 = this.Uint32
-	that.Uint64 = this.Uint64
-	that.Uint8 = this.Uint8
-	that.UintPtr = this.UintPtr
+func deriveCopyToPtrToBuiltInTypes(src, dst *BuiltInTypes) {
+	dst.Bool = src.Bool
+	dst.Byte = src.Byte
+	dst.Complex128 = src.Complex128
+	dst.Complex64 = src.Complex64
+	dst.Float64 = src.Float64
+	dst.Float32 = src.Float32
+	dst.Int = src.Int
+	dst.Int16 = src.Int16
+	dst.Int32 = src.Int32
+	dst.Int64 = src.Int64
+	dst.Int8 = src.Int8
+	dst.Rune = src.Rune
+	dst.String = src.String
+	dst.Uint = src.Uint
+	dst.Uint16 = src.Uint16
+	dst.Uint32 = src.Uint32
+	dst.Uint64 = src.Uint64
+	dst.Uint8 = src.Uint8
+	dst.UintPtr = src.UintPtr
 }
 
 // deriveCopyToPtrToPrivateBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) {
-	that.privateBool = this.privateBool
-	that.privateByte = this.privateByte
-	that.privateComplex128 = this.privateComplex128
-	that.privateComplex64 = this.privateComplex64
-	that.privateFloat64 = this.privateFloat64
-	that.privateFloat32 = this.privateFloat32
-	that.privateInt = this.privateInt
-	that.privateInt16 = this.privateInt16
-	that.privateInt32 = this.privateInt32
-	that.privateInt64 = this.privateInt64
-	that.privateInt8 = this.privateInt8
-	that.privateRune = this.privateRune
-	that.privateString = this.privateString
-	that.privateUint = this.privateUint
-	that.privateUint16 = this.privateUint16
-	that.privateUint32 = this.privateUint32
-	that.privateUint64 = this.privateUint64
-	that.privateUint8 = this.privateUint8
-	that.privateUintPtr = this.privateUintPtr
+func deriveCopyToPtrToPrivateBuiltInTypes(src, dst *PrivateBuiltInTypes) {
+	dst.privateBool = src.privateBool
+	dst.privateByte = src.privateByte
+	dst.privateComplex128 = src.privateComplex128
+	dst.privateComplex64 = src.privateComplex64
+	dst.privateFloat64 = src.privateFloat64
+	dst.privateFloat32 = src.privateFloat32
+	dst.privateInt = src.privateInt
+	dst.privateInt16 = src.privateInt16
+	dst.privateInt32 = src.privateInt32
+	dst.privateInt64 = src.privateInt64
+	dst.privateInt8 = src.privateInt8
+	dst.privateRune = src.privateRune
+	dst.privateString = src.privateString
+	dst.privateUint = src.privateUint
+	dst.privateUint16 = src.privateUint16
+	dst.privateUint32 = src.privateUint32
+	dst.privateUint64 = src.privateUint64
+	dst.privateUint8 = src.privateUint8
+	dst.privateUintPtr = src.privateUintPtr
 }
 
 // deriveCopyToPtrToPtrToBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) {
-	if this.Bool == nil {
-		that.Bool = nil
+func deriveCopyToPtrToPtrToBuiltInTypes(src, dst *PtrToBuiltInTypes) {
+	if src.Bool == nil {
+		dst.Bool = nil
 	} else {
-		that.Bool = new(bool)
-		*that.Bool = *this.Bool
+		dst.Bool = new(bool)
+		*dst.Bool = *src.Bool
 	}
-	if this.Byte == nil {
-		that.Byte = nil
+	if src.Byte == nil {
+		dst.Byte = nil
 	} else {
-		that.Byte = new(byte)
-		*that.Byte = *this.Byte
+		dst.Byte = new(byte)
+		*dst.Byte = *src.Byte
 	}
-	if this.Complex128 == nil {
-		that.Complex128 = nil
+	if src.Complex128 == nil {
+		dst.Complex128 = nil
 	} else {
-		that.Complex128 = new(complex128)
-		*that.Complex128 = *this.Complex128
+		dst.Complex128 = new(complex128)
+		*dst.Complex128 = *src.Complex128
 	}
-	if this.Complex64 == nil {
-		that.Complex64 = nil
+	if src.Complex64 == nil {
+		dst.Complex64 = nil
 	} else {
-		that.Complex64 = new(complex64)
-		*that.Complex64 = *this.Complex64
+		dst.Complex64 = new(complex64)
+		*dst.Complex64 = *src.Complex64
 	}
-	if this.Float64 == nil {
-		that.Float64 = nil
+	if src.Float64 == nil {
+		dst.Float64 = nil
 	} else {
-		that.Float64 = new(float64)
-		*that.Float64 = *this.Float64
+		dst.Float64 = new(float64)
+		*dst.Float64 = *src.Float64
 	}
-	if this.Float32 == nil {
-		that.Float32 = nil
+	if src.Float32 == nil {
+		dst.Float32 = nil
 	} else {
-		that.Float32 = new(float32)
-		*that.Float32 = *this.Float32
+		dst.Float32 = new(float32)
+		*dst.Float32 = *src.Float32
 	}
-	if this.Int == nil {
-		that.Int = nil
+	if src.Int == nil {
+		dst.Int = nil
 	} else {
-		that.Int = new(int)
-		*that.Int = *this.Int
+		dst.Int = new(int)
+		*dst.Int = *src.Int
 	}
-	if this.Int16 == nil {
-		that.Int16 = nil
+	if src.Int16 == nil {
+		dst.Int16 = nil
 	} else {
-		that.Int16 = new(int16)
-		*that.Int16 = *this.Int16
+		dst.Int16 = new(int16)
+		*dst.Int16 = *src.Int16
 	}
-	if this.Int32 == nil {
-		that.Int32 = nil
+	if src.Int32 == nil {
+		dst.Int32 = nil
 	} else {
-		that.Int32 = new(int32)
-		*that.Int32 = *this.Int32
+		dst.Int32 = new(int32)
+		*dst.Int32 = *src.Int32
 	}
-	if this.Int64 == nil {
-		that.Int64 = nil
+	if src.Int64 == nil {
+		dst.Int64 = nil
 	} else {
-		that.Int64 = new(int64)
-		*that.Int64 = *this.Int64
+		dst.Int64 = new(int64)
+		*dst.Int64 = *src.Int64
 	}
-	if this.Int8 == nil {
-		that.Int8 = nil
+	if src.Int8 == nil {
+		dst.Int8 = nil
 	} else {
-		that.Int8 = new(int8)
-		*that.Int8 = *this.Int8
+		dst.Int8 = new(int8)
+		*dst.Int8 = *src.Int8
 	}
-	if this.Rune == nil {
-		that.Rune = nil
+	if src.Rune == nil {
+		dst.Rune = nil
 	} else {
-		that.Rune = new(rune)
-		*that.Rune = *this.Rune
+		dst.Rune = new(rune)
+		*dst.Rune = *src.Rune
 	}
-	if this.String == nil {
-		that.String = nil
+	if src.String == nil {
+		dst.String = nil
 	} else {
-		that.String = new(string)
-		*that.String = *this.String
+		dst.String = new(string)
+		*dst.String = *src.String
 	}
-	if this.Uint == nil {
-		that.Uint = nil
+	if src.Uint == nil {
+		dst.Uint = nil
 	} else {
-		that.Uint = new(uint)
-		*that.Uint = *this.Uint
+		dst.Uint = new(uint)
+		*dst.Uint = *src.Uint
 	}
-	if this.Uint16 == nil {
-		that.Uint16 = nil
+	if src.Uint16 == nil {
+		dst.Uint16 = nil
 	} else {
-		that.Uint16 = new(uint16)
-		*that.Uint16 = *this.Uint16
+		dst.Uint16 = new(uint16)
+		*dst.Uint16 = *src.Uint16
 	}
-	if this.Uint32 == nil {
-		that.Uint32 = nil
+	if src.Uint32 == nil {
+		dst.Uint32 = nil
 	} else {
-		that.Uint32 = new(uint32)
-		*that.Uint32 = *this.Uint32
+		dst.Uint32 = new(uint32)
+		*dst.Uint32 = *src.Uint32
 	}
-	if this.Uint64 == nil {
-		that.Uint64 = nil
+	if src.Uint64 == nil {
+		dst.Uint64 = nil
 	} else {
-		that.Uint64 = new(uint64)
-		*that.Uint64 = *this.Uint64
+		dst.Uint64 = new(uint64)
+		*dst.Uint64 = *src.Uint64
 	}
-	if this.Uint8 == nil {
-		that.Uint8 = nil
+	if src.Uint8 == nil {
+		dst.Uint8 = nil
 	} else {
-		that.Uint8 = new(uint8)
-		*that.Uint8 = *this.Uint8
+		dst.Uint8 = new(uint8)
+		*dst.Uint8 = *src.Uint8
 	}
-	if this.UintPtr == nil {
-		that.UintPtr = nil
+	if src.UintPtr == nil {
+		dst.UintPtr = nil
 	} else {
-		that.UintPtr = new(uintptr)
-		*that.UintPtr = *this.UintPtr
+		dst.UintPtr = new(uintptr)
+		*dst.UintPtr = *src.UintPtr
 	}
 }
 
 // deriveCopyToPtrToSliceOfBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
-	if this.Bool == nil {
-		that.Bool = nil
+func deriveCopyToPtrToSliceOfBuiltInTypes(src, dst *SliceOfBuiltInTypes) {
+	if src.Bool == nil {
+		dst.Bool = nil
 	} else {
-		if that.Bool != nil {
-			if len(this.Bool) > len(that.Bool) {
-				if cap(that.Bool) >= len(this.Bool) {
-					that.Bool = (that.Bool)[:len(this.Bool)]
+		if dst.Bool != nil {
+			if len(src.Bool) > len(dst.Bool) {
+				if cap(dst.Bool) >= len(src.Bool) {
+					dst.Bool = (dst.Bool)[:len(src.Bool)]
 				} else {
-					that.Bool = make([]bool, len(this.Bool))
+					dst.Bool = make([]bool, len(src.Bool))
 				}
-			} else if len(this.Bool) < len(that.Bool) {
-				that.Bool = (that.Bool)[:len(this.Bool)]
+			} else if len(src.Bool) < len(dst.Bool) {
+				dst.Bool = (dst.Bool)[:len(src.Bool)]
 			}
 		} else {
-			that.Bool = make([]bool, len(this.Bool))
+			dst.Bool = make([]bool, len(src.Bool))
 		}
-		copy(that.Bool, this.Bool)
+		copy(dst.Bool, src.Bool)
 	}
-	if this.Byte == nil {
-		that.Byte = nil
+	if src.Byte == nil {
+		dst.Byte = nil
 	} else {
-		if that.Byte != nil {
-			if len(this.Byte) > len(that.Byte) {
-				if cap(that.Byte) >= len(this.Byte) {
-					that.Byte = (that.Byte)[:len(this.Byte)]
+		if dst.Byte != nil {
+			if len(src.Byte) > len(dst.Byte) {
+				if cap(dst.Byte) >= len(src.Byte) {
+					dst.Byte = (dst.Byte)[:len(src.Byte)]
 				} else {
-					that.Byte = make([]byte, len(this.Byte))
+					dst.Byte = make([]byte, len(src.Byte))
 				}
-			} else if len(this.Byte) < len(that.Byte) {
-				that.Byte = (that.Byte)[:len(this.Byte)]
+			} else if len(src.Byte) < len(dst.Byte) {
+				dst.Byte = (dst.Byte)[:len(src.Byte)]
 			}
 		} else {
-			that.Byte = make([]byte, len(this.Byte))
+			dst.Byte = make([]byte, len(src.Byte))
 		}
-		copy(that.Byte, this.Byte)
+		copy(dst.Byte, src.Byte)
 	}
-	if this.Complex128 == nil {
-		that.Complex128 = nil
+	if src.Complex128 == nil {
+		dst.Complex128 = nil
 	} else {
-		if that.Complex128 != nil {
-			if len(this.Complex128) > len(that.Complex128) {
-				if cap(that.Complex128) >= len(this.Complex128) {
-					that.Complex128 = (that.Complex128)[:len(this.Complex128)]
+		if dst.Complex128 != nil {
+			if len(src.Complex128) > len(dst.Complex128) {
+				if cap(dst.Complex128) >= len(src.Complex128) {
+					dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
 				} else {
-					that.Complex128 = make([]complex128, len(this.Complex128))
+					dst.Complex128 = make([]complex128, len(src.Complex128))
 				}
-			} else if len(this.Complex128) < len(that.Complex128) {
-				that.Complex128 = (that.Complex128)[:len(this.Complex128)]
+			} else if len(src.Complex128) < len(dst.Complex128) {
+				dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
 			}
 		} else {
-			that.Complex128 = make([]complex128, len(this.Complex128))
+			dst.Complex128 = make([]complex128, len(src.Complex128))
 		}
-		copy(that.Complex128, this.Complex128)
+		copy(dst.Complex128, src.Complex128)
 	}
-	if this.Complex64 == nil {
-		that.Complex64 = nil
+	if src.Complex64 == nil {
+		dst.Complex64 = nil
 	} else {
-		if that.Complex64 != nil {
-			if len(this.Complex64) > len(that.Complex64) {
-				if cap(that.Complex64) >= len(this.Complex64) {
-					that.Complex64 = (that.Complex64)[:len(this.Complex64)]
+		if dst.Complex64 != nil {
+			if len(src.Complex64) > len(dst.Complex64) {
+				if cap(dst.Complex64) >= len(src.Complex64) {
+					dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
 				} else {
-					that.Complex64 = make([]complex64, len(this.Complex64))
+					dst.Complex64 = make([]complex64, len(src.Complex64))
 				}
-			} else if len(this.Complex64) < len(that.Complex64) {
-				that.Complex64 = (that.Complex64)[:len(this.Complex64)]
+			} else if len(src.Complex64) < len(dst.Complex64) {
+				dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
 			}
 		} else {
-			that.Complex64 = make([]complex64, len(this.Complex64))
+			dst.Complex64 = make([]complex64, len(src.Complex64))
 		}
-		copy(that.Complex64, this.Complex64)
+		copy(dst.Complex64, src.Complex64)
 	}
-	if this.Float64 == nil {
-		that.Float64 = nil
+	if src.Float64 == nil {
+		dst.Float64 = nil
 	} else {
-		if that.Float64 != nil {
-			if len(this.Float64) > len(that.Float64) {
-				if cap(that.Float64) >= len(this.Float64) {
-					that.Float64 = (that.Float64)[:len(this.Float64)]
+		if dst.Float64 != nil {
+			if len(src.Float64) > len(dst.Float64) {
+				if cap(dst.Float64) >= len(src.Float64) {
+					dst.Float64 = (dst.Float64)[:len(src.Float64)]
 				} else {
-					that.Float64 = make([]float64, len(this.Float64))
+					dst.Float64 = make([]float64, len(src.Float64))
 				}
-			} else if len(this.Float64) < len(that.Float64) {
-				that.Float64 = (that.Float64)[:len(this.Float64)]
+			} else if len(src.Float64) < len(dst.Float64) {
+				dst.Float64 = (dst.Float64)[:len(src.Float64)]
 			}
 		} else {
-			that.Float64 = make([]float64, len(this.Float64))
+			dst.Float64 = make([]float64, len(src.Float64))
 		}
-		copy(that.Float64, this.Float64)
+		copy(dst.Float64, src.Float64)
 	}
-	if this.Float32 == nil {
-		that.Float32 = nil
+	if src.Float32 == nil {
+		dst.Float32 = nil
 	} else {
-		if that.Float32 != nil {
-			if len(this.Float32) > len(that.Float32) {
-				if cap(that.Float32) >= len(this.Float32) {
-					that.Float32 = (that.Float32)[:len(this.Float32)]
+		if dst.Float32 != nil {
+			if len(src.Float32) > len(dst.Float32) {
+				if cap(dst.Float32) >= len(src.Float32) {
+					dst.Float32 = (dst.Float32)[:len(src.Float32)]
 				} else {
-					that.Float32 = make([]float32, len(this.Float32))
+					dst.Float32 = make([]float32, len(src.Float32))
 				}
-			} else if len(this.Float32) < len(that.Float32) {
-				that.Float32 = (that.Float32)[:len(this.Float32)]
+			} else if len(src.Float32) < len(dst.Float32) {
+				dst.Float32 = (dst.Float32)[:len(src.Float32)]
 			}
 		} else {
-			that.Float32 = make([]float32, len(this.Float32))
+			dst.Float32 = make([]float32, len(src.Float32))
 		}
-		copy(that.Float32, this.Float32)
+		copy(dst.Float32, src.Float32)
 	}
-	if this.Int == nil {
-		that.Int = nil
+	if src.Int == nil {
+		dst.Int = nil
 	} else {
-		if that.Int != nil {
-			if len(this.Int) > len(that.Int) {
-				if cap(that.Int) >= len(this.Int) {
-					that.Int = (that.Int)[:len(this.Int)]
+		if dst.Int != nil {
+			if len(src.Int) > len(dst.Int) {
+				if cap(dst.Int) >= len(src.Int) {
+					dst.Int = (dst.Int)[:len(src.Int)]
 				} else {
-					that.Int = make([]int, len(this.Int))
+					dst.Int = make([]int, len(src.Int))
 				}
-			} else if len(this.Int) < len(that.Int) {
-				that.Int = (that.Int)[:len(this.Int)]
+			} else if len(src.Int) < len(dst.Int) {
+				dst.Int = (dst.Int)[:len(src.Int)]
 			}
 		} else {
-			that.Int = make([]int, len(this.Int))
+			dst.Int = make([]int, len(src.Int))
 		}
-		copy(that.Int, this.Int)
+		copy(dst.Int, src.Int)
 	}
-	if this.Int16 == nil {
-		that.Int16 = nil
+	if src.Int16 == nil {
+		dst.Int16 = nil
 	} else {
-		if that.Int16 != nil {
-			if len(this.Int16) > len(that.Int16) {
-				if cap(that.Int16) >= len(this.Int16) {
-					that.Int16 = (that.Int16)[:len(this.Int16)]
+		if dst.Int16 != nil {
+			if len(src.Int16) > len(dst.Int16) {
+				if cap(dst.Int16) >= len(src.Int16) {
+					dst.Int16 = (dst.Int16)[:len(src.Int16)]
 				} else {
-					that.Int16 = make([]int16, len(this.Int16))
+					dst.Int16 = make([]int16, len(src.Int16))
 				}
-			} else if len(this.Int16) < len(that.Int16) {
-				that.Int16 = (that.Int16)[:len(this.Int16)]
+			} else if len(src.Int16) < len(dst.Int16) {
+				dst.Int16 = (dst.Int16)[:len(src.Int16)]
 			}
 		} else {
-			that.Int16 = make([]int16, len(this.Int16))
+			dst.Int16 = make([]int16, len(src.Int16))
 		}
-		copy(that.Int16, this.Int16)
+		copy(dst.Int16, src.Int16)
 	}
-	if this.Int32 == nil {
-		that.Int32 = nil
+	if src.Int32 == nil {
+		dst.Int32 = nil
 	} else {
-		if that.Int32 != nil {
-			if len(this.Int32) > len(that.Int32) {
-				if cap(that.Int32) >= len(this.Int32) {
-					that.Int32 = (that.Int32)[:len(this.Int32)]
+		if dst.Int32 != nil {
+			if len(src.Int32) > len(dst.Int32) {
+				if cap(dst.Int32) >= len(src.Int32) {
+					dst.Int32 = (dst.Int32)[:len(src.Int32)]
 				} else {
-					that.Int32 = make([]int32, len(this.Int32))
+					dst.Int32 = make([]int32, len(src.Int32))
 				}
-			} else if len(this.Int32) < len(that.Int32) {
-				that.Int32 = (that.Int32)[:len(this.Int32)]
+			} else if len(src.Int32) < len(dst.Int32) {
+				dst.Int32 = (dst.Int32)[:len(src.Int32)]
 			}
 		} else {
-			that.Int32 = make([]int32, len(this.Int32))
+			dst.Int32 = make([]int32, len(src.Int32))
 		}
-		copy(that.Int32, this.Int32)
+		copy(dst.Int32, src.Int32)
 	}
-	if this.Int64 == nil {
-		that.Int64 = nil
+	if src.Int64 == nil {
+		dst.Int64 = nil
 	} else {
-		if that.Int64 != nil {
-			if len(this.Int64) > len(that.Int64) {
-				if cap(that.Int64) >= len(this.Int64) {
-					that.Int64 = (that.Int64)[:len(this.Int64)]
+		if dst.Int64 != nil {
+			if len(src.Int64) > len(dst.Int64) {
+				if cap(dst.Int64) >= len(src.Int64) {
+					dst.Int64 = (dst.Int64)[:len(src.Int64)]
 				} else {
-					that.Int64 = make([]int64, len(this.Int64))
+					dst.Int64 = make([]int64, len(src.Int64))
 				}
-			} else if len(this.Int64) < len(that.Int64) {
-				that.Int64 = (that.Int64)[:len(this.Int64)]
+			} else if len(src.Int64) < len(dst.Int64) {
+				dst.Int64 = (dst.Int64)[:len(src.Int64)]
 			}
 		} else {
-			that.Int64 = make([]int64, len(this.Int64))
+			dst.Int64 = make([]int64, len(src.Int64))
 		}
-		copy(that.Int64, this.Int64)
+		copy(dst.Int64, src.Int64)
 	}
-	if this.Int8 == nil {
-		that.Int8 = nil
+	if src.Int8 == nil {
+		dst.Int8 = nil
 	} else {
-		if that.Int8 != nil {
-			if len(this.Int8) > len(that.Int8) {
-				if cap(that.Int8) >= len(this.Int8) {
-					that.Int8 = (that.Int8)[:len(this.Int8)]
+		if dst.Int8 != nil {
+			if len(src.Int8) > len(dst.Int8) {
+				if cap(dst.Int8) >= len(src.Int8) {
+					dst.Int8 = (dst.Int8)[:len(src.Int8)]
 				} else {
-					that.Int8 = make([]int8, len(this.Int8))
+					dst.Int8 = make([]int8, len(src.Int8))
 				}
-			} else if len(this.Int8) < len(that.Int8) {
-				that.Int8 = (that.Int8)[:len(this.Int8)]
+			} else if len(src.Int8) < len(dst.Int8) {
+				dst.Int8 = (dst.Int8)[:len(src.Int8)]
 			}
 		} else {
-			that.Int8 = make([]int8, len(this.Int8))
+			dst.Int8 = make([]int8, len(src.Int8))
 		}
-		copy(that.Int8, this.Int8)
+		copy(dst.Int8, src.Int8)
 	}
-	if this.Rune == nil {
-		that.Rune = nil
+	if src.Rune == nil {
+		dst.Rune = nil
 	} else {
-		if that.Rune != nil {
-			if len(this.Rune) > len(that.Rune) {
-				if cap(that.Rune) >= len(this.Rune) {
-					that.Rune = (that.Rune)[:len(this.Rune)]
+		if dst.Rune != nil {
+			if len(src.Rune) > len(dst.Rune) {
+				if cap(dst.Rune) >= len(src.Rune) {
+					dst.Rune = (dst.Rune)[:len(src.Rune)]
 				} else {
-					that.Rune = make([]rune, len(this.Rune))
+					dst.Rune = make([]rune, len(src.Rune))
 				}
-			} else if len(this.Rune) < len(that.Rune) {
-				that.Rune = (that.Rune)[:len(this.Rune)]
+			} else if len(src.Rune) < len(dst.Rune) {
+				dst.Rune = (dst.Rune)[:len(src.Rune)]
 			}
 		} else {
-			that.Rune = make([]rune, len(this.Rune))
+			dst.Rune = make([]rune, len(src.Rune))
 		}
-		copy(that.Rune, this.Rune)
+		copy(dst.Rune, src.Rune)
 	}
-	if this.String == nil {
-		that.String = nil
+	if src.String == nil {
+		dst.String = nil
 	} else {
-		if that.String != nil {
-			if len(this.String) > len(that.String) {
-				if cap(that.String) >= len(this.String) {
-					that.String = (that.String)[:len(this.String)]
+		if dst.String != nil {
+			if len(src.String) > len(dst.String) {
+				if cap(dst.String) >= len(src.String) {
+					dst.String = (dst.String)[:len(src.String)]
 				} else {
-					that.String = make([]string, len(this.String))
+					dst.String = make([]string, len(src.String))
 				}
-			} else if len(this.String) < len(that.String) {
-				that.String = (that.String)[:len(this.String)]
+			} else if len(src.String) < len(dst.String) {
+				dst.String = (dst.String)[:len(src.String)]
 			}
 		} else {
-			that.String = make([]string, len(this.String))
+			dst.String = make([]string, len(src.String))
 		}
-		copy(that.String, this.String)
+		copy(dst.String, src.String)
 	}
-	if this.Uint == nil {
-		that.Uint = nil
+	if src.Uint == nil {
+		dst.Uint = nil
 	} else {
-		if that.Uint != nil {
-			if len(this.Uint) > len(that.Uint) {
-				if cap(that.Uint) >= len(this.Uint) {
-					that.Uint = (that.Uint)[:len(this.Uint)]
+		if dst.Uint != nil {
+			if len(src.Uint) > len(dst.Uint) {
+				if cap(dst.Uint) >= len(src.Uint) {
+					dst.Uint = (dst.Uint)[:len(src.Uint)]
 				} else {
-					that.Uint = make([]uint, len(this.Uint))
+					dst.Uint = make([]uint, len(src.Uint))
 				}
-			} else if len(this.Uint) < len(that.Uint) {
-				that.Uint = (that.Uint)[:len(this.Uint)]
+			} else if len(src.Uint) < len(dst.Uint) {
+				dst.Uint = (dst.Uint)[:len(src.Uint)]
 			}
 		} else {
-			that.Uint = make([]uint, len(this.Uint))
+			dst.Uint = make([]uint, len(src.Uint))
 		}
-		copy(that.Uint, this.Uint)
+		copy(dst.Uint, src.Uint)
 	}
-	if this.Uint16 == nil {
-		that.Uint16 = nil
+	if src.Uint16 == nil {
+		dst.Uint16 = nil
 	} else {
-		if that.Uint16 != nil {
-			if len(this.Uint16) > len(that.Uint16) {
-				if cap(that.Uint16) >= len(this.Uint16) {
-					that.Uint16 = (that.Uint16)[:len(this.Uint16)]
+		if dst.Uint16 != nil {
+			if len(src.Uint16) > len(dst.Uint16) {
+				if cap(dst.Uint16) >= len(src.Uint16) {
+					dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
 				} else {
-					that.Uint16 = make([]uint16, len(this.Uint16))
+					dst.Uint16 = make([]uint16, len(src.Uint16))
 				}
-			} else if len(this.Uint16) < len(that.Uint16) {
-				that.Uint16 = (that.Uint16)[:len(this.Uint16)]
+			} else if len(src.Uint16) < len(dst.Uint16) {
+				dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
 			}
 		} else {
-			that.Uint16 = make([]uint16, len(this.Uint16))
+			dst.Uint16 = make([]uint16, len(src.Uint16))
 		}
-		copy(that.Uint16, this.Uint16)
+		copy(dst.Uint16, src.Uint16)
 	}
-	if this.Uint32 == nil {
-		that.Uint32 = nil
+	if src.Uint32 == nil {
+		dst.Uint32 = nil
 	} else {
-		if that.Uint32 != nil {
-			if len(this.Uint32) > len(that.Uint32) {
-				if cap(that.Uint32) >= len(this.Uint32) {
-					that.Uint32 = (that.Uint32)[:len(this.Uint32)]
+		if dst.Uint32 != nil {
+			if len(src.Uint32) > len(dst.Uint32) {
+				if cap(dst.Uint32) >= len(src.Uint32) {
+					dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
 				} else {
-					that.Uint32 = make([]uint32, len(this.Uint32))
+					dst.Uint32 = make([]uint32, len(src.Uint32))
 				}
-			} else if len(this.Uint32) < len(that.Uint32) {
-				that.Uint32 = (that.Uint32)[:len(this.Uint32)]
+			} else if len(src.Uint32) < len(dst.Uint32) {
+				dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
 			}
 		} else {
-			that.Uint32 = make([]uint32, len(this.Uint32))
+			dst.Uint32 = make([]uint32, len(src.Uint32))
 		}
-		copy(that.Uint32, this.Uint32)
+		copy(dst.Uint32, src.Uint32)
 	}
-	if this.Uint64 == nil {
-		that.Uint64 = nil
+	if src.Uint64 == nil {
+		dst.Uint64 = nil
 	} else {
-		if that.Uint64 != nil {
-			if len(this.Uint64) > len(that.Uint64) {
-				if cap(that.Uint64) >= len(this.Uint64) {
-					that.Uint64 = (that.Uint64)[:len(this.Uint64)]
+		if dst.Uint64 != nil {
+			if len(src.Uint64) > len(dst.Uint64) {
+				if cap(dst.Uint64) >= len(src.Uint64) {
+					dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
 				} else {
-					that.Uint64 = make([]uint64, len(this.Uint64))
+					dst.Uint64 = make([]uint64, len(src.Uint64))
 				}
-			} else if len(this.Uint64) < len(that.Uint64) {
-				that.Uint64 = (that.Uint64)[:len(this.Uint64)]
+			} else if len(src.Uint64) < len(dst.Uint64) {
+				dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
 			}
 		} else {
-			that.Uint64 = make([]uint64, len(this.Uint64))
+			dst.Uint64 = make([]uint64, len(src.Uint64))
 		}
-		copy(that.Uint64, this.Uint64)
+		copy(dst.Uint64, src.Uint64)
 	}
-	if this.Uint8 == nil {
-		that.Uint8 = nil
+	if src.Uint8 == nil {
+		dst.Uint8 = nil
 	} else {
-		if that.Uint8 != nil {
-			if len(this.Uint8) > len(that.Uint8) {
-				if cap(that.Uint8) >= len(this.Uint8) {
-					that.Uint8 = (that.Uint8)[:len(this.Uint8)]
+		if dst.Uint8 != nil {
+			if len(src.Uint8) > len(dst.Uint8) {
+				if cap(dst.Uint8) >= len(src.Uint8) {
+					dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
 				} else {
-					that.Uint8 = make([]uint8, len(this.Uint8))
+					dst.Uint8 = make([]uint8, len(src.Uint8))
 				}
-			} else if len(this.Uint8) < len(that.Uint8) {
-				that.Uint8 = (that.Uint8)[:len(this.Uint8)]
+			} else if len(src.Uint8) < len(dst.Uint8) {
+				dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
 			}
 		} else {
-			that.Uint8 = make([]uint8, len(this.Uint8))
+			dst.Uint8 = make([]uint8, len(src.Uint8))
 		}
-		copy(that.Uint8, this.Uint8)
+		copy(dst.Uint8, src.Uint8)
 	}
-	if this.UintPtr == nil {
-		that.UintPtr = nil
+	if src.UintPtr == nil {
+		dst.UintPtr = nil
 	} else {
-		if that.UintPtr != nil {
-			if len(this.UintPtr) > len(that.UintPtr) {
-				if cap(that.UintPtr) >= len(this.UintPtr) {
-					that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
+		if dst.UintPtr != nil {
+			if len(src.UintPtr) > len(dst.UintPtr) {
+				if cap(dst.UintPtr) >= len(src.UintPtr) {
+					dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
 				} else {
-					that.UintPtr = make([]uintptr, len(this.UintPtr))
+					dst.UintPtr = make([]uintptr, len(src.UintPtr))
 				}
-			} else if len(this.UintPtr) < len(that.UintPtr) {
-				that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
+			} else if len(src.UintPtr) < len(dst.UintPtr) {
+				dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
 			}
 		} else {
-			that.UintPtr = make([]uintptr, len(this.UintPtr))
+			dst.UintPtr = make([]uintptr, len(src.UintPtr))
 		}
-		copy(that.UintPtr, this.UintPtr)
+		copy(dst.UintPtr, src.UintPtr)
 	}
 }
 
 // deriveCopyToPtrToSliceOfPtrToBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) {
-	if this.Bool == nil {
-		that.Bool = nil
+func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(src, dst *SliceOfPtrToBuiltInTypes) {
+	if src.Bool == nil {
+		dst.Bool = nil
 	} else {
-		if that.Bool != nil {
-			if len(this.Bool) > len(that.Bool) {
-				if cap(that.Bool) >= len(this.Bool) {
-					that.Bool = (that.Bool)[:len(this.Bool)]
+		if dst.Bool != nil {
+			if len(src.Bool) > len(dst.Bool) {
+				if cap(dst.Bool) >= len(src.Bool) {
+					dst.Bool = (dst.Bool)[:len(src.Bool)]
 				} else {
-					that.Bool = make([]*bool, len(this.Bool))
+					dst.Bool = make([]*bool, len(src.Bool))
 				}
-			} else if len(this.Bool) < len(that.Bool) {
-				that.Bool = (that.Bool)[:len(this.Bool)]
+			} else if len(src.Bool) < len(dst.Bool) {
+				dst.Bool = (dst.Bool)[:len(src.Bool)]
 			}
 		} else {
-			that.Bool = make([]*bool, len(this.Bool))
+			dst.Bool = make([]*bool, len(src.Bool))
 		}
-		deriveCopyTo(this.Bool, that.Bool)
+		deriveCopyTo(src.Bool, dst.Bool)
 	}
-	if this.Byte == nil {
-		that.Byte = nil
+	if src.Byte == nil {
+		dst.Byte = nil
 	} else {
-		if that.Byte != nil {
-			if len(this.Byte) > len(that.Byte) {
-				if cap(that.Byte) >= len(this.Byte) {
-					that.Byte = (that.Byte)[:len(this.Byte)]
+		if dst.Byte != nil {
+			if len(src.Byte) > len(dst.Byte) {
+				if cap(dst.Byte) >= len(src.Byte) {
+					dst.Byte = (dst.Byte)[:len(src.Byte)]
 				} else {
-					that.Byte = make([]*byte, len(this.Byte))
+					dst.Byte = make([]*byte, len(src.Byte))
 				}
-			} else if len(this.Byte) < len(that.Byte) {
-				that.Byte = (that.Byte)[:len(this.Byte)]
+			} else if len(src.Byte) < len(dst.Byte) {
+				dst.Byte = (dst.Byte)[:len(src.Byte)]
 			}
 		} else {
-			that.Byte = make([]*byte, len(this.Byte))
+			dst.Byte = make([]*byte, len(src.Byte))
 		}
-		deriveCopyTo_(this.Byte, that.Byte)
+		deriveCopyTo_(src.Byte, dst.Byte)
 	}
-	if this.Complex128 == nil {
-		that.Complex128 = nil
+	if src.Complex128 == nil {
+		dst.Complex128 = nil
 	} else {
-		if that.Complex128 != nil {
-			if len(this.Complex128) > len(that.Complex128) {
-				if cap(that.Complex128) >= len(this.Complex128) {
-					that.Complex128 = (that.Complex128)[:len(this.Complex128)]
+		if dst.Complex128 != nil {
+			if len(src.Complex128) > len(dst.Complex128) {
+				if cap(dst.Complex128) >= len(src.Complex128) {
+					dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
 				} else {
-					that.Complex128 = make([]*complex128, len(this.Complex128))
+					dst.Complex128 = make([]*complex128, len(src.Complex128))
 				}
-			} else if len(this.Complex128) < len(that.Complex128) {
-				that.Complex128 = (that.Complex128)[:len(this.Complex128)]
+			} else if len(src.Complex128) < len(dst.Complex128) {
+				dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
 			}
 		} else {
-			that.Complex128 = make([]*complex128, len(this.Complex128))
+			dst.Complex128 = make([]*complex128, len(src.Complex128))
 		}
-		deriveCopyTo_1(this.Complex128, that.Complex128)
+		deriveCopyTo_1(src.Complex128, dst.Complex128)
 	}
-	if this.Complex64 == nil {
-		that.Complex64 = nil
+	if src.Complex64 == nil {
+		dst.Complex64 = nil
 	} else {
-		if that.Complex64 != nil {
-			if len(this.Complex64) > len(that.Complex64) {
-				if cap(that.Complex64) >= len(this.Complex64) {
-					that.Complex64 = (that.Complex64)[:len(this.Complex64)]
+		if dst.Complex64 != nil {
+			if len(src.Complex64) > len(dst.Complex64) {
+				if cap(dst.Complex64) >= len(src.Complex64) {
+					dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
 				} else {
-					that.Complex64 = make([]*complex64, len(this.Complex64))
+					dst.Complex64 = make([]*complex64, len(src.Complex64))
 				}
-			} else if len(this.Complex64) < len(that.Complex64) {
-				that.Complex64 = (that.Complex64)[:len(this.Complex64)]
+			} else if len(src.Complex64) < len(dst.Complex64) {
+				dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
 			}
 		} else {
-			that.Complex64 = make([]*complex64, len(this.Complex64))
+			dst.Complex64 = make([]*complex64, len(src.Complex64))
 		}
-		deriveCopyTo_2(this.Complex64, that.Complex64)
+		deriveCopyTo_2(src.Complex64, dst.Complex64)
 	}
-	if this.Float64 == nil {
-		that.Float64 = nil
+	if src.Float64 == nil {
+		dst.Float64 = nil
 	} else {
-		if that.Float64 != nil {
-			if len(this.Float64) > len(that.Float64) {
-				if cap(that.Float64) >= len(this.Float64) {
-					that.Float64 = (that.Float64)[:len(this.Float64)]
+		if dst.Float64 != nil {
+			if len(src.Float64) > len(dst.Float64) {
+				if cap(dst.Float64) >= len(src.Float64) {
+					dst.Float64 = (dst.Float64)[:len(src.Float64)]
 				} else {
-					that.Float64 = make([]*float64, len(this.Float64))
+					dst.Float64 = make([]*float64, len(src.Float64))
 				}
-			} else if len(this.Float64) < len(that.Float64) {
-				that.Float64 = (that.Float64)[:len(this.Float64)]
+			} else if len(src.Float64) < len(dst.Float64) {
+				dst.Float64 = (dst.Float64)[:len(src.Float64)]
 			}
 		} else {
-			that.Float64 = make([]*float64, len(this.Float64))
+			dst.Float64 = make([]*float64, len(src.Float64))
 		}
-		deriveCopyTo_3(this.Float64, that.Float64)
+		deriveCopyTo_3(src.Float64, dst.Float64)
 	}
-	if this.Float32 == nil {
-		that.Float32 = nil
+	if src.Float32 == nil {
+		dst.Float32 = nil
 	} else {
-		if that.Float32 != nil {
-			if len(this.Float32) > len(that.Float32) {
-				if cap(that.Float32) >= len(this.Float32) {
-					that.Float32 = (that.Float32)[:len(this.Float32)]
+		if dst.Float32 != nil {
+			if len(src.Float32) > len(dst.Float32) {
+				if cap(dst.Float32) >= len(src.Float32) {
+					dst.Float32 = (dst.Float32)[:len(src.Float32)]
 				} else {
-					that.Float32 = make([]*float32, len(this.Float32))
+					dst.Float32 = make([]*float32, len(src.Float32))
 				}
-			} else if len(this.Float32) < len(that.Float32) {
-				that.Float32 = (that.Float32)[:len(this.Float32)]
+			} else if len(src.Float32) < len(dst.Float32) {
+				dst.Float32 = (dst.Float32)[:len(src.Float32)]
 			}
 		} else {
-			that.Float32 = make([]*float32, len(this.Float32))
+			dst.Float32 = make([]*float32, len(src.Float32))
 		}
-		deriveCopyTo_4(this.Float32, that.Float32)
+		deriveCopyTo_4(src.Float32, dst.Float32)
 	}
-	if this.Int == nil {
-		that.Int = nil
+	if src.Int == nil {
+		dst.Int = nil
 	} else {
-		if that.Int != nil {
-			if len(this.Int) > len(that.Int) {
-				if cap(that.Int) >= len(this.Int) {
-					that.Int = (that.Int)[:len(this.Int)]
+		if dst.Int != nil {
+			if len(src.Int) > len(dst.Int) {
+				if cap(dst.Int) >= len(src.Int) {
+					dst.Int = (dst.Int)[:len(src.Int)]
 				} else {
-					that.Int = make([]*int, len(this.Int))
+					dst.Int = make([]*int, len(src.Int))
 				}
-			} else if len(this.Int) < len(that.Int) {
-				that.Int = (that.Int)[:len(this.Int)]
+			} else if len(src.Int) < len(dst.Int) {
+				dst.Int = (dst.Int)[:len(src.Int)]
 			}
 		} else {
-			that.Int = make([]*int, len(this.Int))
+			dst.Int = make([]*int, len(src.Int))
 		}
-		deriveCopyTo_5(this.Int, that.Int)
+		deriveCopyTo_5(src.Int, dst.Int)
 	}
-	if this.Int16 == nil {
-		that.Int16 = nil
+	if src.Int16 == nil {
+		dst.Int16 = nil
 	} else {
-		if that.Int16 != nil {
-			if len(this.Int16) > len(that.Int16) {
-				if cap(that.Int16) >= len(this.Int16) {
-					that.Int16 = (that.Int16)[:len(this.Int16)]
+		if dst.Int16 != nil {
+			if len(src.Int16) > len(dst.Int16) {
+				if cap(dst.Int16) >= len(src.Int16) {
+					dst.Int16 = (dst.Int16)[:len(src.Int16)]
 				} else {
-					that.Int16 = make([]*int16, len(this.Int16))
+					dst.Int16 = make([]*int16, len(src.Int16))
 				}
-			} else if len(this.Int16) < len(that.Int16) {
-				that.Int16 = (that.Int16)[:len(this.Int16)]
+			} else if len(src.Int16) < len(dst.Int16) {
+				dst.Int16 = (dst.Int16)[:len(src.Int16)]
 			}
 		} else {
-			that.Int16 = make([]*int16, len(this.Int16))
+			dst.Int16 = make([]*int16, len(src.Int16))
 		}
-		deriveCopyTo_6(this.Int16, that.Int16)
+		deriveCopyTo_6(src.Int16, dst.Int16)
 	}
-	if this.Int32 == nil {
-		that.Int32 = nil
+	if src.Int32 == nil {
+		dst.Int32 = nil
 	} else {
-		if that.Int32 != nil {
-			if len(this.Int32) > len(that.Int32) {
-				if cap(that.Int32) >= len(this.Int32) {
-					that.Int32 = (that.Int32)[:len(this.Int32)]
+		if dst.Int32 != nil {
+			if len(src.Int32) > len(dst.Int32) {
+				if cap(dst.Int32) >= len(src.Int32) {
+					dst.Int32 = (dst.Int32)[:len(src.Int32)]
 				} else {
-					that.Int32 = make([]*int32, len(this.Int32))
+					dst.Int32 = make([]*int32, len(src.Int32))
 				}
-			} else if len(this.Int32) < len(that.Int32) {
-				that.Int32 = (that.Int32)[:len(this.Int32)]
+			} else if len(src.Int32) < len(dst.Int32) {
+				dst.Int32 = (dst.Int32)[:len(src.Int32)]
 			}
 		} else {
-			that.Int32 = make([]*int32, len(this.Int32))
+			dst.Int32 = make([]*int32, len(src.Int32))
 		}
-		deriveCopyTo_7(this.Int32, that.Int32)
+		deriveCopyTo_7(src.Int32, dst.Int32)
 	}
-	if this.Int64 == nil {
-		that.Int64 = nil
+	if src.Int64 == nil {
+		dst.Int64 = nil
 	} else {
-		if that.Int64 != nil {
-			if len(this.Int64) > len(that.Int64) {
-				if cap(that.Int64) >= len(this.Int64) {
-					that.Int64 = (that.Int64)[:len(this.Int64)]
+		if dst.Int64 != nil {
+			if len(src.Int64) > len(dst.Int64) {
+				if cap(dst.Int64) >= len(src.Int64) {
+					dst.Int64 = (dst.Int64)[:len(src.Int64)]
 				} else {
-					that.Int64 = make([]*int64, len(this.Int64))
+					dst.Int64 = make([]*int64, len(src.Int64))
 				}
-			} else if len(this.Int64) < len(that.Int64) {
-				that.Int64 = (that.Int64)[:len(this.Int64)]
+			} else if len(src.Int64) < len(dst.Int64) {
+				dst.Int64 = (dst.Int64)[:len(src.Int64)]
 			}
 		} else {
-			that.Int64 = make([]*int64, len(this.Int64))
+			dst.Int64 = make([]*int64, len(src.Int64))
 		}
-		deriveCopyTo_8(this.Int64, that.Int64)
+		deriveCopyTo_8(src.Int64, dst.Int64)
 	}
-	if this.Int8 == nil {
-		that.Int8 = nil
+	if src.Int8 == nil {
+		dst.Int8 = nil
 	} else {
-		if that.Int8 != nil {
-			if len(this.Int8) > len(that.Int8) {
-				if cap(that.Int8) >= len(this.Int8) {
-					that.Int8 = (that.Int8)[:len(this.Int8)]
+		if dst.Int8 != nil {
+			if len(src.Int8) > len(dst.Int8) {
+				if cap(dst.Int8) >= len(src.Int8) {
+					dst.Int8 = (dst.Int8)[:len(src.Int8)]
 				} else {
-					that.Int8 = make([]*int8, len(this.Int8))
+					dst.Int8 = make([]*int8, len(src.Int8))
 				}
-			} else if len(this.Int8) < len(that.Int8) {
-				that.Int8 = (that.Int8)[:len(this.Int8)]
+			} else if len(src.Int8) < len(dst.Int8) {
+				dst.Int8 = (dst.Int8)[:len(src.Int8)]
 			}
 		} else {
-			that.Int8 = make([]*int8, len(this.Int8))
+			dst.Int8 = make([]*int8, len(src.Int8))
 		}
-		deriveCopyTo_9(this.Int8, that.Int8)
+		deriveCopyTo_9(src.Int8, dst.Int8)
 	}
-	if this.Rune == nil {
-		that.Rune = nil
+	if src.Rune == nil {
+		dst.Rune = nil
 	} else {
-		if that.Rune != nil {
-			if len(this.Rune) > len(that.Rune) {
-				if cap(that.Rune) >= len(this.Rune) {
-					that.Rune = (that.Rune)[:len(this.Rune)]
+		if dst.Rune != nil {
+			if len(src.Rune) > len(dst.Rune) {
+				if cap(dst.Rune) >= len(src.Rune) {
+					dst.Rune = (dst.Rune)[:len(src.Rune)]
 				} else {
-					that.Rune = make([]*rune, len(this.Rune))
+					dst.Rune = make([]*rune, len(src.Rune))
 				}
-			} else if len(this.Rune) < len(that.Rune) {
-				that.Rune = (that.Rune)[:len(this.Rune)]
+			} else if len(src.Rune) < len(dst.Rune) {
+				dst.Rune = (dst.Rune)[:len(src.Rune)]
 			}
 		} else {
-			that.Rune = make([]*rune, len(this.Rune))
+			dst.Rune = make([]*rune, len(src.Rune))
 		}
-		deriveCopyTo_7(this.Rune, that.Rune)
+		deriveCopyTo_7(src.Rune, dst.Rune)
 	}
-	if this.String == nil {
-		that.String = nil
+	if src.String == nil {
+		dst.String = nil
 	} else {
-		if that.String != nil {
-			if len(this.String) > len(that.String) {
-				if cap(that.String) >= len(this.String) {
-					that.String = (that.String)[:len(this.String)]
+		if dst.String != nil {
+			if len(src.String) > len(dst.String) {
+				if cap(dst.String) >= len(src.String) {
+					dst.String = (dst.String)[:len(src.String)]
 				} else {
-					that.String = make([]*string, len(this.String))
+					dst.String = make([]*string, len(src.String))
 				}
-			} else if len(this.String) < len(that.String) {
-				that.String = (that.String)[:len(this.String)]
+			} else if len(src.String) < len(dst.String) {
+				dst.String = (dst.String)[:len(src.String)]
 			}
 		} else {
-			that.String = make([]*string, len(this.String))
+			dst.String = make([]*string, len(src.String))
 		}
-		deriveCopyTo_10(this.String, that.String)
+		deriveCopyTo_10(src.String, dst.String)
 	}
-	if this.Uint == nil {
-		that.Uint = nil
+	if src.Uint == nil {
+		dst.Uint = nil
 	} else {
-		if that.Uint != nil {
-			if len(this.Uint) > len(that.Uint) {
-				if cap(that.Uint) >= len(this.Uint) {
-					that.Uint = (that.Uint)[:len(this.Uint)]
+		if dst.Uint != nil {
+			if len(src.Uint) > len(dst.Uint) {
+				if cap(dst.Uint) >= len(src.Uint) {
+					dst.Uint = (dst.Uint)[:len(src.Uint)]
 				} else {
-					that.Uint = make([]*uint, len(this.Uint))
+					dst.Uint = make([]*uint, len(src.Uint))
 				}
-			} else if len(this.Uint) < len(that.Uint) {
-				that.Uint = (that.Uint)[:len(this.Uint)]
+			} else if len(src.Uint) < len(dst.Uint) {
+				dst.Uint = (dst.Uint)[:len(src.Uint)]
 			}
 		} else {
-			that.Uint = make([]*uint, len(this.Uint))
+			dst.Uint = make([]*uint, len(src.Uint))
 		}
-		deriveCopyTo_11(this.Uint, that.Uint)
+		deriveCopyTo_11(src.Uint, dst.Uint)
 	}
-	if this.Uint16 == nil {
-		that.Uint16 = nil
+	if src.Uint16 == nil {
+		dst.Uint16 = nil
 	} else {
-		if that.Uint16 != nil {
-			if len(this.Uint16) > len(that.Uint16) {
-				if cap(that.Uint16) >= len(this.Uint16) {
-					that.Uint16 = (that.Uint16)[:len(this.Uint16)]
+		if dst.Uint16 != nil {
+			if len(src.Uint16) > len(dst.Uint16) {
+				if cap(dst.Uint16) >= len(src.Uint16) {
+					dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
 				} else {
-					that.Uint16 = make([]*uint16, len(this.Uint16))
+					dst.Uint16 = make([]*uint16, len(src.Uint16))
 				}
-			} else if len(this.Uint16) < len(that.Uint16) {
-				that.Uint16 = (that.Uint16)[:len(this.Uint16)]
+			} else if len(src.Uint16) < len(dst.Uint16) {
+				dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
 			}
 		} else {
-			that.Uint16 = make([]*uint16, len(this.Uint16))
+			dst.Uint16 = make([]*uint16, len(src.Uint16))
 		}
-		deriveCopyTo_12(this.Uint16, that.Uint16)
+		deriveCopyTo_12(src.Uint16, dst.Uint16)
 	}
-	if this.Uint32 == nil {
-		that.Uint32 = nil
+	if src.Uint32 == nil {
+		dst.Uint32 = nil
 	} else {
-		if that.Uint32 != nil {
-			if len(this.Uint32) > len(that.Uint32) {
-				if cap(that.Uint32) >= len(this.Uint32) {
-					that.Uint32 = (that.Uint32)[:len(this.Uint32)]
+		if dst.Uint32 != nil {
+			if len(src.Uint32) > len(dst.Uint32) {
+				if cap(dst.Uint32) >= len(src.Uint32) {
+					dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
 				} else {
-					that.Uint32 = make([]*uint32, len(this.Uint32))
+					dst.Uint32 = make([]*uint32, len(src.Uint32))
 				}
-			} else if len(this.Uint32) < len(that.Uint32) {
-				that.Uint32 = (that.Uint32)[:len(this.Uint32)]
+			} else if len(src.Uint32) < len(dst.Uint32) {
+				dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
 			}
 		} else {
-			that.Uint32 = make([]*uint32, len(this.Uint32))
+			dst.Uint32 = make([]*uint32, len(src.Uint32))
 		}
-		deriveCopyTo_13(this.Uint32, that.Uint32)
+		deriveCopyTo_13(src.Uint32, dst.Uint32)
 	}
-	if this.Uint64 == nil {
-		that.Uint64 = nil
+	if src.Uint64 == nil {
+		dst.Uint64 = nil
 	} else {
-		if that.Uint64 != nil {
-			if len(this.Uint64) > len(that.Uint64) {
-				if cap(that.Uint64) >= len(this.Uint64) {
-					that.Uint64 = (that.Uint64)[:len(this.Uint64)]
+		if dst.Uint64 != nil {
+			if len(src.Uint64) > len(dst.Uint64) {
+				if cap(dst.Uint64) >= len(src.Uint64) {
+					dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
 				} else {
-					that.Uint64 = make([]*uint64, len(this.Uint64))
+					dst.Uint64 = make([]*uint64, len(src.Uint64))
 				}
-			} else if len(this.Uint64) < len(that.Uint64) {
-				that.Uint64 = (that.Uint64)[:len(this.Uint64)]
+			} else if len(src.Uint64) < len(dst.Uint64) {
+				dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
 			}
 		} else {
-			that.Uint64 = make([]*uint64, len(this.Uint64))
+			dst.Uint64 = make([]*uint64, len(src.Uint64))
 		}
-		deriveCopyTo_14(this.Uint64, that.Uint64)
+		deriveCopyTo_14(src.Uint64, dst.Uint64)
 	}
-	if this.Uint8 == nil {
-		that.Uint8 = nil
+	if src.Uint8 == nil {
+		dst.Uint8 = nil
 	} else {
-		if that.Uint8 != nil {
-			if len(this.Uint8) > len(that.Uint8) {
-				if cap(that.Uint8) >= len(this.Uint8) {
-					that.Uint8 = (that.Uint8)[:len(this.Uint8)]
+		if dst.Uint8 != nil {
+			if len(src.Uint8) > len(dst.Uint8) {
+				if cap(dst.Uint8) >= len(src.Uint8) {
+					dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
 				} else {
-					that.Uint8 = make([]*uint8, len(this.Uint8))
+					dst.Uint8 = make([]*uint8, len(src.Uint8))
 				}
-			} else if len(this.Uint8) < len(that.Uint8) {
-				that.Uint8 = (that.Uint8)[:len(this.Uint8)]
+			} else if len(src.Uint8) < len(dst.Uint8) {
+				dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
 			}
 		} else {
-			that.Uint8 = make([]*uint8, len(this.Uint8))
+			dst.Uint8 = make([]*uint8, len(src.Uint8))
 		}
-		deriveCopyTo_(this.Uint8, that.Uint8)
+		deriveCopyTo_(src.Uint8, dst.Uint8)
 	}
-	if this.UintPtr == nil {
-		that.UintPtr = nil
+	if src.UintPtr == nil {
+		dst.UintPtr = nil
 	} else {
-		if that.UintPtr != nil {
-			if len(this.UintPtr) > len(that.UintPtr) {
-				if cap(that.UintPtr) >= len(this.UintPtr) {
-					that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
+		if dst.UintPtr != nil {
+			if len(src.UintPtr) > len(dst.UintPtr) {
+				if cap(dst.UintPtr) >= len(src.UintPtr) {
+					dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
 				} else {
-					that.UintPtr = make([]*uintptr, len(this.UintPtr))
+					dst.UintPtr = make([]*uintptr, len(src.UintPtr))
 				}
-			} else if len(this.UintPtr) < len(that.UintPtr) {
-				that.UintPtr = (that.UintPtr)[:len(this.UintPtr)]
+			} else if len(src.UintPtr) < len(dst.UintPtr) {
+				dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
 			}
 		} else {
-			that.UintPtr = make([]*uintptr, len(this.UintPtr))
+			dst.UintPtr = make([]*uintptr, len(src.UintPtr))
 		}
-		deriveCopyTo_15(this.UintPtr, that.UintPtr)
+		deriveCopyTo_15(src.UintPtr, dst.UintPtr)
 	}
 }
 
 // deriveCopyToPtrToArrayOfBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) {
-	that.Bool = this.Bool
-	that.Byte = this.Byte
-	that.Complex128 = this.Complex128
-	that.Complex64 = this.Complex64
-	that.Float64 = this.Float64
-	that.Float32 = this.Float32
-	that.Int = this.Int
-	that.Int16 = this.Int16
-	that.Int32 = this.Int32
-	that.Int64 = this.Int64
-	that.Int8 = this.Int8
-	that.Rune = this.Rune
-	that.String = this.String
-	that.Uint = this.Uint
-	that.Uint16 = this.Uint16
-	that.Uint32 = this.Uint32
-	that.Uint64 = this.Uint64
-	that.Uint8 = this.Uint8
-	that.UintPtr = this.UintPtr
-	that.AnotherBoolOfDifferentSize = this.AnotherBoolOfDifferentSize
+func deriveCopyToPtrToArrayOfBuiltInTypes(src, dst *ArrayOfBuiltInTypes) {
+	dst.Bool = src.Bool
+	dst.Byte = src.Byte
+	dst.Complex128 = src.Complex128
+	dst.Complex64 = src.Complex64
+	dst.Float64 = src.Float64
+	dst.Float32 = src.Float32
+	dst.Int = src.Int
+	dst.Int16 = src.Int16
+	dst.Int32 = src.Int32
+	dst.Int64 = src.Int64
+	dst.Int8 = src.Int8
+	dst.Rune = src.Rune
+	dst.String = src.String
+	dst.Uint = src.Uint
+	dst.Uint16 = src.Uint16
+	dst.Uint32 = src.Uint32
+	dst.Uint64 = src.Uint64
+	dst.Uint8 = src.Uint8
+	dst.UintPtr = src.UintPtr
+	dst.AnotherBoolOfDifferentSize = src.AnotherBoolOfDifferentSize
 }
 
 // deriveCopyToPtrToArrayOfPtrToBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) {
-	for this_i, this_value := range this.Bool {
-		if this_value == nil {
-			that.Bool[this_i] = nil
+func deriveCopyToPtrToArrayOfPtrToBuiltInTypes(src, dst *ArrayOfPtrToBuiltInTypes) {
+	for src_i, src_value := range src.Bool {
+		if src_value == nil {
+			dst.Bool[src_i] = nil
 		} else {
-			that.Bool[this_i] = new(bool)
-			*that.Bool[this_i] = *this_value
+			dst.Bool[src_i] = new(bool)
+			*dst.Bool[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Byte {
-		if this_value == nil {
-			that.Byte[this_i] = nil
+	for src_i, src_value := range src.Byte {
+		if src_value == nil {
+			dst.Byte[src_i] = nil
 		} else {
-			that.Byte[this_i] = new(byte)
-			*that.Byte[this_i] = *this_value
+			dst.Byte[src_i] = new(byte)
+			*dst.Byte[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Complex128 {
-		if this_value == nil {
-			that.Complex128[this_i] = nil
+	for src_i, src_value := range src.Complex128 {
+		if src_value == nil {
+			dst.Complex128[src_i] = nil
 		} else {
-			that.Complex128[this_i] = new(complex128)
-			*that.Complex128[this_i] = *this_value
+			dst.Complex128[src_i] = new(complex128)
+			*dst.Complex128[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Complex64 {
-		if this_value == nil {
-			that.Complex64[this_i] = nil
+	for src_i, src_value := range src.Complex64 {
+		if src_value == nil {
+			dst.Complex64[src_i] = nil
 		} else {
-			that.Complex64[this_i] = new(complex64)
-			*that.Complex64[this_i] = *this_value
+			dst.Complex64[src_i] = new(complex64)
+			*dst.Complex64[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Float64 {
-		if this_value == nil {
-			that.Float64[this_i] = nil
+	for src_i, src_value := range src.Float64 {
+		if src_value == nil {
+			dst.Float64[src_i] = nil
 		} else {
-			that.Float64[this_i] = new(float64)
-			*that.Float64[this_i] = *this_value
+			dst.Float64[src_i] = new(float64)
+			*dst.Float64[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Float32 {
-		if this_value == nil {
-			that.Float32[this_i] = nil
+	for src_i, src_value := range src.Float32 {
+		if src_value == nil {
+			dst.Float32[src_i] = nil
 		} else {
-			that.Float32[this_i] = new(float32)
-			*that.Float32[this_i] = *this_value
+			dst.Float32[src_i] = new(float32)
+			*dst.Float32[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Int {
-		if this_value == nil {
-			that.Int[this_i] = nil
+	for src_i, src_value := range src.Int {
+		if src_value == nil {
+			dst.Int[src_i] = nil
 		} else {
-			that.Int[this_i] = new(int)
-			*that.Int[this_i] = *this_value
+			dst.Int[src_i] = new(int)
+			*dst.Int[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Int16 {
-		if this_value == nil {
-			that.Int16[this_i] = nil
+	for src_i, src_value := range src.Int16 {
+		if src_value == nil {
+			dst.Int16[src_i] = nil
 		} else {
-			that.Int16[this_i] = new(int16)
-			*that.Int16[this_i] = *this_value
+			dst.Int16[src_i] = new(int16)
+			*dst.Int16[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Int32 {
-		if this_value == nil {
-			that.Int32[this_i] = nil
+	for src_i, src_value := range src.Int32 {
+		if src_value == nil {
+			dst.Int32[src_i] = nil
 		} else {
-			that.Int32[this_i] = new(int32)
-			*that.Int32[this_i] = *this_value
+			dst.Int32[src_i] = new(int32)
+			*dst.Int32[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Int64 {
-		if this_value == nil {
-			that.Int64[this_i] = nil
+	for src_i, src_value := range src.Int64 {
+		if src_value == nil {
+			dst.Int64[src_i] = nil
 		} else {
-			that.Int64[this_i] = new(int64)
-			*that.Int64[this_i] = *this_value
+			dst.Int64[src_i] = new(int64)
+			*dst.Int64[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Int8 {
-		if this_value == nil {
-			that.Int8[this_i] = nil
+	for src_i, src_value := range src.Int8 {
+		if src_value == nil {
+			dst.Int8[src_i] = nil
 		} else {
-			that.Int8[this_i] = new(int8)
-			*that.Int8[this_i] = *this_value
+			dst.Int8[src_i] = new(int8)
+			*dst.Int8[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Rune {
-		if this_value == nil {
-			that.Rune[this_i] = nil
+	for src_i, src_value := range src.Rune {
+		if src_value == nil {
+			dst.Rune[src_i] = nil
 		} else {
-			that.Rune[this_i] = new(rune)
-			*that.Rune[this_i] = *this_value
+			dst.Rune[src_i] = new(rune)
+			*dst.Rune[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.String {
-		if this_value == nil {
-			that.String[this_i] = nil
+	for src_i, src_value := range src.String {
+		if src_value == nil {
+			dst.String[src_i] = nil
 		} else {
-			that.String[this_i] = new(string)
-			*that.String[this_i] = *this_value
+			dst.String[src_i] = new(string)
+			*dst.String[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Uint {
-		if this_value == nil {
-			that.Uint[this_i] = nil
+	for src_i, src_value := range src.Uint {
+		if src_value == nil {
+			dst.Uint[src_i] = nil
 		} else {
-			that.Uint[this_i] = new(uint)
-			*that.Uint[this_i] = *this_value
+			dst.Uint[src_i] = new(uint)
+			*dst.Uint[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Uint16 {
-		if this_value == nil {
-			that.Uint16[this_i] = nil
+	for src_i, src_value := range src.Uint16 {
+		if src_value == nil {
+			dst.Uint16[src_i] = nil
 		} else {
-			that.Uint16[this_i] = new(uint16)
-			*that.Uint16[this_i] = *this_value
+			dst.Uint16[src_i] = new(uint16)
+			*dst.Uint16[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Uint32 {
-		if this_value == nil {
-			that.Uint32[this_i] = nil
+	for src_i, src_value := range src.Uint32 {
+		if src_value == nil {
+			dst.Uint32[src_i] = nil
 		} else {
-			that.Uint32[this_i] = new(uint32)
-			*that.Uint32[this_i] = *this_value
+			dst.Uint32[src_i] = new(uint32)
+			*dst.Uint32[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Uint64 {
-		if this_value == nil {
-			that.Uint64[this_i] = nil
+	for src_i, src_value := range src.Uint64 {
+		if src_value == nil {
+			dst.Uint64[src_i] = nil
 		} else {
-			that.Uint64[this_i] = new(uint64)
-			*that.Uint64[this_i] = *this_value
+			dst.Uint64[src_i] = new(uint64)
+			*dst.Uint64[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.Uint8 {
-		if this_value == nil {
-			that.Uint8[this_i] = nil
+	for src_i, src_value := range src.Uint8 {
+		if src_value == nil {
+			dst.Uint8[src_i] = nil
 		} else {
-			that.Uint8[this_i] = new(uint8)
-			*that.Uint8[this_i] = *this_value
+			dst.Uint8[src_i] = new(uint8)
+			*dst.Uint8[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.UintPtr {
-		if this_value == nil {
-			that.UintPtr[this_i] = nil
+	for src_i, src_value := range src.UintPtr {
+		if src_value == nil {
+			dst.UintPtr[src_i] = nil
 		} else {
-			that.UintPtr[this_i] = new(uintptr)
-			*that.UintPtr[this_i] = *this_value
+			dst.UintPtr[src_i] = new(uintptr)
+			*dst.UintPtr[src_i] = *src_value
 		}
 	}
-	for this_i, this_value := range this.AnotherBoolOfDifferentSize {
-		if this_value == nil {
-			that.AnotherBoolOfDifferentSize[this_i] = nil
+	for src_i, src_value := range src.AnotherBoolOfDifferentSize {
+		if src_value == nil {
+			dst.AnotherBoolOfDifferentSize[src_i] = nil
 		} else {
-			that.AnotherBoolOfDifferentSize[this_i] = new(bool)
-			*that.AnotherBoolOfDifferentSize[this_i] = *this_value
+			dst.AnotherBoolOfDifferentSize[src_i] = new(bool)
+			*dst.AnotherBoolOfDifferentSize[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyToPtrToMapsOfSimplerBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) {
-	if this.StringToUint32 != nil {
-		that.StringToUint32 = make(map[string]uint32, len(this.StringToUint32))
-		deriveCopyTo_16(this.StringToUint32, that.StringToUint32)
+func deriveCopyToPtrToMapsOfSimplerBuiltInTypes(src, dst *MapsOfSimplerBuiltInTypes) {
+	if src.StringToUint32 != nil {
+		dst.StringToUint32 = make(map[string]uint32, len(src.StringToUint32))
+		deriveCopyTo_16(src.StringToUint32, dst.StringToUint32)
 	} else {
-		that.StringToUint32 = nil
+		dst.StringToUint32 = nil
 	}
-	if this.Uint64ToInt64 != nil {
-		that.Uint64ToInt64 = make(map[uint8]int64, len(this.Uint64ToInt64))
-		deriveCopyTo_17(this.Uint64ToInt64, that.Uint64ToInt64)
+	if src.Uint64ToInt64 != nil {
+		dst.Uint64ToInt64 = make(map[uint8]int64, len(src.Uint64ToInt64))
+		deriveCopyTo_17(src.Uint64ToInt64, dst.Uint64ToInt64)
 	} else {
-		that.Uint64ToInt64 = nil
+		dst.Uint64ToInt64 = nil
 	}
 }
 
 // deriveCopyToPtrToMapsOfBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) {
-	if this.BoolToString != nil {
-		that.BoolToString = make(map[bool]string, len(this.BoolToString))
-		deriveCopyTo_18(this.BoolToString, that.BoolToString)
+func deriveCopyToPtrToMapsOfBuiltInTypes(src, dst *MapsOfBuiltInTypes) {
+	if src.BoolToString != nil {
+		dst.BoolToString = make(map[bool]string, len(src.BoolToString))
+		deriveCopyTo_18(src.BoolToString, dst.BoolToString)
 	} else {
-		that.BoolToString = nil
+		dst.BoolToString = nil
 	}
-	if this.StringToBool != nil {
-		that.StringToBool = make(map[string]bool, len(this.StringToBool))
-		deriveCopyTo_19(this.StringToBool, that.StringToBool)
+	if src.StringToBool != nil {
+		dst.StringToBool = make(map[string]bool, len(src.StringToBool))
+		deriveCopyTo_19(src.StringToBool, dst.StringToBool)
 	} else {
-		that.StringToBool = nil
+		dst.StringToBool = nil
 	}
-	if this.Complex128ToComplex64 != nil {
-		that.Complex128ToComplex64 = make(map[complex128]complex64, len(this.Complex128ToComplex64))
-		deriveCopyTo_20(this.Complex128ToComplex64, that.Complex128ToComplex64)
+	if src.Complex128ToComplex64 != nil {
+		dst.Complex128ToComplex64 = make(map[complex128]complex64, len(src.Complex128ToComplex64))
+		deriveCopyTo_20(src.Complex128ToComplex64, dst.Complex128ToComplex64)
 	} else {
-		that.Complex128ToComplex64 = nil
+		dst.Complex128ToComplex64 = nil
 	}
-	if this.Float64ToUint32 != nil {
-		that.Float64ToUint32 = make(map[float64]uint32, len(this.Float64ToUint32))
-		deriveCopyTo_21(this.Float64ToUint32, that.Float64ToUint32)
+	if src.Float64ToUint32 != nil {
+		dst.Float64ToUint32 = make(map[float64]uint32, len(src.Float64ToUint32))
+		deriveCopyTo_21(src.Float64ToUint32, dst.Float64ToUint32)
 	} else {
-		that.Float64ToUint32 = nil
+		dst.Float64ToUint32 = nil
 	}
-	if this.Uint16ToUint8 != nil {
-		that.Uint16ToUint8 = make(map[uint16]uint8, len(this.Uint16ToUint8))
-		deriveCopyTo_22(this.Uint16ToUint8, that.Uint16ToUint8)
+	if src.Uint16ToUint8 != nil {
+		dst.Uint16ToUint8 = make(map[uint16]uint8, len(src.Uint16ToUint8))
+		deriveCopyTo_22(src.Uint16ToUint8, dst.Uint16ToUint8)
 	} else {
-		that.Uint16ToUint8 = nil
+		dst.Uint16ToUint8 = nil
 	}
 }
 
 // deriveCopyToPtrToSliceToSlice recursively copies the contents of src into dst.
-func deriveCopyToPtrToSliceToSlice(this, that *SliceToSlice) {
-	if this.Ints == nil {
-		that.Ints = nil
+func deriveCopyToPtrToSliceToSlice(src, dst *SliceToSlice) {
+	if src.Ints == nil {
+		dst.Ints = nil
 	} else {
-		if that.Ints != nil {
-			if len(this.Ints) > len(that.Ints) {
-				if cap(that.Ints) >= len(this.Ints) {
-					that.Ints = (that.Ints)[:len(this.Ints)]
+		if dst.Ints != nil {
+			if len(src.Ints) > len(dst.Ints) {
+				if cap(dst.Ints) >= len(src.Ints) {
+					dst.Ints = (dst.Ints)[:len(src.Ints)]
 				} else {
-					that.Ints = make([][]int, len(this.Ints))
+					dst.Ints = make([][]int, len(src.Ints))
 				}
-			} else if len(this.Ints) < len(that.Ints) {
-				that.Ints = (that.Ints)[:len(this.Ints)]
+			} else if len(src.Ints) < len(dst.Ints) {
+				dst.Ints = (dst.Ints)[:len(src.Ints)]
 			}
 		} else {
-			that.Ints = make([][]int, len(this.Ints))
+			dst.Ints = make([][]int, len(src.Ints))
 		}
-		deriveCopyTo_23(this.Ints, that.Ints)
+		deriveCopyTo_23(src.Ints, dst.Ints)
 	}
-	if this.Strings == nil {
-		that.Strings = nil
+	if src.Strings == nil {
+		dst.Strings = nil
 	} else {
-		if that.Strings != nil {
-			if len(this.Strings) > len(that.Strings) {
-				if cap(that.Strings) >= len(this.Strings) {
-					that.Strings = (that.Strings)[:len(this.Strings)]
+		if dst.Strings != nil {
+			if len(src.Strings) > len(dst.Strings) {
+				if cap(dst.Strings) >= len(src.Strings) {
+					dst.Strings = (dst.Strings)[:len(src.Strings)]
 				} else {
-					that.Strings = make([][]string, len(this.Strings))
+					dst.Strings = make([][]string, len(src.Strings))
 				}
-			} else if len(this.Strings) < len(that.Strings) {
-				that.Strings = (that.Strings)[:len(this.Strings)]
+			} else if len(src.Strings) < len(dst.Strings) {
+				dst.Strings = (dst.Strings)[:len(src.Strings)]
 			}
 		} else {
-			that.Strings = make([][]string, len(this.Strings))
+			dst.Strings = make([][]string, len(src.Strings))
 		}
-		deriveCopyTo_24(this.Strings, that.Strings)
+		deriveCopyTo_24(src.Strings, dst.Strings)
 	}
-	if this.IntPtrs == nil {
-		that.IntPtrs = nil
+	if src.IntPtrs == nil {
+		dst.IntPtrs = nil
 	} else {
-		if that.IntPtrs != nil {
-			if len(this.IntPtrs) > len(that.IntPtrs) {
-				if cap(that.IntPtrs) >= len(this.IntPtrs) {
-					that.IntPtrs = (that.IntPtrs)[:len(this.IntPtrs)]
+		if dst.IntPtrs != nil {
+			if len(src.IntPtrs) > len(dst.IntPtrs) {
+				if cap(dst.IntPtrs) >= len(src.IntPtrs) {
+					dst.IntPtrs = (dst.IntPtrs)[:len(src.IntPtrs)]
 				} else {
-					that.IntPtrs = make([][]*int, len(this.IntPtrs))
+					dst.IntPtrs = make([][]*int, len(src.IntPtrs))
 				}
-			} else if len(this.IntPtrs) < len(that.IntPtrs) {
-				that.IntPtrs = (that.IntPtrs)[:len(this.IntPtrs)]
+			} else if len(src.IntPtrs) < len(dst.IntPtrs) {
+				dst.IntPtrs = (dst.IntPtrs)[:len(src.IntPtrs)]
 			}
 		} else {
-			that.IntPtrs = make([][]*int, len(this.IntPtrs))
+			dst.IntPtrs = make([][]*int, len(src.IntPtrs))
 		}
-		deriveCopyTo_25(this.IntPtrs, that.IntPtrs)
+		deriveCopyTo_25(src.IntPtrs, dst.IntPtrs)
 	}
 }
 
 // deriveCopyToPtrToPtrTo recursively copies the contents of src into dst.
-func deriveCopyToPtrToPtrTo(this, that *PtrTo) {
-	if this.Basic == nil {
-		that.Basic = nil
+func deriveCopyToPtrToPtrTo(src, dst *PtrTo) {
+	if src.Basic == nil {
+		dst.Basic = nil
 	} else {
-		that.Basic = new(int)
-		*that.Basic = *this.Basic
+		dst.Basic = new(int)
+		*dst.Basic = *src.Basic
 	}
-	if this.Slice == nil {
-		that.Slice = nil
+	if src.Slice == nil {
+		dst.Slice = nil
 	} else {
-		that.Slice = new([]int)
-		deriveCopyTo_26(this.Slice, that.Slice)
+		dst.Slice = new([]int)
+		deriveCopyTo_26(src.Slice, dst.Slice)
 	}
-	if this.Array == nil {
-		that.Array = nil
+	if src.Array == nil {
+		dst.Array = nil
 	} else {
-		that.Array = new([4]int)
-		*that.Array = *this.Array
+		dst.Array = new([4]int)
+		*dst.Array = *src.Array
 	}
-	if this.Map == nil {
-		that.Map = nil
+	if src.Map == nil {
+		dst.Map = nil
 	} else {
-		that.Map = new(map[int]int)
-		deriveCopyTo_27(this.Map, that.Map)
+		dst.Map = new(map[int]int)
+		deriveCopyTo_27(src.Map, dst.Map)
 	}
 }
 
 // deriveCopyToPtrToName recursively copies the contents of src into dst.
-func deriveCopyToPtrToName(this, that *Name) {
-	that.Name = this.Name
+func deriveCopyToPtrToName(src, dst *Name) {
+	dst.Name = src.Name
 }
 
 // deriveCopyToPtrToStructs recursively copies the contents of src into dst.
-func deriveCopyToPtrToStructs(this, that *Structs) {
-	that.Struct = this.Struct
-	if this.PtrToStruct == nil {
-		that.PtrToStruct = nil
+func deriveCopyToPtrToStructs(src, dst *Structs) {
+	dst.Struct = src.Struct
+	if src.PtrToStruct == nil {
+		dst.PtrToStruct = nil
 	} else {
-		that.PtrToStruct = new(Name)
-		this.PtrToStruct.CopyTo(that.PtrToStruct)
+		dst.PtrToStruct = new(Name)
+		src.PtrToStruct.CopyTo(dst.PtrToStruct)
 	}
-	if this.SliceOfStructs == nil {
-		that.SliceOfStructs = nil
+	if src.SliceOfStructs == nil {
+		dst.SliceOfStructs = nil
 	} else {
-		if that.SliceOfStructs != nil {
-			if len(this.SliceOfStructs) > len(that.SliceOfStructs) {
-				if cap(that.SliceOfStructs) >= len(this.SliceOfStructs) {
-					that.SliceOfStructs = (that.SliceOfStructs)[:len(this.SliceOfStructs)]
+		if dst.SliceOfStructs != nil {
+			if len(src.SliceOfStructs) > len(dst.SliceOfStructs) {
+				if cap(dst.SliceOfStructs) >= len(src.SliceOfStructs) {
+					dst.SliceOfStructs = (dst.SliceOfStructs)[:len(src.SliceOfStructs)]
 				} else {
-					that.SliceOfStructs = make([]Name, len(this.SliceOfStructs))
+					dst.SliceOfStructs = make([]Name, len(src.SliceOfStructs))
 				}
-			} else if len(this.SliceOfStructs) < len(that.SliceOfStructs) {
-				that.SliceOfStructs = (that.SliceOfStructs)[:len(this.SliceOfStructs)]
+			} else if len(src.SliceOfStructs) < len(dst.SliceOfStructs) {
+				dst.SliceOfStructs = (dst.SliceOfStructs)[:len(src.SliceOfStructs)]
 			}
 		} else {
-			that.SliceOfStructs = make([]Name, len(this.SliceOfStructs))
+			dst.SliceOfStructs = make([]Name, len(src.SliceOfStructs))
 		}
-		copy(that.SliceOfStructs, this.SliceOfStructs)
+		copy(dst.SliceOfStructs, src.SliceOfStructs)
 	}
-	if this.SliceToPtrOfStruct == nil {
-		that.SliceToPtrOfStruct = nil
+	if src.SliceToPtrOfStruct == nil {
+		dst.SliceToPtrOfStruct = nil
 	} else {
-		if that.SliceToPtrOfStruct != nil {
-			if len(this.SliceToPtrOfStruct) > len(that.SliceToPtrOfStruct) {
-				if cap(that.SliceToPtrOfStruct) >= len(this.SliceToPtrOfStruct) {
-					that.SliceToPtrOfStruct = (that.SliceToPtrOfStruct)[:len(this.SliceToPtrOfStruct)]
+		if dst.SliceToPtrOfStruct != nil {
+			if len(src.SliceToPtrOfStruct) > len(dst.SliceToPtrOfStruct) {
+				if cap(dst.SliceToPtrOfStruct) >= len(src.SliceToPtrOfStruct) {
+					dst.SliceToPtrOfStruct = (dst.SliceToPtrOfStruct)[:len(src.SliceToPtrOfStruct)]
 				} else {
-					that.SliceToPtrOfStruct = make([]*Name, len(this.SliceToPtrOfStruct))
+					dst.SliceToPtrOfStruct = make([]*Name, len(src.SliceToPtrOfStruct))
 				}
-			} else if len(this.SliceToPtrOfStruct) < len(that.SliceToPtrOfStruct) {
-				that.SliceToPtrOfStruct = (that.SliceToPtrOfStruct)[:len(this.SliceToPtrOfStruct)]
+			} else if len(src.SliceToPtrOfStruct) < len(dst.SliceToPtrOfStruct) {
+				dst.SliceToPtrOfStruct = (dst.SliceToPtrOfStruct)[:len(src.SliceToPtrOfStruct)]
 			}
 		} else {
-			that.SliceToPtrOfStruct = make([]*Name, len(this.SliceToPtrOfStruct))
+			dst.SliceToPtrOfStruct = make([]*Name, len(src.SliceToPtrOfStruct))
 		}
-		deriveCopyTo_28(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct)
+		deriveCopyTo_28(src.SliceToPtrOfStruct, dst.SliceToPtrOfStruct)
 	}
 }
 
 // deriveCopyToPtrToMapWithStructs recursively copies the contents of src into dst.
-func deriveCopyToPtrToMapWithStructs(this, that *MapWithStructs) {
-	if this.NameToString != nil {
-		that.NameToString = make(map[Name]string, len(this.NameToString))
-		deriveCopyTo_29(this.NameToString, that.NameToString)
+func deriveCopyToPtrToMapWithStructs(src, dst *MapWithStructs) {
+	if src.NameToString != nil {
+		dst.NameToString = make(map[Name]string, len(src.NameToString))
+		deriveCopyTo_29(src.NameToString, dst.NameToString)
 	} else {
-		that.NameToString = nil
+		dst.NameToString = nil
 	}
-	if this.StringToName != nil {
-		that.StringToName = make(map[string]Name, len(this.StringToName))
-		deriveCopyTo_30(this.StringToName, that.StringToName)
+	if src.StringToName != nil {
+		dst.StringToName = make(map[string]Name, len(src.StringToName))
+		deriveCopyTo_30(src.StringToName, dst.StringToName)
 	} else {
-		that.StringToName = nil
+		dst.StringToName = nil
 	}
-	if this.StringToPtrToName != nil {
-		that.StringToPtrToName = make(map[string]*Name, len(this.StringToPtrToName))
-		deriveCopyTo_31(this.StringToPtrToName, that.StringToPtrToName)
+	if src.StringToPtrToName != nil {
+		dst.StringToPtrToName = make(map[string]*Name, len(src.StringToPtrToName))
+		deriveCopyTo_31(src.StringToPtrToName, dst.StringToPtrToName)
 	} else {
-		that.StringToPtrToName = nil
+		dst.StringToPtrToName = nil
 	}
-	if this.StringToSliceOfName != nil {
-		that.StringToSliceOfName = make(map[string][]Name, len(this.StringToSliceOfName))
-		deriveCopyTo_32(this.StringToSliceOfName, that.StringToSliceOfName)
+	if src.StringToSliceOfName != nil {
+		dst.StringToSliceOfName = make(map[string][]Name, len(src.StringToSliceOfName))
+		deriveCopyTo_32(src.StringToSliceOfName, dst.StringToSliceOfName)
 	} else {
-		that.StringToSliceOfName = nil
+		dst.StringToSliceOfName = nil
 	}
-	if this.StringToSliceOfPtrToName != nil {
-		that.StringToSliceOfPtrToName = make(map[string][]*Name, len(this.StringToSliceOfPtrToName))
-		deriveCopyTo_33(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName)
+	if src.StringToSliceOfPtrToName != nil {
+		dst.StringToSliceOfPtrToName = make(map[string][]*Name, len(src.StringToSliceOfPtrToName))
+		deriveCopyTo_33(src.StringToSliceOfPtrToName, dst.StringToSliceOfPtrToName)
 	} else {
-		that.StringToSliceOfPtrToName = nil
+		dst.StringToSliceOfPtrToName = nil
 	}
 }
 
 // deriveCopyToPtrToRecursiveType recursively copies the contents of src into dst.
-func deriveCopyToPtrToRecursiveType(this, that *RecursiveType) {
-	if this.Bytes == nil {
-		that.Bytes = nil
+func deriveCopyToPtrToRecursiveType(src, dst *RecursiveType) {
+	if src.Bytes == nil {
+		dst.Bytes = nil
 	} else {
-		if that.Bytes != nil {
-			if len(this.Bytes) > len(that.Bytes) {
-				if cap(that.Bytes) >= len(this.Bytes) {
-					that.Bytes = (that.Bytes)[:len(this.Bytes)]
+		if dst.Bytes != nil {
+			if len(src.Bytes) > len(dst.Bytes) {
+				if cap(dst.Bytes) >= len(src.Bytes) {
+					dst.Bytes = (dst.Bytes)[:len(src.Bytes)]
 				} else {
-					that.Bytes = make([]byte, len(this.Bytes))
+					dst.Bytes = make([]byte, len(src.Bytes))
 				}
-			} else if len(this.Bytes) < len(that.Bytes) {
-				that.Bytes = (that.Bytes)[:len(this.Bytes)]
+			} else if len(src.Bytes) < len(dst.Bytes) {
+				dst.Bytes = (dst.Bytes)[:len(src.Bytes)]
 			}
 		} else {
-			that.Bytes = make([]byte, len(this.Bytes))
+			dst.Bytes = make([]byte, len(src.Bytes))
 		}
-		copy(that.Bytes, this.Bytes)
+		copy(dst.Bytes, src.Bytes)
 	}
-	if this.N != nil {
-		that.N = make(map[int]RecursiveType, len(this.N))
-		deriveCopyTo_34(this.N, that.N)
+	if src.N != nil {
+		dst.N = make(map[int]RecursiveType, len(src.N))
+		deriveCopyTo_34(src.N, dst.N)
 	} else {
-		that.N = nil
+		dst.N = nil
 	}
 }
 
 // deriveCopyToPtrToEmbeddedStruct1 recursively copies the contents of src into dst.
-func deriveCopyToPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) {
-	that.Name = this.Name
-	if this.Structs == nil {
-		that.Structs = nil
+func deriveCopyToPtrToEmbeddedStruct1(src, dst *EmbeddedStruct1) {
+	dst.Name = src.Name
+	if src.Structs == nil {
+		dst.Structs = nil
 	} else {
-		that.Structs = new(Structs)
-		this.Structs.CopyTo(that.Structs)
+		dst.Structs = new(Structs)
+		src.Structs.CopyTo(dst.Structs)
 	}
 }
 
 // deriveCopyToPtrToEmbeddedStruct2 recursively copies the contents of src into dst.
-func deriveCopyToPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) {
+func deriveCopyToPtrToEmbeddedStruct2(src, dst *EmbeddedStruct2) {
 	field := new(Structs)
-	this.Structs.CopyTo(field)
-	that.Structs = *field
-	if this.Name == nil {
-		that.Name = nil
+	src.Structs.CopyTo(field)
+	dst.Structs = *field
+	if src.Name == nil {
+		dst.Name = nil
 	} else {
-		that.Name = new(Name)
-		this.Name.CopyTo(that.Name)
+		dst.Name = new(Name)
+		src.Name.CopyTo(dst.Name)
 	}
 }
 
 // deriveCopyToPtrToUnnamedStruct recursively copies the contents of src into dst.
-func deriveCopyToPtrToUnnamedStruct(this, that *UnnamedStruct) {
-	that.Unnamed = this.Unnamed
+func deriveCopyToPtrToUnnamedStruct(src, dst *UnnamedStruct) {
+	dst.Unnamed = src.Unnamed
 }
 
 // deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod recursively copies the contents of src into dst.
-func deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) {
-	if this.A == nil {
-		that.A = nil
+func deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(src, dst *StructWithStructFieldWithoutEqualMethod) {
+	if src.A == nil {
+		dst.A = nil
 	} else {
-		that.A = new(StructWithoutEqualMethod)
-		*that.A = *this.A
+		dst.A = new(StructWithoutEqualMethod)
+		*dst.A = *src.A
 	}
-	that.B = this.B
+	dst.B = src.B
 }
 
 // deriveCopyToPtrToStructWithStructWithFromAnotherPackage recursively copies the contents of src into dst.
-func deriveCopyToPtrToStructWithStructWithFromAnotherPackage(this, that *StructWithStructWithFromAnotherPackage) {
-	if this.A == nil {
-		that.A = nil
+func deriveCopyToPtrToStructWithStructWithFromAnotherPackage(src, dst *StructWithStructWithFromAnotherPackage) {
+	if src.A == nil {
+		dst.A = nil
 	} else {
-		that.A = new(extra.StructWithoutEqualMethod)
-		*that.A = *this.A
+		dst.A = new(extra.StructWithoutEqualMethod)
+		*dst.A = *src.A
 	}
-	that.B = this.B
+	dst.B = src.B
 }
 
 // deriveCopyToPtrToFieldWithStructWithPrivateFields recursively copies the contents of src into dst.
-func deriveCopyToPtrToFieldWithStructWithPrivateFields(this, that *FieldWithStructWithPrivateFields) {
-	if this.A == nil {
-		that.A = nil
+func deriveCopyToPtrToFieldWithStructWithPrivateFields(src, dst *FieldWithStructWithPrivateFields) {
+	if src.A == nil {
+		dst.A = nil
 	} else {
-		that.A = new(extra.PrivateFieldAndNoEqualMethod)
-		deriveCopyTo_35(this.A, that.A)
+		dst.A = new(extra.PrivateFieldAndNoEqualMethod)
+		deriveCopyTo_35(src.A, dst.A)
 	}
 }
 
 // deriveCopyToPtrToEnums recursively copies the contents of src into dst.
-func deriveCopyToPtrToEnums(this, that *Enums) {
-	that.Enum = this.Enum
-	if this.PtrToEnum == nil {
-		that.PtrToEnum = nil
+func deriveCopyToPtrToEnums(src, dst *Enums) {
+	dst.Enum = src.Enum
+	if src.PtrToEnum == nil {
+		dst.PtrToEnum = nil
 	} else {
-		that.PtrToEnum = new(MyEnum)
-		*that.PtrToEnum = *this.PtrToEnum
+		dst.PtrToEnum = new(MyEnum)
+		*dst.PtrToEnum = *src.PtrToEnum
 	}
-	if this.SliceToEnum == nil {
-		that.SliceToEnum = nil
+	if src.SliceToEnum == nil {
+		dst.SliceToEnum = nil
 	} else {
-		if that.SliceToEnum != nil {
-			if len(this.SliceToEnum) > len(that.SliceToEnum) {
-				if cap(that.SliceToEnum) >= len(this.SliceToEnum) {
-					that.SliceToEnum = (that.SliceToEnum)[:len(this.SliceToEnum)]
+		if dst.SliceToEnum != nil {
+			if len(src.SliceToEnum) > len(dst.SliceToEnum) {
+				if cap(dst.SliceToEnum) >= len(src.SliceToEnum) {
+					dst.SliceToEnum = (dst.SliceToEnum)[:len(src.SliceToEnum)]
 				} else {
-					that.SliceToEnum = make([]MyEnum, len(this.SliceToEnum))
+					dst.SliceToEnum = make([]MyEnum, len(src.SliceToEnum))
 				}
-			} else if len(this.SliceToEnum) < len(that.SliceToEnum) {
-				that.SliceToEnum = (that.SliceToEnum)[:len(this.SliceToEnum)]
+			} else if len(src.SliceToEnum) < len(dst.SliceToEnum) {
+				dst.SliceToEnum = (dst.SliceToEnum)[:len(src.SliceToEnum)]
 			}
 		} else {
-			that.SliceToEnum = make([]MyEnum, len(this.SliceToEnum))
+			dst.SliceToEnum = make([]MyEnum, len(src.SliceToEnum))
 		}
-		copy(that.SliceToEnum, this.SliceToEnum)
+		copy(dst.SliceToEnum, src.SliceToEnum)
 	}
-	if this.SliceToPtrToEnum == nil {
-		that.SliceToPtrToEnum = nil
+	if src.SliceToPtrToEnum == nil {
+		dst.SliceToPtrToEnum = nil
 	} else {
-		if that.SliceToPtrToEnum != nil {
-			if len(this.SliceToPtrToEnum) > len(that.SliceToPtrToEnum) {
-				if cap(that.SliceToPtrToEnum) >= len(this.SliceToPtrToEnum) {
-					that.SliceToPtrToEnum = (that.SliceToPtrToEnum)[:len(this.SliceToPtrToEnum)]
+		if dst.SliceToPtrToEnum != nil {
+			if len(src.SliceToPtrToEnum) > len(dst.SliceToPtrToEnum) {
+				if cap(dst.SliceToPtrToEnum) >= len(src.SliceToPtrToEnum) {
+					dst.SliceToPtrToEnum = (dst.SliceToPtrToEnum)[:len(src.SliceToPtrToEnum)]
 				} else {
-					that.SliceToPtrToEnum = make([]*MyEnum, len(this.SliceToPtrToEnum))
+					dst.SliceToPtrToEnum = make([]*MyEnum, len(src.SliceToPtrToEnum))
 				}
-			} else if len(this.SliceToPtrToEnum) < len(that.SliceToPtrToEnum) {
-				that.SliceToPtrToEnum = (that.SliceToPtrToEnum)[:len(this.SliceToPtrToEnum)]
+			} else if len(src.SliceToPtrToEnum) < len(dst.SliceToPtrToEnum) {
+				dst.SliceToPtrToEnum = (dst.SliceToPtrToEnum)[:len(src.SliceToPtrToEnum)]
 			}
 		} else {
-			that.SliceToPtrToEnum = make([]*MyEnum, len(this.SliceToPtrToEnum))
+			dst.SliceToPtrToEnum = make([]*MyEnum, len(src.SliceToPtrToEnum))
 		}
-		deriveCopyTo_36(this.SliceToPtrToEnum, that.SliceToPtrToEnum)
+		deriveCopyTo_36(src.SliceToPtrToEnum, dst.SliceToPtrToEnum)
 	}
-	if this.MapToEnum != nil {
-		that.MapToEnum = make(map[int32]MyEnum, len(this.MapToEnum))
-		deriveCopyTo_37(this.MapToEnum, that.MapToEnum)
+	if src.MapToEnum != nil {
+		dst.MapToEnum = make(map[int32]MyEnum, len(src.MapToEnum))
+		deriveCopyTo_37(src.MapToEnum, dst.MapToEnum)
 	} else {
-		that.MapToEnum = nil
+		dst.MapToEnum = nil
 	}
-	if this.EnumToMap != nil {
-		that.EnumToMap = make(map[MyEnum]int32, len(this.EnumToMap))
-		deriveCopyTo_38(this.EnumToMap, that.EnumToMap)
+	if src.EnumToMap != nil {
+		dst.EnumToMap = make(map[MyEnum]int32, len(src.EnumToMap))
+		deriveCopyTo_38(src.EnumToMap, dst.EnumToMap)
 	} else {
-		that.EnumToMap = nil
+		dst.EnumToMap = nil
 	}
-	that.ArrayEnum = this.ArrayEnum
+	dst.ArrayEnum = src.ArrayEnum
 }
 
 // deriveCopyToPtrToNamedTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToNamedTypes(this, that *NamedTypes) {
-	if this.Slice == nil {
-		that.Slice = nil
+func deriveCopyToPtrToNamedTypes(src, dst *NamedTypes) {
+	if src.Slice == nil {
+		dst.Slice = nil
 	} else {
-		if that.Slice != nil {
-			if len(this.Slice) > len(that.Slice) {
-				if cap(that.Slice) >= len(this.Slice) {
-					that.Slice = (that.Slice)[:len(this.Slice)]
+		if dst.Slice != nil {
+			if len(src.Slice) > len(dst.Slice) {
+				if cap(dst.Slice) >= len(src.Slice) {
+					dst.Slice = (dst.Slice)[:len(src.Slice)]
 				} else {
-					that.Slice = make([]int64, len(this.Slice))
+					dst.Slice = make([]int64, len(src.Slice))
 				}
-			} else if len(this.Slice) < len(that.Slice) {
-				that.Slice = (that.Slice)[:len(this.Slice)]
+			} else if len(src.Slice) < len(dst.Slice) {
+				dst.Slice = (dst.Slice)[:len(src.Slice)]
 			}
 		} else {
-			that.Slice = make([]int64, len(this.Slice))
+			dst.Slice = make([]int64, len(src.Slice))
 		}
-		copy(that.Slice, this.Slice)
+		copy(dst.Slice, src.Slice)
 	}
-	if this.PtrToSlice == nil {
-		that.PtrToSlice = nil
+	if src.PtrToSlice == nil {
+		dst.PtrToSlice = nil
 	} else {
-		that.PtrToSlice = new(MySlice)
-		deriveCopyTo_39(this.PtrToSlice, that.PtrToSlice)
+		dst.PtrToSlice = new(MySlice)
+		deriveCopyTo_39(src.PtrToSlice, dst.PtrToSlice)
 	}
-	if this.SliceToSlice == nil {
-		that.SliceToSlice = nil
+	if src.SliceToSlice == nil {
+		dst.SliceToSlice = nil
 	} else {
-		if that.SliceToSlice != nil {
-			if len(this.SliceToSlice) > len(that.SliceToSlice) {
-				if cap(that.SliceToSlice) >= len(this.SliceToSlice) {
-					that.SliceToSlice = (that.SliceToSlice)[:len(this.SliceToSlice)]
+		if dst.SliceToSlice != nil {
+			if len(src.SliceToSlice) > len(dst.SliceToSlice) {
+				if cap(dst.SliceToSlice) >= len(src.SliceToSlice) {
+					dst.SliceToSlice = (dst.SliceToSlice)[:len(src.SliceToSlice)]
 				} else {
-					that.SliceToSlice = make([]MySlice, len(this.SliceToSlice))
+					dst.SliceToSlice = make([]MySlice, len(src.SliceToSlice))
 				}
-			} else if len(this.SliceToSlice) < len(that.SliceToSlice) {
-				that.SliceToSlice = (that.SliceToSlice)[:len(this.SliceToSlice)]
+			} else if len(src.SliceToSlice) < len(dst.SliceToSlice) {
+				dst.SliceToSlice = (dst.SliceToSlice)[:len(src.SliceToSlice)]
 			}
 		} else {
-			that.SliceToSlice = make([]MySlice, len(this.SliceToSlice))
+			dst.SliceToSlice = make([]MySlice, len(src.SliceToSlice))
 		}
-		deriveCopyTo_40(this.SliceToSlice, that.SliceToSlice)
+		deriveCopyTo_40(src.SliceToSlice, dst.SliceToSlice)
 	}
 }
 
 // deriveCopyToPtrToDuration recursively copies the contents of src into dst.
-func deriveCopyToPtrToDuration(this, that *Duration) {
-	that.D = this.D
-	if this.P == nil {
-		that.P = nil
+func deriveCopyToPtrToDuration(src, dst *Duration) {
+	dst.D = src.D
+	if src.P == nil {
+		dst.P = nil
 	} else {
-		that.P = new(time.Duration)
-		*that.P = *this.P
+		dst.P = new(time.Duration)
+		*dst.P = *src.P
 	}
-	if this.Ds == nil {
-		that.Ds = nil
+	if src.Ds == nil {
+		dst.Ds = nil
 	} else {
-		if that.Ds != nil {
-			if len(this.Ds) > len(that.Ds) {
-				if cap(that.Ds) >= len(this.Ds) {
-					that.Ds = (that.Ds)[:len(this.Ds)]
+		if dst.Ds != nil {
+			if len(src.Ds) > len(dst.Ds) {
+				if cap(dst.Ds) >= len(src.Ds) {
+					dst.Ds = (dst.Ds)[:len(src.Ds)]
 				} else {
-					that.Ds = make([]time.Duration, len(this.Ds))
+					dst.Ds = make([]time.Duration, len(src.Ds))
 				}
-			} else if len(this.Ds) < len(that.Ds) {
-				that.Ds = (that.Ds)[:len(this.Ds)]
+			} else if len(src.Ds) < len(dst.Ds) {
+				dst.Ds = (dst.Ds)[:len(src.Ds)]
 			}
 		} else {
-			that.Ds = make([]time.Duration, len(this.Ds))
+			dst.Ds = make([]time.Duration, len(src.Ds))
 		}
-		copy(that.Ds, this.Ds)
+		copy(dst.Ds, src.Ds)
 	}
-	if this.DPs == nil {
-		that.DPs = nil
+	if src.DPs == nil {
+		dst.DPs = nil
 	} else {
-		if that.DPs != nil {
-			if len(this.DPs) > len(that.DPs) {
-				if cap(that.DPs) >= len(this.DPs) {
-					that.DPs = (that.DPs)[:len(this.DPs)]
+		if dst.DPs != nil {
+			if len(src.DPs) > len(dst.DPs) {
+				if cap(dst.DPs) >= len(src.DPs) {
+					dst.DPs = (dst.DPs)[:len(src.DPs)]
 				} else {
-					that.DPs = make([]*time.Duration, len(this.DPs))
+					dst.DPs = make([]*time.Duration, len(src.DPs))
 				}
-			} else if len(this.DPs) < len(that.DPs) {
-				that.DPs = (that.DPs)[:len(this.DPs)]
+			} else if len(src.DPs) < len(dst.DPs) {
+				dst.DPs = (dst.DPs)[:len(src.DPs)]
 			}
 		} else {
-			that.DPs = make([]*time.Duration, len(this.DPs))
+			dst.DPs = make([]*time.Duration, len(src.DPs))
 		}
-		deriveCopyTo_41(this.DPs, that.DPs)
+		deriveCopyTo_41(src.DPs, dst.DPs)
 	}
-	if this.MD != nil {
-		that.MD = make(map[int]time.Duration, len(this.MD))
-		deriveCopyTo_42(this.MD, that.MD)
+	if src.MD != nil {
+		dst.MD = make(map[int]time.Duration, len(src.MD))
+		deriveCopyTo_42(src.MD, dst.MD)
 	} else {
-		that.MD = nil
+		dst.MD = nil
 	}
 }
 
@@ -4142,10 +4142,10 @@ func deriveAny(pred func(int) bool, list []int) bool {
 	return false
 }
 
-// deriveAll reports whether predicate returns true for all the given elements in the given slice.
-func deriveAll(pred func(int) bool, list []int) bool {
-	for _, elem := range list {
-		if !pred(elem) {
+// deriveAll reports whether the predicate returns true for all the given elements in the given slice.
+func deriveAll(predicate func(int) bool, slice []int) bool {
+	for _, elem := range slice {
+		if !predicate(elem) {
 			return false
 		}
 	}
@@ -7865,609 +7865,609 @@ func deriveCompare_127(this, that map[int]time.Duration) int {
 }
 
 // deriveCopyTo recursively copies the contents of src into dst.
-func deriveCopyTo(this, that []*bool) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo(src, dst []*bool) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(bool)
-			*that[this_i] = *this_value
+			dst[src_i] = new(bool)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_ recursively copies the contents of src into dst.
-func deriveCopyTo_(this, that []*byte) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_(src, dst []*byte) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(byte)
-			*that[this_i] = *this_value
+			dst[src_i] = new(byte)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_1 recursively copies the contents of src into dst.
-func deriveCopyTo_1(this, that []*complex128) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_1(src, dst []*complex128) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(complex128)
-			*that[this_i] = *this_value
+			dst[src_i] = new(complex128)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_2 recursively copies the contents of src into dst.
-func deriveCopyTo_2(this, that []*complex64) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_2(src, dst []*complex64) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(complex64)
-			*that[this_i] = *this_value
+			dst[src_i] = new(complex64)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_3 recursively copies the contents of src into dst.
-func deriveCopyTo_3(this, that []*float64) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_3(src, dst []*float64) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(float64)
-			*that[this_i] = *this_value
+			dst[src_i] = new(float64)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_4 recursively copies the contents of src into dst.
-func deriveCopyTo_4(this, that []*float32) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_4(src, dst []*float32) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(float32)
-			*that[this_i] = *this_value
+			dst[src_i] = new(float32)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_5 recursively copies the contents of src into dst.
-func deriveCopyTo_5(this, that []*int) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_5(src, dst []*int) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(int)
-			*that[this_i] = *this_value
+			dst[src_i] = new(int)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_6 recursively copies the contents of src into dst.
-func deriveCopyTo_6(this, that []*int16) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_6(src, dst []*int16) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(int16)
-			*that[this_i] = *this_value
+			dst[src_i] = new(int16)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_7 recursively copies the contents of src into dst.
-func deriveCopyTo_7(this, that []*int32) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_7(src, dst []*int32) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(int32)
-			*that[this_i] = *this_value
+			dst[src_i] = new(int32)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_8 recursively copies the contents of src into dst.
-func deriveCopyTo_8(this, that []*int64) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_8(src, dst []*int64) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(int64)
-			*that[this_i] = *this_value
+			dst[src_i] = new(int64)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_9 recursively copies the contents of src into dst.
-func deriveCopyTo_9(this, that []*int8) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_9(src, dst []*int8) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(int8)
-			*that[this_i] = *this_value
+			dst[src_i] = new(int8)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_10 recursively copies the contents of src into dst.
-func deriveCopyTo_10(this, that []*string) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_10(src, dst []*string) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(string)
-			*that[this_i] = *this_value
+			dst[src_i] = new(string)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_11 recursively copies the contents of src into dst.
-func deriveCopyTo_11(this, that []*uint) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_11(src, dst []*uint) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(uint)
-			*that[this_i] = *this_value
+			dst[src_i] = new(uint)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_12 recursively copies the contents of src into dst.
-func deriveCopyTo_12(this, that []*uint16) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_12(src, dst []*uint16) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(uint16)
-			*that[this_i] = *this_value
+			dst[src_i] = new(uint16)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_13 recursively copies the contents of src into dst.
-func deriveCopyTo_13(this, that []*uint32) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_13(src, dst []*uint32) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(uint32)
-			*that[this_i] = *this_value
+			dst[src_i] = new(uint32)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_14 recursively copies the contents of src into dst.
-func deriveCopyTo_14(this, that []*uint64) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_14(src, dst []*uint64) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(uint64)
-			*that[this_i] = *this_value
+			dst[src_i] = new(uint64)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_15 recursively copies the contents of src into dst.
-func deriveCopyTo_15(this, that []*uintptr) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_15(src, dst []*uintptr) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(uintptr)
-			*that[this_i] = *this_value
+			dst[src_i] = new(uintptr)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_16 recursively copies the contents of src into dst.
-func deriveCopyTo_16(this, that map[string]uint32) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_16(src, dst map[string]uint32) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_17 recursively copies the contents of src into dst.
-func deriveCopyTo_17(this, that map[uint8]int64) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_17(src, dst map[uint8]int64) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_18 recursively copies the contents of src into dst.
-func deriveCopyTo_18(this, that map[bool]string) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_18(src, dst map[bool]string) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_19 recursively copies the contents of src into dst.
-func deriveCopyTo_19(this, that map[string]bool) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_19(src, dst map[string]bool) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_20 recursively copies the contents of src into dst.
-func deriveCopyTo_20(this, that map[complex128]complex64) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_20(src, dst map[complex128]complex64) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_21 recursively copies the contents of src into dst.
-func deriveCopyTo_21(this, that map[float64]uint32) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_21(src, dst map[float64]uint32) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_22 recursively copies the contents of src into dst.
-func deriveCopyTo_22(this, that map[uint16]uint8) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_22(src, dst map[uint16]uint8) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_23 recursively copies the contents of src into dst.
-func deriveCopyTo_23(this, that [][]int) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_23(src, dst [][]int) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			if that[this_i] != nil {
-				if len(this_value) > len(that[this_i]) {
-					if cap(that[this_i]) >= len(this_value) {
-						that[this_i] = (that[this_i])[:len(this_value)]
+			if dst[src_i] != nil {
+				if len(src_value) > len(dst[src_i]) {
+					if cap(dst[src_i]) >= len(src_value) {
+						dst[src_i] = (dst[src_i])[:len(src_value)]
 					} else {
-						that[this_i] = make([]int, len(this_value))
+						dst[src_i] = make([]int, len(src_value))
 					}
-				} else if len(this_value) < len(that[this_i]) {
-					that[this_i] = (that[this_i])[:len(this_value)]
+				} else if len(src_value) < len(dst[src_i]) {
+					dst[src_i] = (dst[src_i])[:len(src_value)]
 				}
 			} else {
-				that[this_i] = make([]int, len(this_value))
+				dst[src_i] = make([]int, len(src_value))
 			}
-			copy(that[this_i], this_value)
+			copy(dst[src_i], src_value)
 		}
 	}
 }
 
 // deriveCopyTo_24 recursively copies the contents of src into dst.
-func deriveCopyTo_24(this, that [][]string) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_24(src, dst [][]string) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			if that[this_i] != nil {
-				if len(this_value) > len(that[this_i]) {
-					if cap(that[this_i]) >= len(this_value) {
-						that[this_i] = (that[this_i])[:len(this_value)]
+			if dst[src_i] != nil {
+				if len(src_value) > len(dst[src_i]) {
+					if cap(dst[src_i]) >= len(src_value) {
+						dst[src_i] = (dst[src_i])[:len(src_value)]
 					} else {
-						that[this_i] = make([]string, len(this_value))
+						dst[src_i] = make([]string, len(src_value))
 					}
-				} else if len(this_value) < len(that[this_i]) {
-					that[this_i] = (that[this_i])[:len(this_value)]
+				} else if len(src_value) < len(dst[src_i]) {
+					dst[src_i] = (dst[src_i])[:len(src_value)]
 				}
 			} else {
-				that[this_i] = make([]string, len(this_value))
+				dst[src_i] = make([]string, len(src_value))
 			}
-			copy(that[this_i], this_value)
+			copy(dst[src_i], src_value)
 		}
 	}
 }
 
 // deriveCopyTo_25 recursively copies the contents of src into dst.
-func deriveCopyTo_25(this, that [][]*int) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_25(src, dst [][]*int) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			if that[this_i] != nil {
-				if len(this_value) > len(that[this_i]) {
-					if cap(that[this_i]) >= len(this_value) {
-						that[this_i] = (that[this_i])[:len(this_value)]
+			if dst[src_i] != nil {
+				if len(src_value) > len(dst[src_i]) {
+					if cap(dst[src_i]) >= len(src_value) {
+						dst[src_i] = (dst[src_i])[:len(src_value)]
 					} else {
-						that[this_i] = make([]*int, len(this_value))
+						dst[src_i] = make([]*int, len(src_value))
 					}
-				} else if len(this_value) < len(that[this_i]) {
-					that[this_i] = (that[this_i])[:len(this_value)]
+				} else if len(src_value) < len(dst[src_i]) {
+					dst[src_i] = (dst[src_i])[:len(src_value)]
 				}
 			} else {
-				that[this_i] = make([]*int, len(this_value))
+				dst[src_i] = make([]*int, len(src_value))
 			}
-			deriveCopyTo_5(this_value, that[this_i])
+			deriveCopyTo_5(src_value, dst[src_i])
 		}
 	}
 }
 
 // deriveCopyTo_26 recursively copies the contents of src into dst.
-func deriveCopyTo_26(this, that *[]int) {
-	if *this == nil {
-		*that = nil
+func deriveCopyTo_26(src, dst *[]int) {
+	if *src == nil {
+		*dst = nil
 	} else {
-		if *that != nil {
-			if len(*this) > len(*that) {
-				if cap(*that) >= len(*this) {
-					*that = (*that)[:len(*this)]
+		if *dst != nil {
+			if len(*src) > len(*dst) {
+				if cap(*dst) >= len(*src) {
+					*dst = (*dst)[:len(*src)]
 				} else {
-					*that = make([]int, len(*this))
+					*dst = make([]int, len(*src))
 				}
-			} else if len(*this) < len(*that) {
-				*that = (*that)[:len(*this)]
+			} else if len(*src) < len(*dst) {
+				*dst = (*dst)[:len(*src)]
 			}
 		} else {
-			*that = make([]int, len(*this))
+			*dst = make([]int, len(*src))
 		}
-		copy(*that, *this)
+		copy(*dst, *src)
 	}
 }
 
 // deriveCopyTo_27 recursively copies the contents of src into dst.
-func deriveCopyTo_27(this, that *map[int]int) {
-	if *this != nil {
-		*that = make(map[int]int, len(*this))
-		deriveCopyTo_43(*this, *that)
+func deriveCopyTo_27(src, dst *map[int]int) {
+	if *src != nil {
+		*dst = make(map[int]int, len(*src))
+		deriveCopyTo_43(*src, *dst)
 	} else {
-		*that = nil
+		*dst = nil
 	}
 }
 
 // deriveCopyTo_28 recursively copies the contents of src into dst.
-func deriveCopyTo_28(this, that []*Name) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_28(src, dst []*Name) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(Name)
-			this_value.CopyTo(that[this_i])
+			dst[src_i] = new(Name)
+			src_value.CopyTo(dst[src_i])
 		}
 	}
 }
 
 // deriveCopyTo_29 recursively copies the contents of src into dst.
-func deriveCopyTo_29(this, that map[Name]string) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_29(src, dst map[Name]string) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_30 recursively copies the contents of src into dst.
-func deriveCopyTo_30(this, that map[string]Name) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_30(src, dst map[string]Name) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_31 recursively copies the contents of src into dst.
-func deriveCopyTo_31(this, that map[string]*Name) {
-	for this_key, this_value := range this {
-		if this_value == nil {
-			that[this_key] = nil
+func deriveCopyTo_31(src, dst map[string]*Name) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
 		}
-		if this_value == nil {
-			that[this_key] = nil
+		if src_value == nil {
+			dst[src_key] = nil
 		} else {
-			that[this_key] = new(Name)
-			this_value.CopyTo(that[this_key])
+			dst[src_key] = new(Name)
+			src_value.CopyTo(dst[src_key])
 		}
 	}
 }
 
 // deriveCopyTo_32 recursively copies the contents of src into dst.
-func deriveCopyTo_32(this, that map[string][]Name) {
-	for this_key, this_value := range this {
-		if this_value == nil {
-			that[this_key] = nil
+func deriveCopyTo_32(src, dst map[string][]Name) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
 		}
-		if this_value == nil {
-			that[this_key] = nil
+		if src_value == nil {
+			dst[src_key] = nil
 		} else {
-			if that[this_key] != nil {
-				if len(this_value) > len(that[this_key]) {
-					if cap(that[this_key]) >= len(this_value) {
-						that[this_key] = (that[this_key])[:len(this_value)]
+			if dst[src_key] != nil {
+				if len(src_value) > len(dst[src_key]) {
+					if cap(dst[src_key]) >= len(src_value) {
+						dst[src_key] = (dst[src_key])[:len(src_value)]
 					} else {
-						that[this_key] = make([]Name, len(this_value))
+						dst[src_key] = make([]Name, len(src_value))
 					}
-				} else if len(this_value) < len(that[this_key]) {
-					that[this_key] = (that[this_key])[:len(this_value)]
+				} else if len(src_value) < len(dst[src_key]) {
+					dst[src_key] = (dst[src_key])[:len(src_value)]
 				}
 			} else {
-				that[this_key] = make([]Name, len(this_value))
+				dst[src_key] = make([]Name, len(src_value))
 			}
-			copy(that[this_key], this_value)
+			copy(dst[src_key], src_value)
 		}
 	}
 }
 
 // deriveCopyTo_33 recursively copies the contents of src into dst.
-func deriveCopyTo_33(this, that map[string][]*Name) {
-	for this_key, this_value := range this {
-		if this_value == nil {
-			that[this_key] = nil
+func deriveCopyTo_33(src, dst map[string][]*Name) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
 		}
-		if this_value == nil {
-			that[this_key] = nil
+		if src_value == nil {
+			dst[src_key] = nil
 		} else {
-			if that[this_key] != nil {
-				if len(this_value) > len(that[this_key]) {
-					if cap(that[this_key]) >= len(this_value) {
-						that[this_key] = (that[this_key])[:len(this_value)]
+			if dst[src_key] != nil {
+				if len(src_value) > len(dst[src_key]) {
+					if cap(dst[src_key]) >= len(src_value) {
+						dst[src_key] = (dst[src_key])[:len(src_value)]
 					} else {
-						that[this_key] = make([]*Name, len(this_value))
+						dst[src_key] = make([]*Name, len(src_value))
 					}
-				} else if len(this_value) < len(that[this_key]) {
-					that[this_key] = (that[this_key])[:len(this_value)]
+				} else if len(src_value) < len(dst[src_key]) {
+					dst[src_key] = (dst[src_key])[:len(src_value)]
 				}
 			} else {
-				that[this_key] = make([]*Name, len(this_value))
+				dst[src_key] = make([]*Name, len(src_value))
 			}
-			deriveCopyTo_28(this_value, that[this_key])
+			deriveCopyTo_28(src_value, dst[src_key])
 		}
 	}
 }
 
 // deriveCopyTo_34 recursively copies the contents of src into dst.
-func deriveCopyTo_34(this, that map[int]RecursiveType) {
-	for this_key, this_value := range this {
+func deriveCopyTo_34(src, dst map[int]RecursiveType) {
+	for src_key, src_value := range src {
 		field := new(RecursiveType)
-		this_value.CopyTo(field)
-		that[this_key] = *field
+		src_value.CopyTo(field)
+		dst[src_key] = *field
 	}
 }
 
 // deriveCopyTo_35 recursively copies the contents of src into dst.
-func deriveCopyTo_35(this, that *extra.PrivateFieldAndNoEqualMethod) {
-	this_v := reflect.Indirect(reflect.ValueOf(this))
-	that_v := reflect.Indirect(reflect.ValueOf(that))
-	*(*int64)(unsafe.Pointer(that_v.FieldByName("number").UnsafeAddr())) = *(*int64)(unsafe.Pointer(this_v.FieldByName("number").UnsafeAddr()))
-	if *(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr())) == nil {
-		*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = nil
+func deriveCopyTo_35(src, dst *extra.PrivateFieldAndNoEqualMethod) {
+	src_v := reflect.Indirect(reflect.ValueOf(src))
+	dst_v := reflect.Indirect(reflect.ValueOf(dst))
+	*(*int64)(unsafe.Pointer(dst_v.FieldByName("number").UnsafeAddr())) = *(*int64)(unsafe.Pointer(src_v.FieldByName("number").UnsafeAddr()))
+	if *(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())) == nil {
+		*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = nil
 	} else {
-		if *(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) != nil {
-			if len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) > len(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) {
-				if cap(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) >= len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) {
-					*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr())))]
+		if *(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) != nil {
+			if len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))) > len(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr()))) {
+				if cap(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr()))) >= len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))) {
+					*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())))]
 				} else {
-					*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))))
+					*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))))
 				}
-			} else if len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))) < len(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr()))) {
-				*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr())))]
+			} else if len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))) < len(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr()))) {
+				*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())))]
 			}
 		} else {
-			*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr()))))
+			*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))))
 		}
-		copy(*(*[]int64)(unsafe.Pointer(that_v.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(this_v.FieldByName("numbers").UnsafeAddr())))
+		copy(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())))
 	}
-	if *(**int64)(unsafe.Pointer(this_v.FieldByName("ptr").UnsafeAddr())) == nil {
-		*(**int64)(unsafe.Pointer(that_v.FieldByName("ptr").UnsafeAddr())) = nil
+	if *(**int64)(unsafe.Pointer(src_v.FieldByName("ptr").UnsafeAddr())) == nil {
+		*(**int64)(unsafe.Pointer(dst_v.FieldByName("ptr").UnsafeAddr())) = nil
 	} else {
-		*(**int64)(unsafe.Pointer(that_v.FieldByName("ptr").UnsafeAddr())) = new(int64)
-		**(**int64)(unsafe.Pointer(that_v.FieldByName("ptr").UnsafeAddr())) = **(**int64)(unsafe.Pointer(this_v.FieldByName("ptr").UnsafeAddr()))
+		*(**int64)(unsafe.Pointer(dst_v.FieldByName("ptr").UnsafeAddr())) = new(int64)
+		**(**int64)(unsafe.Pointer(dst_v.FieldByName("ptr").UnsafeAddr())) = **(**int64)(unsafe.Pointer(src_v.FieldByName("ptr").UnsafeAddr()))
 	}
-	if *(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr())) == nil {
-		*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = nil
+	if *(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())) == nil {
+		*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = nil
 	} else {
-		if *(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) != nil {
-			if len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) > len(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) {
-				if cap(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) >= len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) {
-					*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr())))]
+		if *(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) != nil {
+			if len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))) > len(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr()))) {
+				if cap(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr()))) >= len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))) {
+					*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())))]
 				} else {
-					*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))))
+					*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))))
 				}
-			} else if len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))) < len(*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr()))) {
-				*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr())))]
+			} else if len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))) < len(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr()))) {
+				*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())))]
 			}
 		} else {
-			*(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr()))))
+			*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))))
 		}
-		deriveCopyTo_8(*(*[]*int64)(unsafe.Pointer(this_v.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(that_v.FieldByName("numberpts").UnsafeAddr())))
+		deriveCopyTo_8(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())))
 	}
-	if *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(this_v.FieldByName("strct").UnsafeAddr())) == nil {
-		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(that_v.FieldByName("strct").UnsafeAddr())) = nil
+	if *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(src_v.FieldByName("strct").UnsafeAddr())) == nil {
+		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(dst_v.FieldByName("strct").UnsafeAddr())) = nil
 	} else {
-		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(that_v.FieldByName("strct").UnsafeAddr())) = new(extra.StructWithoutEqualMethod)
-		**(**extra.StructWithoutEqualMethod)(unsafe.Pointer(that_v.FieldByName("strct").UnsafeAddr())) = **(**extra.StructWithoutEqualMethod)(unsafe.Pointer(this_v.FieldByName("strct").UnsafeAddr()))
+		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(dst_v.FieldByName("strct").UnsafeAddr())) = new(extra.StructWithoutEqualMethod)
+		**(**extra.StructWithoutEqualMethod)(unsafe.Pointer(dst_v.FieldByName("strct").UnsafeAddr())) = **(**extra.StructWithoutEqualMethod)(unsafe.Pointer(src_v.FieldByName("strct").UnsafeAddr()))
 	}
 }
 
 // deriveCopyTo_36 recursively copies the contents of src into dst.
-func deriveCopyTo_36(this, that []*MyEnum) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_36(src, dst []*MyEnum) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(MyEnum)
-			*that[this_i] = *this_value
+			dst[src_i] = new(MyEnum)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_37 recursively copies the contents of src into dst.
-func deriveCopyTo_37(this, that map[int32]MyEnum) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_37(src, dst map[int32]MyEnum) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_38 recursively copies the contents of src into dst.
-func deriveCopyTo_38(this, that map[MyEnum]int32) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_38(src, dst map[MyEnum]int32) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
 // deriveCopyTo_39 recursively copies the contents of src into dst.
-func deriveCopyTo_39(this, that *MySlice) {
-	if *this == nil {
-		*that = nil
+func deriveCopyTo_39(src, dst *MySlice) {
+	if *src == nil {
+		*dst = nil
 	} else {
-		if *that != nil {
-			if len(*this) > len(*that) {
-				if cap(*that) >= len(*this) {
-					*that = (*that)[:len(*this)]
+		if *dst != nil {
+			if len(*src) > len(*dst) {
+				if cap(*dst) >= len(*src) {
+					*dst = (*dst)[:len(*src)]
 				} else {
-					*that = make([]int64, len(*this))
+					*dst = make([]int64, len(*src))
 				}
-			} else if len(*this) < len(*that) {
-				*that = (*that)[:len(*this)]
+			} else if len(*src) < len(*dst) {
+				*dst = (*dst)[:len(*src)]
 			}
 		} else {
-			*that = make([]int64, len(*this))
+			*dst = make([]int64, len(*src))
 		}
-		copy(*that, *this)
+		copy(*dst, *src)
 	}
 }
 
 // deriveCopyTo_40 recursively copies the contents of src into dst.
-func deriveCopyTo_40(this, that []MySlice) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_40(src, dst []MySlice) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			if that[this_i] != nil {
-				if len(this_value) > len(that[this_i]) {
-					if cap(that[this_i]) >= len(this_value) {
-						that[this_i] = (that[this_i])[:len(this_value)]
+			if dst[src_i] != nil {
+				if len(src_value) > len(dst[src_i]) {
+					if cap(dst[src_i]) >= len(src_value) {
+						dst[src_i] = (dst[src_i])[:len(src_value)]
 					} else {
-						that[this_i] = make([]int64, len(this_value))
+						dst[src_i] = make([]int64, len(src_value))
 					}
-				} else if len(this_value) < len(that[this_i]) {
-					that[this_i] = (that[this_i])[:len(this_value)]
+				} else if len(src_value) < len(dst[src_i]) {
+					dst[src_i] = (dst[src_i])[:len(src_value)]
 				}
 			} else {
-				that[this_i] = make([]int64, len(this_value))
+				dst[src_i] = make([]int64, len(src_value))
 			}
-			copy(that[this_i], this_value)
+			copy(dst[src_i], src_value)
 		}
 	}
 }
 
 // deriveCopyTo_41 recursively copies the contents of src into dst.
-func deriveCopyTo_41(this, that []*time.Duration) {
-	for this_i, this_value := range this {
-		if this_value == nil {
-			that[this_i] = nil
+func deriveCopyTo_41(src, dst []*time.Duration) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
 		} else {
-			that[this_i] = new(time.Duration)
-			*that[this_i] = *this_value
+			dst[src_i] = new(time.Duration)
+			*dst[src_i] = *src_value
 		}
 	}
 }
 
 // deriveCopyTo_42 recursively copies the contents of src into dst.
-func deriveCopyTo_42(this, that map[int]time.Duration) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_42(src, dst map[int]time.Duration) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 
@@ -10205,9 +10205,9 @@ func deriveCompare_N(this, that Name) int {
 }
 
 // deriveCopyTo_43 recursively copies the contents of src into dst.
-func deriveCopyTo_43(this, that map[int]int) {
-	for this_key, this_value := range this {
-		that[this_key] = this_value
+func deriveCopyTo_43(src, dst map[int]int) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
 	}
 }
 

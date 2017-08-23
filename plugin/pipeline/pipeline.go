@@ -16,6 +16,9 @@
 //
 // The derivePipeline starts up a concurrent pipeline of the given functions.
 //   derivePipeline(func(A) <-chan B, func(B) <-chan C) func(A) <-chan C
+//
+// Example output can be found here:
+// https://github.com/awalterschulze/goderive/tree/master/example/plugin/pipeline
 package pipeline
 
 import (

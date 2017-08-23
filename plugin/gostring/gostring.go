@@ -313,17 +313,33 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 	case *types.Slice:
 		p.P("if %s != nil {", this)
 		p.In()
-		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
+		if _, ok := typ.Elem().(*types.Basic); ok {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
+		} else {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
+		}
 		p.Out()
 		p.P("}")
 		return nil
 	case *types.Array:
-		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
+		if _, ok := typ.Elem().(*types.Basic); ok {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
+		} else {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
+		}
 		return nil
 	case *types.Map:
 		p.P("if %s != nil {", this)
 		p.In()
-		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
+		elmTyp := typ.Elem()
+		keyTyp := typ.Key()
+		_, isBasicElm := elmTyp.(*types.Basic)
+		_, isBasicKey := keyTyp.(*types.Basic)
+		if isBasicElm && isBasicKey {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%#v", this)
+		} else {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(fieldType)+"("+this+")")
+		}
 		p.Out()
 		p.P("}")
 		return nil

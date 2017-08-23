@@ -64,6 +64,8 @@ Functional Functions:
 Concurrency Functions:
   - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)
     - `deriveFmap(func(A) B, <-chan A) <-chan B`
+  - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join)
+    - `deriveJoin(<-chan <-chan T) <-chan T`
 
 When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and

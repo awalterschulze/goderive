@@ -155,18 +155,6 @@ func lines() <-chan string {
 	return c
 }
 
-func wordsize(line string) <-chan int {
-	c := make(chan int)
-	go func() {
-		words := strings.Split(line, " ")
-		for _, word := range words {
-			c <- len(word)
-		}
-		close(c)
-	}()
-	return c
-}
-
 func TestFmapChannel(t *testing.T) {
 	count := func(line string) int {
 		judies := deriveFilterJudy(func(s string) bool {

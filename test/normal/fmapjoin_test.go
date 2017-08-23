@@ -50,3 +50,31 @@ func TestFmapJoinError(t *testing.T) {
 		t.Fatalf("got %d, want %d", got, want)
 	}
 }
+
+func wordsize(line string) <-chan int {
+	c := make(chan int)
+	go func() {
+		words := strings.Split(line, " ")
+		for _, word := range words {
+			c <- len(word)
+		}
+		close(c)
+	}()
+	return c
+}
+
+func TestFmapJoinChannel(t *testing.T) {
+	cc := deriveFmapChanChan(wordsize, lines())
+	sizes := deriveJoinChannels(cc)
+	want := 2 + 4 + 2 + 5 +
+		7 + 4 + 7 + 4 +
+		7 + 5 + 7 + 4 +
+		7 + 7 + 7 + 4
+	got := 0
+	for i := range sizes {
+		got += i
+	}
+	if got != want {
+		t.Fatalf("got %d, want %d", got, want)
+	}
+}

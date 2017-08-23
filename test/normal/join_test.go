@@ -124,3 +124,33 @@ func TestJoinErrorAndValues(t *testing.T) {
 		t.Fatalf("got %d != want %d", got, want)
 	}
 }
+
+func TestJoinChannel(t *testing.T) {
+	cc := make(chan (<-chan int))
+	c1 := make(chan int)
+	c2 := make(chan int)
+	go func() {
+		c1 <- 1
+		close(c1)
+	}()
+	go func() {
+		c2 <- 2
+		c2 <- 3
+		close(c2)
+	}()
+	go func() {
+		cc <- c1
+		cc <- c2
+		close(cc)
+	}()
+	var ccc <-chan (<-chan int) = cc
+	c := deriveJoinChannels(ccc)
+	got := 0
+	for i := range c {
+		got += i
+	}
+	want := 6
+	if got != want {
+		t.Fatalf("got %d != want %d", got, want)
+	}
+}

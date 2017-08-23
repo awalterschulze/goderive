@@ -22,6 +22,9 @@
 //    deriveJoin(func() (T, error), error) func() (T, error)
 //    deriveJoin(func() error, error) func() error
 //    deriveJoin(func() (T, ..., error), error) func() (T, ..., error)
+//
+// The deriveJoin function can also join channels
+//    deriveJoin(<-chan <-chan T) <-chan T
 package join
 
 import (
@@ -45,6 +48,7 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 		TypesMap:   typesMap,
 		printer:    p,
 		stringsPkg: p.NewImport("strings"),
+		syncPkg:    p.NewImport("sync"),
 	}
 }
 
@@ -52,6 +56,7 @@ type gen struct {
 	derive.TypesMap
 	printer    derive.Printer
 	stringsPkg derive.Import
+	syncPkg    derive.Import
 }
 
 func (this *gen) Add(name string, typs []types.Type) (string, error) {
@@ -91,6 +96,12 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 			}
 			return this.SetFuncName(name, ts...)
 		}
+	case *types.Chan:
+		_, err := this.chanType(name, typs)
+		if err != nil {
+			return "", err
+		}
+		return this.SetFuncName(name, typs...)
 	}
 	return "", fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
 }
@@ -122,6 +133,22 @@ func (this *gen) errorType(name string, typs []types.Type) ([]types.Type, error)
 		outTyps[i] = res.At(i).Type()
 	}
 	return outTyps, nil
+}
+
+func (this *gen) chanType(name string, typs []types.Type) (types.Type, error) {
+	if len(typs) != 1 {
+		return nil, fmt.Errorf("%s does not have one argument", name)
+	}
+	chanTyp, ok := typs[0].(*types.Chan)
+	if !ok {
+		return nil, fmt.Errorf("%s, the argument, %s, is not of type chan", name, typs[0])
+	}
+	chanOfChanTyp, ok := chanTyp.Elem().(*types.Chan)
+	if !ok {
+		return nil, fmt.Errorf("%s, the argument, %s, is not of type chan of chan", name, typs[0])
+	}
+	elemType := chanOfChanTyp.Elem()
+	return elemType, nil
 }
 
 func (this *gen) sliceType(name string, typs []types.Type) (types.Type, error) {
@@ -176,6 +203,8 @@ func (this *gen) Generate(typs []types.Type) error {
 			ts[1] = t.At(1).Type()
 			return this.genError(ts)
 		}
+	case *types.Chan:
+		return this.genChan(typs)
 	}
 	return fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string) or (a function and error)", typs[0])
 }
@@ -219,6 +248,48 @@ func (this *gen) genError(typs []types.Type) error {
 		p.Out()
 		p.P("}")
 	}
+	return nil
+}
+
+func (this *gen) genChan(typs []types.Type) error {
+	p := this.printer
+	this.Generating(typs...)
+	name := this.GetFuncName(typs...)
+	elemTyp, err := this.chanType(name, typs)
+	if err != nil {
+		return err
+	}
+	typStr := this.TypeString(elemTyp)
+	p.P("")
+	p.P("func %s(in <-chan <-chan %s) <-chan %s {", name, typStr, typStr)
+	p.In()
+	p.P("out := make(chan %s)", typStr)
+	p.P("go func() {")
+	p.In()
+	p.P("wait := %s.WaitGroup{}", this.syncPkg())
+	p.P("for c := range in {")
+	p.In()
+	p.P("wait.Add(1)")
+	p.P("res := c")
+	p.P("go func() {")
+	p.In()
+	p.P("for r := range res {")
+	p.In()
+	p.P("out <- r")
+	p.Out()
+	p.P("}")
+	p.P("wait.Done()")
+	p.Out()
+	p.P("}()")
+	p.Out()
+	p.P("}")
+	p.P("wait.Wait()")
+	p.P("close(out)")
+	p.Out()
+	p.P("}()")
+	p.P("return out")
+	p.Out()
+	p.P("}")
 	return nil
 }
 

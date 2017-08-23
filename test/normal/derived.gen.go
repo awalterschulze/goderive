@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 	"unsafe"
 	"vendortest"
@@ -3940,6 +3941,26 @@ func deriveJoinEE(f func() (int64, error), err error) (int64, error) {
 	return f()
 }
 
+func deriveJoinChannels(in <-chan <-chan int) <-chan int {
+	out := make(chan int)
+	go func() {
+		wait := sync.WaitGroup{}
+		for c := range in {
+			wait.Add(1)
+			res := c
+			go func() {
+				for r := range res {
+					out <- r
+				}
+				wait.Done()
+			}()
+		}
+		wait.Wait()
+		close(out)
+	}()
+	return out
+}
+
 func deriveJoin(list [][]int) []int {
 	if list == nil {
 		return nil
@@ -4063,6 +4084,18 @@ func deriveFmapEE64(f func(string) (int64, error), g func() (string, error)) (fu
 		return nil, err
 	}
 	return deriveTuple_i(f(v)), nil
+}
+
+func deriveFmapChanChan(f func(string) <-chan int, in <-chan string) <-chan (<-chan int) {
+	out := make(chan (<-chan int))
+	go func() {
+		for a := range in {
+			b := f(a)
+			out <- b
+		}
+		close(out)
+	}()
+	return out
 }
 
 func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interface{}, data []byte) error {

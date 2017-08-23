@@ -235,10 +235,14 @@ func (this *gen) genChan(typs []types.Type) error {
 	p := this.printer
 	inStr := this.TypeString(in)
 	outStr := this.TypeString(out)
+	outerStr := outStr
+	if strings.HasPrefix(outStr, "<-") {
+		outerStr = "(" + outStr + ")"
+	}
 	p.P("")
-	p.P("func %s(f func(%s) %s, in <-chan %s) <-chan %s {", name, inStr, outStr, inStr, outStr)
+	p.P("func %s(f func(%s) %s, in <-chan %s) <-chan %s {", name, inStr, outStr, inStr, outerStr)
 	p.In()
-	p.P("out := make(chan %s)", outStr)
+	p.P("out := make(chan %s)", outerStr)
 	p.P("go func() {")
 	p.In()
 	p.P("for a := range in {")

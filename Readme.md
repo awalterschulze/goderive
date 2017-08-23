@@ -12,6 +12,7 @@ Deep Functions:
     - `deriveCopyTo(src *T, dst *T)`
     - `deriveCopyTo(src []T, dst []T)`
     - `deriveCopyTo(src map[A]B, dst map[A]B)`
+  - [GoString](http://godoc.org/github.com/awalterschulze/goderive/plugin/gostring) `deriveGoString(T) string` 
 
 Tool Functions:
 
@@ -108,6 +109,7 @@ More Examples:
   - [Equal](https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal)
   - [Compare](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compare)
   - [CopyTo](https://github.com/awalterschulze/goderive/tree/master/example/plugin/copyto)
+  - [GoString](https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring)
   - [Keys](https://github.com/awalterschulze/goderive/tree/master/example/plugin/keys)
   - [Sort](https://github.com/awalterschulze/goderive/tree/master/example/plugin/sort)
   - [Unique](https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique)

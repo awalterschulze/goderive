@@ -13,6 +13,55 @@
 //  limitations under the License.
 
 // Package gostring contains the implementation of the gostring plugin, which generates the deriveGoString function.
+//
+// The deriveGoString function returns a string that reproduces the argument's value in valid go syntax.
+// The deriveGoString funciton does a recursive print, even printing pointer values, unlike the default %#v operand.
+//
+// When goderive walks over your code it is looking for a function that:
+//  - was not implemented (or was previously derived) and
+//  - has a predefined prefix.
+//
+// In the following code the deriveGoString function will be found, because
+// it was not implemented and it has a prefix deriveGoString.
+// This prefix is configurable.
+//
+//	package main
+//
+//	type MyStruct struct {
+// 		Int64     int64
+//		StringPtr *string
+//	}
+//
+//	func (this *MyStruct) GoString() string {
+// 		return deriveGoString(this)
+//	}
+//
+//  func main () {
+//		s := "abc"
+//		fmt.Printf("%#v", &MyStruct{StringPtr: &s})
+//  }
+//
+//  The %#v fmt operand will then invoke the GoString method.
+//  GoString does a recursive print, even printing pointer values, unlike the default %#v operand.
+//
+// Supported types:
+//	- basic types
+//	- named structs
+//	- slices
+//	- maps
+//	- pointers to these types
+//	- and many more
+// Unsupported types:
+//	- chan
+//	- interface
+//	- function
+//  - private fields
+//	- unnamed structs
+//
+// Example output can be found here:
+// https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring
+//
+// This plugin has been tested thoroughly.
 package gostring
 
 import (

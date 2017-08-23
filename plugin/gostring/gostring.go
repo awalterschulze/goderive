@@ -145,6 +145,15 @@ func (g *gen) P(format string, a ...interface{}) {
 	g.printer.P(format, a...)
 }
 
+func isBasicPointer(typ types.Type) bool {
+	p, ok := typ.Underlying().(*types.Pointer)
+	if !ok {
+		return false
+	}
+	_, ok = p.Elem().(*types.Basic)
+	return ok
+}
+
 func (g *gen) genStatement(typ types.Type, this string) error {
 	p := g.printer
 	switch ttyp := typ.Underlying().(type) {
@@ -293,7 +302,11 @@ func (g *gen) genField(fieldType types.Type, this string) error {
 	case *types.Pointer:
 		p.P("if %s != nil {", this)
 		p.In()
-		p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(typ)+"("+this+")")
+		if b, ok := typ.Elem().(*types.Basic); ok {
+			p.P("%s.Fprintf(buf, \"%s = func (v %s) *%s { return &v }(%s)\\n\", %s)", g.fmtPkg(), this, g.TypeString(b), g.TypeString(b), "%#v", "*"+this)
+		} else {
+			p.P("%s.Fprintf(buf, \"%s = %s\\n\", %s)", g.fmtPkg(), this, "%s", g.GetFuncName(typ)+"("+this+")")
+		}
 		p.Out()
 		p.P("}")
 		return nil

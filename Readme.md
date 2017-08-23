@@ -61,6 +61,10 @@ Functional Functions:
     - `deriveCompose(func(A) (B, error), func(B) (C, error)) func(A) (C, error)`
     - `deriveCompose(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)`
 
+Concurrency Functions:
+  - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)
+    - `deriveFmap(func(A) B, <-chan A) <-chan B`
+
 When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and
   - has a predefined prefix.

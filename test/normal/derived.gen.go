@@ -1830,6 +1830,16 @@ func deriveFilter(pred func(int) bool, list []int) []int {
 	return out
 }
 
+func deriveFilterJudy(pred func(string) bool, list []string) []string {
+	out := make([]string, 0, len(list))
+	for i, elem := range list {
+		if pred(elem) {
+			out = append(out, list[i])
+		}
+	}
+	return out
+}
+
 // deriveCopyToPtrToEmpty recursively copies the contents of src into dst.
 func deriveCopyToPtrToEmpty(src, dst *Empty) {
 }
@@ -4025,6 +4035,18 @@ func deriveFmapMore(f func(string) (int, string, error), g func() (string, error
 		return nil, err
 	}
 	return deriveTuple_(f(v)), nil
+}
+
+func deriveFmapChan(f func(string) int, in <-chan string) <-chan int {
+	out := make(chan int)
+	go func() {
+		for a := range in {
+			b := f(a)
+			out <- b
+		}
+		close(out)
+	}()
+	return out
 }
 
 func deriveFmapSS(f func(string) []string, list []string) [][]string {

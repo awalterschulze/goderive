@@ -24,6 +24,9 @@
 //   deriveFmap(func(A), func() (A, error)) error
 //   deriveFmap(func(A) (B, c, d, ...), func() (A, error)) (func() (B, c, d, ...), error)
 // deriveFmap will propogate the error and not apply the first function to the result of the second function, if the second function returns an error.
+//
+// deriveFmap can also be applied to a channel.
+//   deriveFmap(func(A) B, <-chan A) <-chan B
 package fmap
 
 import (
@@ -75,6 +78,12 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 		return this.SetFuncName(name, typs...)
 	case *types.Signature:
 		_, _, err := this.errorInOut(name, typs)
+		if err != nil {
+			return "", err
+		}
+		return this.SetFuncName(name, typs...)
+	case *types.Chan:
+		_, _, err := this.chanInOut(name, typs)
 		if err != nil {
 			return "", err
 		}
@@ -148,6 +157,33 @@ func (this *gen) stringOut(name string, typs []types.Type) (outTyp types.Type, e
 	return outTyp, nil
 }
 
+func (this *gen) chanInOut(name string, typs []types.Type) (inTyp, outTyp types.Type, err error) {
+	chanType, ok := typs[1].(*types.Chan)
+	if !ok {
+		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type chan", name, this.TypeString(typs[1]))
+	}
+	sig, ok := typs[0].(*types.Signature)
+	if !ok {
+		return nil, nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, this.TypeString(typs[0]))
+	}
+	params := sig.Params()
+	if params.Len() != 1 {
+		return nil, nil, fmt.Errorf("%s, the first argument is a function, but wanted a function with one argument", name)
+	}
+	elemTyp := chanType.Elem()
+	inTyp = params.At(0).Type()
+	if !types.Identical(inTyp, elemTyp) {
+		return nil, nil, fmt.Errorf("%s the function input type and chan element type are different %s != %s",
+			name, inTyp, elemTyp)
+	}
+	res := sig.Results()
+	if res.Len() != 1 {
+		return nil, nil, fmt.Errorf("%s, the function argument does not have a single result, but has %d resulting parameters", name, res.Len())
+	}
+	outTyp = res.At(0).Type()
+	return inTyp, outTyp, nil
+}
+
 func (this *gen) sliceInOut(name string, typs []types.Type) (inTyp types.Type, outTyp types.Type, err error) {
 	sliceTyp, ok := typs[1].(*types.Slice)
 	if !ok {
@@ -183,8 +219,41 @@ func (this *gen) Generate(typs []types.Type) error {
 		return this.genString(typs)
 	case *types.Signature:
 		return this.genError(typs)
+	case *types.Chan:
+		return this.genChan(typs)
 	}
 	return fmt.Errorf("unsupported type %s, not a slice or a string", typs[1])
+}
+
+func (this *gen) genChan(typs []types.Type) error {
+	name := this.GetFuncName(typs...)
+	in, out, err := this.chanInOut(name, typs)
+	if err != nil {
+		return err
+	}
+	this.Generating(typs...)
+	p := this.printer
+	inStr := this.TypeString(in)
+	outStr := this.TypeString(out)
+	p.P("")
+	p.P("func %s(f func(%s) %s, in <-chan %s) <-chan %s {", name, inStr, outStr, inStr, outStr)
+	p.In()
+	p.P("out := make(chan %s)", outStr)
+	p.P("go func() {")
+	p.In()
+	p.P("for a := range in {")
+	p.In()
+	p.P("b := f(a)")
+	p.P("out <- b")
+	p.Out()
+	p.P("}")
+	p.P("close(out)")
+	p.Out()
+	p.P("}()")
+	p.P("return out")
+	p.Out()
+	p.P("}")
+	return nil
 }
 
 func (this *gen) genSlice(typs []types.Type) error {

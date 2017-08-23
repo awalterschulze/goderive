@@ -14,7 +14,7 @@ Deep Functions:
     - `deriveCopyTo(src map[A]B, dst map[A]B)`
   - [GoString](http://godoc.org/github.com/awalterschulze/goderive/plugin/gostring) `deriveGoString(T) string` 
 
-Tool Functions:
+Set Functions:
 
   - [Keys](http://godoc.org/github.com/awalterschulze/goderive/plugin/keys) `deriveKeys(map[K]V) []K`
   - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort) `deriveSort([]T) []T`

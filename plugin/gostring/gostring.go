@@ -41,8 +41,8 @@
 //		fmt.Printf("%#v", &MyStruct{StringPtr: &s})
 //	}
 //
-//  The %#v fmt operand will then invoke the GoString method.
-//  GoString does a recursive print, even printing pointer values, unlike the default %#v operand.
+// The %#v fmt operand will then invoke the GoString method.
+// GoString does a recursive print, even printing pointer values, unlike the default %#v operand.
 //
 // Supported types:
 //	- basic types

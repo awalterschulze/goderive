@@ -55,7 +55,7 @@
 //	- chan
 //	- interface
 //	- function
-//  - private fields
+//	- private fields
 //	- unnamed structs
 //
 // Example output can be found here:

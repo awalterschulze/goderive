@@ -123,6 +123,7 @@ func (g *gen) genFunc(typ types.Type) error {
 	g.Generating(typ)
 	typeStr := g.TypeString(typ)
 	p.P("")
+	p.P("// %s recursively copies the contents of src into dst.", g.GetFuncName(typ))
 	p.P("func %s(this, that %s) {", g.GetFuncName(typ), typeStr)
 	p.In()
 	if err := g.genStatement(typ, "this", "that"); err != nil {

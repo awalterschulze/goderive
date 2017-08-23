@@ -2,6 +2,7 @@
 
 package copyto
 
+// deriveCopyTo recursively copies the contents of src into dst.
 func deriveCopyTo(this, that *MyStruct) {
 	that.Int64 = this.Int64
 	if this.StringPtr == nil {

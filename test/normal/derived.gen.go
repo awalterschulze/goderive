@@ -1830,9 +1830,11 @@ func deriveFilter(pred func(int) bool, list []int) []int {
 	return out
 }
 
+// deriveCopyToPtrToEmpty recursively copies the contents of src into dst.
 func deriveCopyToPtrToEmpty(this, that *Empty) {
 }
 
+// deriveCopyToPtrToBuiltInTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
 	that.Bool = this.Bool
 	that.Byte = this.Byte
@@ -1855,6 +1857,7 @@ func deriveCopyToPtrToBuiltInTypes(this, that *BuiltInTypes) {
 	that.UintPtr = this.UintPtr
 }
 
+// deriveCopyToPtrToPrivateBuiltInTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) {
 	that.privateBool = this.privateBool
 	that.privateByte = this.privateByte
@@ -1877,6 +1880,7 @@ func deriveCopyToPtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) {
 	that.privateUintPtr = this.privateUintPtr
 }
 
+// deriveCopyToPtrToPtrToBuiltInTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) {
 	if this.Bool == nil {
 		that.Bool = nil
@@ -1994,6 +1998,7 @@ func deriveCopyToPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) {
 	}
 }
 
+// deriveCopyToPtrToSliceOfBuiltInTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	if this.Bool == nil {
 		that.Bool = nil
@@ -2339,6 +2344,7 @@ func deriveCopyToPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) {
 	}
 }
 
+// deriveCopyToPtrToSliceOfPtrToBuiltInTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) {
 	if this.Bool == nil {
 		that.Bool = nil
@@ -2684,6 +2690,7 @@ func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTy
 	}
 }
 
+// deriveCopyToPtrToArrayOfBuiltInTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) {
 	that.Bool = this.Bool
 	that.Byte = this.Byte
@@ -2707,6 +2714,7 @@ func deriveCopyToPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) {
 	that.AnotherBoolOfDifferentSize = this.AnotherBoolOfDifferentSize
 }
 
+// deriveCopyToPtrToArrayOfPtrToBuiltInTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) {
 	for this_i, this_value := range this.Bool {
 		if this_value == nil {
@@ -2870,6 +2878,7 @@ func deriveCopyToPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTy
 	}
 }
 
+// deriveCopyToPtrToMapsOfSimplerBuiltInTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) {
 	if this.StringToUint32 != nil {
 		that.StringToUint32 = make(map[string]uint32, len(this.StringToUint32))
@@ -2885,6 +2894,7 @@ func deriveCopyToPtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltIn
 	}
 }
 
+// deriveCopyToPtrToMapsOfBuiltInTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) {
 	if this.BoolToString != nil {
 		that.BoolToString = make(map[bool]string, len(this.BoolToString))
@@ -2918,6 +2928,7 @@ func deriveCopyToPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) {
 	}
 }
 
+// deriveCopyToPtrToSliceToSlice recursively copies the contents of src into dst.
 func deriveCopyToPtrToSliceToSlice(this, that *SliceToSlice) {
 	if this.Ints == nil {
 		that.Ints = nil
@@ -2975,6 +2986,7 @@ func deriveCopyToPtrToSliceToSlice(this, that *SliceToSlice) {
 	}
 }
 
+// deriveCopyToPtrToPtrTo recursively copies the contents of src into dst.
 func deriveCopyToPtrToPtrTo(this, that *PtrTo) {
 	if this.Basic == nil {
 		that.Basic = nil
@@ -3002,10 +3014,12 @@ func deriveCopyToPtrToPtrTo(this, that *PtrTo) {
 	}
 }
 
+// deriveCopyToPtrToName recursively copies the contents of src into dst.
 func deriveCopyToPtrToName(this, that *Name) {
 	that.Name = this.Name
 }
 
+// deriveCopyToPtrToStructs recursively copies the contents of src into dst.
 func deriveCopyToPtrToStructs(this, that *Structs) {
 	that.Struct = this.Struct
 	if this.PtrToStruct == nil {
@@ -3052,6 +3066,7 @@ func deriveCopyToPtrToStructs(this, that *Structs) {
 	}
 }
 
+// deriveCopyToPtrToMapWithStructs recursively copies the contents of src into dst.
 func deriveCopyToPtrToMapWithStructs(this, that *MapWithStructs) {
 	if this.NameToString != nil {
 		that.NameToString = make(map[Name]string, len(this.NameToString))
@@ -3085,6 +3100,7 @@ func deriveCopyToPtrToMapWithStructs(this, that *MapWithStructs) {
 	}
 }
 
+// deriveCopyToPtrToRecursiveType recursively copies the contents of src into dst.
 func deriveCopyToPtrToRecursiveType(this, that *RecursiveType) {
 	if this.Bytes == nil {
 		that.Bytes = nil
@@ -3112,6 +3128,7 @@ func deriveCopyToPtrToRecursiveType(this, that *RecursiveType) {
 	}
 }
 
+// deriveCopyToPtrToEmbeddedStruct1 recursively copies the contents of src into dst.
 func deriveCopyToPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) {
 	that.Name = this.Name
 	if this.Structs == nil {
@@ -3122,6 +3139,7 @@ func deriveCopyToPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) {
 	}
 }
 
+// deriveCopyToPtrToEmbeddedStruct2 recursively copies the contents of src into dst.
 func deriveCopyToPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) {
 	field := new(Structs)
 	this.Structs.CopyTo(field)
@@ -3134,10 +3152,12 @@ func deriveCopyToPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) {
 	}
 }
 
+// deriveCopyToPtrToUnnamedStruct recursively copies the contents of src into dst.
 func deriveCopyToPtrToUnnamedStruct(this, that *UnnamedStruct) {
 	that.Unnamed = this.Unnamed
 }
 
+// deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod recursively copies the contents of src into dst.
 func deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) {
 	if this.A == nil {
 		that.A = nil
@@ -3148,6 +3168,7 @@ func deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(this, that *Struct
 	that.B = this.B
 }
 
+// deriveCopyToPtrToStructWithStructWithFromAnotherPackage recursively copies the contents of src into dst.
 func deriveCopyToPtrToStructWithStructWithFromAnotherPackage(this, that *StructWithStructWithFromAnotherPackage) {
 	if this.A == nil {
 		that.A = nil
@@ -3158,6 +3179,7 @@ func deriveCopyToPtrToStructWithStructWithFromAnotherPackage(this, that *StructW
 	that.B = this.B
 }
 
+// deriveCopyToPtrToFieldWithStructWithPrivateFields recursively copies the contents of src into dst.
 func deriveCopyToPtrToFieldWithStructWithPrivateFields(this, that *FieldWithStructWithPrivateFields) {
 	if this.A == nil {
 		that.A = nil
@@ -3167,6 +3189,7 @@ func deriveCopyToPtrToFieldWithStructWithPrivateFields(this, that *FieldWithStru
 	}
 }
 
+// deriveCopyToPtrToEnums recursively copies the contents of src into dst.
 func deriveCopyToPtrToEnums(this, that *Enums) {
 	that.Enum = this.Enum
 	if this.PtrToEnum == nil {
@@ -3226,6 +3249,7 @@ func deriveCopyToPtrToEnums(this, that *Enums) {
 	that.ArrayEnum = this.ArrayEnum
 }
 
+// deriveCopyToPtrToNamedTypes recursively copies the contents of src into dst.
 func deriveCopyToPtrToNamedTypes(this, that *NamedTypes) {
 	if this.Slice == nil {
 		that.Slice = nil
@@ -3271,6 +3295,7 @@ func deriveCopyToPtrToNamedTypes(this, that *NamedTypes) {
 	}
 }
 
+// deriveCopyToPtrToDuration recursively copies the contents of src into dst.
 func deriveCopyToPtrToDuration(this, that *Duration) {
 	that.D = this.D
 	if this.P == nil {
@@ -4117,6 +4142,7 @@ func deriveAny(pred func(int) bool, list []int) bool {
 	return false
 }
 
+// deriveAll reports whether predicate returns true for all the given elements in the given slice.
 func deriveAll(pred func(int) bool, list []int) bool {
 	for _, elem := range list {
 		if !pred(elem) {
@@ -7838,6 +7864,7 @@ func deriveCompare_127(this, that map[int]time.Duration) int {
 	return 0
 }
 
+// deriveCopyTo recursively copies the contents of src into dst.
 func deriveCopyTo(this, that []*bool) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7849,6 +7876,7 @@ func deriveCopyTo(this, that []*bool) {
 	}
 }
 
+// deriveCopyTo_ recursively copies the contents of src into dst.
 func deriveCopyTo_(this, that []*byte) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7860,6 +7888,7 @@ func deriveCopyTo_(this, that []*byte) {
 	}
 }
 
+// deriveCopyTo_1 recursively copies the contents of src into dst.
 func deriveCopyTo_1(this, that []*complex128) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7871,6 +7900,7 @@ func deriveCopyTo_1(this, that []*complex128) {
 	}
 }
 
+// deriveCopyTo_2 recursively copies the contents of src into dst.
 func deriveCopyTo_2(this, that []*complex64) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7882,6 +7912,7 @@ func deriveCopyTo_2(this, that []*complex64) {
 	}
 }
 
+// deriveCopyTo_3 recursively copies the contents of src into dst.
 func deriveCopyTo_3(this, that []*float64) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7893,6 +7924,7 @@ func deriveCopyTo_3(this, that []*float64) {
 	}
 }
 
+// deriveCopyTo_4 recursively copies the contents of src into dst.
 func deriveCopyTo_4(this, that []*float32) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7904,6 +7936,7 @@ func deriveCopyTo_4(this, that []*float32) {
 	}
 }
 
+// deriveCopyTo_5 recursively copies the contents of src into dst.
 func deriveCopyTo_5(this, that []*int) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7915,6 +7948,7 @@ func deriveCopyTo_5(this, that []*int) {
 	}
 }
 
+// deriveCopyTo_6 recursively copies the contents of src into dst.
 func deriveCopyTo_6(this, that []*int16) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7926,6 +7960,7 @@ func deriveCopyTo_6(this, that []*int16) {
 	}
 }
 
+// deriveCopyTo_7 recursively copies the contents of src into dst.
 func deriveCopyTo_7(this, that []*int32) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7937,6 +7972,7 @@ func deriveCopyTo_7(this, that []*int32) {
 	}
 }
 
+// deriveCopyTo_8 recursively copies the contents of src into dst.
 func deriveCopyTo_8(this, that []*int64) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7948,6 +7984,7 @@ func deriveCopyTo_8(this, that []*int64) {
 	}
 }
 
+// deriveCopyTo_9 recursively copies the contents of src into dst.
 func deriveCopyTo_9(this, that []*int8) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7959,6 +7996,7 @@ func deriveCopyTo_9(this, that []*int8) {
 	}
 }
 
+// deriveCopyTo_10 recursively copies the contents of src into dst.
 func deriveCopyTo_10(this, that []*string) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7970,6 +8008,7 @@ func deriveCopyTo_10(this, that []*string) {
 	}
 }
 
+// deriveCopyTo_11 recursively copies the contents of src into dst.
 func deriveCopyTo_11(this, that []*uint) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7981,6 +8020,7 @@ func deriveCopyTo_11(this, that []*uint) {
 	}
 }
 
+// deriveCopyTo_12 recursively copies the contents of src into dst.
 func deriveCopyTo_12(this, that []*uint16) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -7992,6 +8032,7 @@ func deriveCopyTo_12(this, that []*uint16) {
 	}
 }
 
+// deriveCopyTo_13 recursively copies the contents of src into dst.
 func deriveCopyTo_13(this, that []*uint32) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8003,6 +8044,7 @@ func deriveCopyTo_13(this, that []*uint32) {
 	}
 }
 
+// deriveCopyTo_14 recursively copies the contents of src into dst.
 func deriveCopyTo_14(this, that []*uint64) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8014,6 +8056,7 @@ func deriveCopyTo_14(this, that []*uint64) {
 	}
 }
 
+// deriveCopyTo_15 recursively copies the contents of src into dst.
 func deriveCopyTo_15(this, that []*uintptr) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8025,48 +8068,56 @@ func deriveCopyTo_15(this, that []*uintptr) {
 	}
 }
 
+// deriveCopyTo_16 recursively copies the contents of src into dst.
 func deriveCopyTo_16(this, that map[string]uint32) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_17 recursively copies the contents of src into dst.
 func deriveCopyTo_17(this, that map[uint8]int64) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_18 recursively copies the contents of src into dst.
 func deriveCopyTo_18(this, that map[bool]string) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_19 recursively copies the contents of src into dst.
 func deriveCopyTo_19(this, that map[string]bool) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_20 recursively copies the contents of src into dst.
 func deriveCopyTo_20(this, that map[complex128]complex64) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_21 recursively copies the contents of src into dst.
 func deriveCopyTo_21(this, that map[float64]uint32) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_22 recursively copies the contents of src into dst.
 func deriveCopyTo_22(this, that map[uint16]uint8) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_23 recursively copies the contents of src into dst.
 func deriveCopyTo_23(this, that [][]int) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8090,6 +8141,7 @@ func deriveCopyTo_23(this, that [][]int) {
 	}
 }
 
+// deriveCopyTo_24 recursively copies the contents of src into dst.
 func deriveCopyTo_24(this, that [][]string) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8113,6 +8165,7 @@ func deriveCopyTo_24(this, that [][]string) {
 	}
 }
 
+// deriveCopyTo_25 recursively copies the contents of src into dst.
 func deriveCopyTo_25(this, that [][]*int) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8136,6 +8189,7 @@ func deriveCopyTo_25(this, that [][]*int) {
 	}
 }
 
+// deriveCopyTo_26 recursively copies the contents of src into dst.
 func deriveCopyTo_26(this, that *[]int) {
 	if *this == nil {
 		*that = nil
@@ -8157,6 +8211,7 @@ func deriveCopyTo_26(this, that *[]int) {
 	}
 }
 
+// deriveCopyTo_27 recursively copies the contents of src into dst.
 func deriveCopyTo_27(this, that *map[int]int) {
 	if *this != nil {
 		*that = make(map[int]int, len(*this))
@@ -8166,6 +8221,7 @@ func deriveCopyTo_27(this, that *map[int]int) {
 	}
 }
 
+// deriveCopyTo_28 recursively copies the contents of src into dst.
 func deriveCopyTo_28(this, that []*Name) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8177,18 +8233,21 @@ func deriveCopyTo_28(this, that []*Name) {
 	}
 }
 
+// deriveCopyTo_29 recursively copies the contents of src into dst.
 func deriveCopyTo_29(this, that map[Name]string) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_30 recursively copies the contents of src into dst.
 func deriveCopyTo_30(this, that map[string]Name) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_31 recursively copies the contents of src into dst.
 func deriveCopyTo_31(this, that map[string]*Name) {
 	for this_key, this_value := range this {
 		if this_value == nil {
@@ -8203,6 +8262,7 @@ func deriveCopyTo_31(this, that map[string]*Name) {
 	}
 }
 
+// deriveCopyTo_32 recursively copies the contents of src into dst.
 func deriveCopyTo_32(this, that map[string][]Name) {
 	for this_key, this_value := range this {
 		if this_value == nil {
@@ -8229,6 +8289,7 @@ func deriveCopyTo_32(this, that map[string][]Name) {
 	}
 }
 
+// deriveCopyTo_33 recursively copies the contents of src into dst.
 func deriveCopyTo_33(this, that map[string][]*Name) {
 	for this_key, this_value := range this {
 		if this_value == nil {
@@ -8255,6 +8316,7 @@ func deriveCopyTo_33(this, that map[string][]*Name) {
 	}
 }
 
+// deriveCopyTo_34 recursively copies the contents of src into dst.
 func deriveCopyTo_34(this, that map[int]RecursiveType) {
 	for this_key, this_value := range this {
 		field := new(RecursiveType)
@@ -8263,6 +8325,7 @@ func deriveCopyTo_34(this, that map[int]RecursiveType) {
 	}
 }
 
+// deriveCopyTo_35 recursively copies the contents of src into dst.
 func deriveCopyTo_35(this, that *extra.PrivateFieldAndNoEqualMethod) {
 	this_v := reflect.Indirect(reflect.ValueOf(this))
 	that_v := reflect.Indirect(reflect.ValueOf(that))
@@ -8317,6 +8380,7 @@ func deriveCopyTo_35(this, that *extra.PrivateFieldAndNoEqualMethod) {
 	}
 }
 
+// deriveCopyTo_36 recursively copies the contents of src into dst.
 func deriveCopyTo_36(this, that []*MyEnum) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8328,18 +8392,21 @@ func deriveCopyTo_36(this, that []*MyEnum) {
 	}
 }
 
+// deriveCopyTo_37 recursively copies the contents of src into dst.
 func deriveCopyTo_37(this, that map[int32]MyEnum) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_38 recursively copies the contents of src into dst.
 func deriveCopyTo_38(this, that map[MyEnum]int32) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
 	}
 }
 
+// deriveCopyTo_39 recursively copies the contents of src into dst.
 func deriveCopyTo_39(this, that *MySlice) {
 	if *this == nil {
 		*that = nil
@@ -8361,6 +8428,7 @@ func deriveCopyTo_39(this, that *MySlice) {
 	}
 }
 
+// deriveCopyTo_40 recursively copies the contents of src into dst.
 func deriveCopyTo_40(this, that []MySlice) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8384,6 +8452,7 @@ func deriveCopyTo_40(this, that []MySlice) {
 	}
 }
 
+// deriveCopyTo_41 recursively copies the contents of src into dst.
 func deriveCopyTo_41(this, that []*time.Duration) {
 	for this_i, this_value := range this {
 		if this_value == nil {
@@ -8395,6 +8464,7 @@ func deriveCopyTo_41(this, that []*time.Duration) {
 	}
 }
 
+// deriveCopyTo_42 recursively copies the contents of src into dst.
 func deriveCopyTo_42(this, that map[int]time.Duration) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value
@@ -10134,6 +10204,7 @@ func deriveCompare_N(this, that Name) int {
 	return (&this).Compare(&that)
 }
 
+// deriveCopyTo_43 recursively copies the contents of src into dst.
 func deriveCopyTo_43(this, that map[int]int) {
 	for this_key, this_value := range this {
 		that[this_key] = this_value

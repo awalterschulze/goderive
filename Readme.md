@@ -4,7 +4,7 @@
 
 `goderive` parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. 
 
-Deep Functions:
+Recursive Functions:
 
   - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal) `deriveEqual(T, T) bool`
   - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare) `deriveCompare(T, T) int`

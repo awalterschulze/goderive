@@ -38,6 +38,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/keys"
 	"github.com/awalterschulze/goderive/plugin/max"
 	"github.com/awalterschulze/goderive/plugin/min"
+	"github.com/awalterschulze/goderive/plugin/pipeline"
 	"github.com/awalterschulze/goderive/plugin/set"
 	"github.com/awalterschulze/goderive/plugin/sort"
 	"github.com/awalterschulze/goderive/plugin/takewhile"
@@ -79,6 +80,7 @@ func main() {
 		gostring.NewPlugin(),
 		compose.NewPlugin(),
 		do.NewPlugin(),
+		pipeline.NewPlugin(),
 	}
 	log.SetFlags(0)
 	flag.Parse()

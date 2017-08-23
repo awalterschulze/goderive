@@ -64,7 +64,7 @@ func wordsize(line string) <-chan int {
 }
 
 func TestFmapJoinChannel(t *testing.T) {
-	cc := deriveFmapChanChan(wordsize, lines())
+	cc := deriveFmapChanChan(wordsize, toChan(lines))
 	sizes := deriveJoinChannels(cc)
 	want := 2 + 4 + 2 + 5 +
 		7 + 4 + 7 + 4 +

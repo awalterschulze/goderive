@@ -46,6 +46,13 @@ func deriveIntersectOfInt64s(this, that []int64) []int64 {
 	return intersect
 }
 
+func derivePipeline(f func(lines []string) <-chan string, g func(line string) <-chan int) func([]string) <-chan int {
+	return func(a []string) <-chan int {
+		b := f(a)
+		return deriveJoinChannels(deriveFmapChanChan(g, b))
+	}
+}
+
 func deriveGoStringEmpty(this *Empty) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.Empty {\n")

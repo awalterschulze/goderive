@@ -139,17 +139,23 @@ func TestFmapMoreParamsError(t *testing.T) {
 		t.Fatalf("got %s, want %s", got, want)
 	}
 	if goti != wanti {
-		t.Fatalf("got %d, want %d", got, want)
+		t.Fatalf("got %s, want %s", got, want)
 	}
 }
 
-func lines() <-chan string {
+var lines = []string{
+	"my name is judge",
+	"welcome judy welcome judy",
+	"welcome hello welcome judy",
+	"welcome goodbye welcome judy",
+}
+
+func toChan(lines []string) <-chan string {
 	c := make(chan string)
 	go func() {
-		c <- "my name is judge"
-		c <- "welcome judy welcome judy"
-		c <- "welcome hello welcome judy"
-		c <- "welcome goodbye welcome judy"
+		for _, line := range lines {
+			c <- line
+		}
 		close(c)
 	}()
 	return c
@@ -162,7 +168,7 @@ func TestFmapChannel(t *testing.T) {
 		}, strings.Split(line, " "))
 		return len(judies)
 	}
-	counts := deriveFmapChan(count, lines())
+	counts := deriveFmapChan(count, toChan(lines))
 	got := 0
 	for c := range counts {
 		got += c

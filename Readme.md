@@ -66,6 +66,8 @@ Concurrency Functions:
     - `deriveFmap(func(A) B, <-chan A) <-chan B`
   - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join)
     - `deriveJoin(<-chan <-chan T) <-chan T`
+  - [Pipeline](http://godoc.org/github.com/awalterschulze/goderive/plugin/pipeline)
+    - `derivePipeline(func(A) <-chan B, func(B) <-chan C) func(A) <-chan C`
   - [Do](http://godoc.org/github.com/awalterschulze/goderive/plugin/do)
     - `deriveDo(func() (A, error), func (B, error)) (A, B, error)`
 
@@ -133,6 +135,7 @@ Set Examples:
 
 Concurrency Examples:
 
+  - [Pipeline](https://github.com/awalterschulze/goderive/tree/master/example/plugin/pipeline)
   - [Do](https://github.com/awalterschulze/goderive/tree/master/example/plugin/do)
 
 ## How to run

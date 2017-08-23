@@ -27,6 +27,7 @@
 //
 // deriveFmap can also be applied to a channel.
 //   deriveFmap(func(A) B, <-chan A) <-chan B
+// deriveFmap will return the output channel immediately and start up a go routine in the background to process the incoming channel.
 package fmap
 
 import (

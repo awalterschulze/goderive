@@ -8,10 +8,10 @@ Recursive Functions:
 
   - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal) `deriveEqual(T, T) bool`
   - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare) `deriveCompare(T, T) int`
-  - [CopyTo](http://godoc.org/github.com/awalterschulze/goderive/plugin/copyto) 
-    - `deriveCopyTo(src *T, dst *T)`
-    - `deriveCopyTo(src []T, dst []T)`
-    - `deriveCopyTo(src map[A]B, dst map[A]B)`
+  - [DeepCopy](http://godoc.org/github.com/awalterschulze/goderive/plugin/deepcopy) 
+    - `deriveDeepCopy(dst *T, src *T)`
+    - `deriveDeepCopy(dst []T, src []T)`
+    - `deriveDeepCopy(dst map[A]B, src map[A]B)`
   - [GoString](http://godoc.org/github.com/awalterschulze/goderive/plugin/gostring) `deriveGoString(T) string` 
 
 Set Functions:
@@ -116,7 +116,7 @@ Recursive Examples:
 
   - [Equal](https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal)
   - [Compare](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compare)
-  - [CopyTo](https://github.com/awalterschulze/goderive/tree/master/example/plugin/copyto)
+  - [DeepCopy](https://github.com/awalterschulze/goderive/tree/master/example/plugin/deepcopy)
   - [GoString](https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring)
 
 Set Examples:

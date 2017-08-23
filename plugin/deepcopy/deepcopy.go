@@ -12,16 +12,16 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package copyto contains the implementation of the copyto plugin, which generates the deriveCopyTo function.
+// Package deepcopy contains the implementation of the deepcopy plugin, which generates the deriveDeepCopy function.
 //
-// The deriveCopyTo function is a maintainable and fast way to implement fast copy functions.
+// The deriveDeepCopy function is a maintainable and fast way to implement fast copy functions.
 //
 // When goderive walks over your code it is looking for a function that:
 //  - was not implemented (or was previously derived) and
 //  - has a predefined prefix.
 //
-// In the following code the deriveCopyTo function will be found, because
-// it was not implemented and it has a prefix deriveCopyTo.
+// In the following code the deriveDeepCopy function will be found, because
+// it was not implemented and it has a prefix deriveDeepCopy.
 // This prefix is configurable.
 //
 //	package main
@@ -38,11 +38,11 @@
 //			return nil
 //		}
 //		n := &MyStruct{}
-//		deriveCopyTo(m, n)
+//		deriveDeepCopy(n, m)
 //		return n
 //	}
 //
-// The initial type that is passed into deriveCopyTo needs to have a reference type:
+// The initial type that is passed into deriveDeepCopy needs to have a reference type:
 //	- pointer
 //	- slice
 //	- map
@@ -64,10 +64,10 @@
 //	- unnamed structs, which are not comparable with the == operator
 //
 // Example output can be found here:
-// https://github.com/awalterschulze/goderive/tree/master/example/plugin/copyto
+// https://github.com/awalterschulze/goderive/tree/master/example/plugin/deepcopy
 //
 // This plugin has been tested thoroughly.
-package copyto
+package deepcopy
 
 import (
 	"fmt"
@@ -77,13 +77,13 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-// NewPlugin creates a new copyto plugin.
-// This function returns the plugin name, default prefix and a constructor for the copyto code generator.
+// NewPlugin creates a new deepcopy plugin.
+// This function returns the plugin name, default prefix and a constructor for the deepcopy code generator.
 func NewPlugin() derive.Plugin {
-	return derive.NewPlugin("copyto", "deriveCopyTo", New)
+	return derive.NewPlugin("deepcopy", "deriveDeepCopy", New)
 }
 
-// New is a constructor for the copyto code generator.
+// New is a constructor for the deepcopy code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &gen{
@@ -124,7 +124,7 @@ func (g *gen) genFunc(typ types.Type) error {
 	typeStr := g.TypeString(typ)
 	p.P("")
 	p.P("// %s recursively copies the contents of src into dst.", g.GetFuncName(typ))
-	p.P("func %s(src, dst %s) {", g.GetFuncName(typ), typeStr)
+	p.P("func %s(dst, src %s) {", g.GetFuncName(typ), typeStr)
 	p.In()
 	if err := g.genStatement(typ, "src", "dst"); err != nil {
 		return err
@@ -232,7 +232,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.P("}")
 		return nil
 	}
-	return fmt.Errorf("unsupported copyto type: %s", g.TypeString(typ))
+	return fmt.Errorf("unsupported deepcopy type: %s", g.TypeString(typ))
 }
 
 func nullable(typ types.Type) bool {
@@ -285,10 +285,10 @@ func canCopy(tt types.Type) bool {
 	return false
 }
 
-func hasCopyToMethod(typ *types.Named) bool {
+func hasDeepCopyMethod(typ *types.Named) bool {
 	for i := 0; i < typ.NumMethods(); i++ {
 		meth := typ.Method(i)
-		if meth.Name() != "CopyTo" {
+		if meth.Name() != "DeepCopy" {
 			continue
 		}
 		sig, ok := meth.Type().(*types.Signature)
@@ -324,12 +324,12 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.In()
 		ref := typ.Elem()
 		p.P("%s = new(%s)", thatField, g.TypeString(typ.Elem()))
-		if named, ok := ref.(*types.Named); ok && hasCopyToMethod(named) {
-			p.P("%s.CopyTo(%s)", wrap(thisField), thatField)
+		if named, ok := ref.(*types.Named); ok && hasDeepCopyMethod(named) {
+			p.P("%s.DeepCopy(%s)", wrap(thisField), thatField)
 		} else if canCopy(typ.Elem()) {
 			p.P("*%s = *%s", thatField, thisField)
 		} else {
-			p.P("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField)
+			p.P("%s(%s, %s)", g.GetFuncName(typ), thatField, thisField)
 		}
 		p.Out()
 		p.P("}")
@@ -372,7 +372,7 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		if canCopy(typ.Elem()) {
 			p.P("copy(%s, %s)", thatField, thisField)
 		} else {
-			p.P("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField)
+			p.P("%s(%s, %s)", g.GetFuncName(typ), thatField, thisField)
 		}
 		p.Out()
 		p.P("}") // nil
@@ -381,7 +381,7 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("if %s != nil {", thisField)
 		p.In()
 		p.P("%s = make(%s, len(%s))", thatField, g.TypeString(typ), thisField)
-		p.P("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField)
+		p.P("%s(%s, %s)", g.GetFuncName(typ), thatField, thisField)
 		p.Out()
 		p.P("} else {")
 		p.In()
@@ -392,10 +392,10 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 	case *types.Struct:
 		p.P("field := new(%s)", g.TypeString(fieldType))
 		named, isNamed := fieldType.(*types.Named)
-		if isNamed && hasCopyToMethod(named) {
-			p.P("%s.CopyTo(field)", wrap(thisField))
+		if isNamed && hasDeepCopyMethod(named) {
+			p.P("%s.DeepCopy(field)", wrap(thisField))
 		} else {
-			p.P("%s(%s, %s)", g.GetFuncName(fieldType), thisField, thatField)
+			p.P("%s(%s, %s)", g.GetFuncName(fieldType), thatField, thisField)
 		}
 		p.P("%s = *field", thatField)
 		return nil

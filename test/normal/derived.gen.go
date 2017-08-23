@@ -810,6 +810,1524 @@ func deriveGoStringNoPointerStruct(this BuiltInTypes) string {
 	return buf.String()
 }
 
+// deriveDeepCopyPtrToEmpty recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToEmpty(dst, src *Empty) {
+}
+
+// deriveDeepCopyPtrToBuiltInTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToBuiltInTypes(dst, src *BuiltInTypes) {
+	dst.Bool = src.Bool
+	dst.Byte = src.Byte
+	dst.Complex128 = src.Complex128
+	dst.Complex64 = src.Complex64
+	dst.Float64 = src.Float64
+	dst.Float32 = src.Float32
+	dst.Int = src.Int
+	dst.Int16 = src.Int16
+	dst.Int32 = src.Int32
+	dst.Int64 = src.Int64
+	dst.Int8 = src.Int8
+	dst.Rune = src.Rune
+	dst.String = src.String
+	dst.Uint = src.Uint
+	dst.Uint16 = src.Uint16
+	dst.Uint32 = src.Uint32
+	dst.Uint64 = src.Uint64
+	dst.Uint8 = src.Uint8
+	dst.UintPtr = src.UintPtr
+}
+
+// deriveDeepCopyPtrToPrivateBuiltInTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToPrivateBuiltInTypes(dst, src *PrivateBuiltInTypes) {
+	dst.privateBool = src.privateBool
+	dst.privateByte = src.privateByte
+	dst.privateComplex128 = src.privateComplex128
+	dst.privateComplex64 = src.privateComplex64
+	dst.privateFloat64 = src.privateFloat64
+	dst.privateFloat32 = src.privateFloat32
+	dst.privateInt = src.privateInt
+	dst.privateInt16 = src.privateInt16
+	dst.privateInt32 = src.privateInt32
+	dst.privateInt64 = src.privateInt64
+	dst.privateInt8 = src.privateInt8
+	dst.privateRune = src.privateRune
+	dst.privateString = src.privateString
+	dst.privateUint = src.privateUint
+	dst.privateUint16 = src.privateUint16
+	dst.privateUint32 = src.privateUint32
+	dst.privateUint64 = src.privateUint64
+	dst.privateUint8 = src.privateUint8
+	dst.privateUintPtr = src.privateUintPtr
+}
+
+// deriveDeepCopyPtrToPtrToBuiltInTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToPtrToBuiltInTypes(dst, src *PtrToBuiltInTypes) {
+	if src.Bool == nil {
+		dst.Bool = nil
+	} else {
+		dst.Bool = new(bool)
+		*dst.Bool = *src.Bool
+	}
+	if src.Byte == nil {
+		dst.Byte = nil
+	} else {
+		dst.Byte = new(byte)
+		*dst.Byte = *src.Byte
+	}
+	if src.Complex128 == nil {
+		dst.Complex128 = nil
+	} else {
+		dst.Complex128 = new(complex128)
+		*dst.Complex128 = *src.Complex128
+	}
+	if src.Complex64 == nil {
+		dst.Complex64 = nil
+	} else {
+		dst.Complex64 = new(complex64)
+		*dst.Complex64 = *src.Complex64
+	}
+	if src.Float64 == nil {
+		dst.Float64 = nil
+	} else {
+		dst.Float64 = new(float64)
+		*dst.Float64 = *src.Float64
+	}
+	if src.Float32 == nil {
+		dst.Float32 = nil
+	} else {
+		dst.Float32 = new(float32)
+		*dst.Float32 = *src.Float32
+	}
+	if src.Int == nil {
+		dst.Int = nil
+	} else {
+		dst.Int = new(int)
+		*dst.Int = *src.Int
+	}
+	if src.Int16 == nil {
+		dst.Int16 = nil
+	} else {
+		dst.Int16 = new(int16)
+		*dst.Int16 = *src.Int16
+	}
+	if src.Int32 == nil {
+		dst.Int32 = nil
+	} else {
+		dst.Int32 = new(int32)
+		*dst.Int32 = *src.Int32
+	}
+	if src.Int64 == nil {
+		dst.Int64 = nil
+	} else {
+		dst.Int64 = new(int64)
+		*dst.Int64 = *src.Int64
+	}
+	if src.Int8 == nil {
+		dst.Int8 = nil
+	} else {
+		dst.Int8 = new(int8)
+		*dst.Int8 = *src.Int8
+	}
+	if src.Rune == nil {
+		dst.Rune = nil
+	} else {
+		dst.Rune = new(rune)
+		*dst.Rune = *src.Rune
+	}
+	if src.String == nil {
+		dst.String = nil
+	} else {
+		dst.String = new(string)
+		*dst.String = *src.String
+	}
+	if src.Uint == nil {
+		dst.Uint = nil
+	} else {
+		dst.Uint = new(uint)
+		*dst.Uint = *src.Uint
+	}
+	if src.Uint16 == nil {
+		dst.Uint16 = nil
+	} else {
+		dst.Uint16 = new(uint16)
+		*dst.Uint16 = *src.Uint16
+	}
+	if src.Uint32 == nil {
+		dst.Uint32 = nil
+	} else {
+		dst.Uint32 = new(uint32)
+		*dst.Uint32 = *src.Uint32
+	}
+	if src.Uint64 == nil {
+		dst.Uint64 = nil
+	} else {
+		dst.Uint64 = new(uint64)
+		*dst.Uint64 = *src.Uint64
+	}
+	if src.Uint8 == nil {
+		dst.Uint8 = nil
+	} else {
+		dst.Uint8 = new(uint8)
+		*dst.Uint8 = *src.Uint8
+	}
+	if src.UintPtr == nil {
+		dst.UintPtr = nil
+	} else {
+		dst.UintPtr = new(uintptr)
+		*dst.UintPtr = *src.UintPtr
+	}
+}
+
+// deriveDeepCopyPtrToSliceOfBuiltInTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToSliceOfBuiltInTypes(dst, src *SliceOfBuiltInTypes) {
+	if src.Bool == nil {
+		dst.Bool = nil
+	} else {
+		if dst.Bool != nil {
+			if len(src.Bool) > len(dst.Bool) {
+				if cap(dst.Bool) >= len(src.Bool) {
+					dst.Bool = (dst.Bool)[:len(src.Bool)]
+				} else {
+					dst.Bool = make([]bool, len(src.Bool))
+				}
+			} else if len(src.Bool) < len(dst.Bool) {
+				dst.Bool = (dst.Bool)[:len(src.Bool)]
+			}
+		} else {
+			dst.Bool = make([]bool, len(src.Bool))
+		}
+		copy(dst.Bool, src.Bool)
+	}
+	if src.Byte == nil {
+		dst.Byte = nil
+	} else {
+		if dst.Byte != nil {
+			if len(src.Byte) > len(dst.Byte) {
+				if cap(dst.Byte) >= len(src.Byte) {
+					dst.Byte = (dst.Byte)[:len(src.Byte)]
+				} else {
+					dst.Byte = make([]byte, len(src.Byte))
+				}
+			} else if len(src.Byte) < len(dst.Byte) {
+				dst.Byte = (dst.Byte)[:len(src.Byte)]
+			}
+		} else {
+			dst.Byte = make([]byte, len(src.Byte))
+		}
+		copy(dst.Byte, src.Byte)
+	}
+	if src.Complex128 == nil {
+		dst.Complex128 = nil
+	} else {
+		if dst.Complex128 != nil {
+			if len(src.Complex128) > len(dst.Complex128) {
+				if cap(dst.Complex128) >= len(src.Complex128) {
+					dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
+				} else {
+					dst.Complex128 = make([]complex128, len(src.Complex128))
+				}
+			} else if len(src.Complex128) < len(dst.Complex128) {
+				dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
+			}
+		} else {
+			dst.Complex128 = make([]complex128, len(src.Complex128))
+		}
+		copy(dst.Complex128, src.Complex128)
+	}
+	if src.Complex64 == nil {
+		dst.Complex64 = nil
+	} else {
+		if dst.Complex64 != nil {
+			if len(src.Complex64) > len(dst.Complex64) {
+				if cap(dst.Complex64) >= len(src.Complex64) {
+					dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
+				} else {
+					dst.Complex64 = make([]complex64, len(src.Complex64))
+				}
+			} else if len(src.Complex64) < len(dst.Complex64) {
+				dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
+			}
+		} else {
+			dst.Complex64 = make([]complex64, len(src.Complex64))
+		}
+		copy(dst.Complex64, src.Complex64)
+	}
+	if src.Float64 == nil {
+		dst.Float64 = nil
+	} else {
+		if dst.Float64 != nil {
+			if len(src.Float64) > len(dst.Float64) {
+				if cap(dst.Float64) >= len(src.Float64) {
+					dst.Float64 = (dst.Float64)[:len(src.Float64)]
+				} else {
+					dst.Float64 = make([]float64, len(src.Float64))
+				}
+			} else if len(src.Float64) < len(dst.Float64) {
+				dst.Float64 = (dst.Float64)[:len(src.Float64)]
+			}
+		} else {
+			dst.Float64 = make([]float64, len(src.Float64))
+		}
+		copy(dst.Float64, src.Float64)
+	}
+	if src.Float32 == nil {
+		dst.Float32 = nil
+	} else {
+		if dst.Float32 != nil {
+			if len(src.Float32) > len(dst.Float32) {
+				if cap(dst.Float32) >= len(src.Float32) {
+					dst.Float32 = (dst.Float32)[:len(src.Float32)]
+				} else {
+					dst.Float32 = make([]float32, len(src.Float32))
+				}
+			} else if len(src.Float32) < len(dst.Float32) {
+				dst.Float32 = (dst.Float32)[:len(src.Float32)]
+			}
+		} else {
+			dst.Float32 = make([]float32, len(src.Float32))
+		}
+		copy(dst.Float32, src.Float32)
+	}
+	if src.Int == nil {
+		dst.Int = nil
+	} else {
+		if dst.Int != nil {
+			if len(src.Int) > len(dst.Int) {
+				if cap(dst.Int) >= len(src.Int) {
+					dst.Int = (dst.Int)[:len(src.Int)]
+				} else {
+					dst.Int = make([]int, len(src.Int))
+				}
+			} else if len(src.Int) < len(dst.Int) {
+				dst.Int = (dst.Int)[:len(src.Int)]
+			}
+		} else {
+			dst.Int = make([]int, len(src.Int))
+		}
+		copy(dst.Int, src.Int)
+	}
+	if src.Int16 == nil {
+		dst.Int16 = nil
+	} else {
+		if dst.Int16 != nil {
+			if len(src.Int16) > len(dst.Int16) {
+				if cap(dst.Int16) >= len(src.Int16) {
+					dst.Int16 = (dst.Int16)[:len(src.Int16)]
+				} else {
+					dst.Int16 = make([]int16, len(src.Int16))
+				}
+			} else if len(src.Int16) < len(dst.Int16) {
+				dst.Int16 = (dst.Int16)[:len(src.Int16)]
+			}
+		} else {
+			dst.Int16 = make([]int16, len(src.Int16))
+		}
+		copy(dst.Int16, src.Int16)
+	}
+	if src.Int32 == nil {
+		dst.Int32 = nil
+	} else {
+		if dst.Int32 != nil {
+			if len(src.Int32) > len(dst.Int32) {
+				if cap(dst.Int32) >= len(src.Int32) {
+					dst.Int32 = (dst.Int32)[:len(src.Int32)]
+				} else {
+					dst.Int32 = make([]int32, len(src.Int32))
+				}
+			} else if len(src.Int32) < len(dst.Int32) {
+				dst.Int32 = (dst.Int32)[:len(src.Int32)]
+			}
+		} else {
+			dst.Int32 = make([]int32, len(src.Int32))
+		}
+		copy(dst.Int32, src.Int32)
+	}
+	if src.Int64 == nil {
+		dst.Int64 = nil
+	} else {
+		if dst.Int64 != nil {
+			if len(src.Int64) > len(dst.Int64) {
+				if cap(dst.Int64) >= len(src.Int64) {
+					dst.Int64 = (dst.Int64)[:len(src.Int64)]
+				} else {
+					dst.Int64 = make([]int64, len(src.Int64))
+				}
+			} else if len(src.Int64) < len(dst.Int64) {
+				dst.Int64 = (dst.Int64)[:len(src.Int64)]
+			}
+		} else {
+			dst.Int64 = make([]int64, len(src.Int64))
+		}
+		copy(dst.Int64, src.Int64)
+	}
+	if src.Int8 == nil {
+		dst.Int8 = nil
+	} else {
+		if dst.Int8 != nil {
+			if len(src.Int8) > len(dst.Int8) {
+				if cap(dst.Int8) >= len(src.Int8) {
+					dst.Int8 = (dst.Int8)[:len(src.Int8)]
+				} else {
+					dst.Int8 = make([]int8, len(src.Int8))
+				}
+			} else if len(src.Int8) < len(dst.Int8) {
+				dst.Int8 = (dst.Int8)[:len(src.Int8)]
+			}
+		} else {
+			dst.Int8 = make([]int8, len(src.Int8))
+		}
+		copy(dst.Int8, src.Int8)
+	}
+	if src.Rune == nil {
+		dst.Rune = nil
+	} else {
+		if dst.Rune != nil {
+			if len(src.Rune) > len(dst.Rune) {
+				if cap(dst.Rune) >= len(src.Rune) {
+					dst.Rune = (dst.Rune)[:len(src.Rune)]
+				} else {
+					dst.Rune = make([]rune, len(src.Rune))
+				}
+			} else if len(src.Rune) < len(dst.Rune) {
+				dst.Rune = (dst.Rune)[:len(src.Rune)]
+			}
+		} else {
+			dst.Rune = make([]rune, len(src.Rune))
+		}
+		copy(dst.Rune, src.Rune)
+	}
+	if src.String == nil {
+		dst.String = nil
+	} else {
+		if dst.String != nil {
+			if len(src.String) > len(dst.String) {
+				if cap(dst.String) >= len(src.String) {
+					dst.String = (dst.String)[:len(src.String)]
+				} else {
+					dst.String = make([]string, len(src.String))
+				}
+			} else if len(src.String) < len(dst.String) {
+				dst.String = (dst.String)[:len(src.String)]
+			}
+		} else {
+			dst.String = make([]string, len(src.String))
+		}
+		copy(dst.String, src.String)
+	}
+	if src.Uint == nil {
+		dst.Uint = nil
+	} else {
+		if dst.Uint != nil {
+			if len(src.Uint) > len(dst.Uint) {
+				if cap(dst.Uint) >= len(src.Uint) {
+					dst.Uint = (dst.Uint)[:len(src.Uint)]
+				} else {
+					dst.Uint = make([]uint, len(src.Uint))
+				}
+			} else if len(src.Uint) < len(dst.Uint) {
+				dst.Uint = (dst.Uint)[:len(src.Uint)]
+			}
+		} else {
+			dst.Uint = make([]uint, len(src.Uint))
+		}
+		copy(dst.Uint, src.Uint)
+	}
+	if src.Uint16 == nil {
+		dst.Uint16 = nil
+	} else {
+		if dst.Uint16 != nil {
+			if len(src.Uint16) > len(dst.Uint16) {
+				if cap(dst.Uint16) >= len(src.Uint16) {
+					dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
+				} else {
+					dst.Uint16 = make([]uint16, len(src.Uint16))
+				}
+			} else if len(src.Uint16) < len(dst.Uint16) {
+				dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
+			}
+		} else {
+			dst.Uint16 = make([]uint16, len(src.Uint16))
+		}
+		copy(dst.Uint16, src.Uint16)
+	}
+	if src.Uint32 == nil {
+		dst.Uint32 = nil
+	} else {
+		if dst.Uint32 != nil {
+			if len(src.Uint32) > len(dst.Uint32) {
+				if cap(dst.Uint32) >= len(src.Uint32) {
+					dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
+				} else {
+					dst.Uint32 = make([]uint32, len(src.Uint32))
+				}
+			} else if len(src.Uint32) < len(dst.Uint32) {
+				dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
+			}
+		} else {
+			dst.Uint32 = make([]uint32, len(src.Uint32))
+		}
+		copy(dst.Uint32, src.Uint32)
+	}
+	if src.Uint64 == nil {
+		dst.Uint64 = nil
+	} else {
+		if dst.Uint64 != nil {
+			if len(src.Uint64) > len(dst.Uint64) {
+				if cap(dst.Uint64) >= len(src.Uint64) {
+					dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
+				} else {
+					dst.Uint64 = make([]uint64, len(src.Uint64))
+				}
+			} else if len(src.Uint64) < len(dst.Uint64) {
+				dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
+			}
+		} else {
+			dst.Uint64 = make([]uint64, len(src.Uint64))
+		}
+		copy(dst.Uint64, src.Uint64)
+	}
+	if src.Uint8 == nil {
+		dst.Uint8 = nil
+	} else {
+		if dst.Uint8 != nil {
+			if len(src.Uint8) > len(dst.Uint8) {
+				if cap(dst.Uint8) >= len(src.Uint8) {
+					dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
+				} else {
+					dst.Uint8 = make([]uint8, len(src.Uint8))
+				}
+			} else if len(src.Uint8) < len(dst.Uint8) {
+				dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
+			}
+		} else {
+			dst.Uint8 = make([]uint8, len(src.Uint8))
+		}
+		copy(dst.Uint8, src.Uint8)
+	}
+	if src.UintPtr == nil {
+		dst.UintPtr = nil
+	} else {
+		if dst.UintPtr != nil {
+			if len(src.UintPtr) > len(dst.UintPtr) {
+				if cap(dst.UintPtr) >= len(src.UintPtr) {
+					dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
+				} else {
+					dst.UintPtr = make([]uintptr, len(src.UintPtr))
+				}
+			} else if len(src.UintPtr) < len(dst.UintPtr) {
+				dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
+			}
+		} else {
+			dst.UintPtr = make([]uintptr, len(src.UintPtr))
+		}
+		copy(dst.UintPtr, src.UintPtr)
+	}
+}
+
+// deriveDeepCopyPtrToSliceOfPtrToBuiltInTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToSliceOfPtrToBuiltInTypes(dst, src *SliceOfPtrToBuiltInTypes) {
+	if src.Bool == nil {
+		dst.Bool = nil
+	} else {
+		if dst.Bool != nil {
+			if len(src.Bool) > len(dst.Bool) {
+				if cap(dst.Bool) >= len(src.Bool) {
+					dst.Bool = (dst.Bool)[:len(src.Bool)]
+				} else {
+					dst.Bool = make([]*bool, len(src.Bool))
+				}
+			} else if len(src.Bool) < len(dst.Bool) {
+				dst.Bool = (dst.Bool)[:len(src.Bool)]
+			}
+		} else {
+			dst.Bool = make([]*bool, len(src.Bool))
+		}
+		deriveDeepCopy(dst.Bool, src.Bool)
+	}
+	if src.Byte == nil {
+		dst.Byte = nil
+	} else {
+		if dst.Byte != nil {
+			if len(src.Byte) > len(dst.Byte) {
+				if cap(dst.Byte) >= len(src.Byte) {
+					dst.Byte = (dst.Byte)[:len(src.Byte)]
+				} else {
+					dst.Byte = make([]*byte, len(src.Byte))
+				}
+			} else if len(src.Byte) < len(dst.Byte) {
+				dst.Byte = (dst.Byte)[:len(src.Byte)]
+			}
+		} else {
+			dst.Byte = make([]*byte, len(src.Byte))
+		}
+		deriveDeepCopy_(dst.Byte, src.Byte)
+	}
+	if src.Complex128 == nil {
+		dst.Complex128 = nil
+	} else {
+		if dst.Complex128 != nil {
+			if len(src.Complex128) > len(dst.Complex128) {
+				if cap(dst.Complex128) >= len(src.Complex128) {
+					dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
+				} else {
+					dst.Complex128 = make([]*complex128, len(src.Complex128))
+				}
+			} else if len(src.Complex128) < len(dst.Complex128) {
+				dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
+			}
+		} else {
+			dst.Complex128 = make([]*complex128, len(src.Complex128))
+		}
+		deriveDeepCopy_1(dst.Complex128, src.Complex128)
+	}
+	if src.Complex64 == nil {
+		dst.Complex64 = nil
+	} else {
+		if dst.Complex64 != nil {
+			if len(src.Complex64) > len(dst.Complex64) {
+				if cap(dst.Complex64) >= len(src.Complex64) {
+					dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
+				} else {
+					dst.Complex64 = make([]*complex64, len(src.Complex64))
+				}
+			} else if len(src.Complex64) < len(dst.Complex64) {
+				dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
+			}
+		} else {
+			dst.Complex64 = make([]*complex64, len(src.Complex64))
+		}
+		deriveDeepCopy_2(dst.Complex64, src.Complex64)
+	}
+	if src.Float64 == nil {
+		dst.Float64 = nil
+	} else {
+		if dst.Float64 != nil {
+			if len(src.Float64) > len(dst.Float64) {
+				if cap(dst.Float64) >= len(src.Float64) {
+					dst.Float64 = (dst.Float64)[:len(src.Float64)]
+				} else {
+					dst.Float64 = make([]*float64, len(src.Float64))
+				}
+			} else if len(src.Float64) < len(dst.Float64) {
+				dst.Float64 = (dst.Float64)[:len(src.Float64)]
+			}
+		} else {
+			dst.Float64 = make([]*float64, len(src.Float64))
+		}
+		deriveDeepCopy_3(dst.Float64, src.Float64)
+	}
+	if src.Float32 == nil {
+		dst.Float32 = nil
+	} else {
+		if dst.Float32 != nil {
+			if len(src.Float32) > len(dst.Float32) {
+				if cap(dst.Float32) >= len(src.Float32) {
+					dst.Float32 = (dst.Float32)[:len(src.Float32)]
+				} else {
+					dst.Float32 = make([]*float32, len(src.Float32))
+				}
+			} else if len(src.Float32) < len(dst.Float32) {
+				dst.Float32 = (dst.Float32)[:len(src.Float32)]
+			}
+		} else {
+			dst.Float32 = make([]*float32, len(src.Float32))
+		}
+		deriveDeepCopy_4(dst.Float32, src.Float32)
+	}
+	if src.Int == nil {
+		dst.Int = nil
+	} else {
+		if dst.Int != nil {
+			if len(src.Int) > len(dst.Int) {
+				if cap(dst.Int) >= len(src.Int) {
+					dst.Int = (dst.Int)[:len(src.Int)]
+				} else {
+					dst.Int = make([]*int, len(src.Int))
+				}
+			} else if len(src.Int) < len(dst.Int) {
+				dst.Int = (dst.Int)[:len(src.Int)]
+			}
+		} else {
+			dst.Int = make([]*int, len(src.Int))
+		}
+		deriveDeepCopy_5(dst.Int, src.Int)
+	}
+	if src.Int16 == nil {
+		dst.Int16 = nil
+	} else {
+		if dst.Int16 != nil {
+			if len(src.Int16) > len(dst.Int16) {
+				if cap(dst.Int16) >= len(src.Int16) {
+					dst.Int16 = (dst.Int16)[:len(src.Int16)]
+				} else {
+					dst.Int16 = make([]*int16, len(src.Int16))
+				}
+			} else if len(src.Int16) < len(dst.Int16) {
+				dst.Int16 = (dst.Int16)[:len(src.Int16)]
+			}
+		} else {
+			dst.Int16 = make([]*int16, len(src.Int16))
+		}
+		deriveDeepCopy_6(dst.Int16, src.Int16)
+	}
+	if src.Int32 == nil {
+		dst.Int32 = nil
+	} else {
+		if dst.Int32 != nil {
+			if len(src.Int32) > len(dst.Int32) {
+				if cap(dst.Int32) >= len(src.Int32) {
+					dst.Int32 = (dst.Int32)[:len(src.Int32)]
+				} else {
+					dst.Int32 = make([]*int32, len(src.Int32))
+				}
+			} else if len(src.Int32) < len(dst.Int32) {
+				dst.Int32 = (dst.Int32)[:len(src.Int32)]
+			}
+		} else {
+			dst.Int32 = make([]*int32, len(src.Int32))
+		}
+		deriveDeepCopy_7(dst.Int32, src.Int32)
+	}
+	if src.Int64 == nil {
+		dst.Int64 = nil
+	} else {
+		if dst.Int64 != nil {
+			if len(src.Int64) > len(dst.Int64) {
+				if cap(dst.Int64) >= len(src.Int64) {
+					dst.Int64 = (dst.Int64)[:len(src.Int64)]
+				} else {
+					dst.Int64 = make([]*int64, len(src.Int64))
+				}
+			} else if len(src.Int64) < len(dst.Int64) {
+				dst.Int64 = (dst.Int64)[:len(src.Int64)]
+			}
+		} else {
+			dst.Int64 = make([]*int64, len(src.Int64))
+		}
+		deriveDeepCopy_8(dst.Int64, src.Int64)
+	}
+	if src.Int8 == nil {
+		dst.Int8 = nil
+	} else {
+		if dst.Int8 != nil {
+			if len(src.Int8) > len(dst.Int8) {
+				if cap(dst.Int8) >= len(src.Int8) {
+					dst.Int8 = (dst.Int8)[:len(src.Int8)]
+				} else {
+					dst.Int8 = make([]*int8, len(src.Int8))
+				}
+			} else if len(src.Int8) < len(dst.Int8) {
+				dst.Int8 = (dst.Int8)[:len(src.Int8)]
+			}
+		} else {
+			dst.Int8 = make([]*int8, len(src.Int8))
+		}
+		deriveDeepCopy_9(dst.Int8, src.Int8)
+	}
+	if src.Rune == nil {
+		dst.Rune = nil
+	} else {
+		if dst.Rune != nil {
+			if len(src.Rune) > len(dst.Rune) {
+				if cap(dst.Rune) >= len(src.Rune) {
+					dst.Rune = (dst.Rune)[:len(src.Rune)]
+				} else {
+					dst.Rune = make([]*rune, len(src.Rune))
+				}
+			} else if len(src.Rune) < len(dst.Rune) {
+				dst.Rune = (dst.Rune)[:len(src.Rune)]
+			}
+		} else {
+			dst.Rune = make([]*rune, len(src.Rune))
+		}
+		deriveDeepCopy_7(dst.Rune, src.Rune)
+	}
+	if src.String == nil {
+		dst.String = nil
+	} else {
+		if dst.String != nil {
+			if len(src.String) > len(dst.String) {
+				if cap(dst.String) >= len(src.String) {
+					dst.String = (dst.String)[:len(src.String)]
+				} else {
+					dst.String = make([]*string, len(src.String))
+				}
+			} else if len(src.String) < len(dst.String) {
+				dst.String = (dst.String)[:len(src.String)]
+			}
+		} else {
+			dst.String = make([]*string, len(src.String))
+		}
+		deriveDeepCopy_10(dst.String, src.String)
+	}
+	if src.Uint == nil {
+		dst.Uint = nil
+	} else {
+		if dst.Uint != nil {
+			if len(src.Uint) > len(dst.Uint) {
+				if cap(dst.Uint) >= len(src.Uint) {
+					dst.Uint = (dst.Uint)[:len(src.Uint)]
+				} else {
+					dst.Uint = make([]*uint, len(src.Uint))
+				}
+			} else if len(src.Uint) < len(dst.Uint) {
+				dst.Uint = (dst.Uint)[:len(src.Uint)]
+			}
+		} else {
+			dst.Uint = make([]*uint, len(src.Uint))
+		}
+		deriveDeepCopy_11(dst.Uint, src.Uint)
+	}
+	if src.Uint16 == nil {
+		dst.Uint16 = nil
+	} else {
+		if dst.Uint16 != nil {
+			if len(src.Uint16) > len(dst.Uint16) {
+				if cap(dst.Uint16) >= len(src.Uint16) {
+					dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
+				} else {
+					dst.Uint16 = make([]*uint16, len(src.Uint16))
+				}
+			} else if len(src.Uint16) < len(dst.Uint16) {
+				dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
+			}
+		} else {
+			dst.Uint16 = make([]*uint16, len(src.Uint16))
+		}
+		deriveDeepCopy_12(dst.Uint16, src.Uint16)
+	}
+	if src.Uint32 == nil {
+		dst.Uint32 = nil
+	} else {
+		if dst.Uint32 != nil {
+			if len(src.Uint32) > len(dst.Uint32) {
+				if cap(dst.Uint32) >= len(src.Uint32) {
+					dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
+				} else {
+					dst.Uint32 = make([]*uint32, len(src.Uint32))
+				}
+			} else if len(src.Uint32) < len(dst.Uint32) {
+				dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
+			}
+		} else {
+			dst.Uint32 = make([]*uint32, len(src.Uint32))
+		}
+		deriveDeepCopy_13(dst.Uint32, src.Uint32)
+	}
+	if src.Uint64 == nil {
+		dst.Uint64 = nil
+	} else {
+		if dst.Uint64 != nil {
+			if len(src.Uint64) > len(dst.Uint64) {
+				if cap(dst.Uint64) >= len(src.Uint64) {
+					dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
+				} else {
+					dst.Uint64 = make([]*uint64, len(src.Uint64))
+				}
+			} else if len(src.Uint64) < len(dst.Uint64) {
+				dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
+			}
+		} else {
+			dst.Uint64 = make([]*uint64, len(src.Uint64))
+		}
+		deriveDeepCopy_14(dst.Uint64, src.Uint64)
+	}
+	if src.Uint8 == nil {
+		dst.Uint8 = nil
+	} else {
+		if dst.Uint8 != nil {
+			if len(src.Uint8) > len(dst.Uint8) {
+				if cap(dst.Uint8) >= len(src.Uint8) {
+					dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
+				} else {
+					dst.Uint8 = make([]*uint8, len(src.Uint8))
+				}
+			} else if len(src.Uint8) < len(dst.Uint8) {
+				dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
+			}
+		} else {
+			dst.Uint8 = make([]*uint8, len(src.Uint8))
+		}
+		deriveDeepCopy_(dst.Uint8, src.Uint8)
+	}
+	if src.UintPtr == nil {
+		dst.UintPtr = nil
+	} else {
+		if dst.UintPtr != nil {
+			if len(src.UintPtr) > len(dst.UintPtr) {
+				if cap(dst.UintPtr) >= len(src.UintPtr) {
+					dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
+				} else {
+					dst.UintPtr = make([]*uintptr, len(src.UintPtr))
+				}
+			} else if len(src.UintPtr) < len(dst.UintPtr) {
+				dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
+			}
+		} else {
+			dst.UintPtr = make([]*uintptr, len(src.UintPtr))
+		}
+		deriveDeepCopy_15(dst.UintPtr, src.UintPtr)
+	}
+}
+
+// deriveDeepCopyPtrToArrayOfBuiltInTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToArrayOfBuiltInTypes(dst, src *ArrayOfBuiltInTypes) {
+	dst.Bool = src.Bool
+	dst.Byte = src.Byte
+	dst.Complex128 = src.Complex128
+	dst.Complex64 = src.Complex64
+	dst.Float64 = src.Float64
+	dst.Float32 = src.Float32
+	dst.Int = src.Int
+	dst.Int16 = src.Int16
+	dst.Int32 = src.Int32
+	dst.Int64 = src.Int64
+	dst.Int8 = src.Int8
+	dst.Rune = src.Rune
+	dst.String = src.String
+	dst.Uint = src.Uint
+	dst.Uint16 = src.Uint16
+	dst.Uint32 = src.Uint32
+	dst.Uint64 = src.Uint64
+	dst.Uint8 = src.Uint8
+	dst.UintPtr = src.UintPtr
+	dst.AnotherBoolOfDifferentSize = src.AnotherBoolOfDifferentSize
+}
+
+// deriveDeepCopyPtrToArrayOfPtrToBuiltInTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToArrayOfPtrToBuiltInTypes(dst, src *ArrayOfPtrToBuiltInTypes) {
+	for src_i, src_value := range src.Bool {
+		if src_value == nil {
+			dst.Bool[src_i] = nil
+		} else {
+			dst.Bool[src_i] = new(bool)
+			*dst.Bool[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Byte {
+		if src_value == nil {
+			dst.Byte[src_i] = nil
+		} else {
+			dst.Byte[src_i] = new(byte)
+			*dst.Byte[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Complex128 {
+		if src_value == nil {
+			dst.Complex128[src_i] = nil
+		} else {
+			dst.Complex128[src_i] = new(complex128)
+			*dst.Complex128[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Complex64 {
+		if src_value == nil {
+			dst.Complex64[src_i] = nil
+		} else {
+			dst.Complex64[src_i] = new(complex64)
+			*dst.Complex64[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Float64 {
+		if src_value == nil {
+			dst.Float64[src_i] = nil
+		} else {
+			dst.Float64[src_i] = new(float64)
+			*dst.Float64[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Float32 {
+		if src_value == nil {
+			dst.Float32[src_i] = nil
+		} else {
+			dst.Float32[src_i] = new(float32)
+			*dst.Float32[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Int {
+		if src_value == nil {
+			dst.Int[src_i] = nil
+		} else {
+			dst.Int[src_i] = new(int)
+			*dst.Int[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Int16 {
+		if src_value == nil {
+			dst.Int16[src_i] = nil
+		} else {
+			dst.Int16[src_i] = new(int16)
+			*dst.Int16[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Int32 {
+		if src_value == nil {
+			dst.Int32[src_i] = nil
+		} else {
+			dst.Int32[src_i] = new(int32)
+			*dst.Int32[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Int64 {
+		if src_value == nil {
+			dst.Int64[src_i] = nil
+		} else {
+			dst.Int64[src_i] = new(int64)
+			*dst.Int64[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Int8 {
+		if src_value == nil {
+			dst.Int8[src_i] = nil
+		} else {
+			dst.Int8[src_i] = new(int8)
+			*dst.Int8[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Rune {
+		if src_value == nil {
+			dst.Rune[src_i] = nil
+		} else {
+			dst.Rune[src_i] = new(rune)
+			*dst.Rune[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.String {
+		if src_value == nil {
+			dst.String[src_i] = nil
+		} else {
+			dst.String[src_i] = new(string)
+			*dst.String[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Uint {
+		if src_value == nil {
+			dst.Uint[src_i] = nil
+		} else {
+			dst.Uint[src_i] = new(uint)
+			*dst.Uint[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Uint16 {
+		if src_value == nil {
+			dst.Uint16[src_i] = nil
+		} else {
+			dst.Uint16[src_i] = new(uint16)
+			*dst.Uint16[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Uint32 {
+		if src_value == nil {
+			dst.Uint32[src_i] = nil
+		} else {
+			dst.Uint32[src_i] = new(uint32)
+			*dst.Uint32[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Uint64 {
+		if src_value == nil {
+			dst.Uint64[src_i] = nil
+		} else {
+			dst.Uint64[src_i] = new(uint64)
+			*dst.Uint64[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.Uint8 {
+		if src_value == nil {
+			dst.Uint8[src_i] = nil
+		} else {
+			dst.Uint8[src_i] = new(uint8)
+			*dst.Uint8[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.UintPtr {
+		if src_value == nil {
+			dst.UintPtr[src_i] = nil
+		} else {
+			dst.UintPtr[src_i] = new(uintptr)
+			*dst.UintPtr[src_i] = *src_value
+		}
+	}
+	for src_i, src_value := range src.AnotherBoolOfDifferentSize {
+		if src_value == nil {
+			dst.AnotherBoolOfDifferentSize[src_i] = nil
+		} else {
+			dst.AnotherBoolOfDifferentSize[src_i] = new(bool)
+			*dst.AnotherBoolOfDifferentSize[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopyPtrToMapsOfSimplerBuiltInTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToMapsOfSimplerBuiltInTypes(dst, src *MapsOfSimplerBuiltInTypes) {
+	if src.StringToUint32 != nil {
+		dst.StringToUint32 = make(map[string]uint32, len(src.StringToUint32))
+		deriveDeepCopy_16(dst.StringToUint32, src.StringToUint32)
+	} else {
+		dst.StringToUint32 = nil
+	}
+	if src.Uint64ToInt64 != nil {
+		dst.Uint64ToInt64 = make(map[uint8]int64, len(src.Uint64ToInt64))
+		deriveDeepCopy_17(dst.Uint64ToInt64, src.Uint64ToInt64)
+	} else {
+		dst.Uint64ToInt64 = nil
+	}
+}
+
+// deriveDeepCopyPtrToMapsOfBuiltInTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToMapsOfBuiltInTypes(dst, src *MapsOfBuiltInTypes) {
+	if src.BoolToString != nil {
+		dst.BoolToString = make(map[bool]string, len(src.BoolToString))
+		deriveDeepCopy_18(dst.BoolToString, src.BoolToString)
+	} else {
+		dst.BoolToString = nil
+	}
+	if src.StringToBool != nil {
+		dst.StringToBool = make(map[string]bool, len(src.StringToBool))
+		deriveDeepCopy_19(dst.StringToBool, src.StringToBool)
+	} else {
+		dst.StringToBool = nil
+	}
+	if src.Complex128ToComplex64 != nil {
+		dst.Complex128ToComplex64 = make(map[complex128]complex64, len(src.Complex128ToComplex64))
+		deriveDeepCopy_20(dst.Complex128ToComplex64, src.Complex128ToComplex64)
+	} else {
+		dst.Complex128ToComplex64 = nil
+	}
+	if src.Float64ToUint32 != nil {
+		dst.Float64ToUint32 = make(map[float64]uint32, len(src.Float64ToUint32))
+		deriveDeepCopy_21(dst.Float64ToUint32, src.Float64ToUint32)
+	} else {
+		dst.Float64ToUint32 = nil
+	}
+	if src.Uint16ToUint8 != nil {
+		dst.Uint16ToUint8 = make(map[uint16]uint8, len(src.Uint16ToUint8))
+		deriveDeepCopy_22(dst.Uint16ToUint8, src.Uint16ToUint8)
+	} else {
+		dst.Uint16ToUint8 = nil
+	}
+}
+
+// deriveDeepCopyPtrToSliceToSlice recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToSliceToSlice(dst, src *SliceToSlice) {
+	if src.Ints == nil {
+		dst.Ints = nil
+	} else {
+		if dst.Ints != nil {
+			if len(src.Ints) > len(dst.Ints) {
+				if cap(dst.Ints) >= len(src.Ints) {
+					dst.Ints = (dst.Ints)[:len(src.Ints)]
+				} else {
+					dst.Ints = make([][]int, len(src.Ints))
+				}
+			} else if len(src.Ints) < len(dst.Ints) {
+				dst.Ints = (dst.Ints)[:len(src.Ints)]
+			}
+		} else {
+			dst.Ints = make([][]int, len(src.Ints))
+		}
+		deriveDeepCopy_23(dst.Ints, src.Ints)
+	}
+	if src.Strings == nil {
+		dst.Strings = nil
+	} else {
+		if dst.Strings != nil {
+			if len(src.Strings) > len(dst.Strings) {
+				if cap(dst.Strings) >= len(src.Strings) {
+					dst.Strings = (dst.Strings)[:len(src.Strings)]
+				} else {
+					dst.Strings = make([][]string, len(src.Strings))
+				}
+			} else if len(src.Strings) < len(dst.Strings) {
+				dst.Strings = (dst.Strings)[:len(src.Strings)]
+			}
+		} else {
+			dst.Strings = make([][]string, len(src.Strings))
+		}
+		deriveDeepCopy_24(dst.Strings, src.Strings)
+	}
+	if src.IntPtrs == nil {
+		dst.IntPtrs = nil
+	} else {
+		if dst.IntPtrs != nil {
+			if len(src.IntPtrs) > len(dst.IntPtrs) {
+				if cap(dst.IntPtrs) >= len(src.IntPtrs) {
+					dst.IntPtrs = (dst.IntPtrs)[:len(src.IntPtrs)]
+				} else {
+					dst.IntPtrs = make([][]*int, len(src.IntPtrs))
+				}
+			} else if len(src.IntPtrs) < len(dst.IntPtrs) {
+				dst.IntPtrs = (dst.IntPtrs)[:len(src.IntPtrs)]
+			}
+		} else {
+			dst.IntPtrs = make([][]*int, len(src.IntPtrs))
+		}
+		deriveDeepCopy_25(dst.IntPtrs, src.IntPtrs)
+	}
+}
+
+// deriveDeepCopyPtrToPtrTo recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToPtrTo(dst, src *PtrTo) {
+	if src.Basic == nil {
+		dst.Basic = nil
+	} else {
+		dst.Basic = new(int)
+		*dst.Basic = *src.Basic
+	}
+	if src.Slice == nil {
+		dst.Slice = nil
+	} else {
+		dst.Slice = new([]int)
+		deriveDeepCopy_26(dst.Slice, src.Slice)
+	}
+	if src.Array == nil {
+		dst.Array = nil
+	} else {
+		dst.Array = new([4]int)
+		*dst.Array = *src.Array
+	}
+	if src.Map == nil {
+		dst.Map = nil
+	} else {
+		dst.Map = new(map[int]int)
+		deriveDeepCopy_27(dst.Map, src.Map)
+	}
+}
+
+// deriveDeepCopyPtrToName recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToName(dst, src *Name) {
+	dst.Name = src.Name
+}
+
+// deriveDeepCopyPtrToStructs recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToStructs(dst, src *Structs) {
+	dst.Struct = src.Struct
+	if src.PtrToStruct == nil {
+		dst.PtrToStruct = nil
+	} else {
+		dst.PtrToStruct = new(Name)
+		src.PtrToStruct.DeepCopy(dst.PtrToStruct)
+	}
+	if src.SliceOfStructs == nil {
+		dst.SliceOfStructs = nil
+	} else {
+		if dst.SliceOfStructs != nil {
+			if len(src.SliceOfStructs) > len(dst.SliceOfStructs) {
+				if cap(dst.SliceOfStructs) >= len(src.SliceOfStructs) {
+					dst.SliceOfStructs = (dst.SliceOfStructs)[:len(src.SliceOfStructs)]
+				} else {
+					dst.SliceOfStructs = make([]Name, len(src.SliceOfStructs))
+				}
+			} else if len(src.SliceOfStructs) < len(dst.SliceOfStructs) {
+				dst.SliceOfStructs = (dst.SliceOfStructs)[:len(src.SliceOfStructs)]
+			}
+		} else {
+			dst.SliceOfStructs = make([]Name, len(src.SliceOfStructs))
+		}
+		copy(dst.SliceOfStructs, src.SliceOfStructs)
+	}
+	if src.SliceToPtrOfStruct == nil {
+		dst.SliceToPtrOfStruct = nil
+	} else {
+		if dst.SliceToPtrOfStruct != nil {
+			if len(src.SliceToPtrOfStruct) > len(dst.SliceToPtrOfStruct) {
+				if cap(dst.SliceToPtrOfStruct) >= len(src.SliceToPtrOfStruct) {
+					dst.SliceToPtrOfStruct = (dst.SliceToPtrOfStruct)[:len(src.SliceToPtrOfStruct)]
+				} else {
+					dst.SliceToPtrOfStruct = make([]*Name, len(src.SliceToPtrOfStruct))
+				}
+			} else if len(src.SliceToPtrOfStruct) < len(dst.SliceToPtrOfStruct) {
+				dst.SliceToPtrOfStruct = (dst.SliceToPtrOfStruct)[:len(src.SliceToPtrOfStruct)]
+			}
+		} else {
+			dst.SliceToPtrOfStruct = make([]*Name, len(src.SliceToPtrOfStruct))
+		}
+		deriveDeepCopy_28(dst.SliceToPtrOfStruct, src.SliceToPtrOfStruct)
+	}
+}
+
+// deriveDeepCopyPtrToMapWithStructs recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToMapWithStructs(dst, src *MapWithStructs) {
+	if src.NameToString != nil {
+		dst.NameToString = make(map[Name]string, len(src.NameToString))
+		deriveDeepCopy_29(dst.NameToString, src.NameToString)
+	} else {
+		dst.NameToString = nil
+	}
+	if src.StringToName != nil {
+		dst.StringToName = make(map[string]Name, len(src.StringToName))
+		deriveDeepCopy_30(dst.StringToName, src.StringToName)
+	} else {
+		dst.StringToName = nil
+	}
+	if src.StringToPtrToName != nil {
+		dst.StringToPtrToName = make(map[string]*Name, len(src.StringToPtrToName))
+		deriveDeepCopy_31(dst.StringToPtrToName, src.StringToPtrToName)
+	} else {
+		dst.StringToPtrToName = nil
+	}
+	if src.StringToSliceOfName != nil {
+		dst.StringToSliceOfName = make(map[string][]Name, len(src.StringToSliceOfName))
+		deriveDeepCopy_32(dst.StringToSliceOfName, src.StringToSliceOfName)
+	} else {
+		dst.StringToSliceOfName = nil
+	}
+	if src.StringToSliceOfPtrToName != nil {
+		dst.StringToSliceOfPtrToName = make(map[string][]*Name, len(src.StringToSliceOfPtrToName))
+		deriveDeepCopy_33(dst.StringToSliceOfPtrToName, src.StringToSliceOfPtrToName)
+	} else {
+		dst.StringToSliceOfPtrToName = nil
+	}
+}
+
+// deriveDeepCopyPtrToRecursiveType recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToRecursiveType(dst, src *RecursiveType) {
+	if src.Bytes == nil {
+		dst.Bytes = nil
+	} else {
+		if dst.Bytes != nil {
+			if len(src.Bytes) > len(dst.Bytes) {
+				if cap(dst.Bytes) >= len(src.Bytes) {
+					dst.Bytes = (dst.Bytes)[:len(src.Bytes)]
+				} else {
+					dst.Bytes = make([]byte, len(src.Bytes))
+				}
+			} else if len(src.Bytes) < len(dst.Bytes) {
+				dst.Bytes = (dst.Bytes)[:len(src.Bytes)]
+			}
+		} else {
+			dst.Bytes = make([]byte, len(src.Bytes))
+		}
+		copy(dst.Bytes, src.Bytes)
+	}
+	if src.N != nil {
+		dst.N = make(map[int]RecursiveType, len(src.N))
+		deriveDeepCopy_34(dst.N, src.N)
+	} else {
+		dst.N = nil
+	}
+}
+
+// deriveDeepCopyPtrToEmbeddedStruct1 recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToEmbeddedStruct1(dst, src *EmbeddedStruct1) {
+	dst.Name = src.Name
+	if src.Structs == nil {
+		dst.Structs = nil
+	} else {
+		dst.Structs = new(Structs)
+		src.Structs.DeepCopy(dst.Structs)
+	}
+}
+
+// deriveDeepCopyPtrToEmbeddedStruct2 recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToEmbeddedStruct2(dst, src *EmbeddedStruct2) {
+	field := new(Structs)
+	src.Structs.DeepCopy(field)
+	dst.Structs = *field
+	if src.Name == nil {
+		dst.Name = nil
+	} else {
+		dst.Name = new(Name)
+		src.Name.DeepCopy(dst.Name)
+	}
+}
+
+// deriveDeepCopyPtrToUnnamedStruct recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToUnnamedStruct(dst, src *UnnamedStruct) {
+	dst.Unnamed = src.Unnamed
+}
+
+// deriveDeepCopyPtrToStructWithStructFieldWithoutEqualMethod recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToStructWithStructFieldWithoutEqualMethod(dst, src *StructWithStructFieldWithoutEqualMethod) {
+	if src.A == nil {
+		dst.A = nil
+	} else {
+		dst.A = new(StructWithoutEqualMethod)
+		*dst.A = *src.A
+	}
+	dst.B = src.B
+}
+
+// deriveDeepCopyPtrToStructWithStructWithFromAnotherPackage recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToStructWithStructWithFromAnotherPackage(dst, src *StructWithStructWithFromAnotherPackage) {
+	if src.A == nil {
+		dst.A = nil
+	} else {
+		dst.A = new(extra.StructWithoutEqualMethod)
+		*dst.A = *src.A
+	}
+	dst.B = src.B
+}
+
+// deriveDeepCopyPtrToFieldWithStructWithPrivateFields recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToFieldWithStructWithPrivateFields(dst, src *FieldWithStructWithPrivateFields) {
+	if src.A == nil {
+		dst.A = nil
+	} else {
+		dst.A = new(extra.PrivateFieldAndNoEqualMethod)
+		deriveDeepCopy_35(dst.A, src.A)
+	}
+}
+
+// deriveDeepCopyPtrToEnums recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToEnums(dst, src *Enums) {
+	dst.Enum = src.Enum
+	if src.PtrToEnum == nil {
+		dst.PtrToEnum = nil
+	} else {
+		dst.PtrToEnum = new(MyEnum)
+		*dst.PtrToEnum = *src.PtrToEnum
+	}
+	if src.SliceToEnum == nil {
+		dst.SliceToEnum = nil
+	} else {
+		if dst.SliceToEnum != nil {
+			if len(src.SliceToEnum) > len(dst.SliceToEnum) {
+				if cap(dst.SliceToEnum) >= len(src.SliceToEnum) {
+					dst.SliceToEnum = (dst.SliceToEnum)[:len(src.SliceToEnum)]
+				} else {
+					dst.SliceToEnum = make([]MyEnum, len(src.SliceToEnum))
+				}
+			} else if len(src.SliceToEnum) < len(dst.SliceToEnum) {
+				dst.SliceToEnum = (dst.SliceToEnum)[:len(src.SliceToEnum)]
+			}
+		} else {
+			dst.SliceToEnum = make([]MyEnum, len(src.SliceToEnum))
+		}
+		copy(dst.SliceToEnum, src.SliceToEnum)
+	}
+	if src.SliceToPtrToEnum == nil {
+		dst.SliceToPtrToEnum = nil
+	} else {
+		if dst.SliceToPtrToEnum != nil {
+			if len(src.SliceToPtrToEnum) > len(dst.SliceToPtrToEnum) {
+				if cap(dst.SliceToPtrToEnum) >= len(src.SliceToPtrToEnum) {
+					dst.SliceToPtrToEnum = (dst.SliceToPtrToEnum)[:len(src.SliceToPtrToEnum)]
+				} else {
+					dst.SliceToPtrToEnum = make([]*MyEnum, len(src.SliceToPtrToEnum))
+				}
+			} else if len(src.SliceToPtrToEnum) < len(dst.SliceToPtrToEnum) {
+				dst.SliceToPtrToEnum = (dst.SliceToPtrToEnum)[:len(src.SliceToPtrToEnum)]
+			}
+		} else {
+			dst.SliceToPtrToEnum = make([]*MyEnum, len(src.SliceToPtrToEnum))
+		}
+		deriveDeepCopy_36(dst.SliceToPtrToEnum, src.SliceToPtrToEnum)
+	}
+	if src.MapToEnum != nil {
+		dst.MapToEnum = make(map[int32]MyEnum, len(src.MapToEnum))
+		deriveDeepCopy_37(dst.MapToEnum, src.MapToEnum)
+	} else {
+		dst.MapToEnum = nil
+	}
+	if src.EnumToMap != nil {
+		dst.EnumToMap = make(map[MyEnum]int32, len(src.EnumToMap))
+		deriveDeepCopy_38(dst.EnumToMap, src.EnumToMap)
+	} else {
+		dst.EnumToMap = nil
+	}
+	dst.ArrayEnum = src.ArrayEnum
+}
+
+// deriveDeepCopyPtrToNamedTypes recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToNamedTypes(dst, src *NamedTypes) {
+	if src.Slice == nil {
+		dst.Slice = nil
+	} else {
+		if dst.Slice != nil {
+			if len(src.Slice) > len(dst.Slice) {
+				if cap(dst.Slice) >= len(src.Slice) {
+					dst.Slice = (dst.Slice)[:len(src.Slice)]
+				} else {
+					dst.Slice = make([]int64, len(src.Slice))
+				}
+			} else if len(src.Slice) < len(dst.Slice) {
+				dst.Slice = (dst.Slice)[:len(src.Slice)]
+			}
+		} else {
+			dst.Slice = make([]int64, len(src.Slice))
+		}
+		copy(dst.Slice, src.Slice)
+	}
+	if src.PtrToSlice == nil {
+		dst.PtrToSlice = nil
+	} else {
+		dst.PtrToSlice = new(MySlice)
+		deriveDeepCopy_39(dst.PtrToSlice, src.PtrToSlice)
+	}
+	if src.SliceToSlice == nil {
+		dst.SliceToSlice = nil
+	} else {
+		if dst.SliceToSlice != nil {
+			if len(src.SliceToSlice) > len(dst.SliceToSlice) {
+				if cap(dst.SliceToSlice) >= len(src.SliceToSlice) {
+					dst.SliceToSlice = (dst.SliceToSlice)[:len(src.SliceToSlice)]
+				} else {
+					dst.SliceToSlice = make([]MySlice, len(src.SliceToSlice))
+				}
+			} else if len(src.SliceToSlice) < len(dst.SliceToSlice) {
+				dst.SliceToSlice = (dst.SliceToSlice)[:len(src.SliceToSlice)]
+			}
+		} else {
+			dst.SliceToSlice = make([]MySlice, len(src.SliceToSlice))
+		}
+		deriveDeepCopy_40(dst.SliceToSlice, src.SliceToSlice)
+	}
+}
+
+// deriveDeepCopyPtrToDuration recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToDuration(dst, src *Duration) {
+	dst.D = src.D
+	if src.P == nil {
+		dst.P = nil
+	} else {
+		dst.P = new(time.Duration)
+		*dst.P = *src.P
+	}
+	if src.Ds == nil {
+		dst.Ds = nil
+	} else {
+		if dst.Ds != nil {
+			if len(src.Ds) > len(dst.Ds) {
+				if cap(dst.Ds) >= len(src.Ds) {
+					dst.Ds = (dst.Ds)[:len(src.Ds)]
+				} else {
+					dst.Ds = make([]time.Duration, len(src.Ds))
+				}
+			} else if len(src.Ds) < len(dst.Ds) {
+				dst.Ds = (dst.Ds)[:len(src.Ds)]
+			}
+		} else {
+			dst.Ds = make([]time.Duration, len(src.Ds))
+		}
+		copy(dst.Ds, src.Ds)
+	}
+	if src.DPs == nil {
+		dst.DPs = nil
+	} else {
+		if dst.DPs != nil {
+			if len(src.DPs) > len(dst.DPs) {
+				if cap(dst.DPs) >= len(src.DPs) {
+					dst.DPs = (dst.DPs)[:len(src.DPs)]
+				} else {
+					dst.DPs = make([]*time.Duration, len(src.DPs))
+				}
+			} else if len(src.DPs) < len(dst.DPs) {
+				dst.DPs = (dst.DPs)[:len(src.DPs)]
+			}
+		} else {
+			dst.DPs = make([]*time.Duration, len(src.DPs))
+		}
+		deriveDeepCopy_41(dst.DPs, src.DPs)
+	}
+	if src.MD != nil {
+		dst.MD = make(map[int]time.Duration, len(src.MD))
+		deriveDeepCopy_42(dst.MD, src.MD)
+	} else {
+		dst.MD = nil
+	}
+}
+
 func deriveContainsInt64s(list []int64, item int64) bool {
 	for _, v := range list {
 		if v == item {
@@ -1839,1524 +3357,6 @@ func deriveFilterJudy(pred func(string) bool, list []string) []string {
 		}
 	}
 	return out
-}
-
-// deriveCopyToPtrToEmpty recursively copies the contents of src into dst.
-func deriveCopyToPtrToEmpty(src, dst *Empty) {
-}
-
-// deriveCopyToPtrToBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToBuiltInTypes(src, dst *BuiltInTypes) {
-	dst.Bool = src.Bool
-	dst.Byte = src.Byte
-	dst.Complex128 = src.Complex128
-	dst.Complex64 = src.Complex64
-	dst.Float64 = src.Float64
-	dst.Float32 = src.Float32
-	dst.Int = src.Int
-	dst.Int16 = src.Int16
-	dst.Int32 = src.Int32
-	dst.Int64 = src.Int64
-	dst.Int8 = src.Int8
-	dst.Rune = src.Rune
-	dst.String = src.String
-	dst.Uint = src.Uint
-	dst.Uint16 = src.Uint16
-	dst.Uint32 = src.Uint32
-	dst.Uint64 = src.Uint64
-	dst.Uint8 = src.Uint8
-	dst.UintPtr = src.UintPtr
-}
-
-// deriveCopyToPtrToPrivateBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToPrivateBuiltInTypes(src, dst *PrivateBuiltInTypes) {
-	dst.privateBool = src.privateBool
-	dst.privateByte = src.privateByte
-	dst.privateComplex128 = src.privateComplex128
-	dst.privateComplex64 = src.privateComplex64
-	dst.privateFloat64 = src.privateFloat64
-	dst.privateFloat32 = src.privateFloat32
-	dst.privateInt = src.privateInt
-	dst.privateInt16 = src.privateInt16
-	dst.privateInt32 = src.privateInt32
-	dst.privateInt64 = src.privateInt64
-	dst.privateInt8 = src.privateInt8
-	dst.privateRune = src.privateRune
-	dst.privateString = src.privateString
-	dst.privateUint = src.privateUint
-	dst.privateUint16 = src.privateUint16
-	dst.privateUint32 = src.privateUint32
-	dst.privateUint64 = src.privateUint64
-	dst.privateUint8 = src.privateUint8
-	dst.privateUintPtr = src.privateUintPtr
-}
-
-// deriveCopyToPtrToPtrToBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToPtrToBuiltInTypes(src, dst *PtrToBuiltInTypes) {
-	if src.Bool == nil {
-		dst.Bool = nil
-	} else {
-		dst.Bool = new(bool)
-		*dst.Bool = *src.Bool
-	}
-	if src.Byte == nil {
-		dst.Byte = nil
-	} else {
-		dst.Byte = new(byte)
-		*dst.Byte = *src.Byte
-	}
-	if src.Complex128 == nil {
-		dst.Complex128 = nil
-	} else {
-		dst.Complex128 = new(complex128)
-		*dst.Complex128 = *src.Complex128
-	}
-	if src.Complex64 == nil {
-		dst.Complex64 = nil
-	} else {
-		dst.Complex64 = new(complex64)
-		*dst.Complex64 = *src.Complex64
-	}
-	if src.Float64 == nil {
-		dst.Float64 = nil
-	} else {
-		dst.Float64 = new(float64)
-		*dst.Float64 = *src.Float64
-	}
-	if src.Float32 == nil {
-		dst.Float32 = nil
-	} else {
-		dst.Float32 = new(float32)
-		*dst.Float32 = *src.Float32
-	}
-	if src.Int == nil {
-		dst.Int = nil
-	} else {
-		dst.Int = new(int)
-		*dst.Int = *src.Int
-	}
-	if src.Int16 == nil {
-		dst.Int16 = nil
-	} else {
-		dst.Int16 = new(int16)
-		*dst.Int16 = *src.Int16
-	}
-	if src.Int32 == nil {
-		dst.Int32 = nil
-	} else {
-		dst.Int32 = new(int32)
-		*dst.Int32 = *src.Int32
-	}
-	if src.Int64 == nil {
-		dst.Int64 = nil
-	} else {
-		dst.Int64 = new(int64)
-		*dst.Int64 = *src.Int64
-	}
-	if src.Int8 == nil {
-		dst.Int8 = nil
-	} else {
-		dst.Int8 = new(int8)
-		*dst.Int8 = *src.Int8
-	}
-	if src.Rune == nil {
-		dst.Rune = nil
-	} else {
-		dst.Rune = new(rune)
-		*dst.Rune = *src.Rune
-	}
-	if src.String == nil {
-		dst.String = nil
-	} else {
-		dst.String = new(string)
-		*dst.String = *src.String
-	}
-	if src.Uint == nil {
-		dst.Uint = nil
-	} else {
-		dst.Uint = new(uint)
-		*dst.Uint = *src.Uint
-	}
-	if src.Uint16 == nil {
-		dst.Uint16 = nil
-	} else {
-		dst.Uint16 = new(uint16)
-		*dst.Uint16 = *src.Uint16
-	}
-	if src.Uint32 == nil {
-		dst.Uint32 = nil
-	} else {
-		dst.Uint32 = new(uint32)
-		*dst.Uint32 = *src.Uint32
-	}
-	if src.Uint64 == nil {
-		dst.Uint64 = nil
-	} else {
-		dst.Uint64 = new(uint64)
-		*dst.Uint64 = *src.Uint64
-	}
-	if src.Uint8 == nil {
-		dst.Uint8 = nil
-	} else {
-		dst.Uint8 = new(uint8)
-		*dst.Uint8 = *src.Uint8
-	}
-	if src.UintPtr == nil {
-		dst.UintPtr = nil
-	} else {
-		dst.UintPtr = new(uintptr)
-		*dst.UintPtr = *src.UintPtr
-	}
-}
-
-// deriveCopyToPtrToSliceOfBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToSliceOfBuiltInTypes(src, dst *SliceOfBuiltInTypes) {
-	if src.Bool == nil {
-		dst.Bool = nil
-	} else {
-		if dst.Bool != nil {
-			if len(src.Bool) > len(dst.Bool) {
-				if cap(dst.Bool) >= len(src.Bool) {
-					dst.Bool = (dst.Bool)[:len(src.Bool)]
-				} else {
-					dst.Bool = make([]bool, len(src.Bool))
-				}
-			} else if len(src.Bool) < len(dst.Bool) {
-				dst.Bool = (dst.Bool)[:len(src.Bool)]
-			}
-		} else {
-			dst.Bool = make([]bool, len(src.Bool))
-		}
-		copy(dst.Bool, src.Bool)
-	}
-	if src.Byte == nil {
-		dst.Byte = nil
-	} else {
-		if dst.Byte != nil {
-			if len(src.Byte) > len(dst.Byte) {
-				if cap(dst.Byte) >= len(src.Byte) {
-					dst.Byte = (dst.Byte)[:len(src.Byte)]
-				} else {
-					dst.Byte = make([]byte, len(src.Byte))
-				}
-			} else if len(src.Byte) < len(dst.Byte) {
-				dst.Byte = (dst.Byte)[:len(src.Byte)]
-			}
-		} else {
-			dst.Byte = make([]byte, len(src.Byte))
-		}
-		copy(dst.Byte, src.Byte)
-	}
-	if src.Complex128 == nil {
-		dst.Complex128 = nil
-	} else {
-		if dst.Complex128 != nil {
-			if len(src.Complex128) > len(dst.Complex128) {
-				if cap(dst.Complex128) >= len(src.Complex128) {
-					dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
-				} else {
-					dst.Complex128 = make([]complex128, len(src.Complex128))
-				}
-			} else if len(src.Complex128) < len(dst.Complex128) {
-				dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
-			}
-		} else {
-			dst.Complex128 = make([]complex128, len(src.Complex128))
-		}
-		copy(dst.Complex128, src.Complex128)
-	}
-	if src.Complex64 == nil {
-		dst.Complex64 = nil
-	} else {
-		if dst.Complex64 != nil {
-			if len(src.Complex64) > len(dst.Complex64) {
-				if cap(dst.Complex64) >= len(src.Complex64) {
-					dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
-				} else {
-					dst.Complex64 = make([]complex64, len(src.Complex64))
-				}
-			} else if len(src.Complex64) < len(dst.Complex64) {
-				dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
-			}
-		} else {
-			dst.Complex64 = make([]complex64, len(src.Complex64))
-		}
-		copy(dst.Complex64, src.Complex64)
-	}
-	if src.Float64 == nil {
-		dst.Float64 = nil
-	} else {
-		if dst.Float64 != nil {
-			if len(src.Float64) > len(dst.Float64) {
-				if cap(dst.Float64) >= len(src.Float64) {
-					dst.Float64 = (dst.Float64)[:len(src.Float64)]
-				} else {
-					dst.Float64 = make([]float64, len(src.Float64))
-				}
-			} else if len(src.Float64) < len(dst.Float64) {
-				dst.Float64 = (dst.Float64)[:len(src.Float64)]
-			}
-		} else {
-			dst.Float64 = make([]float64, len(src.Float64))
-		}
-		copy(dst.Float64, src.Float64)
-	}
-	if src.Float32 == nil {
-		dst.Float32 = nil
-	} else {
-		if dst.Float32 != nil {
-			if len(src.Float32) > len(dst.Float32) {
-				if cap(dst.Float32) >= len(src.Float32) {
-					dst.Float32 = (dst.Float32)[:len(src.Float32)]
-				} else {
-					dst.Float32 = make([]float32, len(src.Float32))
-				}
-			} else if len(src.Float32) < len(dst.Float32) {
-				dst.Float32 = (dst.Float32)[:len(src.Float32)]
-			}
-		} else {
-			dst.Float32 = make([]float32, len(src.Float32))
-		}
-		copy(dst.Float32, src.Float32)
-	}
-	if src.Int == nil {
-		dst.Int = nil
-	} else {
-		if dst.Int != nil {
-			if len(src.Int) > len(dst.Int) {
-				if cap(dst.Int) >= len(src.Int) {
-					dst.Int = (dst.Int)[:len(src.Int)]
-				} else {
-					dst.Int = make([]int, len(src.Int))
-				}
-			} else if len(src.Int) < len(dst.Int) {
-				dst.Int = (dst.Int)[:len(src.Int)]
-			}
-		} else {
-			dst.Int = make([]int, len(src.Int))
-		}
-		copy(dst.Int, src.Int)
-	}
-	if src.Int16 == nil {
-		dst.Int16 = nil
-	} else {
-		if dst.Int16 != nil {
-			if len(src.Int16) > len(dst.Int16) {
-				if cap(dst.Int16) >= len(src.Int16) {
-					dst.Int16 = (dst.Int16)[:len(src.Int16)]
-				} else {
-					dst.Int16 = make([]int16, len(src.Int16))
-				}
-			} else if len(src.Int16) < len(dst.Int16) {
-				dst.Int16 = (dst.Int16)[:len(src.Int16)]
-			}
-		} else {
-			dst.Int16 = make([]int16, len(src.Int16))
-		}
-		copy(dst.Int16, src.Int16)
-	}
-	if src.Int32 == nil {
-		dst.Int32 = nil
-	} else {
-		if dst.Int32 != nil {
-			if len(src.Int32) > len(dst.Int32) {
-				if cap(dst.Int32) >= len(src.Int32) {
-					dst.Int32 = (dst.Int32)[:len(src.Int32)]
-				} else {
-					dst.Int32 = make([]int32, len(src.Int32))
-				}
-			} else if len(src.Int32) < len(dst.Int32) {
-				dst.Int32 = (dst.Int32)[:len(src.Int32)]
-			}
-		} else {
-			dst.Int32 = make([]int32, len(src.Int32))
-		}
-		copy(dst.Int32, src.Int32)
-	}
-	if src.Int64 == nil {
-		dst.Int64 = nil
-	} else {
-		if dst.Int64 != nil {
-			if len(src.Int64) > len(dst.Int64) {
-				if cap(dst.Int64) >= len(src.Int64) {
-					dst.Int64 = (dst.Int64)[:len(src.Int64)]
-				} else {
-					dst.Int64 = make([]int64, len(src.Int64))
-				}
-			} else if len(src.Int64) < len(dst.Int64) {
-				dst.Int64 = (dst.Int64)[:len(src.Int64)]
-			}
-		} else {
-			dst.Int64 = make([]int64, len(src.Int64))
-		}
-		copy(dst.Int64, src.Int64)
-	}
-	if src.Int8 == nil {
-		dst.Int8 = nil
-	} else {
-		if dst.Int8 != nil {
-			if len(src.Int8) > len(dst.Int8) {
-				if cap(dst.Int8) >= len(src.Int8) {
-					dst.Int8 = (dst.Int8)[:len(src.Int8)]
-				} else {
-					dst.Int8 = make([]int8, len(src.Int8))
-				}
-			} else if len(src.Int8) < len(dst.Int8) {
-				dst.Int8 = (dst.Int8)[:len(src.Int8)]
-			}
-		} else {
-			dst.Int8 = make([]int8, len(src.Int8))
-		}
-		copy(dst.Int8, src.Int8)
-	}
-	if src.Rune == nil {
-		dst.Rune = nil
-	} else {
-		if dst.Rune != nil {
-			if len(src.Rune) > len(dst.Rune) {
-				if cap(dst.Rune) >= len(src.Rune) {
-					dst.Rune = (dst.Rune)[:len(src.Rune)]
-				} else {
-					dst.Rune = make([]rune, len(src.Rune))
-				}
-			} else if len(src.Rune) < len(dst.Rune) {
-				dst.Rune = (dst.Rune)[:len(src.Rune)]
-			}
-		} else {
-			dst.Rune = make([]rune, len(src.Rune))
-		}
-		copy(dst.Rune, src.Rune)
-	}
-	if src.String == nil {
-		dst.String = nil
-	} else {
-		if dst.String != nil {
-			if len(src.String) > len(dst.String) {
-				if cap(dst.String) >= len(src.String) {
-					dst.String = (dst.String)[:len(src.String)]
-				} else {
-					dst.String = make([]string, len(src.String))
-				}
-			} else if len(src.String) < len(dst.String) {
-				dst.String = (dst.String)[:len(src.String)]
-			}
-		} else {
-			dst.String = make([]string, len(src.String))
-		}
-		copy(dst.String, src.String)
-	}
-	if src.Uint == nil {
-		dst.Uint = nil
-	} else {
-		if dst.Uint != nil {
-			if len(src.Uint) > len(dst.Uint) {
-				if cap(dst.Uint) >= len(src.Uint) {
-					dst.Uint = (dst.Uint)[:len(src.Uint)]
-				} else {
-					dst.Uint = make([]uint, len(src.Uint))
-				}
-			} else if len(src.Uint) < len(dst.Uint) {
-				dst.Uint = (dst.Uint)[:len(src.Uint)]
-			}
-		} else {
-			dst.Uint = make([]uint, len(src.Uint))
-		}
-		copy(dst.Uint, src.Uint)
-	}
-	if src.Uint16 == nil {
-		dst.Uint16 = nil
-	} else {
-		if dst.Uint16 != nil {
-			if len(src.Uint16) > len(dst.Uint16) {
-				if cap(dst.Uint16) >= len(src.Uint16) {
-					dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
-				} else {
-					dst.Uint16 = make([]uint16, len(src.Uint16))
-				}
-			} else if len(src.Uint16) < len(dst.Uint16) {
-				dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
-			}
-		} else {
-			dst.Uint16 = make([]uint16, len(src.Uint16))
-		}
-		copy(dst.Uint16, src.Uint16)
-	}
-	if src.Uint32 == nil {
-		dst.Uint32 = nil
-	} else {
-		if dst.Uint32 != nil {
-			if len(src.Uint32) > len(dst.Uint32) {
-				if cap(dst.Uint32) >= len(src.Uint32) {
-					dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
-				} else {
-					dst.Uint32 = make([]uint32, len(src.Uint32))
-				}
-			} else if len(src.Uint32) < len(dst.Uint32) {
-				dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
-			}
-		} else {
-			dst.Uint32 = make([]uint32, len(src.Uint32))
-		}
-		copy(dst.Uint32, src.Uint32)
-	}
-	if src.Uint64 == nil {
-		dst.Uint64 = nil
-	} else {
-		if dst.Uint64 != nil {
-			if len(src.Uint64) > len(dst.Uint64) {
-				if cap(dst.Uint64) >= len(src.Uint64) {
-					dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
-				} else {
-					dst.Uint64 = make([]uint64, len(src.Uint64))
-				}
-			} else if len(src.Uint64) < len(dst.Uint64) {
-				dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
-			}
-		} else {
-			dst.Uint64 = make([]uint64, len(src.Uint64))
-		}
-		copy(dst.Uint64, src.Uint64)
-	}
-	if src.Uint8 == nil {
-		dst.Uint8 = nil
-	} else {
-		if dst.Uint8 != nil {
-			if len(src.Uint8) > len(dst.Uint8) {
-				if cap(dst.Uint8) >= len(src.Uint8) {
-					dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
-				} else {
-					dst.Uint8 = make([]uint8, len(src.Uint8))
-				}
-			} else if len(src.Uint8) < len(dst.Uint8) {
-				dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
-			}
-		} else {
-			dst.Uint8 = make([]uint8, len(src.Uint8))
-		}
-		copy(dst.Uint8, src.Uint8)
-	}
-	if src.UintPtr == nil {
-		dst.UintPtr = nil
-	} else {
-		if dst.UintPtr != nil {
-			if len(src.UintPtr) > len(dst.UintPtr) {
-				if cap(dst.UintPtr) >= len(src.UintPtr) {
-					dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
-				} else {
-					dst.UintPtr = make([]uintptr, len(src.UintPtr))
-				}
-			} else if len(src.UintPtr) < len(dst.UintPtr) {
-				dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
-			}
-		} else {
-			dst.UintPtr = make([]uintptr, len(src.UintPtr))
-		}
-		copy(dst.UintPtr, src.UintPtr)
-	}
-}
-
-// deriveCopyToPtrToSliceOfPtrToBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToSliceOfPtrToBuiltInTypes(src, dst *SliceOfPtrToBuiltInTypes) {
-	if src.Bool == nil {
-		dst.Bool = nil
-	} else {
-		if dst.Bool != nil {
-			if len(src.Bool) > len(dst.Bool) {
-				if cap(dst.Bool) >= len(src.Bool) {
-					dst.Bool = (dst.Bool)[:len(src.Bool)]
-				} else {
-					dst.Bool = make([]*bool, len(src.Bool))
-				}
-			} else if len(src.Bool) < len(dst.Bool) {
-				dst.Bool = (dst.Bool)[:len(src.Bool)]
-			}
-		} else {
-			dst.Bool = make([]*bool, len(src.Bool))
-		}
-		deriveCopyTo(src.Bool, dst.Bool)
-	}
-	if src.Byte == nil {
-		dst.Byte = nil
-	} else {
-		if dst.Byte != nil {
-			if len(src.Byte) > len(dst.Byte) {
-				if cap(dst.Byte) >= len(src.Byte) {
-					dst.Byte = (dst.Byte)[:len(src.Byte)]
-				} else {
-					dst.Byte = make([]*byte, len(src.Byte))
-				}
-			} else if len(src.Byte) < len(dst.Byte) {
-				dst.Byte = (dst.Byte)[:len(src.Byte)]
-			}
-		} else {
-			dst.Byte = make([]*byte, len(src.Byte))
-		}
-		deriveCopyTo_(src.Byte, dst.Byte)
-	}
-	if src.Complex128 == nil {
-		dst.Complex128 = nil
-	} else {
-		if dst.Complex128 != nil {
-			if len(src.Complex128) > len(dst.Complex128) {
-				if cap(dst.Complex128) >= len(src.Complex128) {
-					dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
-				} else {
-					dst.Complex128 = make([]*complex128, len(src.Complex128))
-				}
-			} else if len(src.Complex128) < len(dst.Complex128) {
-				dst.Complex128 = (dst.Complex128)[:len(src.Complex128)]
-			}
-		} else {
-			dst.Complex128 = make([]*complex128, len(src.Complex128))
-		}
-		deriveCopyTo_1(src.Complex128, dst.Complex128)
-	}
-	if src.Complex64 == nil {
-		dst.Complex64 = nil
-	} else {
-		if dst.Complex64 != nil {
-			if len(src.Complex64) > len(dst.Complex64) {
-				if cap(dst.Complex64) >= len(src.Complex64) {
-					dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
-				} else {
-					dst.Complex64 = make([]*complex64, len(src.Complex64))
-				}
-			} else if len(src.Complex64) < len(dst.Complex64) {
-				dst.Complex64 = (dst.Complex64)[:len(src.Complex64)]
-			}
-		} else {
-			dst.Complex64 = make([]*complex64, len(src.Complex64))
-		}
-		deriveCopyTo_2(src.Complex64, dst.Complex64)
-	}
-	if src.Float64 == nil {
-		dst.Float64 = nil
-	} else {
-		if dst.Float64 != nil {
-			if len(src.Float64) > len(dst.Float64) {
-				if cap(dst.Float64) >= len(src.Float64) {
-					dst.Float64 = (dst.Float64)[:len(src.Float64)]
-				} else {
-					dst.Float64 = make([]*float64, len(src.Float64))
-				}
-			} else if len(src.Float64) < len(dst.Float64) {
-				dst.Float64 = (dst.Float64)[:len(src.Float64)]
-			}
-		} else {
-			dst.Float64 = make([]*float64, len(src.Float64))
-		}
-		deriveCopyTo_3(src.Float64, dst.Float64)
-	}
-	if src.Float32 == nil {
-		dst.Float32 = nil
-	} else {
-		if dst.Float32 != nil {
-			if len(src.Float32) > len(dst.Float32) {
-				if cap(dst.Float32) >= len(src.Float32) {
-					dst.Float32 = (dst.Float32)[:len(src.Float32)]
-				} else {
-					dst.Float32 = make([]*float32, len(src.Float32))
-				}
-			} else if len(src.Float32) < len(dst.Float32) {
-				dst.Float32 = (dst.Float32)[:len(src.Float32)]
-			}
-		} else {
-			dst.Float32 = make([]*float32, len(src.Float32))
-		}
-		deriveCopyTo_4(src.Float32, dst.Float32)
-	}
-	if src.Int == nil {
-		dst.Int = nil
-	} else {
-		if dst.Int != nil {
-			if len(src.Int) > len(dst.Int) {
-				if cap(dst.Int) >= len(src.Int) {
-					dst.Int = (dst.Int)[:len(src.Int)]
-				} else {
-					dst.Int = make([]*int, len(src.Int))
-				}
-			} else if len(src.Int) < len(dst.Int) {
-				dst.Int = (dst.Int)[:len(src.Int)]
-			}
-		} else {
-			dst.Int = make([]*int, len(src.Int))
-		}
-		deriveCopyTo_5(src.Int, dst.Int)
-	}
-	if src.Int16 == nil {
-		dst.Int16 = nil
-	} else {
-		if dst.Int16 != nil {
-			if len(src.Int16) > len(dst.Int16) {
-				if cap(dst.Int16) >= len(src.Int16) {
-					dst.Int16 = (dst.Int16)[:len(src.Int16)]
-				} else {
-					dst.Int16 = make([]*int16, len(src.Int16))
-				}
-			} else if len(src.Int16) < len(dst.Int16) {
-				dst.Int16 = (dst.Int16)[:len(src.Int16)]
-			}
-		} else {
-			dst.Int16 = make([]*int16, len(src.Int16))
-		}
-		deriveCopyTo_6(src.Int16, dst.Int16)
-	}
-	if src.Int32 == nil {
-		dst.Int32 = nil
-	} else {
-		if dst.Int32 != nil {
-			if len(src.Int32) > len(dst.Int32) {
-				if cap(dst.Int32) >= len(src.Int32) {
-					dst.Int32 = (dst.Int32)[:len(src.Int32)]
-				} else {
-					dst.Int32 = make([]*int32, len(src.Int32))
-				}
-			} else if len(src.Int32) < len(dst.Int32) {
-				dst.Int32 = (dst.Int32)[:len(src.Int32)]
-			}
-		} else {
-			dst.Int32 = make([]*int32, len(src.Int32))
-		}
-		deriveCopyTo_7(src.Int32, dst.Int32)
-	}
-	if src.Int64 == nil {
-		dst.Int64 = nil
-	} else {
-		if dst.Int64 != nil {
-			if len(src.Int64) > len(dst.Int64) {
-				if cap(dst.Int64) >= len(src.Int64) {
-					dst.Int64 = (dst.Int64)[:len(src.Int64)]
-				} else {
-					dst.Int64 = make([]*int64, len(src.Int64))
-				}
-			} else if len(src.Int64) < len(dst.Int64) {
-				dst.Int64 = (dst.Int64)[:len(src.Int64)]
-			}
-		} else {
-			dst.Int64 = make([]*int64, len(src.Int64))
-		}
-		deriveCopyTo_8(src.Int64, dst.Int64)
-	}
-	if src.Int8 == nil {
-		dst.Int8 = nil
-	} else {
-		if dst.Int8 != nil {
-			if len(src.Int8) > len(dst.Int8) {
-				if cap(dst.Int8) >= len(src.Int8) {
-					dst.Int8 = (dst.Int8)[:len(src.Int8)]
-				} else {
-					dst.Int8 = make([]*int8, len(src.Int8))
-				}
-			} else if len(src.Int8) < len(dst.Int8) {
-				dst.Int8 = (dst.Int8)[:len(src.Int8)]
-			}
-		} else {
-			dst.Int8 = make([]*int8, len(src.Int8))
-		}
-		deriveCopyTo_9(src.Int8, dst.Int8)
-	}
-	if src.Rune == nil {
-		dst.Rune = nil
-	} else {
-		if dst.Rune != nil {
-			if len(src.Rune) > len(dst.Rune) {
-				if cap(dst.Rune) >= len(src.Rune) {
-					dst.Rune = (dst.Rune)[:len(src.Rune)]
-				} else {
-					dst.Rune = make([]*rune, len(src.Rune))
-				}
-			} else if len(src.Rune) < len(dst.Rune) {
-				dst.Rune = (dst.Rune)[:len(src.Rune)]
-			}
-		} else {
-			dst.Rune = make([]*rune, len(src.Rune))
-		}
-		deriveCopyTo_7(src.Rune, dst.Rune)
-	}
-	if src.String == nil {
-		dst.String = nil
-	} else {
-		if dst.String != nil {
-			if len(src.String) > len(dst.String) {
-				if cap(dst.String) >= len(src.String) {
-					dst.String = (dst.String)[:len(src.String)]
-				} else {
-					dst.String = make([]*string, len(src.String))
-				}
-			} else if len(src.String) < len(dst.String) {
-				dst.String = (dst.String)[:len(src.String)]
-			}
-		} else {
-			dst.String = make([]*string, len(src.String))
-		}
-		deriveCopyTo_10(src.String, dst.String)
-	}
-	if src.Uint == nil {
-		dst.Uint = nil
-	} else {
-		if dst.Uint != nil {
-			if len(src.Uint) > len(dst.Uint) {
-				if cap(dst.Uint) >= len(src.Uint) {
-					dst.Uint = (dst.Uint)[:len(src.Uint)]
-				} else {
-					dst.Uint = make([]*uint, len(src.Uint))
-				}
-			} else if len(src.Uint) < len(dst.Uint) {
-				dst.Uint = (dst.Uint)[:len(src.Uint)]
-			}
-		} else {
-			dst.Uint = make([]*uint, len(src.Uint))
-		}
-		deriveCopyTo_11(src.Uint, dst.Uint)
-	}
-	if src.Uint16 == nil {
-		dst.Uint16 = nil
-	} else {
-		if dst.Uint16 != nil {
-			if len(src.Uint16) > len(dst.Uint16) {
-				if cap(dst.Uint16) >= len(src.Uint16) {
-					dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
-				} else {
-					dst.Uint16 = make([]*uint16, len(src.Uint16))
-				}
-			} else if len(src.Uint16) < len(dst.Uint16) {
-				dst.Uint16 = (dst.Uint16)[:len(src.Uint16)]
-			}
-		} else {
-			dst.Uint16 = make([]*uint16, len(src.Uint16))
-		}
-		deriveCopyTo_12(src.Uint16, dst.Uint16)
-	}
-	if src.Uint32 == nil {
-		dst.Uint32 = nil
-	} else {
-		if dst.Uint32 != nil {
-			if len(src.Uint32) > len(dst.Uint32) {
-				if cap(dst.Uint32) >= len(src.Uint32) {
-					dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
-				} else {
-					dst.Uint32 = make([]*uint32, len(src.Uint32))
-				}
-			} else if len(src.Uint32) < len(dst.Uint32) {
-				dst.Uint32 = (dst.Uint32)[:len(src.Uint32)]
-			}
-		} else {
-			dst.Uint32 = make([]*uint32, len(src.Uint32))
-		}
-		deriveCopyTo_13(src.Uint32, dst.Uint32)
-	}
-	if src.Uint64 == nil {
-		dst.Uint64 = nil
-	} else {
-		if dst.Uint64 != nil {
-			if len(src.Uint64) > len(dst.Uint64) {
-				if cap(dst.Uint64) >= len(src.Uint64) {
-					dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
-				} else {
-					dst.Uint64 = make([]*uint64, len(src.Uint64))
-				}
-			} else if len(src.Uint64) < len(dst.Uint64) {
-				dst.Uint64 = (dst.Uint64)[:len(src.Uint64)]
-			}
-		} else {
-			dst.Uint64 = make([]*uint64, len(src.Uint64))
-		}
-		deriveCopyTo_14(src.Uint64, dst.Uint64)
-	}
-	if src.Uint8 == nil {
-		dst.Uint8 = nil
-	} else {
-		if dst.Uint8 != nil {
-			if len(src.Uint8) > len(dst.Uint8) {
-				if cap(dst.Uint8) >= len(src.Uint8) {
-					dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
-				} else {
-					dst.Uint8 = make([]*uint8, len(src.Uint8))
-				}
-			} else if len(src.Uint8) < len(dst.Uint8) {
-				dst.Uint8 = (dst.Uint8)[:len(src.Uint8)]
-			}
-		} else {
-			dst.Uint8 = make([]*uint8, len(src.Uint8))
-		}
-		deriveCopyTo_(src.Uint8, dst.Uint8)
-	}
-	if src.UintPtr == nil {
-		dst.UintPtr = nil
-	} else {
-		if dst.UintPtr != nil {
-			if len(src.UintPtr) > len(dst.UintPtr) {
-				if cap(dst.UintPtr) >= len(src.UintPtr) {
-					dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
-				} else {
-					dst.UintPtr = make([]*uintptr, len(src.UintPtr))
-				}
-			} else if len(src.UintPtr) < len(dst.UintPtr) {
-				dst.UintPtr = (dst.UintPtr)[:len(src.UintPtr)]
-			}
-		} else {
-			dst.UintPtr = make([]*uintptr, len(src.UintPtr))
-		}
-		deriveCopyTo_15(src.UintPtr, dst.UintPtr)
-	}
-}
-
-// deriveCopyToPtrToArrayOfBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToArrayOfBuiltInTypes(src, dst *ArrayOfBuiltInTypes) {
-	dst.Bool = src.Bool
-	dst.Byte = src.Byte
-	dst.Complex128 = src.Complex128
-	dst.Complex64 = src.Complex64
-	dst.Float64 = src.Float64
-	dst.Float32 = src.Float32
-	dst.Int = src.Int
-	dst.Int16 = src.Int16
-	dst.Int32 = src.Int32
-	dst.Int64 = src.Int64
-	dst.Int8 = src.Int8
-	dst.Rune = src.Rune
-	dst.String = src.String
-	dst.Uint = src.Uint
-	dst.Uint16 = src.Uint16
-	dst.Uint32 = src.Uint32
-	dst.Uint64 = src.Uint64
-	dst.Uint8 = src.Uint8
-	dst.UintPtr = src.UintPtr
-	dst.AnotherBoolOfDifferentSize = src.AnotherBoolOfDifferentSize
-}
-
-// deriveCopyToPtrToArrayOfPtrToBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToArrayOfPtrToBuiltInTypes(src, dst *ArrayOfPtrToBuiltInTypes) {
-	for src_i, src_value := range src.Bool {
-		if src_value == nil {
-			dst.Bool[src_i] = nil
-		} else {
-			dst.Bool[src_i] = new(bool)
-			*dst.Bool[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Byte {
-		if src_value == nil {
-			dst.Byte[src_i] = nil
-		} else {
-			dst.Byte[src_i] = new(byte)
-			*dst.Byte[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Complex128 {
-		if src_value == nil {
-			dst.Complex128[src_i] = nil
-		} else {
-			dst.Complex128[src_i] = new(complex128)
-			*dst.Complex128[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Complex64 {
-		if src_value == nil {
-			dst.Complex64[src_i] = nil
-		} else {
-			dst.Complex64[src_i] = new(complex64)
-			*dst.Complex64[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Float64 {
-		if src_value == nil {
-			dst.Float64[src_i] = nil
-		} else {
-			dst.Float64[src_i] = new(float64)
-			*dst.Float64[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Float32 {
-		if src_value == nil {
-			dst.Float32[src_i] = nil
-		} else {
-			dst.Float32[src_i] = new(float32)
-			*dst.Float32[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Int {
-		if src_value == nil {
-			dst.Int[src_i] = nil
-		} else {
-			dst.Int[src_i] = new(int)
-			*dst.Int[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Int16 {
-		if src_value == nil {
-			dst.Int16[src_i] = nil
-		} else {
-			dst.Int16[src_i] = new(int16)
-			*dst.Int16[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Int32 {
-		if src_value == nil {
-			dst.Int32[src_i] = nil
-		} else {
-			dst.Int32[src_i] = new(int32)
-			*dst.Int32[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Int64 {
-		if src_value == nil {
-			dst.Int64[src_i] = nil
-		} else {
-			dst.Int64[src_i] = new(int64)
-			*dst.Int64[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Int8 {
-		if src_value == nil {
-			dst.Int8[src_i] = nil
-		} else {
-			dst.Int8[src_i] = new(int8)
-			*dst.Int8[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Rune {
-		if src_value == nil {
-			dst.Rune[src_i] = nil
-		} else {
-			dst.Rune[src_i] = new(rune)
-			*dst.Rune[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.String {
-		if src_value == nil {
-			dst.String[src_i] = nil
-		} else {
-			dst.String[src_i] = new(string)
-			*dst.String[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Uint {
-		if src_value == nil {
-			dst.Uint[src_i] = nil
-		} else {
-			dst.Uint[src_i] = new(uint)
-			*dst.Uint[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Uint16 {
-		if src_value == nil {
-			dst.Uint16[src_i] = nil
-		} else {
-			dst.Uint16[src_i] = new(uint16)
-			*dst.Uint16[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Uint32 {
-		if src_value == nil {
-			dst.Uint32[src_i] = nil
-		} else {
-			dst.Uint32[src_i] = new(uint32)
-			*dst.Uint32[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Uint64 {
-		if src_value == nil {
-			dst.Uint64[src_i] = nil
-		} else {
-			dst.Uint64[src_i] = new(uint64)
-			*dst.Uint64[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.Uint8 {
-		if src_value == nil {
-			dst.Uint8[src_i] = nil
-		} else {
-			dst.Uint8[src_i] = new(uint8)
-			*dst.Uint8[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.UintPtr {
-		if src_value == nil {
-			dst.UintPtr[src_i] = nil
-		} else {
-			dst.UintPtr[src_i] = new(uintptr)
-			*dst.UintPtr[src_i] = *src_value
-		}
-	}
-	for src_i, src_value := range src.AnotherBoolOfDifferentSize {
-		if src_value == nil {
-			dst.AnotherBoolOfDifferentSize[src_i] = nil
-		} else {
-			dst.AnotherBoolOfDifferentSize[src_i] = new(bool)
-			*dst.AnotherBoolOfDifferentSize[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyToPtrToMapsOfSimplerBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToMapsOfSimplerBuiltInTypes(src, dst *MapsOfSimplerBuiltInTypes) {
-	if src.StringToUint32 != nil {
-		dst.StringToUint32 = make(map[string]uint32, len(src.StringToUint32))
-		deriveCopyTo_16(src.StringToUint32, dst.StringToUint32)
-	} else {
-		dst.StringToUint32 = nil
-	}
-	if src.Uint64ToInt64 != nil {
-		dst.Uint64ToInt64 = make(map[uint8]int64, len(src.Uint64ToInt64))
-		deriveCopyTo_17(src.Uint64ToInt64, dst.Uint64ToInt64)
-	} else {
-		dst.Uint64ToInt64 = nil
-	}
-}
-
-// deriveCopyToPtrToMapsOfBuiltInTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToMapsOfBuiltInTypes(src, dst *MapsOfBuiltInTypes) {
-	if src.BoolToString != nil {
-		dst.BoolToString = make(map[bool]string, len(src.BoolToString))
-		deriveCopyTo_18(src.BoolToString, dst.BoolToString)
-	} else {
-		dst.BoolToString = nil
-	}
-	if src.StringToBool != nil {
-		dst.StringToBool = make(map[string]bool, len(src.StringToBool))
-		deriveCopyTo_19(src.StringToBool, dst.StringToBool)
-	} else {
-		dst.StringToBool = nil
-	}
-	if src.Complex128ToComplex64 != nil {
-		dst.Complex128ToComplex64 = make(map[complex128]complex64, len(src.Complex128ToComplex64))
-		deriveCopyTo_20(src.Complex128ToComplex64, dst.Complex128ToComplex64)
-	} else {
-		dst.Complex128ToComplex64 = nil
-	}
-	if src.Float64ToUint32 != nil {
-		dst.Float64ToUint32 = make(map[float64]uint32, len(src.Float64ToUint32))
-		deriveCopyTo_21(src.Float64ToUint32, dst.Float64ToUint32)
-	} else {
-		dst.Float64ToUint32 = nil
-	}
-	if src.Uint16ToUint8 != nil {
-		dst.Uint16ToUint8 = make(map[uint16]uint8, len(src.Uint16ToUint8))
-		deriveCopyTo_22(src.Uint16ToUint8, dst.Uint16ToUint8)
-	} else {
-		dst.Uint16ToUint8 = nil
-	}
-}
-
-// deriveCopyToPtrToSliceToSlice recursively copies the contents of src into dst.
-func deriveCopyToPtrToSliceToSlice(src, dst *SliceToSlice) {
-	if src.Ints == nil {
-		dst.Ints = nil
-	} else {
-		if dst.Ints != nil {
-			if len(src.Ints) > len(dst.Ints) {
-				if cap(dst.Ints) >= len(src.Ints) {
-					dst.Ints = (dst.Ints)[:len(src.Ints)]
-				} else {
-					dst.Ints = make([][]int, len(src.Ints))
-				}
-			} else if len(src.Ints) < len(dst.Ints) {
-				dst.Ints = (dst.Ints)[:len(src.Ints)]
-			}
-		} else {
-			dst.Ints = make([][]int, len(src.Ints))
-		}
-		deriveCopyTo_23(src.Ints, dst.Ints)
-	}
-	if src.Strings == nil {
-		dst.Strings = nil
-	} else {
-		if dst.Strings != nil {
-			if len(src.Strings) > len(dst.Strings) {
-				if cap(dst.Strings) >= len(src.Strings) {
-					dst.Strings = (dst.Strings)[:len(src.Strings)]
-				} else {
-					dst.Strings = make([][]string, len(src.Strings))
-				}
-			} else if len(src.Strings) < len(dst.Strings) {
-				dst.Strings = (dst.Strings)[:len(src.Strings)]
-			}
-		} else {
-			dst.Strings = make([][]string, len(src.Strings))
-		}
-		deriveCopyTo_24(src.Strings, dst.Strings)
-	}
-	if src.IntPtrs == nil {
-		dst.IntPtrs = nil
-	} else {
-		if dst.IntPtrs != nil {
-			if len(src.IntPtrs) > len(dst.IntPtrs) {
-				if cap(dst.IntPtrs) >= len(src.IntPtrs) {
-					dst.IntPtrs = (dst.IntPtrs)[:len(src.IntPtrs)]
-				} else {
-					dst.IntPtrs = make([][]*int, len(src.IntPtrs))
-				}
-			} else if len(src.IntPtrs) < len(dst.IntPtrs) {
-				dst.IntPtrs = (dst.IntPtrs)[:len(src.IntPtrs)]
-			}
-		} else {
-			dst.IntPtrs = make([][]*int, len(src.IntPtrs))
-		}
-		deriveCopyTo_25(src.IntPtrs, dst.IntPtrs)
-	}
-}
-
-// deriveCopyToPtrToPtrTo recursively copies the contents of src into dst.
-func deriveCopyToPtrToPtrTo(src, dst *PtrTo) {
-	if src.Basic == nil {
-		dst.Basic = nil
-	} else {
-		dst.Basic = new(int)
-		*dst.Basic = *src.Basic
-	}
-	if src.Slice == nil {
-		dst.Slice = nil
-	} else {
-		dst.Slice = new([]int)
-		deriveCopyTo_26(src.Slice, dst.Slice)
-	}
-	if src.Array == nil {
-		dst.Array = nil
-	} else {
-		dst.Array = new([4]int)
-		*dst.Array = *src.Array
-	}
-	if src.Map == nil {
-		dst.Map = nil
-	} else {
-		dst.Map = new(map[int]int)
-		deriveCopyTo_27(src.Map, dst.Map)
-	}
-}
-
-// deriveCopyToPtrToName recursively copies the contents of src into dst.
-func deriveCopyToPtrToName(src, dst *Name) {
-	dst.Name = src.Name
-}
-
-// deriveCopyToPtrToStructs recursively copies the contents of src into dst.
-func deriveCopyToPtrToStructs(src, dst *Structs) {
-	dst.Struct = src.Struct
-	if src.PtrToStruct == nil {
-		dst.PtrToStruct = nil
-	} else {
-		dst.PtrToStruct = new(Name)
-		src.PtrToStruct.CopyTo(dst.PtrToStruct)
-	}
-	if src.SliceOfStructs == nil {
-		dst.SliceOfStructs = nil
-	} else {
-		if dst.SliceOfStructs != nil {
-			if len(src.SliceOfStructs) > len(dst.SliceOfStructs) {
-				if cap(dst.SliceOfStructs) >= len(src.SliceOfStructs) {
-					dst.SliceOfStructs = (dst.SliceOfStructs)[:len(src.SliceOfStructs)]
-				} else {
-					dst.SliceOfStructs = make([]Name, len(src.SliceOfStructs))
-				}
-			} else if len(src.SliceOfStructs) < len(dst.SliceOfStructs) {
-				dst.SliceOfStructs = (dst.SliceOfStructs)[:len(src.SliceOfStructs)]
-			}
-		} else {
-			dst.SliceOfStructs = make([]Name, len(src.SliceOfStructs))
-		}
-		copy(dst.SliceOfStructs, src.SliceOfStructs)
-	}
-	if src.SliceToPtrOfStruct == nil {
-		dst.SliceToPtrOfStruct = nil
-	} else {
-		if dst.SliceToPtrOfStruct != nil {
-			if len(src.SliceToPtrOfStruct) > len(dst.SliceToPtrOfStruct) {
-				if cap(dst.SliceToPtrOfStruct) >= len(src.SliceToPtrOfStruct) {
-					dst.SliceToPtrOfStruct = (dst.SliceToPtrOfStruct)[:len(src.SliceToPtrOfStruct)]
-				} else {
-					dst.SliceToPtrOfStruct = make([]*Name, len(src.SliceToPtrOfStruct))
-				}
-			} else if len(src.SliceToPtrOfStruct) < len(dst.SliceToPtrOfStruct) {
-				dst.SliceToPtrOfStruct = (dst.SliceToPtrOfStruct)[:len(src.SliceToPtrOfStruct)]
-			}
-		} else {
-			dst.SliceToPtrOfStruct = make([]*Name, len(src.SliceToPtrOfStruct))
-		}
-		deriveCopyTo_28(src.SliceToPtrOfStruct, dst.SliceToPtrOfStruct)
-	}
-}
-
-// deriveCopyToPtrToMapWithStructs recursively copies the contents of src into dst.
-func deriveCopyToPtrToMapWithStructs(src, dst *MapWithStructs) {
-	if src.NameToString != nil {
-		dst.NameToString = make(map[Name]string, len(src.NameToString))
-		deriveCopyTo_29(src.NameToString, dst.NameToString)
-	} else {
-		dst.NameToString = nil
-	}
-	if src.StringToName != nil {
-		dst.StringToName = make(map[string]Name, len(src.StringToName))
-		deriveCopyTo_30(src.StringToName, dst.StringToName)
-	} else {
-		dst.StringToName = nil
-	}
-	if src.StringToPtrToName != nil {
-		dst.StringToPtrToName = make(map[string]*Name, len(src.StringToPtrToName))
-		deriveCopyTo_31(src.StringToPtrToName, dst.StringToPtrToName)
-	} else {
-		dst.StringToPtrToName = nil
-	}
-	if src.StringToSliceOfName != nil {
-		dst.StringToSliceOfName = make(map[string][]Name, len(src.StringToSliceOfName))
-		deriveCopyTo_32(src.StringToSliceOfName, dst.StringToSliceOfName)
-	} else {
-		dst.StringToSliceOfName = nil
-	}
-	if src.StringToSliceOfPtrToName != nil {
-		dst.StringToSliceOfPtrToName = make(map[string][]*Name, len(src.StringToSliceOfPtrToName))
-		deriveCopyTo_33(src.StringToSliceOfPtrToName, dst.StringToSliceOfPtrToName)
-	} else {
-		dst.StringToSliceOfPtrToName = nil
-	}
-}
-
-// deriveCopyToPtrToRecursiveType recursively copies the contents of src into dst.
-func deriveCopyToPtrToRecursiveType(src, dst *RecursiveType) {
-	if src.Bytes == nil {
-		dst.Bytes = nil
-	} else {
-		if dst.Bytes != nil {
-			if len(src.Bytes) > len(dst.Bytes) {
-				if cap(dst.Bytes) >= len(src.Bytes) {
-					dst.Bytes = (dst.Bytes)[:len(src.Bytes)]
-				} else {
-					dst.Bytes = make([]byte, len(src.Bytes))
-				}
-			} else if len(src.Bytes) < len(dst.Bytes) {
-				dst.Bytes = (dst.Bytes)[:len(src.Bytes)]
-			}
-		} else {
-			dst.Bytes = make([]byte, len(src.Bytes))
-		}
-		copy(dst.Bytes, src.Bytes)
-	}
-	if src.N != nil {
-		dst.N = make(map[int]RecursiveType, len(src.N))
-		deriveCopyTo_34(src.N, dst.N)
-	} else {
-		dst.N = nil
-	}
-}
-
-// deriveCopyToPtrToEmbeddedStruct1 recursively copies the contents of src into dst.
-func deriveCopyToPtrToEmbeddedStruct1(src, dst *EmbeddedStruct1) {
-	dst.Name = src.Name
-	if src.Structs == nil {
-		dst.Structs = nil
-	} else {
-		dst.Structs = new(Structs)
-		src.Structs.CopyTo(dst.Structs)
-	}
-}
-
-// deriveCopyToPtrToEmbeddedStruct2 recursively copies the contents of src into dst.
-func deriveCopyToPtrToEmbeddedStruct2(src, dst *EmbeddedStruct2) {
-	field := new(Structs)
-	src.Structs.CopyTo(field)
-	dst.Structs = *field
-	if src.Name == nil {
-		dst.Name = nil
-	} else {
-		dst.Name = new(Name)
-		src.Name.CopyTo(dst.Name)
-	}
-}
-
-// deriveCopyToPtrToUnnamedStruct recursively copies the contents of src into dst.
-func deriveCopyToPtrToUnnamedStruct(src, dst *UnnamedStruct) {
-	dst.Unnamed = src.Unnamed
-}
-
-// deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod recursively copies the contents of src into dst.
-func deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(src, dst *StructWithStructFieldWithoutEqualMethod) {
-	if src.A == nil {
-		dst.A = nil
-	} else {
-		dst.A = new(StructWithoutEqualMethod)
-		*dst.A = *src.A
-	}
-	dst.B = src.B
-}
-
-// deriveCopyToPtrToStructWithStructWithFromAnotherPackage recursively copies the contents of src into dst.
-func deriveCopyToPtrToStructWithStructWithFromAnotherPackage(src, dst *StructWithStructWithFromAnotherPackage) {
-	if src.A == nil {
-		dst.A = nil
-	} else {
-		dst.A = new(extra.StructWithoutEqualMethod)
-		*dst.A = *src.A
-	}
-	dst.B = src.B
-}
-
-// deriveCopyToPtrToFieldWithStructWithPrivateFields recursively copies the contents of src into dst.
-func deriveCopyToPtrToFieldWithStructWithPrivateFields(src, dst *FieldWithStructWithPrivateFields) {
-	if src.A == nil {
-		dst.A = nil
-	} else {
-		dst.A = new(extra.PrivateFieldAndNoEqualMethod)
-		deriveCopyTo_35(src.A, dst.A)
-	}
-}
-
-// deriveCopyToPtrToEnums recursively copies the contents of src into dst.
-func deriveCopyToPtrToEnums(src, dst *Enums) {
-	dst.Enum = src.Enum
-	if src.PtrToEnum == nil {
-		dst.PtrToEnum = nil
-	} else {
-		dst.PtrToEnum = new(MyEnum)
-		*dst.PtrToEnum = *src.PtrToEnum
-	}
-	if src.SliceToEnum == nil {
-		dst.SliceToEnum = nil
-	} else {
-		if dst.SliceToEnum != nil {
-			if len(src.SliceToEnum) > len(dst.SliceToEnum) {
-				if cap(dst.SliceToEnum) >= len(src.SliceToEnum) {
-					dst.SliceToEnum = (dst.SliceToEnum)[:len(src.SliceToEnum)]
-				} else {
-					dst.SliceToEnum = make([]MyEnum, len(src.SliceToEnum))
-				}
-			} else if len(src.SliceToEnum) < len(dst.SliceToEnum) {
-				dst.SliceToEnum = (dst.SliceToEnum)[:len(src.SliceToEnum)]
-			}
-		} else {
-			dst.SliceToEnum = make([]MyEnum, len(src.SliceToEnum))
-		}
-		copy(dst.SliceToEnum, src.SliceToEnum)
-	}
-	if src.SliceToPtrToEnum == nil {
-		dst.SliceToPtrToEnum = nil
-	} else {
-		if dst.SliceToPtrToEnum != nil {
-			if len(src.SliceToPtrToEnum) > len(dst.SliceToPtrToEnum) {
-				if cap(dst.SliceToPtrToEnum) >= len(src.SliceToPtrToEnum) {
-					dst.SliceToPtrToEnum = (dst.SliceToPtrToEnum)[:len(src.SliceToPtrToEnum)]
-				} else {
-					dst.SliceToPtrToEnum = make([]*MyEnum, len(src.SliceToPtrToEnum))
-				}
-			} else if len(src.SliceToPtrToEnum) < len(dst.SliceToPtrToEnum) {
-				dst.SliceToPtrToEnum = (dst.SliceToPtrToEnum)[:len(src.SliceToPtrToEnum)]
-			}
-		} else {
-			dst.SliceToPtrToEnum = make([]*MyEnum, len(src.SliceToPtrToEnum))
-		}
-		deriveCopyTo_36(src.SliceToPtrToEnum, dst.SliceToPtrToEnum)
-	}
-	if src.MapToEnum != nil {
-		dst.MapToEnum = make(map[int32]MyEnum, len(src.MapToEnum))
-		deriveCopyTo_37(src.MapToEnum, dst.MapToEnum)
-	} else {
-		dst.MapToEnum = nil
-	}
-	if src.EnumToMap != nil {
-		dst.EnumToMap = make(map[MyEnum]int32, len(src.EnumToMap))
-		deriveCopyTo_38(src.EnumToMap, dst.EnumToMap)
-	} else {
-		dst.EnumToMap = nil
-	}
-	dst.ArrayEnum = src.ArrayEnum
-}
-
-// deriveCopyToPtrToNamedTypes recursively copies the contents of src into dst.
-func deriveCopyToPtrToNamedTypes(src, dst *NamedTypes) {
-	if src.Slice == nil {
-		dst.Slice = nil
-	} else {
-		if dst.Slice != nil {
-			if len(src.Slice) > len(dst.Slice) {
-				if cap(dst.Slice) >= len(src.Slice) {
-					dst.Slice = (dst.Slice)[:len(src.Slice)]
-				} else {
-					dst.Slice = make([]int64, len(src.Slice))
-				}
-			} else if len(src.Slice) < len(dst.Slice) {
-				dst.Slice = (dst.Slice)[:len(src.Slice)]
-			}
-		} else {
-			dst.Slice = make([]int64, len(src.Slice))
-		}
-		copy(dst.Slice, src.Slice)
-	}
-	if src.PtrToSlice == nil {
-		dst.PtrToSlice = nil
-	} else {
-		dst.PtrToSlice = new(MySlice)
-		deriveCopyTo_39(src.PtrToSlice, dst.PtrToSlice)
-	}
-	if src.SliceToSlice == nil {
-		dst.SliceToSlice = nil
-	} else {
-		if dst.SliceToSlice != nil {
-			if len(src.SliceToSlice) > len(dst.SliceToSlice) {
-				if cap(dst.SliceToSlice) >= len(src.SliceToSlice) {
-					dst.SliceToSlice = (dst.SliceToSlice)[:len(src.SliceToSlice)]
-				} else {
-					dst.SliceToSlice = make([]MySlice, len(src.SliceToSlice))
-				}
-			} else if len(src.SliceToSlice) < len(dst.SliceToSlice) {
-				dst.SliceToSlice = (dst.SliceToSlice)[:len(src.SliceToSlice)]
-			}
-		} else {
-			dst.SliceToSlice = make([]MySlice, len(src.SliceToSlice))
-		}
-		deriveCopyTo_40(src.SliceToSlice, dst.SliceToSlice)
-	}
-}
-
-// deriveCopyToPtrToDuration recursively copies the contents of src into dst.
-func deriveCopyToPtrToDuration(src, dst *Duration) {
-	dst.D = src.D
-	if src.P == nil {
-		dst.P = nil
-	} else {
-		dst.P = new(time.Duration)
-		*dst.P = *src.P
-	}
-	if src.Ds == nil {
-		dst.Ds = nil
-	} else {
-		if dst.Ds != nil {
-			if len(src.Ds) > len(dst.Ds) {
-				if cap(dst.Ds) >= len(src.Ds) {
-					dst.Ds = (dst.Ds)[:len(src.Ds)]
-				} else {
-					dst.Ds = make([]time.Duration, len(src.Ds))
-				}
-			} else if len(src.Ds) < len(dst.Ds) {
-				dst.Ds = (dst.Ds)[:len(src.Ds)]
-			}
-		} else {
-			dst.Ds = make([]time.Duration, len(src.Ds))
-		}
-		copy(dst.Ds, src.Ds)
-	}
-	if src.DPs == nil {
-		dst.DPs = nil
-	} else {
-		if dst.DPs != nil {
-			if len(src.DPs) > len(dst.DPs) {
-				if cap(dst.DPs) >= len(src.DPs) {
-					dst.DPs = (dst.DPs)[:len(src.DPs)]
-				} else {
-					dst.DPs = make([]*time.Duration, len(src.DPs))
-				}
-			} else if len(src.DPs) < len(dst.DPs) {
-				dst.DPs = (dst.DPs)[:len(src.DPs)]
-			}
-		} else {
-			dst.DPs = make([]*time.Duration, len(src.DPs))
-		}
-		deriveCopyTo_41(src.DPs, dst.DPs)
-	}
-	if src.MD != nil {
-		dst.MD = make(map[int]time.Duration, len(src.MD))
-		deriveCopyTo_42(src.MD, dst.MD)
-	} else {
-		dst.MD = nil
-	}
 }
 
 func deriveUnionSetOfInt64s(union, that map[int64]struct{}) map[int64]struct{} {
@@ -5200,6 +5200,613 @@ func deriveGoString_61(this map[int]time.Duration) string {
 	}
 	fmt.Fprintf(buf, "}()\n")
 	return buf.String()
+}
+
+// deriveDeepCopy recursively copies the contents of src into dst.
+func deriveDeepCopy(dst, src []*bool) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(bool)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_ recursively copies the contents of src into dst.
+func deriveDeepCopy_(dst, src []*byte) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(byte)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_1 recursively copies the contents of src into dst.
+func deriveDeepCopy_1(dst, src []*complex128) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(complex128)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_2 recursively copies the contents of src into dst.
+func deriveDeepCopy_2(dst, src []*complex64) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(complex64)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_3 recursively copies the contents of src into dst.
+func deriveDeepCopy_3(dst, src []*float64) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(float64)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_4 recursively copies the contents of src into dst.
+func deriveDeepCopy_4(dst, src []*float32) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(float32)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_5 recursively copies the contents of src into dst.
+func deriveDeepCopy_5(dst, src []*int) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(int)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_6 recursively copies the contents of src into dst.
+func deriveDeepCopy_6(dst, src []*int16) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(int16)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_7 recursively copies the contents of src into dst.
+func deriveDeepCopy_7(dst, src []*int32) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(int32)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_8 recursively copies the contents of src into dst.
+func deriveDeepCopy_8(dst, src []*int64) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(int64)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_9 recursively copies the contents of src into dst.
+func deriveDeepCopy_9(dst, src []*int8) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(int8)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_10 recursively copies the contents of src into dst.
+func deriveDeepCopy_10(dst, src []*string) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(string)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_11 recursively copies the contents of src into dst.
+func deriveDeepCopy_11(dst, src []*uint) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(uint)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_12 recursively copies the contents of src into dst.
+func deriveDeepCopy_12(dst, src []*uint16) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(uint16)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_13 recursively copies the contents of src into dst.
+func deriveDeepCopy_13(dst, src []*uint32) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(uint32)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_14 recursively copies the contents of src into dst.
+func deriveDeepCopy_14(dst, src []*uint64) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(uint64)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_15 recursively copies the contents of src into dst.
+func deriveDeepCopy_15(dst, src []*uintptr) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(uintptr)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_16 recursively copies the contents of src into dst.
+func deriveDeepCopy_16(dst, src map[string]uint32) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_17 recursively copies the contents of src into dst.
+func deriveDeepCopy_17(dst, src map[uint8]int64) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_18 recursively copies the contents of src into dst.
+func deriveDeepCopy_18(dst, src map[bool]string) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_19 recursively copies the contents of src into dst.
+func deriveDeepCopy_19(dst, src map[string]bool) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_20 recursively copies the contents of src into dst.
+func deriveDeepCopy_20(dst, src map[complex128]complex64) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_21 recursively copies the contents of src into dst.
+func deriveDeepCopy_21(dst, src map[float64]uint32) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_22 recursively copies the contents of src into dst.
+func deriveDeepCopy_22(dst, src map[uint16]uint8) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_23 recursively copies the contents of src into dst.
+func deriveDeepCopy_23(dst, src [][]int) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			if dst[src_i] != nil {
+				if len(src_value) > len(dst[src_i]) {
+					if cap(dst[src_i]) >= len(src_value) {
+						dst[src_i] = (dst[src_i])[:len(src_value)]
+					} else {
+						dst[src_i] = make([]int, len(src_value))
+					}
+				} else if len(src_value) < len(dst[src_i]) {
+					dst[src_i] = (dst[src_i])[:len(src_value)]
+				}
+			} else {
+				dst[src_i] = make([]int, len(src_value))
+			}
+			copy(dst[src_i], src_value)
+		}
+	}
+}
+
+// deriveDeepCopy_24 recursively copies the contents of src into dst.
+func deriveDeepCopy_24(dst, src [][]string) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			if dst[src_i] != nil {
+				if len(src_value) > len(dst[src_i]) {
+					if cap(dst[src_i]) >= len(src_value) {
+						dst[src_i] = (dst[src_i])[:len(src_value)]
+					} else {
+						dst[src_i] = make([]string, len(src_value))
+					}
+				} else if len(src_value) < len(dst[src_i]) {
+					dst[src_i] = (dst[src_i])[:len(src_value)]
+				}
+			} else {
+				dst[src_i] = make([]string, len(src_value))
+			}
+			copy(dst[src_i], src_value)
+		}
+	}
+}
+
+// deriveDeepCopy_25 recursively copies the contents of src into dst.
+func deriveDeepCopy_25(dst, src [][]*int) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			if dst[src_i] != nil {
+				if len(src_value) > len(dst[src_i]) {
+					if cap(dst[src_i]) >= len(src_value) {
+						dst[src_i] = (dst[src_i])[:len(src_value)]
+					} else {
+						dst[src_i] = make([]*int, len(src_value))
+					}
+				} else if len(src_value) < len(dst[src_i]) {
+					dst[src_i] = (dst[src_i])[:len(src_value)]
+				}
+			} else {
+				dst[src_i] = make([]*int, len(src_value))
+			}
+			deriveDeepCopy_5(dst[src_i], src_value)
+		}
+	}
+}
+
+// deriveDeepCopy_26 recursively copies the contents of src into dst.
+func deriveDeepCopy_26(dst, src *[]int) {
+	if *src == nil {
+		*dst = nil
+	} else {
+		if *dst != nil {
+			if len(*src) > len(*dst) {
+				if cap(*dst) >= len(*src) {
+					*dst = (*dst)[:len(*src)]
+				} else {
+					*dst = make([]int, len(*src))
+				}
+			} else if len(*src) < len(*dst) {
+				*dst = (*dst)[:len(*src)]
+			}
+		} else {
+			*dst = make([]int, len(*src))
+		}
+		copy(*dst, *src)
+	}
+}
+
+// deriveDeepCopy_27 recursively copies the contents of src into dst.
+func deriveDeepCopy_27(dst, src *map[int]int) {
+	if *src != nil {
+		*dst = make(map[int]int, len(*src))
+		deriveDeepCopy_43(*dst, *src)
+	} else {
+		*dst = nil
+	}
+}
+
+// deriveDeepCopy_28 recursively copies the contents of src into dst.
+func deriveDeepCopy_28(dst, src []*Name) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(Name)
+			src_value.DeepCopy(dst[src_i])
+		}
+	}
+}
+
+// deriveDeepCopy_29 recursively copies the contents of src into dst.
+func deriveDeepCopy_29(dst, src map[Name]string) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_30 recursively copies the contents of src into dst.
+func deriveDeepCopy_30(dst, src map[string]Name) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_31 recursively copies the contents of src into dst.
+func deriveDeepCopy_31(dst, src map[string]*Name) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
+		}
+		if src_value == nil {
+			dst[src_key] = nil
+		} else {
+			dst[src_key] = new(Name)
+			src_value.DeepCopy(dst[src_key])
+		}
+	}
+}
+
+// deriveDeepCopy_32 recursively copies the contents of src into dst.
+func deriveDeepCopy_32(dst, src map[string][]Name) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
+		}
+		if src_value == nil {
+			dst[src_key] = nil
+		} else {
+			if dst[src_key] != nil {
+				if len(src_value) > len(dst[src_key]) {
+					if cap(dst[src_key]) >= len(src_value) {
+						dst[src_key] = (dst[src_key])[:len(src_value)]
+					} else {
+						dst[src_key] = make([]Name, len(src_value))
+					}
+				} else if len(src_value) < len(dst[src_key]) {
+					dst[src_key] = (dst[src_key])[:len(src_value)]
+				}
+			} else {
+				dst[src_key] = make([]Name, len(src_value))
+			}
+			copy(dst[src_key], src_value)
+		}
+	}
+}
+
+// deriveDeepCopy_33 recursively copies the contents of src into dst.
+func deriveDeepCopy_33(dst, src map[string][]*Name) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
+		}
+		if src_value == nil {
+			dst[src_key] = nil
+		} else {
+			if dst[src_key] != nil {
+				if len(src_value) > len(dst[src_key]) {
+					if cap(dst[src_key]) >= len(src_value) {
+						dst[src_key] = (dst[src_key])[:len(src_value)]
+					} else {
+						dst[src_key] = make([]*Name, len(src_value))
+					}
+				} else if len(src_value) < len(dst[src_key]) {
+					dst[src_key] = (dst[src_key])[:len(src_value)]
+				}
+			} else {
+				dst[src_key] = make([]*Name, len(src_value))
+			}
+			deriveDeepCopy_28(dst[src_key], src_value)
+		}
+	}
+}
+
+// deriveDeepCopy_34 recursively copies the contents of src into dst.
+func deriveDeepCopy_34(dst, src map[int]RecursiveType) {
+	for src_key, src_value := range src {
+		field := new(RecursiveType)
+		src_value.DeepCopy(field)
+		dst[src_key] = *field
+	}
+}
+
+// deriveDeepCopy_35 recursively copies the contents of src into dst.
+func deriveDeepCopy_35(dst, src *extra.PrivateFieldAndNoEqualMethod) {
+	src_v := reflect.Indirect(reflect.ValueOf(src))
+	dst_v := reflect.Indirect(reflect.ValueOf(dst))
+	*(*int64)(unsafe.Pointer(dst_v.FieldByName("number").UnsafeAddr())) = *(*int64)(unsafe.Pointer(src_v.FieldByName("number").UnsafeAddr()))
+	if *(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())) == nil {
+		*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = nil
+	} else {
+		if *(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) != nil {
+			if len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))) > len(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr()))) {
+				if cap(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr()))) >= len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))) {
+					*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())))]
+				} else {
+					*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))))
+				}
+			} else if len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))) < len(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr()))) {
+				*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())))]
+			}
+		} else {
+			*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))))
+		}
+		copy(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())))
+	}
+	if *(**int64)(unsafe.Pointer(src_v.FieldByName("ptr").UnsafeAddr())) == nil {
+		*(**int64)(unsafe.Pointer(dst_v.FieldByName("ptr").UnsafeAddr())) = nil
+	} else {
+		*(**int64)(unsafe.Pointer(dst_v.FieldByName("ptr").UnsafeAddr())) = new(int64)
+		**(**int64)(unsafe.Pointer(dst_v.FieldByName("ptr").UnsafeAddr())) = **(**int64)(unsafe.Pointer(src_v.FieldByName("ptr").UnsafeAddr()))
+	}
+	if *(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())) == nil {
+		*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = nil
+	} else {
+		if *(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) != nil {
+			if len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))) > len(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr()))) {
+				if cap(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr()))) >= len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))) {
+					*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())))]
+				} else {
+					*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))))
+				}
+			} else if len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))) < len(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr()))) {
+				*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())))]
+			}
+		} else {
+			*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))))
+		}
+		deriveDeepCopy_8(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())))
+	}
+	if *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(src_v.FieldByName("strct").UnsafeAddr())) == nil {
+		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(dst_v.FieldByName("strct").UnsafeAddr())) = nil
+	} else {
+		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(dst_v.FieldByName("strct").UnsafeAddr())) = new(extra.StructWithoutEqualMethod)
+		**(**extra.StructWithoutEqualMethod)(unsafe.Pointer(dst_v.FieldByName("strct").UnsafeAddr())) = **(**extra.StructWithoutEqualMethod)(unsafe.Pointer(src_v.FieldByName("strct").UnsafeAddr()))
+	}
+}
+
+// deriveDeepCopy_36 recursively copies the contents of src into dst.
+func deriveDeepCopy_36(dst, src []*MyEnum) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(MyEnum)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_37 recursively copies the contents of src into dst.
+func deriveDeepCopy_37(dst, src map[int32]MyEnum) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_38 recursively copies the contents of src into dst.
+func deriveDeepCopy_38(dst, src map[MyEnum]int32) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_39 recursively copies the contents of src into dst.
+func deriveDeepCopy_39(dst, src *MySlice) {
+	if *src == nil {
+		*dst = nil
+	} else {
+		if *dst != nil {
+			if len(*src) > len(*dst) {
+				if cap(*dst) >= len(*src) {
+					*dst = (*dst)[:len(*src)]
+				} else {
+					*dst = make([]int64, len(*src))
+				}
+			} else if len(*src) < len(*dst) {
+				*dst = (*dst)[:len(*src)]
+			}
+		} else {
+			*dst = make([]int64, len(*src))
+		}
+		copy(*dst, *src)
+	}
+}
+
+// deriveDeepCopy_40 recursively copies the contents of src into dst.
+func deriveDeepCopy_40(dst, src []MySlice) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			if dst[src_i] != nil {
+				if len(src_value) > len(dst[src_i]) {
+					if cap(dst[src_i]) >= len(src_value) {
+						dst[src_i] = (dst[src_i])[:len(src_value)]
+					} else {
+						dst[src_i] = make([]int64, len(src_value))
+					}
+				} else if len(src_value) < len(dst[src_i]) {
+					dst[src_i] = (dst[src_i])[:len(src_value)]
+				}
+			} else {
+				dst[src_i] = make([]int64, len(src_value))
+			}
+			copy(dst[src_i], src_value)
+		}
+	}
+}
+
+// deriveDeepCopy_41 recursively copies the contents of src into dst.
+func deriveDeepCopy_41(dst, src []*time.Duration) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(time.Duration)
+			*dst[src_i] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_42 recursively copies the contents of src into dst.
+func deriveDeepCopy_42(dst, src map[int]time.Duration) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
 }
 
 func deriveCompare(this, that bool) int {
@@ -7945,613 +8552,6 @@ func deriveCompare_127(this, that map[int]time.Duration) int {
 	return 0
 }
 
-// deriveCopyTo recursively copies the contents of src into dst.
-func deriveCopyTo(src, dst []*bool) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(bool)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_ recursively copies the contents of src into dst.
-func deriveCopyTo_(src, dst []*byte) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(byte)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_1 recursively copies the contents of src into dst.
-func deriveCopyTo_1(src, dst []*complex128) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(complex128)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_2 recursively copies the contents of src into dst.
-func deriveCopyTo_2(src, dst []*complex64) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(complex64)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_3 recursively copies the contents of src into dst.
-func deriveCopyTo_3(src, dst []*float64) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(float64)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_4 recursively copies the contents of src into dst.
-func deriveCopyTo_4(src, dst []*float32) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(float32)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_5 recursively copies the contents of src into dst.
-func deriveCopyTo_5(src, dst []*int) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(int)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_6 recursively copies the contents of src into dst.
-func deriveCopyTo_6(src, dst []*int16) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(int16)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_7 recursively copies the contents of src into dst.
-func deriveCopyTo_7(src, dst []*int32) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(int32)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_8 recursively copies the contents of src into dst.
-func deriveCopyTo_8(src, dst []*int64) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(int64)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_9 recursively copies the contents of src into dst.
-func deriveCopyTo_9(src, dst []*int8) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(int8)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_10 recursively copies the contents of src into dst.
-func deriveCopyTo_10(src, dst []*string) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(string)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_11 recursively copies the contents of src into dst.
-func deriveCopyTo_11(src, dst []*uint) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(uint)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_12 recursively copies the contents of src into dst.
-func deriveCopyTo_12(src, dst []*uint16) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(uint16)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_13 recursively copies the contents of src into dst.
-func deriveCopyTo_13(src, dst []*uint32) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(uint32)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_14 recursively copies the contents of src into dst.
-func deriveCopyTo_14(src, dst []*uint64) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(uint64)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_15 recursively copies the contents of src into dst.
-func deriveCopyTo_15(src, dst []*uintptr) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(uintptr)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_16 recursively copies the contents of src into dst.
-func deriveCopyTo_16(src, dst map[string]uint32) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_17 recursively copies the contents of src into dst.
-func deriveCopyTo_17(src, dst map[uint8]int64) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_18 recursively copies the contents of src into dst.
-func deriveCopyTo_18(src, dst map[bool]string) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_19 recursively copies the contents of src into dst.
-func deriveCopyTo_19(src, dst map[string]bool) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_20 recursively copies the contents of src into dst.
-func deriveCopyTo_20(src, dst map[complex128]complex64) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_21 recursively copies the contents of src into dst.
-func deriveCopyTo_21(src, dst map[float64]uint32) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_22 recursively copies the contents of src into dst.
-func deriveCopyTo_22(src, dst map[uint16]uint8) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_23 recursively copies the contents of src into dst.
-func deriveCopyTo_23(src, dst [][]int) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			if dst[src_i] != nil {
-				if len(src_value) > len(dst[src_i]) {
-					if cap(dst[src_i]) >= len(src_value) {
-						dst[src_i] = (dst[src_i])[:len(src_value)]
-					} else {
-						dst[src_i] = make([]int, len(src_value))
-					}
-				} else if len(src_value) < len(dst[src_i]) {
-					dst[src_i] = (dst[src_i])[:len(src_value)]
-				}
-			} else {
-				dst[src_i] = make([]int, len(src_value))
-			}
-			copy(dst[src_i], src_value)
-		}
-	}
-}
-
-// deriveCopyTo_24 recursively copies the contents of src into dst.
-func deriveCopyTo_24(src, dst [][]string) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			if dst[src_i] != nil {
-				if len(src_value) > len(dst[src_i]) {
-					if cap(dst[src_i]) >= len(src_value) {
-						dst[src_i] = (dst[src_i])[:len(src_value)]
-					} else {
-						dst[src_i] = make([]string, len(src_value))
-					}
-				} else if len(src_value) < len(dst[src_i]) {
-					dst[src_i] = (dst[src_i])[:len(src_value)]
-				}
-			} else {
-				dst[src_i] = make([]string, len(src_value))
-			}
-			copy(dst[src_i], src_value)
-		}
-	}
-}
-
-// deriveCopyTo_25 recursively copies the contents of src into dst.
-func deriveCopyTo_25(src, dst [][]*int) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			if dst[src_i] != nil {
-				if len(src_value) > len(dst[src_i]) {
-					if cap(dst[src_i]) >= len(src_value) {
-						dst[src_i] = (dst[src_i])[:len(src_value)]
-					} else {
-						dst[src_i] = make([]*int, len(src_value))
-					}
-				} else if len(src_value) < len(dst[src_i]) {
-					dst[src_i] = (dst[src_i])[:len(src_value)]
-				}
-			} else {
-				dst[src_i] = make([]*int, len(src_value))
-			}
-			deriveCopyTo_5(src_value, dst[src_i])
-		}
-	}
-}
-
-// deriveCopyTo_26 recursively copies the contents of src into dst.
-func deriveCopyTo_26(src, dst *[]int) {
-	if *src == nil {
-		*dst = nil
-	} else {
-		if *dst != nil {
-			if len(*src) > len(*dst) {
-				if cap(*dst) >= len(*src) {
-					*dst = (*dst)[:len(*src)]
-				} else {
-					*dst = make([]int, len(*src))
-				}
-			} else if len(*src) < len(*dst) {
-				*dst = (*dst)[:len(*src)]
-			}
-		} else {
-			*dst = make([]int, len(*src))
-		}
-		copy(*dst, *src)
-	}
-}
-
-// deriveCopyTo_27 recursively copies the contents of src into dst.
-func deriveCopyTo_27(src, dst *map[int]int) {
-	if *src != nil {
-		*dst = make(map[int]int, len(*src))
-		deriveCopyTo_43(*src, *dst)
-	} else {
-		*dst = nil
-	}
-}
-
-// deriveCopyTo_28 recursively copies the contents of src into dst.
-func deriveCopyTo_28(src, dst []*Name) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(Name)
-			src_value.CopyTo(dst[src_i])
-		}
-	}
-}
-
-// deriveCopyTo_29 recursively copies the contents of src into dst.
-func deriveCopyTo_29(src, dst map[Name]string) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_30 recursively copies the contents of src into dst.
-func deriveCopyTo_30(src, dst map[string]Name) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_31 recursively copies the contents of src into dst.
-func deriveCopyTo_31(src, dst map[string]*Name) {
-	for src_key, src_value := range src {
-		if src_value == nil {
-			dst[src_key] = nil
-		}
-		if src_value == nil {
-			dst[src_key] = nil
-		} else {
-			dst[src_key] = new(Name)
-			src_value.CopyTo(dst[src_key])
-		}
-	}
-}
-
-// deriveCopyTo_32 recursively copies the contents of src into dst.
-func deriveCopyTo_32(src, dst map[string][]Name) {
-	for src_key, src_value := range src {
-		if src_value == nil {
-			dst[src_key] = nil
-		}
-		if src_value == nil {
-			dst[src_key] = nil
-		} else {
-			if dst[src_key] != nil {
-				if len(src_value) > len(dst[src_key]) {
-					if cap(dst[src_key]) >= len(src_value) {
-						dst[src_key] = (dst[src_key])[:len(src_value)]
-					} else {
-						dst[src_key] = make([]Name, len(src_value))
-					}
-				} else if len(src_value) < len(dst[src_key]) {
-					dst[src_key] = (dst[src_key])[:len(src_value)]
-				}
-			} else {
-				dst[src_key] = make([]Name, len(src_value))
-			}
-			copy(dst[src_key], src_value)
-		}
-	}
-}
-
-// deriveCopyTo_33 recursively copies the contents of src into dst.
-func deriveCopyTo_33(src, dst map[string][]*Name) {
-	for src_key, src_value := range src {
-		if src_value == nil {
-			dst[src_key] = nil
-		}
-		if src_value == nil {
-			dst[src_key] = nil
-		} else {
-			if dst[src_key] != nil {
-				if len(src_value) > len(dst[src_key]) {
-					if cap(dst[src_key]) >= len(src_value) {
-						dst[src_key] = (dst[src_key])[:len(src_value)]
-					} else {
-						dst[src_key] = make([]*Name, len(src_value))
-					}
-				} else if len(src_value) < len(dst[src_key]) {
-					dst[src_key] = (dst[src_key])[:len(src_value)]
-				}
-			} else {
-				dst[src_key] = make([]*Name, len(src_value))
-			}
-			deriveCopyTo_28(src_value, dst[src_key])
-		}
-	}
-}
-
-// deriveCopyTo_34 recursively copies the contents of src into dst.
-func deriveCopyTo_34(src, dst map[int]RecursiveType) {
-	for src_key, src_value := range src {
-		field := new(RecursiveType)
-		src_value.CopyTo(field)
-		dst[src_key] = *field
-	}
-}
-
-// deriveCopyTo_35 recursively copies the contents of src into dst.
-func deriveCopyTo_35(src, dst *extra.PrivateFieldAndNoEqualMethod) {
-	src_v := reflect.Indirect(reflect.ValueOf(src))
-	dst_v := reflect.Indirect(reflect.ValueOf(dst))
-	*(*int64)(unsafe.Pointer(dst_v.FieldByName("number").UnsafeAddr())) = *(*int64)(unsafe.Pointer(src_v.FieldByName("number").UnsafeAddr()))
-	if *(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())) == nil {
-		*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = nil
-	} else {
-		if *(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) != nil {
-			if len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))) > len(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr()))) {
-				if cap(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr()))) >= len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))) {
-					*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())))]
-				} else {
-					*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))))
-				}
-			} else if len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))) < len(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr()))) {
-				*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = (*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())))[:len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())))]
-			}
-		} else {
-			*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())) = make([]int64, len(*(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr()))))
-		}
-		copy(*(*[]int64)(unsafe.Pointer(dst_v.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(src_v.FieldByName("numbers").UnsafeAddr())))
-	}
-	if *(**int64)(unsafe.Pointer(src_v.FieldByName("ptr").UnsafeAddr())) == nil {
-		*(**int64)(unsafe.Pointer(dst_v.FieldByName("ptr").UnsafeAddr())) = nil
-	} else {
-		*(**int64)(unsafe.Pointer(dst_v.FieldByName("ptr").UnsafeAddr())) = new(int64)
-		**(**int64)(unsafe.Pointer(dst_v.FieldByName("ptr").UnsafeAddr())) = **(**int64)(unsafe.Pointer(src_v.FieldByName("ptr").UnsafeAddr()))
-	}
-	if *(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())) == nil {
-		*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = nil
-	} else {
-		if *(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) != nil {
-			if len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))) > len(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr()))) {
-				if cap(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr()))) >= len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))) {
-					*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())))]
-				} else {
-					*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))))
-				}
-			} else if len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))) < len(*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr()))) {
-				*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = (*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())))[:len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())))]
-			}
-		} else {
-			*(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())) = make([]*int64, len(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr()))))
-		}
-		deriveCopyTo_8(*(*[]*int64)(unsafe.Pointer(src_v.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(dst_v.FieldByName("numberpts").UnsafeAddr())))
-	}
-	if *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(src_v.FieldByName("strct").UnsafeAddr())) == nil {
-		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(dst_v.FieldByName("strct").UnsafeAddr())) = nil
-	} else {
-		*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(dst_v.FieldByName("strct").UnsafeAddr())) = new(extra.StructWithoutEqualMethod)
-		**(**extra.StructWithoutEqualMethod)(unsafe.Pointer(dst_v.FieldByName("strct").UnsafeAddr())) = **(**extra.StructWithoutEqualMethod)(unsafe.Pointer(src_v.FieldByName("strct").UnsafeAddr()))
-	}
-}
-
-// deriveCopyTo_36 recursively copies the contents of src into dst.
-func deriveCopyTo_36(src, dst []*MyEnum) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(MyEnum)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_37 recursively copies the contents of src into dst.
-func deriveCopyTo_37(src, dst map[int32]MyEnum) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_38 recursively copies the contents of src into dst.
-func deriveCopyTo_38(src, dst map[MyEnum]int32) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveCopyTo_39 recursively copies the contents of src into dst.
-func deriveCopyTo_39(src, dst *MySlice) {
-	if *src == nil {
-		*dst = nil
-	} else {
-		if *dst != nil {
-			if len(*src) > len(*dst) {
-				if cap(*dst) >= len(*src) {
-					*dst = (*dst)[:len(*src)]
-				} else {
-					*dst = make([]int64, len(*src))
-				}
-			} else if len(*src) < len(*dst) {
-				*dst = (*dst)[:len(*src)]
-			}
-		} else {
-			*dst = make([]int64, len(*src))
-		}
-		copy(*dst, *src)
-	}
-}
-
-// deriveCopyTo_40 recursively copies the contents of src into dst.
-func deriveCopyTo_40(src, dst []MySlice) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			if dst[src_i] != nil {
-				if len(src_value) > len(dst[src_i]) {
-					if cap(dst[src_i]) >= len(src_value) {
-						dst[src_i] = (dst[src_i])[:len(src_value)]
-					} else {
-						dst[src_i] = make([]int64, len(src_value))
-					}
-				} else if len(src_value) < len(dst[src_i]) {
-					dst[src_i] = (dst[src_i])[:len(src_value)]
-				}
-			} else {
-				dst[src_i] = make([]int64, len(src_value))
-			}
-			copy(dst[src_i], src_value)
-		}
-	}
-}
-
-// deriveCopyTo_41 recursively copies the contents of src into dst.
-func deriveCopyTo_41(src, dst []*time.Duration) {
-	for src_i, src_value := range src {
-		if src_value == nil {
-			dst[src_i] = nil
-		} else {
-			dst[src_i] = new(time.Duration)
-			*dst[src_i] = *src_value
-		}
-	}
-}
-
-// deriveCopyTo_42 recursively copies the contents of src into dst.
-func deriveCopyTo_42(src, dst map[int]time.Duration) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
 func deriveTuple(v0 int, v1 error) func() (int, error) {
 	return func() (int, error) {
 		return v0, v1
@@ -10227,6 +10227,13 @@ func deriveGoString_D(this time.Duration) string {
 	return buf.String()
 }
 
+// deriveDeepCopy_43 recursively copies the contents of src into dst.
+func deriveDeepCopy_43(dst, src map[int]int) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
 func deriveCompare_s(this, that string) int {
 	return strings.Compare(this, that)
 }
@@ -10283,13 +10290,6 @@ func deriveCompare_129(this, that map[int]int) int {
 
 func deriveCompare_N(this, that Name) int {
 	return (&this).Compare(&that)
-}
-
-// deriveCopyTo_43 recursively copies the contents of src into dst.
-func deriveCopyTo_43(src, dst map[int]int) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
 }
 
 func deriveEqual_85(this, that *vendortest.AVendoredObject) bool {

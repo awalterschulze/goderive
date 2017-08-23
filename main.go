@@ -25,8 +25,8 @@ import (
 	"github.com/awalterschulze/goderive/plugin/compare"
 	"github.com/awalterschulze/goderive/plugin/compose"
 	"github.com/awalterschulze/goderive/plugin/contains"
-	"github.com/awalterschulze/goderive/plugin/copyto"
 	"github.com/awalterschulze/goderive/plugin/curry"
+	"github.com/awalterschulze/goderive/plugin/deepcopy"
 	"github.com/awalterschulze/goderive/plugin/do"
 	"github.com/awalterschulze/goderive/plugin/equal"
 	"github.com/awalterschulze/goderive/plugin/filter"
@@ -60,7 +60,7 @@ func main() {
 		join.NewPlugin(),
 		keys.NewPlugin(),
 		sort.NewPlugin(),
-		copyto.NewPlugin(),
+		deepcopy.NewPlugin(),
 		set.NewPlugin(),
 		min.NewPlugin(),
 		max.NewPlugin(),

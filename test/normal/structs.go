@@ -32,8 +32,8 @@ func (this *Empty) Compare(that *Empty) int {
 	return deriveComparePtrToEmpty(this, that)
 }
 
-func (this *Empty) CopyTo(that *Empty) {
-	deriveCopyToPtrToEmpty(this, that)
+func (this *Empty) DeepCopy(that *Empty) {
+	deriveDeepCopyPtrToEmpty(that, this)
 }
 
 func (this *Empty) GoString() string {
@@ -70,8 +70,8 @@ func (this *BuiltInTypes) Compare(that *BuiltInTypes) int {
 	return deriveComparePtrToBuiltInTypes(this, that)
 }
 
-func (this *BuiltInTypes) CopyTo(that *BuiltInTypes) {
-	deriveCopyToPtrToBuiltInTypes(this, that)
+func (this *BuiltInTypes) DeepCopy(that *BuiltInTypes) {
+	deriveDeepCopyPtrToBuiltInTypes(that, this)
 }
 
 func (this *BuiltInTypes) GoString() string {
@@ -108,8 +108,8 @@ func (this *PrivateBuiltInTypes) Compare(that *PrivateBuiltInTypes) int {
 	return deriveComparePtrToPrivateBuiltInTypes(this, that)
 }
 
-func (this *PrivateBuiltInTypes) CopyTo(that *PrivateBuiltInTypes) {
-	deriveCopyToPtrToPrivateBuiltInTypes(this, that)
+func (this *PrivateBuiltInTypes) DeepCopy(that *PrivateBuiltInTypes) {
+	deriveDeepCopyPtrToPrivateBuiltInTypes(that, this)
 }
 
 type PtrToBuiltInTypes struct {
@@ -142,8 +142,8 @@ func (this *PtrToBuiltInTypes) Compare(that *PtrToBuiltInTypes) int {
 	return deriveComparePtrToPtrToBuiltInTypes(this, that)
 }
 
-func (this *PtrToBuiltInTypes) CopyTo(that *PtrToBuiltInTypes) {
-	deriveCopyToPtrToPtrToBuiltInTypes(this, that)
+func (this *PtrToBuiltInTypes) DeepCopy(that *PtrToBuiltInTypes) {
+	deriveDeepCopyPtrToPtrToBuiltInTypes(that, this)
 }
 
 func (this *PtrToBuiltInTypes) GoString() string {
@@ -180,8 +180,8 @@ func (this *SliceOfBuiltInTypes) Compare(that *SliceOfBuiltInTypes) int {
 	return deriveComparePtrToSliceOfBuiltInTypes(this, that)
 }
 
-func (this *SliceOfBuiltInTypes) CopyTo(that *SliceOfBuiltInTypes) {
-	deriveCopyToPtrToSliceOfBuiltInTypes(this, that)
+func (this *SliceOfBuiltInTypes) DeepCopy(that *SliceOfBuiltInTypes) {
+	deriveDeepCopyPtrToSliceOfBuiltInTypes(that, this)
 }
 
 func (this *SliceOfBuiltInTypes) GoString() string {
@@ -218,8 +218,8 @@ func (this *SliceOfPtrToBuiltInTypes) Compare(that *SliceOfPtrToBuiltInTypes) in
 	return deriveComparePtrToSliceOfPtrToBuiltInTypes(this, that)
 }
 
-func (this *SliceOfPtrToBuiltInTypes) CopyTo(that *SliceOfPtrToBuiltInTypes) {
-	deriveCopyToPtrToSliceOfPtrToBuiltInTypes(this, that)
+func (this *SliceOfPtrToBuiltInTypes) DeepCopy(that *SliceOfPtrToBuiltInTypes) {
+	deriveDeepCopyPtrToSliceOfPtrToBuiltInTypes(that, this)
 }
 
 func (this *SliceOfPtrToBuiltInTypes) GoString() string {
@@ -258,8 +258,8 @@ func (this *ArrayOfBuiltInTypes) Compare(that *ArrayOfBuiltInTypes) int {
 	return deriveComparePtrToArrayOfBuiltInTypes(this, that)
 }
 
-func (this *ArrayOfBuiltInTypes) CopyTo(that *ArrayOfBuiltInTypes) {
-	deriveCopyToPtrToArrayOfBuiltInTypes(this, that)
+func (this *ArrayOfBuiltInTypes) DeepCopy(that *ArrayOfBuiltInTypes) {
+	deriveDeepCopyPtrToArrayOfBuiltInTypes(that, this)
 }
 
 func (this *ArrayOfBuiltInTypes) GoString() string {
@@ -298,8 +298,8 @@ func (this *ArrayOfPtrToBuiltInTypes) Compare(that *ArrayOfPtrToBuiltInTypes) in
 	return deriveComparePtrToArrayOfPtrToBuiltInTypes(this, that)
 }
 
-func (this *ArrayOfPtrToBuiltInTypes) CopyTo(that *ArrayOfPtrToBuiltInTypes) {
-	deriveCopyToPtrToArrayOfPtrToBuiltInTypes(this, that)
+func (this *ArrayOfPtrToBuiltInTypes) DeepCopy(that *ArrayOfPtrToBuiltInTypes) {
+	deriveDeepCopyPtrToArrayOfPtrToBuiltInTypes(that, this)
 }
 
 func (this *ArrayOfPtrToBuiltInTypes) GoString() string {
@@ -319,8 +319,8 @@ func (this *MapsOfSimplerBuiltInTypes) Compare(that *MapsOfSimplerBuiltInTypes) 
 	return deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that)
 }
 
-func (this *MapsOfSimplerBuiltInTypes) CopyTo(that *MapsOfSimplerBuiltInTypes) {
-	deriveCopyToPtrToMapsOfSimplerBuiltInTypes(this, that)
+func (this *MapsOfSimplerBuiltInTypes) DeepCopy(that *MapsOfSimplerBuiltInTypes) {
+	deriveDeepCopyPtrToMapsOfSimplerBuiltInTypes(that, this)
 }
 
 func (this *MapsOfSimplerBuiltInTypes) GoString() string {
@@ -343,8 +343,8 @@ func (this *MapsOfBuiltInTypes) Compare(that *MapsOfBuiltInTypes) int {
 	return deriveComparePtrToMapsOfBuiltInTypes(this, that)
 }
 
-func (this *MapsOfBuiltInTypes) CopyTo(that *MapsOfBuiltInTypes) {
-	deriveCopyToPtrToMapsOfBuiltInTypes(this, that)
+func (this *MapsOfBuiltInTypes) DeepCopy(that *MapsOfBuiltInTypes) {
+	deriveDeepCopyPtrToMapsOfBuiltInTypes(that, this)
 }
 
 func (this *MapsOfBuiltInTypes) GoString() string {
@@ -365,8 +365,8 @@ func (this *SliceToSlice) Compare(that *SliceToSlice) int {
 	return deriveComparePtrToSliceToSlice(this, that)
 }
 
-func (this *SliceToSlice) CopyTo(that *SliceToSlice) {
-	deriveCopyToPtrToSliceToSlice(this, that)
+func (this *SliceToSlice) DeepCopy(that *SliceToSlice) {
+	deriveDeepCopyPtrToSliceToSlice(that, this)
 }
 
 func (this *SliceToSlice) GoString() string {
@@ -388,8 +388,8 @@ func (this *PtrTo) Compare(that *PtrTo) int {
 	return deriveComparePtrToPtrTo(this, that)
 }
 
-func (this *PtrTo) CopyTo(that *PtrTo) {
-	deriveCopyToPtrToPtrTo(this, that)
+func (this *PtrTo) DeepCopy(that *PtrTo) {
+	deriveDeepCopyPtrToPtrTo(that, this)
 }
 
 func (this *PtrTo) GoString() string {
@@ -408,8 +408,8 @@ func (this *Name) Compare(that *Name) int {
 	return deriveComparePtrToName(this, that)
 }
 
-func (this *Name) CopyTo(that *Name) {
-	deriveCopyToPtrToName(this, that)
+func (this *Name) DeepCopy(that *Name) {
+	deriveDeepCopyPtrToName(that, this)
 }
 
 func (this *Name) GoString() string {
@@ -431,8 +431,8 @@ func (this *Structs) Compare(that *Structs) int {
 	return deriveComparePtrToStructs(this, that)
 }
 
-func (this *Structs) CopyTo(that *Structs) {
-	deriveCopyToPtrToStructs(this, that)
+func (this *Structs) DeepCopy(that *Structs) {
+	deriveDeepCopyPtrToStructs(that, this)
 }
 
 func (this *Structs) GoString() string {
@@ -455,8 +455,8 @@ func (this *MapWithStructs) Compare(that *MapWithStructs) int {
 	return deriveComparePtrToMapWithStructs(this, that)
 }
 
-func (this *MapWithStructs) CopyTo(that *MapWithStructs) {
-	deriveCopyToPtrToMapWithStructs(this, that)
+func (this *MapWithStructs) DeepCopy(that *MapWithStructs) {
+	deriveDeepCopyPtrToMapWithStructs(that, this)
 }
 
 func (this *MapWithStructs) GoString() string {
@@ -476,8 +476,8 @@ func (this *RecursiveType) Compare(that *RecursiveType) int {
 	return deriveComparePtrToRecursiveType(this, that)
 }
 
-func (this *RecursiveType) CopyTo(that *RecursiveType) {
-	deriveCopyToPtrToRecursiveType(this, that)
+func (this *RecursiveType) DeepCopy(that *RecursiveType) {
+	deriveDeepCopyPtrToRecursiveType(that, this)
 }
 
 func (this *RecursiveType) GoString() string {
@@ -497,8 +497,8 @@ func (this *EmbeddedStruct1) Compare(that *EmbeddedStruct1) int {
 	return deriveComparePtrToEmbeddedStruct1(this, that)
 }
 
-func (this *EmbeddedStruct1) CopyTo(that *EmbeddedStruct1) {
-	deriveCopyToPtrToEmbeddedStruct1(this, that)
+func (this *EmbeddedStruct1) DeepCopy(that *EmbeddedStruct1) {
+	deriveDeepCopyPtrToEmbeddedStruct1(that, this)
 }
 
 func (this *EmbeddedStruct1) GoString() string {
@@ -518,8 +518,8 @@ func (this *EmbeddedStruct2) Compare(that *EmbeddedStruct2) int {
 	return deriveComparePtrToEmbeddedStruct2(this, that)
 }
 
-func (this *EmbeddedStruct2) CopyTo(that *EmbeddedStruct2) {
-	deriveCopyToPtrToEmbeddedStruct2(this, that)
+func (this *EmbeddedStruct2) DeepCopy(that *EmbeddedStruct2) {
+	deriveDeepCopyPtrToEmbeddedStruct2(that, this)
 }
 
 func (this *EmbeddedStruct2) GoString() string {
@@ -536,8 +536,8 @@ func (this *UnnamedStruct) Equal(that *UnnamedStruct) bool {
 	return deriveEqualPtrToUnnamedStruct(this, that)
 }
 
-func (this *UnnamedStruct) CopyTo(that *UnnamedStruct) {
-	deriveCopyToPtrToUnnamedStruct(this, that)
+func (this *UnnamedStruct) DeepCopy(that *UnnamedStruct) {
+	deriveDeepCopyPtrToUnnamedStruct(that, this)
 }
 
 type StructWithStructFieldWithoutEqualMethod struct {
@@ -553,8 +553,8 @@ func (this *StructWithStructFieldWithoutEqualMethod) Compare(that *StructWithStr
 	return deriveComparePtrToStructWithStructFieldWithoutEqualMethod(this, that)
 }
 
-func (this *StructWithStructFieldWithoutEqualMethod) CopyTo(that *StructWithStructFieldWithoutEqualMethod) {
-	deriveCopyToPtrToStructWithStructFieldWithoutEqualMethod(this, that)
+func (this *StructWithStructFieldWithoutEqualMethod) DeepCopy(that *StructWithStructFieldWithoutEqualMethod) {
+	deriveDeepCopyPtrToStructWithStructFieldWithoutEqualMethod(that, this)
 }
 
 func (this *StructWithStructFieldWithoutEqualMethod) GoString() string {
@@ -578,8 +578,8 @@ func (this *StructWithStructWithFromAnotherPackage) Compare(that *StructWithStru
 	return deriveComparePtrToStructWithStructWithFromAnotherPackage(this, that)
 }
 
-func (this *StructWithStructWithFromAnotherPackage) CopyTo(that *StructWithStructWithFromAnotherPackage) {
-	deriveCopyToPtrToStructWithStructWithFromAnotherPackage(this, that)
+func (this *StructWithStructWithFromAnotherPackage) DeepCopy(that *StructWithStructWithFromAnotherPackage) {
+	deriveDeepCopyPtrToStructWithStructWithFromAnotherPackage(that, this)
 }
 
 func (this *StructWithStructWithFromAnotherPackage) GoString() string {
@@ -598,8 +598,8 @@ func (this *FieldWithStructWithPrivateFields) Compare(that *FieldWithStructWithP
 	return deriveComparePtrToFieldWithStructWithPrivateFields(this, that)
 }
 
-func (this *FieldWithStructWithPrivateFields) CopyTo(that *FieldWithStructWithPrivateFields) {
-	deriveCopyToPtrToFieldWithStructWithPrivateFields(this, that)
+func (this *FieldWithStructWithPrivateFields) DeepCopy(that *FieldWithStructWithPrivateFields) {
+	deriveDeepCopyPtrToFieldWithStructWithPrivateFields(that, this)
 }
 
 type Enums struct {
@@ -622,8 +622,8 @@ func (this *Enums) Compare(that *Enums) int {
 	return deriveComparePtrToEnums(this, that)
 }
 
-func (this *Enums) CopyTo(that *Enums) {
-	deriveCopyToPtrToEnums(this, that)
+func (this *Enums) DeepCopy(that *Enums) {
+	deriveDeepCopyPtrToEnums(that, this)
 }
 
 func (this *Enums) GoString() string {
@@ -646,8 +646,8 @@ func (this *NamedTypes) Compare(that *NamedTypes) int {
 	return deriveComparePtrToNamedTypes(this, that)
 }
 
-func (this *NamedTypes) CopyTo(that *NamedTypes) {
-	deriveCopyToPtrToNamedTypes(this, that)
+func (this *NamedTypes) DeepCopy(that *NamedTypes) {
+	deriveDeepCopyPtrToNamedTypes(that, this)
 }
 
 func (this *NamedTypes) GoString() string {
@@ -698,8 +698,8 @@ func (this *Duration) Compare(that *Duration) int {
 	return deriveComparePtrToDuration(this, that)
 }
 
-func (this *Duration) CopyTo(that *Duration) {
-	deriveCopyToPtrToDuration(this, that)
+func (this *Duration) DeepCopy(that *Duration) {
+	deriveDeepCopyPtrToDuration(that, this)
 }
 
 func (this *Duration) GoString() string {

@@ -19,8 +19,8 @@ import (
 	"testing"
 )
 
-func copyto(this, that interface{}) {
-	method := reflect.ValueOf(this).MethodByName("CopyTo")
+func deepcopy(this, that interface{}) {
+	method := reflect.ValueOf(this).MethodByName("DeepCopy")
 	method.Call([]reflect.Value{reflect.ValueOf(that)})
 }
 
@@ -62,7 +62,7 @@ func TestCloneStructs(t *testing.T) {
 				for reflect.ValueOf(that).IsNil() {
 					that = random(that)
 				}
-				copyto(this, that)
+				deepcopy(this, that)
 				if want, got := true, reflect.DeepEqual(this, that); want != got {
 					t.Fatalf("want %v got %v\n this = %#v, that = %#v\n", want, got, this, that)
 				}
@@ -71,17 +71,13 @@ func TestCloneStructs(t *testing.T) {
 	}
 }
 
-func TestCopyToMapNilEntry(t *testing.T) {
+func TestDeepCopyMapNilEntry(t *testing.T) {
 	this := &MapWithStructs{StringToPtrToName: map[string]*Name{
 		"a": nil,
 	}}
 	that := &MapWithStructs{}
-	copyto(this, that)
+	deepcopy(this, that)
 	if want, got := true, reflect.DeepEqual(this, that); want != got {
 		t.Fatalf("want %v got %v\n this = %#v, that = %#v\n", want, got, this, that)
 	}
-}
-
-func DisabledTestStructWithPrivateFieldsWithAPrivateStructType(t *testing.T) {
-	t.Fatal("todo")
 }

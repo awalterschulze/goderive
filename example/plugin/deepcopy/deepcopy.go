@@ -1,4 +1,4 @@
-package copyto
+package deepcopy
 
 type MyStruct struct {
 	Int64     int64
@@ -10,6 +10,6 @@ func (m *MyStruct) Clone() *MyStruct {
 		return nil
 	}
 	n := &MyStruct{}
-	deriveCopyTo(m, n)
+	deriveDeepCopy(n, m)
 	return n
 }

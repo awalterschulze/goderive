@@ -29,7 +29,7 @@
 //	import "sort"
 //
 //	type MyStruct struct {
-// 		Int64     int64
+//		Int64     int64
 //		StringPtr *string
 //	}
 //

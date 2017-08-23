@@ -28,18 +28,18 @@
 //	package main
 //
 //	type MyStruct struct {
-// 		Int64     int64
+//		Int64     int64
 //		StringPtr *string
 //	}
 //
 //	func (this *MyStruct) GoString() string {
-// 		return deriveGoString(this)
+//		return deriveGoString(this)
 //	}
 //
-//  func main () {
+//	func main () {
 //		s := "abc"
 //		fmt.Printf("%#v", &MyStruct{StringPtr: &s})
-//  }
+//	}
 //
 //  The %#v fmt operand will then invoke the GoString method.
 //  GoString does a recursive print, even printing pointer values, unlike the default %#v operand.

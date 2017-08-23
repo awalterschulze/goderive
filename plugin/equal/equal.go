@@ -27,12 +27,12 @@
 //	package main
 //
 //	type MyStruct struct {
-// 		Int64     int64
+//		Int64     int64
 //		StringPtr *string
 //	}
 //
 //	func (this *MyStruct) Equal(that *MyStruct) bool {
-// 		return deriveEqual(this, that)
+//		return deriveEqual(this, that)
 //	}
 //
 // goderive will then generate the following code in a derived.gen.go file in the same package:

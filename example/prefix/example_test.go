@@ -1,4 +1,4 @@
-package customprefix
+package prefix
 
 import (
 	"math/rand"

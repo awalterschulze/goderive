@@ -1,5 +1,6 @@
 .PHONY: example
 example:
-	make -C customprefix example
+	make -C prefix example
+	make -C pluginprefix example
 	make -C gogenerate example
 	make -C plugin example

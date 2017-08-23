@@ -130,7 +130,9 @@ goderive can be run from the command line:
 
 [You can also run goderive using go generate](https://github.com/awalterschulze/goderive/blob/master/example/gogenerate/example.go) 
 
-[And you can customize function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/customprefix/Makefile)
+[And you can customize specific function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/pluginprefix/Makefile)
+
+[Or you can customize all function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/prefix/Makefile)
 
 You can let goderive rename your functions using the `-autoname` and `-dedup` flags.
 If these flags are not used, goderive will not touch your code and rather return an error.

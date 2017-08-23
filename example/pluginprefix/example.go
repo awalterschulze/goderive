@@ -1,11 +1,11 @@
-// Example: customprefix shows how to defined a derived function that does not
+// Example: pluginprefix shows how to defined a derived function that does not
 // have to start with default "deriveEqual" prefix.
 // in the Makefile we can see the goderive command being called:
 //
-//   goderive --equal.prefix="eq" ./...
+//   goderive --pluginprefix="equal=eq" ./...
 //
 // This sets the new prefix to "eq".
-package customprefix
+package pluginprefix
 
 type MyStruct struct {
 	Int64     int64

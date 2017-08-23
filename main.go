@@ -17,6 +17,7 @@ package main
 import (
 	"flag"
 	"log"
+	"strings"
 
 	"github.com/awalterschulze/goderive/derive"
 	"github.com/awalterschulze/goderive/plugin/all"
@@ -47,6 +48,8 @@ import (
 
 var autoname = flag.Bool("autoname", false, "rename functions that are conflicting with other functions")
 var dedup = flag.Bool("dedup", false, "rename functions to functions that are duplicates")
+var prefix = flag.String("prefix", "derive", "prefix of all functions")
+var pluginprefix = flag.String("pluginprefix", "", "used to override function prefixes.  The input is a comma separated list of function are prefix pairs.  For example equal=deriveEqual,copyto=copyTo,fmap=fmap,")
 
 func main() {
 	plugins := []derive.Plugin{
@@ -75,14 +78,27 @@ func main() {
 		gostring.NewPlugin(),
 		compose.NewPlugin(),
 	}
-	flags := make(map[string]*string)
-	for _, p := range plugins {
-		flags[p.Name()] = flag.String(p.Name()+".prefix", p.GetPrefix(), "set the prefix for "+p.Name()+" functions that should be derived.")
-	}
 	log.SetFlags(0)
 	flag.Parse()
+	overridePrefixes := make(map[string]string)
+	if len(*pluginprefix) > 0 {
+		pairs := strings.Split(*pluginprefix, ",")
+		for _, pair := range pairs {
+			ss := strings.Split(pair, "=")
+			if len(ss) != 2 {
+				log.Fatalf("invalid syntax for plugin prefix <%s>", pair)
+			}
+			overridePrefixes[ss[0]] = ss[1]
+		}
+	}
 	for _, p := range plugins {
-		p.SetPrefix(*(flags[p.Name()]))
+		pluginprefix := p.GetPrefix()
+		pluginprefix = strings.Replace(pluginprefix, "derive", *prefix, 1)
+		newprefix, override := overridePrefixes[p.Name()]
+		if override {
+			pluginprefix = newprefix
+		}
+		p.SetPrefix(pluginprefix)
 	}
 	paths := derive.ImportPaths(flag.Args())
 	g, err := derive.NewPlugins(plugins, *autoname, *dedup).Load(paths)

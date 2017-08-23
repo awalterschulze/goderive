@@ -14,7 +14,7 @@
 
 // Package do contains the implementation of the do plugin, which generates the deriveDo function.
 //
-// The deriveDo function executes a list of functions in concurrently and returns their results.
+// The deriveDo function executes a list of functions concurrently and returns their results.
 //   deriveDo(func() (A, error), func (B, error)) (A, B, error)
 // Each function is executed in a go routine and the first error is returned.
 // It waits for all functions to complete.
@@ -91,14 +91,12 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 	return &gen{
 		TypesMap: typesMap,
 		printer:  p,
-		tuple:    deps["tuple"],
 	}
 }
 
 type gen struct {
 	derive.TypesMap
 	printer derive.Printer
-	tuple   derive.Dependency
 }
 
 func (this *gen) Add(name string, typs []types.Type) (string, error) {

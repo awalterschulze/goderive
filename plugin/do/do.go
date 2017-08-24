@@ -38,7 +38,7 @@
 //
 // In go this could be:
 //   func newTuple(a A, b B) func() (A, B) {
-//       retrun func() (A, B) {
+//       return func() (A, B) {
 //           return a, b
 //       }
 //   }
@@ -56,7 +56,7 @@
 //           return func(b B) (func() (A, B), error) {
 //               a, err := f()
 //               if err != nil {
-//                   retrun nil, err
+//                   return nil, err
 //               }
 //               return newTuple(a, b), nil
 //           }

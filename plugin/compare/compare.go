@@ -149,6 +149,10 @@ func (g *gen) genFunc(typ types.Type) error {
 	g.Generating(typ)
 	typeStr := g.TypeString(typ)
 	p.P("")
+	p.P("// %s compares this and that and returns", g.GetFuncName(typ))
+	p.P("//   * 0 if they are equal,")
+	p.P("//   * -1 is this is smaller and")
+	p.P("//   * +1 is this is bigger.")
 	p.P("func %s(this, that %s) int {", g.GetFuncName(typ), typeStr)
 	p.In()
 	if err := g.genStatement(typ, "this", "that"); err != nil {

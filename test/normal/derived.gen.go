@@ -2399,6 +2399,10 @@ func deriveCompose2(f func(string, string) ([]string, string, error), g func([]s
 	}
 }
 
+// deriveComparePtrToEmpty compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToEmpty(this, that *Empty) int {
 	if this == nil {
 		if that == nil {
@@ -2412,6 +2416,10 @@ func deriveComparePtrToEmpty(this, that *Empty) int {
 	return 0
 }
 
+// deriveComparePtrToBuiltInTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2482,6 +2490,10 @@ func deriveComparePtrToBuiltInTypes(this, that *BuiltInTypes) int {
 	return 0
 }
 
+// deriveComparePtrToPrivateBuiltInTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2552,6 +2564,10 @@ func deriveComparePtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) int 
 	return 0
 }
 
+// deriveComparePtrToPtrToBuiltInTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2622,6 +2638,10 @@ func deriveComparePtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) int {
 	return 0
 }
 
+// deriveComparePtrToSliceOfBuiltInTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2692,6 +2712,10 @@ func deriveComparePtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) int 
 	return 0
 }
 
+// deriveComparePtrToSliceOfPtrToBuiltInTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2762,6 +2786,10 @@ func deriveComparePtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInT
 	return 0
 }
 
+// deriveComparePtrToArrayOfBuiltInTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2835,6 +2863,10 @@ func deriveComparePtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) int 
 	return 0
 }
 
+// deriveComparePtrToArrayOfPtrToBuiltInTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2908,6 +2940,10 @@ func deriveComparePtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInT
 	return 0
 }
 
+// deriveComparePtrToMapsOfSimplerBuiltInTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2927,6 +2963,10 @@ func deriveComparePtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltI
 	return 0
 }
 
+// deriveComparePtrToMapsOfBuiltInTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) int {
 	if this == nil {
 		if that == nil {
@@ -2955,6 +2995,10 @@ func deriveComparePtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) int {
 	return 0
 }
 
+// deriveComparePtrToSliceToSlice compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToSliceToSlice(this, that *SliceToSlice) int {
 	if this == nil {
 		if that == nil {
@@ -2977,6 +3021,10 @@ func deriveComparePtrToSliceToSlice(this, that *SliceToSlice) int {
 	return 0
 }
 
+// deriveComparePtrToPtrTo compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToPtrTo(this, that *PtrTo) int {
 	if this == nil {
 		if that == nil {
@@ -3002,6 +3050,10 @@ func deriveComparePtrToPtrTo(this, that *PtrTo) int {
 	return 0
 }
 
+// deriveComparePtrToName compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToName(this, that *Name) int {
 	if this == nil {
 		if that == nil {
@@ -3018,6 +3070,10 @@ func deriveComparePtrToName(this, that *Name) int {
 	return 0
 }
 
+// deriveComparePtrToStructs compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToStructs(this, that *Structs) int {
 	if this == nil {
 		if that == nil {
@@ -3043,6 +3099,10 @@ func deriveComparePtrToStructs(this, that *Structs) int {
 	return 0
 }
 
+// deriveComparePtrToMapWithStructs compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToMapWithStructs(this, that *MapWithStructs) int {
 	if this == nil {
 		if that == nil {
@@ -3071,6 +3131,10 @@ func deriveComparePtrToMapWithStructs(this, that *MapWithStructs) int {
 	return 0
 }
 
+// deriveComparePtrToRecursiveType compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToRecursiveType(this, that *RecursiveType) int {
 	if this == nil {
 		if that == nil {
@@ -3090,6 +3154,10 @@ func deriveComparePtrToRecursiveType(this, that *RecursiveType) int {
 	return 0
 }
 
+// deriveComparePtrToEmbeddedStruct1 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToEmbeddedStruct1(this, that *EmbeddedStruct1) int {
 	if this == nil {
 		if that == nil {
@@ -3109,6 +3177,10 @@ func deriveComparePtrToEmbeddedStruct1(this, that *EmbeddedStruct1) int {
 	return 0
 }
 
+// deriveComparePtrToEmbeddedStruct2 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToEmbeddedStruct2(this, that *EmbeddedStruct2) int {
 	if this == nil {
 		if that == nil {
@@ -3128,6 +3200,10 @@ func deriveComparePtrToEmbeddedStruct2(this, that *EmbeddedStruct2) int {
 	return 0
 }
 
+// deriveComparePtrToStructWithStructFieldWithoutEqualMethod compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) int {
 	if this == nil {
 		if that == nil {
@@ -3147,6 +3223,10 @@ func deriveComparePtrToStructWithStructFieldWithoutEqualMethod(this, that *Struc
 	return 0
 }
 
+// deriveComparePtrToStructWithStructWithFromAnotherPackage compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToStructWithStructWithFromAnotherPackage(this, that *StructWithStructWithFromAnotherPackage) int {
 	if this == nil {
 		if that == nil {
@@ -3166,6 +3246,10 @@ func deriveComparePtrToStructWithStructWithFromAnotherPackage(this, that *Struct
 	return 0
 }
 
+// deriveComparePtrToFieldWithStructWithPrivateFields compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToFieldWithStructWithPrivateFields(this, that *FieldWithStructWithPrivateFields) int {
 	if this == nil {
 		if that == nil {
@@ -3182,6 +3266,10 @@ func deriveComparePtrToFieldWithStructWithPrivateFields(this, that *FieldWithStr
 	return 0
 }
 
+// deriveComparePtrToEnums compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToEnums(this, that *Enums) int {
 	if this == nil {
 		if that == nil {
@@ -3216,6 +3304,10 @@ func deriveComparePtrToEnums(this, that *Enums) int {
 	return 0
 }
 
+// deriveComparePtrToNamedTypes compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToNamedTypes(this, that *NamedTypes) int {
 	if this == nil {
 		if that == nil {
@@ -3238,6 +3330,10 @@ func deriveComparePtrToNamedTypes(this, that *NamedTypes) int {
 	return 0
 }
 
+// deriveComparePtrToDuration compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveComparePtrToDuration(this, that *Duration) int {
 	if this == nil {
 		if that == nil {
@@ -3266,6 +3362,10 @@ func deriveComparePtrToDuration(this, that *Duration) int {
 	return 0
 }
 
+// deriveCompareComplex32 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompareComplex32(this, that complex64) int {
 	if thisr, thatr := real(this), real(that); thisr == thatr {
 		if thisi, thati := imag(this), imag(that); thisi == thati {
@@ -3282,6 +3382,10 @@ func deriveCompareComplex32(this, that complex64) int {
 	}
 }
 
+// deriveCompareComplex64 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompareComplex64(this, that complex128) int {
 	if thisr, thatr := real(this), real(that); thisr == thatr {
 		if thisi, thati := imag(this), imag(that); thisi == thati {
@@ -3298,6 +3402,10 @@ func deriveCompareComplex64(this, that complex128) int {
 	}
 }
 
+// deriveCompareDeriveTheDerived compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 	if this == nil {
 		if that == nil {
@@ -4195,6 +4303,7 @@ func deriveMaxStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	return m
 }
 
+// deriveAny reports whether the predicate returns true for any of the elements in the given slice.
 func deriveAny(pred func(int) bool, list []int) bool {
 	for _, elem := range list {
 		if pred(elem) {
@@ -4204,7 +4313,7 @@ func deriveAny(pred func(int) bool, list []int) bool {
 	return false
 }
 
-// deriveAll reports whether the predicate returns true for all the given elements in the given slice.
+// deriveAll reports whether the predicate returns true for all of the elements in the given slice.
 func deriveAll(predicate func(int) bool, slice []int) bool {
 	for _, elem := range slice {
 		if !predicate(elem) {
@@ -5816,6 +5925,10 @@ func deriveDeepCopy_42(dst, src map[int]time.Duration) {
 	}
 }
 
+// deriveCompare compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare(this, that bool) int {
 	if this == that {
 		return 0
@@ -5826,6 +5939,10 @@ func deriveCompare(this, that bool) int {
 	return 1
 }
 
+// deriveCompare_ compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_(this, that byte) int {
 	if this != that {
 		if this < that {
@@ -5837,6 +5954,10 @@ func deriveCompare_(this, that byte) int {
 	return 0
 }
 
+// deriveCompare_f compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_f(this, that float64) int {
 	if this != that {
 		if this < that {
@@ -5848,6 +5969,10 @@ func deriveCompare_f(this, that float64) int {
 	return 0
 }
 
+// deriveCompare_fl compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_fl(this, that float32) int {
 	if this != that {
 		if this < that {
@@ -5859,6 +5984,10 @@ func deriveCompare_fl(this, that float32) int {
 	return 0
 }
 
+// deriveCompare_i compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_i(this, that int) int {
 	if this != that {
 		if this < that {
@@ -5870,6 +5999,10 @@ func deriveCompare_i(this, that int) int {
 	return 0
 }
 
+// deriveCompare_in compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_in(this, that int16) int {
 	if this != that {
 		if this < that {
@@ -5881,6 +6014,10 @@ func deriveCompare_in(this, that int16) int {
 	return 0
 }
 
+// deriveCompare_int compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_int(this, that int32) int {
 	if this != that {
 		if this < that {
@@ -5892,6 +6029,10 @@ func deriveCompare_int(this, that int32) int {
 	return 0
 }
 
+// deriveCompare_int6 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_int6(this, that int64) int {
 	if this != that {
 		if this < that {
@@ -5903,6 +6044,10 @@ func deriveCompare_int6(this, that int64) int {
 	return 0
 }
 
+// deriveCompare_int8 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_int8(this, that int8) int {
 	if this != that {
 		if this < that {
@@ -5914,6 +6059,10 @@ func deriveCompare_int8(this, that int8) int {
 	return 0
 }
 
+// deriveCompare_u compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_u(this, that uint) int {
 	if this != that {
 		if this < that {
@@ -5925,6 +6074,10 @@ func deriveCompare_u(this, that uint) int {
 	return 0
 }
 
+// deriveCompare_ui compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_ui(this, that uint16) int {
 	if this != that {
 		if this < that {
@@ -5936,6 +6089,10 @@ func deriveCompare_ui(this, that uint16) int {
 	return 0
 }
 
+// deriveCompare_uin compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_uin(this, that uint32) int {
 	if this != that {
 		if this < that {
@@ -5947,6 +6104,10 @@ func deriveCompare_uin(this, that uint32) int {
 	return 0
 }
 
+// deriveCompare_uint compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_uint(this, that uint64) int {
 	if this != that {
 		if this < that {
@@ -5958,6 +6119,10 @@ func deriveCompare_uint(this, that uint64) int {
 	return 0
 }
 
+// deriveCompare_1 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_1(this, that uintptr) int {
 	if this != that {
 		if this < that {
@@ -5969,6 +6134,10 @@ func deriveCompare_1(this, that uintptr) int {
 	return 0
 }
 
+// deriveCompare_2 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_2(this, that *bool) int {
 	if this == nil {
 		if that == nil {
@@ -5982,6 +6151,10 @@ func deriveCompare_2(this, that *bool) int {
 	return deriveCompare(*this, *that)
 }
 
+// deriveCompare_3 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_3(this, that *byte) int {
 	if this == nil {
 		if that == nil {
@@ -5995,6 +6168,10 @@ func deriveCompare_3(this, that *byte) int {
 	return deriveCompare_(*this, *that)
 }
 
+// deriveCompare_4 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_4(this, that *complex128) int {
 	if this == nil {
 		if that == nil {
@@ -6008,6 +6185,10 @@ func deriveCompare_4(this, that *complex128) int {
 	return deriveCompareComplex64(*this, *that)
 }
 
+// deriveCompare_5 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_5(this, that *complex64) int {
 	if this == nil {
 		if that == nil {
@@ -6021,6 +6202,10 @@ func deriveCompare_5(this, that *complex64) int {
 	return deriveCompareComplex32(*this, *that)
 }
 
+// deriveCompare_6 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_6(this, that *float64) int {
 	if this == nil {
 		if that == nil {
@@ -6034,6 +6219,10 @@ func deriveCompare_6(this, that *float64) int {
 	return deriveCompare_f(*this, *that)
 }
 
+// deriveCompare_7 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_7(this, that *float32) int {
 	if this == nil {
 		if that == nil {
@@ -6047,6 +6236,10 @@ func deriveCompare_7(this, that *float32) int {
 	return deriveCompare_fl(*this, *that)
 }
 
+// deriveCompare_8 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_8(this, that *int) int {
 	if this == nil {
 		if that == nil {
@@ -6060,6 +6253,10 @@ func deriveCompare_8(this, that *int) int {
 	return deriveCompare_i(*this, *that)
 }
 
+// deriveCompare_9 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_9(this, that *int16) int {
 	if this == nil {
 		if that == nil {
@@ -6073,6 +6270,10 @@ func deriveCompare_9(this, that *int16) int {
 	return deriveCompare_in(*this, *that)
 }
 
+// deriveCompare_10 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_10(this, that *int32) int {
 	if this == nil {
 		if that == nil {
@@ -6086,6 +6287,10 @@ func deriveCompare_10(this, that *int32) int {
 	return deriveCompare_int(*this, *that)
 }
 
+// deriveCompare_11 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_11(this, that *int64) int {
 	if this == nil {
 		if that == nil {
@@ -6099,6 +6304,10 @@ func deriveCompare_11(this, that *int64) int {
 	return deriveCompare_int6(*this, *that)
 }
 
+// deriveCompare_12 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_12(this, that *int8) int {
 	if this == nil {
 		if that == nil {
@@ -6112,6 +6321,10 @@ func deriveCompare_12(this, that *int8) int {
 	return deriveCompare_int8(*this, *that)
 }
 
+// deriveCompare_13 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_13(this, that *string) int {
 	if this == nil {
 		if that == nil {
@@ -6125,6 +6338,10 @@ func deriveCompare_13(this, that *string) int {
 	return deriveCompare_s(*this, *that)
 }
 
+// deriveCompare_14 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_14(this, that *uint) int {
 	if this == nil {
 		if that == nil {
@@ -6138,6 +6355,10 @@ func deriveCompare_14(this, that *uint) int {
 	return deriveCompare_u(*this, *that)
 }
 
+// deriveCompare_15 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_15(this, that *uint16) int {
 	if this == nil {
 		if that == nil {
@@ -6151,6 +6372,10 @@ func deriveCompare_15(this, that *uint16) int {
 	return deriveCompare_ui(*this, *that)
 }
 
+// deriveCompare_16 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_16(this, that *uint32) int {
 	if this == nil {
 		if that == nil {
@@ -6164,6 +6389,10 @@ func deriveCompare_16(this, that *uint32) int {
 	return deriveCompare_uin(*this, *that)
 }
 
+// deriveCompare_17 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_17(this, that *uint64) int {
 	if this == nil {
 		if that == nil {
@@ -6177,6 +6406,10 @@ func deriveCompare_17(this, that *uint64) int {
 	return deriveCompare_uint(*this, *that)
 }
 
+// deriveCompare_18 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_18(this, that *uintptr) int {
 	if this == nil {
 		if that == nil {
@@ -6190,6 +6423,10 @@ func deriveCompare_18(this, that *uintptr) int {
 	return deriveCompare_1(*this, *that)
 }
 
+// deriveCompare_19 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_19(this, that []bool) int {
 	if this == nil {
 		if that == nil {
@@ -6214,6 +6451,10 @@ func deriveCompare_19(this, that []bool) int {
 	return 0
 }
 
+// deriveCompare_20 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_20(this, that []complex128) int {
 	if this == nil {
 		if that == nil {
@@ -6238,6 +6479,10 @@ func deriveCompare_20(this, that []complex128) int {
 	return 0
 }
 
+// deriveCompare_21 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_21(this, that []complex64) int {
 	if this == nil {
 		if that == nil {
@@ -6262,6 +6507,10 @@ func deriveCompare_21(this, that []complex64) int {
 	return 0
 }
 
+// deriveCompare_22 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_22(this, that []float64) int {
 	if this == nil {
 		if that == nil {
@@ -6286,6 +6535,10 @@ func deriveCompare_22(this, that []float64) int {
 	return 0
 }
 
+// deriveCompare_23 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_23(this, that []float32) int {
 	if this == nil {
 		if that == nil {
@@ -6310,6 +6563,10 @@ func deriveCompare_23(this, that []float32) int {
 	return 0
 }
 
+// deriveCompare_24 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_24(this, that []int) int {
 	if this == nil {
 		if that == nil {
@@ -6334,6 +6591,10 @@ func deriveCompare_24(this, that []int) int {
 	return 0
 }
 
+// deriveCompare_25 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_25(this, that []int16) int {
 	if this == nil {
 		if that == nil {
@@ -6358,6 +6619,10 @@ func deriveCompare_25(this, that []int16) int {
 	return 0
 }
 
+// deriveCompare_26 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_26(this, that []int32) int {
 	if this == nil {
 		if that == nil {
@@ -6382,6 +6647,10 @@ func deriveCompare_26(this, that []int32) int {
 	return 0
 }
 
+// deriveCompare_27 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_27(this, that []int64) int {
 	if this == nil {
 		if that == nil {
@@ -6406,6 +6675,10 @@ func deriveCompare_27(this, that []int64) int {
 	return 0
 }
 
+// deriveCompare_28 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_28(this, that []int8) int {
 	if this == nil {
 		if that == nil {
@@ -6430,6 +6703,10 @@ func deriveCompare_28(this, that []int8) int {
 	return 0
 }
 
+// deriveCompare_29 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_29(this, that []string) int {
 	if this == nil {
 		if that == nil {
@@ -6454,6 +6731,10 @@ func deriveCompare_29(this, that []string) int {
 	return 0
 }
 
+// deriveCompare_30 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_30(this, that []uint) int {
 	if this == nil {
 		if that == nil {
@@ -6478,6 +6759,10 @@ func deriveCompare_30(this, that []uint) int {
 	return 0
 }
 
+// deriveCompare_31 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_31(this, that []uint16) int {
 	if this == nil {
 		if that == nil {
@@ -6502,6 +6787,10 @@ func deriveCompare_31(this, that []uint16) int {
 	return 0
 }
 
+// deriveCompare_32 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_32(this, that []uint32) int {
 	if this == nil {
 		if that == nil {
@@ -6526,6 +6815,10 @@ func deriveCompare_32(this, that []uint32) int {
 	return 0
 }
 
+// deriveCompare_33 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_33(this, that []uint64) int {
 	if this == nil {
 		if that == nil {
@@ -6550,6 +6843,10 @@ func deriveCompare_33(this, that []uint64) int {
 	return 0
 }
 
+// deriveCompare_34 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_34(this, that []uintptr) int {
 	if this == nil {
 		if that == nil {
@@ -6574,6 +6871,10 @@ func deriveCompare_34(this, that []uintptr) int {
 	return 0
 }
 
+// deriveCompare_35 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_35(this, that []*bool) int {
 	if this == nil {
 		if that == nil {
@@ -6598,6 +6899,10 @@ func deriveCompare_35(this, that []*bool) int {
 	return 0
 }
 
+// deriveCompare_36 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_36(this, that []*byte) int {
 	if this == nil {
 		if that == nil {
@@ -6622,6 +6927,10 @@ func deriveCompare_36(this, that []*byte) int {
 	return 0
 }
 
+// deriveCompare_37 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_37(this, that []*complex128) int {
 	if this == nil {
 		if that == nil {
@@ -6646,6 +6955,10 @@ func deriveCompare_37(this, that []*complex128) int {
 	return 0
 }
 
+// deriveCompare_38 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_38(this, that []*complex64) int {
 	if this == nil {
 		if that == nil {
@@ -6670,6 +6983,10 @@ func deriveCompare_38(this, that []*complex64) int {
 	return 0
 }
 
+// deriveCompare_39 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_39(this, that []*float64) int {
 	if this == nil {
 		if that == nil {
@@ -6694,6 +7011,10 @@ func deriveCompare_39(this, that []*float64) int {
 	return 0
 }
 
+// deriveCompare_40 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_40(this, that []*float32) int {
 	if this == nil {
 		if that == nil {
@@ -6718,6 +7039,10 @@ func deriveCompare_40(this, that []*float32) int {
 	return 0
 }
 
+// deriveCompare_41 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_41(this, that []*int) int {
 	if this == nil {
 		if that == nil {
@@ -6742,6 +7067,10 @@ func deriveCompare_41(this, that []*int) int {
 	return 0
 }
 
+// deriveCompare_42 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_42(this, that []*int16) int {
 	if this == nil {
 		if that == nil {
@@ -6766,6 +7095,10 @@ func deriveCompare_42(this, that []*int16) int {
 	return 0
 }
 
+// deriveCompare_43 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_43(this, that []*int32) int {
 	if this == nil {
 		if that == nil {
@@ -6790,6 +7123,10 @@ func deriveCompare_43(this, that []*int32) int {
 	return 0
 }
 
+// deriveCompare_44 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_44(this, that []*int64) int {
 	if this == nil {
 		if that == nil {
@@ -6814,6 +7151,10 @@ func deriveCompare_44(this, that []*int64) int {
 	return 0
 }
 
+// deriveCompare_45 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_45(this, that []*int8) int {
 	if this == nil {
 		if that == nil {
@@ -6838,6 +7179,10 @@ func deriveCompare_45(this, that []*int8) int {
 	return 0
 }
 
+// deriveCompare_46 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_46(this, that []*string) int {
 	if this == nil {
 		if that == nil {
@@ -6862,6 +7207,10 @@ func deriveCompare_46(this, that []*string) int {
 	return 0
 }
 
+// deriveCompare_47 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_47(this, that []*uint) int {
 	if this == nil {
 		if that == nil {
@@ -6886,6 +7235,10 @@ func deriveCompare_47(this, that []*uint) int {
 	return 0
 }
 
+// deriveCompare_48 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_48(this, that []*uint16) int {
 	if this == nil {
 		if that == nil {
@@ -6910,6 +7263,10 @@ func deriveCompare_48(this, that []*uint16) int {
 	return 0
 }
 
+// deriveCompare_49 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_49(this, that []*uint32) int {
 	if this == nil {
 		if that == nil {
@@ -6934,6 +7291,10 @@ func deriveCompare_49(this, that []*uint32) int {
 	return 0
 }
 
+// deriveCompare_50 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_50(this, that []*uint64) int {
 	if this == nil {
 		if that == nil {
@@ -6958,6 +7319,10 @@ func deriveCompare_50(this, that []*uint64) int {
 	return 0
 }
 
+// deriveCompare_51 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_51(this, that []*uintptr) int {
 	if this == nil {
 		if that == nil {
@@ -6982,6 +7347,10 @@ func deriveCompare_51(this, that []*uintptr) int {
 	return 0
 }
 
+// deriveCompare_52 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_52(this, that [1]bool) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -6997,6 +7366,10 @@ func deriveCompare_52(this, that [1]bool) int {
 	return 0
 }
 
+// deriveCompare_53 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_53(this, that [2]byte) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7012,6 +7385,10 @@ func deriveCompare_53(this, that [2]byte) int {
 	return 0
 }
 
+// deriveCompare_54 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_54(this, that [3]complex128) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7027,6 +7404,10 @@ func deriveCompare_54(this, that [3]complex128) int {
 	return 0
 }
 
+// deriveCompare_55 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_55(this, that [4]complex64) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7042,6 +7423,10 @@ func deriveCompare_55(this, that [4]complex64) int {
 	return 0
 }
 
+// deriveCompare_56 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_56(this, that [5]float64) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7057,6 +7442,10 @@ func deriveCompare_56(this, that [5]float64) int {
 	return 0
 }
 
+// deriveCompare_57 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_57(this, that [6]float32) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7072,6 +7461,10 @@ func deriveCompare_57(this, that [6]float32) int {
 	return 0
 }
 
+// deriveCompare_58 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_58(this, that [7]int) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7087,6 +7480,10 @@ func deriveCompare_58(this, that [7]int) int {
 	return 0
 }
 
+// deriveCompare_59 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_59(this, that [8]int16) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7102,6 +7499,10 @@ func deriveCompare_59(this, that [8]int16) int {
 	return 0
 }
 
+// deriveCompare_60 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_60(this, that [9]int32) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7117,6 +7518,10 @@ func deriveCompare_60(this, that [9]int32) int {
 	return 0
 }
 
+// deriveCompare_61 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_61(this, that [10]int64) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7132,6 +7537,10 @@ func deriveCompare_61(this, that [10]int64) int {
 	return 0
 }
 
+// deriveCompare_62 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_62(this, that [11]int8) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7147,6 +7556,10 @@ func deriveCompare_62(this, that [11]int8) int {
 	return 0
 }
 
+// deriveCompare_63 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_63(this, that [12]rune) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7162,6 +7575,10 @@ func deriveCompare_63(this, that [12]rune) int {
 	return 0
 }
 
+// deriveCompare_64 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_64(this, that [13]string) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7177,6 +7594,10 @@ func deriveCompare_64(this, that [13]string) int {
 	return 0
 }
 
+// deriveCompare_65 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_65(this, that [14]uint) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7192,6 +7613,10 @@ func deriveCompare_65(this, that [14]uint) int {
 	return 0
 }
 
+// deriveCompare_66 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_66(this, that [15]uint16) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7207,6 +7632,10 @@ func deriveCompare_66(this, that [15]uint16) int {
 	return 0
 }
 
+// deriveCompare_67 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_67(this, that [16]uint32) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7222,6 +7651,10 @@ func deriveCompare_67(this, that [16]uint32) int {
 	return 0
 }
 
+// deriveCompare_68 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_68(this, that [17]uint64) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7237,6 +7670,10 @@ func deriveCompare_68(this, that [17]uint64) int {
 	return 0
 }
 
+// deriveCompare_69 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_69(this, that [18]uint8) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7252,6 +7689,10 @@ func deriveCompare_69(this, that [18]uint8) int {
 	return 0
 }
 
+// deriveCompare_70 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_70(this, that [19]uintptr) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7267,6 +7708,10 @@ func deriveCompare_70(this, that [19]uintptr) int {
 	return 0
 }
 
+// deriveCompare_71 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_71(this, that [10]bool) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7282,6 +7727,10 @@ func deriveCompare_71(this, that [10]bool) int {
 	return 0
 }
 
+// deriveCompare_72 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_72(this, that [1]*bool) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7297,6 +7746,10 @@ func deriveCompare_72(this, that [1]*bool) int {
 	return 0
 }
 
+// deriveCompare_73 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_73(this, that [2]*byte) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7312,6 +7765,10 @@ func deriveCompare_73(this, that [2]*byte) int {
 	return 0
 }
 
+// deriveCompare_74 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_74(this, that [3]*complex128) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7327,6 +7784,10 @@ func deriveCompare_74(this, that [3]*complex128) int {
 	return 0
 }
 
+// deriveCompare_75 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_75(this, that [4]*complex64) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7342,6 +7803,10 @@ func deriveCompare_75(this, that [4]*complex64) int {
 	return 0
 }
 
+// deriveCompare_76 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_76(this, that [5]*float64) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7357,6 +7822,10 @@ func deriveCompare_76(this, that [5]*float64) int {
 	return 0
 }
 
+// deriveCompare_77 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_77(this, that [6]*float32) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7372,6 +7841,10 @@ func deriveCompare_77(this, that [6]*float32) int {
 	return 0
 }
 
+// deriveCompare_78 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_78(this, that [7]*int) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7387,6 +7860,10 @@ func deriveCompare_78(this, that [7]*int) int {
 	return 0
 }
 
+// deriveCompare_79 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_79(this, that [8]*int16) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7402,6 +7879,10 @@ func deriveCompare_79(this, that [8]*int16) int {
 	return 0
 }
 
+// deriveCompare_80 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_80(this, that [9]*int32) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7417,6 +7898,10 @@ func deriveCompare_80(this, that [9]*int32) int {
 	return 0
 }
 
+// deriveCompare_81 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_81(this, that [10]*int64) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7432,6 +7917,10 @@ func deriveCompare_81(this, that [10]*int64) int {
 	return 0
 }
 
+// deriveCompare_82 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_82(this, that [11]*int8) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7447,6 +7936,10 @@ func deriveCompare_82(this, that [11]*int8) int {
 	return 0
 }
 
+// deriveCompare_83 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_83(this, that [12]*rune) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7462,6 +7955,10 @@ func deriveCompare_83(this, that [12]*rune) int {
 	return 0
 }
 
+// deriveCompare_84 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_84(this, that [13]*string) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7477,6 +7974,10 @@ func deriveCompare_84(this, that [13]*string) int {
 	return 0
 }
 
+// deriveCompare_85 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_85(this, that [14]*uint) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7492,6 +7993,10 @@ func deriveCompare_85(this, that [14]*uint) int {
 	return 0
 }
 
+// deriveCompare_86 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_86(this, that [15]*uint16) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7507,6 +8012,10 @@ func deriveCompare_86(this, that [15]*uint16) int {
 	return 0
 }
 
+// deriveCompare_87 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_87(this, that [16]*uint32) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7522,6 +8031,10 @@ func deriveCompare_87(this, that [16]*uint32) int {
 	return 0
 }
 
+// deriveCompare_88 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_88(this, that [17]*uint64) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7537,6 +8050,10 @@ func deriveCompare_88(this, that [17]*uint64) int {
 	return 0
 }
 
+// deriveCompare_89 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_89(this, that [18]*uint8) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7552,6 +8069,10 @@ func deriveCompare_89(this, that [18]*uint8) int {
 	return 0
 }
 
+// deriveCompare_90 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_90(this, that [19]*uintptr) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7567,6 +8088,10 @@ func deriveCompare_90(this, that [19]*uintptr) int {
 	return 0
 }
 
+// deriveCompare_91 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_91(this, that [10]*bool) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -7582,6 +8107,10 @@ func deriveCompare_91(this, that [10]*bool) int {
 	return 0
 }
 
+// deriveCompare_92 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_92(this, that map[string]uint32) int {
 	if this == nil {
 		if that == nil {
@@ -7617,6 +8146,10 @@ func deriveCompare_92(this, that map[string]uint32) int {
 	return 0
 }
 
+// deriveCompare_93 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_93(this, that map[uint8]int64) int {
 	if this == nil {
 		if that == nil {
@@ -7652,6 +8185,10 @@ func deriveCompare_93(this, that map[uint8]int64) int {
 	return 0
 }
 
+// deriveCompare_94 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_94(this, that map[bool]string) int {
 	if this == nil {
 		if that == nil {
@@ -7687,6 +8224,10 @@ func deriveCompare_94(this, that map[bool]string) int {
 	return 0
 }
 
+// deriveCompare_95 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_95(this, that map[string]bool) int {
 	if this == nil {
 		if that == nil {
@@ -7722,6 +8263,10 @@ func deriveCompare_95(this, that map[string]bool) int {
 	return 0
 }
 
+// deriveCompare_96 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_96(this, that map[complex128]complex64) int {
 	if this == nil {
 		if that == nil {
@@ -7757,6 +8302,10 @@ func deriveCompare_96(this, that map[complex128]complex64) int {
 	return 0
 }
 
+// deriveCompare_97 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_97(this, that map[float64]uint32) int {
 	if this == nil {
 		if that == nil {
@@ -7792,6 +8341,10 @@ func deriveCompare_97(this, that map[float64]uint32) int {
 	return 0
 }
 
+// deriveCompare_98 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_98(this, that map[uint16]uint8) int {
 	if this == nil {
 		if that == nil {
@@ -7827,6 +8380,10 @@ func deriveCompare_98(this, that map[uint16]uint8) int {
 	return 0
 }
 
+// deriveCompare_99 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_99(this, that [][]int) int {
 	if this == nil {
 		if that == nil {
@@ -7851,6 +8408,10 @@ func deriveCompare_99(this, that [][]int) int {
 	return 0
 }
 
+// deriveCompare_100 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_100(this, that [][]string) int {
 	if this == nil {
 		if that == nil {
@@ -7875,6 +8436,10 @@ func deriveCompare_100(this, that [][]string) int {
 	return 0
 }
 
+// deriveCompare_101 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_101(this, that [][]*int) int {
 	if this == nil {
 		if that == nil {
@@ -7899,6 +8464,10 @@ func deriveCompare_101(this, that [][]*int) int {
 	return 0
 }
 
+// deriveCompare_102 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_102(this, that *[]int) int {
 	if this == nil {
 		if that == nil {
@@ -7912,6 +8481,10 @@ func deriveCompare_102(this, that *[]int) int {
 	return deriveCompare_24(*this, *that)
 }
 
+// deriveCompare_103 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_103(this, that *[4]int) int {
 	if this == nil {
 		if that == nil {
@@ -7925,6 +8498,10 @@ func deriveCompare_103(this, that *[4]int) int {
 	return deriveCompare_128(*this, *that)
 }
 
+// deriveCompare_104 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_104(this, that *map[int]int) int {
 	if this == nil {
 		if that == nil {
@@ -7938,6 +8515,10 @@ func deriveCompare_104(this, that *map[int]int) int {
 	return deriveCompare_129(*this, *that)
 }
 
+// deriveCompare_105 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_105(this, that []Name) int {
 	if this == nil {
 		if that == nil {
@@ -7962,6 +8543,10 @@ func deriveCompare_105(this, that []Name) int {
 	return 0
 }
 
+// deriveCompare_106 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_106(this, that []*Name) int {
 	if this == nil {
 		if that == nil {
@@ -7986,6 +8571,10 @@ func deriveCompare_106(this, that []*Name) int {
 	return 0
 }
 
+// deriveCompare_107 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_107(this, that map[Name]string) int {
 	if this == nil {
 		if that == nil {
@@ -8021,6 +8610,10 @@ func deriveCompare_107(this, that map[Name]string) int {
 	return 0
 }
 
+// deriveCompare_108 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_108(this, that map[string]Name) int {
 	if this == nil {
 		if that == nil {
@@ -8056,6 +8649,10 @@ func deriveCompare_108(this, that map[string]Name) int {
 	return 0
 }
 
+// deriveCompare_109 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_109(this, that map[string]*Name) int {
 	if this == nil {
 		if that == nil {
@@ -8091,6 +8688,10 @@ func deriveCompare_109(this, that map[string]*Name) int {
 	return 0
 }
 
+// deriveCompare_110 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_110(this, that map[string][]Name) int {
 	if this == nil {
 		if that == nil {
@@ -8126,6 +8727,10 @@ func deriveCompare_110(this, that map[string][]Name) int {
 	return 0
 }
 
+// deriveCompare_111 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_111(this, that map[string][]*Name) int {
 	if this == nil {
 		if that == nil {
@@ -8161,6 +8766,10 @@ func deriveCompare_111(this, that map[string][]*Name) int {
 	return 0
 }
 
+// deriveCompare_112 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_112(this, that map[int]RecursiveType) int {
 	if this == nil {
 		if that == nil {
@@ -8196,6 +8805,10 @@ func deriveCompare_112(this, that map[int]RecursiveType) int {
 	return 0
 }
 
+// deriveCompare_113 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_113(this, that *StructWithoutEqualMethod) int {
 	if this == nil {
 		if that == nil {
@@ -8212,6 +8825,10 @@ func deriveCompare_113(this, that *StructWithoutEqualMethod) int {
 	return 0
 }
 
+// deriveCompare_114 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_114(this, that *extra.StructWithoutEqualMethod) int {
 	if this == nil {
 		if that == nil {
@@ -8228,6 +8845,10 @@ func deriveCompare_114(this, that *extra.StructWithoutEqualMethod) int {
 	return 0
 }
 
+// deriveCompare_115 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_115(this, that *extra.PrivateFieldAndNoEqualMethod) int {
 	if this == nil {
 		if that == nil {
@@ -8258,6 +8879,10 @@ func deriveCompare_115(this, that *extra.PrivateFieldAndNoEqualMethod) int {
 	return 0
 }
 
+// deriveCompare_M compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_M(this, that MyEnum) int {
 	if this != that {
 		if this < that {
@@ -8269,6 +8894,10 @@ func deriveCompare_M(this, that MyEnum) int {
 	return 0
 }
 
+// deriveCompare_116 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_116(this, that *MyEnum) int {
 	if this == nil {
 		if that == nil {
@@ -8282,6 +8911,10 @@ func deriveCompare_116(this, that *MyEnum) int {
 	return deriveCompare_M(*this, *that)
 }
 
+// deriveCompare_117 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_117(this, that []MyEnum) int {
 	if this == nil {
 		if that == nil {
@@ -8306,6 +8939,10 @@ func deriveCompare_117(this, that []MyEnum) int {
 	return 0
 }
 
+// deriveCompare_118 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_118(this, that []*MyEnum) int {
 	if this == nil {
 		if that == nil {
@@ -8330,6 +8967,10 @@ func deriveCompare_118(this, that []*MyEnum) int {
 	return 0
 }
 
+// deriveCompare_119 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_119(this, that map[int32]MyEnum) int {
 	if this == nil {
 		if that == nil {
@@ -8365,6 +9006,10 @@ func deriveCompare_119(this, that map[int32]MyEnum) int {
 	return 0
 }
 
+// deriveCompare_120 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_120(this, that map[MyEnum]int32) int {
 	if this == nil {
 		if that == nil {
@@ -8400,6 +9045,10 @@ func deriveCompare_120(this, that map[MyEnum]int32) int {
 	return 0
 }
 
+// deriveCompare_121 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_121(this, that [2]MyEnum) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -8415,6 +9064,10 @@ func deriveCompare_121(this, that [2]MyEnum) int {
 	return 0
 }
 
+// deriveCompare_122 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_122(this, that *MySlice) int {
 	if this == nil {
 		if that == nil {
@@ -8428,6 +9081,10 @@ func deriveCompare_122(this, that *MySlice) int {
 	return deriveCompare_27(*this, *that)
 }
 
+// deriveCompare_123 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_123(this, that []MySlice) int {
 	if this == nil {
 		if that == nil {
@@ -8452,6 +9109,10 @@ func deriveCompare_123(this, that []MySlice) int {
 	return 0
 }
 
+// deriveCompare_D compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_D(this, that time.Duration) int {
 	if this != that {
 		if this < that {
@@ -8463,6 +9124,10 @@ func deriveCompare_D(this, that time.Duration) int {
 	return 0
 }
 
+// deriveCompare_124 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_124(this, that *time.Duration) int {
 	if this == nil {
 		if that == nil {
@@ -8476,6 +9141,10 @@ func deriveCompare_124(this, that *time.Duration) int {
 	return deriveCompare_D(*this, *that)
 }
 
+// deriveCompare_125 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_125(this, that []time.Duration) int {
 	if this == nil {
 		if that == nil {
@@ -8500,6 +9169,10 @@ func deriveCompare_125(this, that []time.Duration) int {
 	return 0
 }
 
+// deriveCompare_126 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_126(this, that []*time.Duration) int {
 	if this == nil {
 		if that == nil {
@@ -8524,6 +9197,10 @@ func deriveCompare_126(this, that []*time.Duration) int {
 	return 0
 }
 
+// deriveCompare_127 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_127(this, that map[int]time.Duration) int {
 	if this == nil {
 		if that == nil {
@@ -10241,10 +10918,18 @@ func deriveDeepCopy_43(dst, src map[int]int) {
 	}
 }
 
+// deriveCompare_s compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_s(this, that string) int {
 	return strings.Compare(this, that)
 }
 
+// deriveCompare_128 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_128(this, that [4]int) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
@@ -10260,6 +10945,10 @@ func deriveCompare_128(this, that [4]int) int {
 	return 0
 }
 
+// deriveCompare_129 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_129(this, that map[int]int) int {
 	if this == nil {
 		if that == nil {
@@ -10295,6 +10984,10 @@ func deriveCompare_129(this, that map[int]int) int {
 	return 0
 }
 
+// deriveCompare_N compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_N(this, that Name) int {
 	return (&this).Compare(&that)
 }

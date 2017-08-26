@@ -87,7 +87,7 @@ func (g *gen) genFuncFor(in types.Type) error {
 	g.Generating(in)
 	inStr := g.TypeString(in)
 	p.P("")
-	p.P("// %s reports whether the predicate returns true for all the given elements in the given slice.", g.GetFuncName(in))
+	p.P("// %s reports whether the predicate returns true for all of the elements in the given slice.", g.GetFuncName(in))
 	p.P("func %s(predicate func(%s) bool, slice []%s) bool {", g.GetFuncName(in), inStr, inStr)
 	p.In()
 	p.P("for _, elem := range slice {")

@@ -30,6 +30,10 @@ import (
 	"strings"
 )
 
+// deriveCompare compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare(this, that *MyStruct) int {
 	if this == nil {
 		if that == nil {
@@ -49,6 +53,10 @@ func deriveCompare(this, that *MyStruct) int {
 	return 0
 }
 
+// deriveCompare_ compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_(this, that int64) int {
 	if this != that {
 		if this < that {
@@ -60,6 +68,10 @@ func deriveCompare_(this, that int64) int {
 	return 0
 }
 
+// deriveCompare_1 compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_1(this, that *string) int {
 	if this == nil {
 		if that == nil {
@@ -73,6 +85,10 @@ func deriveCompare_1(this, that *string) int {
 	return deriveCompare_s(*this, *that)
 }
 
+// deriveCompare_s compares this and that and returns
+//   * 0 if they are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
 func deriveCompare_s(this, that string) int {
 	return strings.Compare(this, that)
 }

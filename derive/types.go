@@ -16,6 +16,7 @@ package derive
 
 import "go/types"
 
+// IsError returns whether a type implements the Error interface.
 func IsError(t types.Type) bool {
 	typ, ok := t.(*types.Named)
 	if !ok {
@@ -53,6 +54,7 @@ func IsError(t types.Type) bool {
 	return false
 }
 
+// Zero returns the zero value as a string, for a given type.
 func Zero(typ types.Type) string {
 	switch t := typ.(type) {
 	case *types.Basic:

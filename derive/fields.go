@@ -19,11 +19,13 @@ import (
 	"strings"
 )
 
+// Named describes a named struct with a list of fields.
 type Named struct {
 	Fields  []*Field
 	Reflect bool
 }
 
+// Field describes a struct field.
 type Field struct {
 	name     string
 	external bool
@@ -31,6 +33,7 @@ type Field struct {
 	typeStr  func() string
 }
 
+// Name returns the field name, given the receiver and the unsafe import, if needed.
 func (f *Field) Name(recv string, unsafePkg Import) string {
 	if !f.Private() || !f.external {
 		return recv + "." + f.name
@@ -38,14 +41,17 @@ func (f *Field) Name(recv string, unsafePkg Import) string {
 	return `*(*` + f.typeStr() + `)(` + unsafePkg() + `.Pointer(` + recv + `.FieldByName("` + f.name + `").UnsafeAddr()))`
 }
 
+// DebugName simply returns the field name, without the receiver or any unsafe magic.
 func (f *Field) DebugName() string {
 	return f.name
 }
 
+// Private whether the field is private
 func (f *Field) Private() bool {
 	return strings.ToLower(f.name[0:1]) == f.name[0:1]
 }
 
+// Fields returns a new Named object containing a list of Fields for a given input struct.
 func Fields(typesMap TypesMap, typ *types.Struct, external bool) *Named {
 	numFields := typ.NumFields()
 	n := &Named{

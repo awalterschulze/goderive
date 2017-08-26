@@ -23,6 +23,7 @@ import (
 	"unicode"
 )
 
+// Printer is used to print the generated code to a file.
 type Printer interface {
 	P(format string, a ...interface{})
 	In()
@@ -52,6 +53,8 @@ func badToUnderscore(r rune) rune {
 	return '_'
 }
 
+// Import is a closure that returns the import alias
+// and only adds the import to the generated code if the function is actually called.
 type Import func() string
 
 func unvendor(path string) string {

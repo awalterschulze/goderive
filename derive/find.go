@@ -27,12 +27,12 @@ const derivedFilename = "derived.gen.go"
 type fileInfo struct {
 	astFile   *ast.File
 	fullpath  string
-	undefined []*Call
-	derived   []*Call
+	undefined []*call
+	derived   []*call
 	funcNames map[string]struct{}
 }
 
-func NewFileInfos(program *loader.Program, pkgInfo *loader.PackageInfo) []*fileInfo {
+func newFileInfos(program *loader.Program, pkgInfo *loader.PackageInfo) []*fileInfo {
 	files := []*fileInfo{}
 	for i := range pkgInfo.Files {
 		astFile := pkgInfo.Files[i]
@@ -52,11 +52,11 @@ func NewFileInfos(program *loader.Program, pkgInfo *loader.PackageInfo) []*fileI
 		for _, d := range astFile.Decls {
 			ast.Walk(f, d)
 		}
-		undefined := make([]*Call, len(f.undefined))
+		undefined := make([]*call, len(f.undefined))
 		for i := range f.undefined {
 			undefined[i] = newCall(pkgInfo, f.undefined[i])
 		}
-		derived := make([]*Call, len(f.derived))
+		derived := make([]*call, len(f.derived))
 		for i := range f.derived {
 			derived[i] = newCall(pkgInfo, f.derived[i])
 		}
@@ -111,20 +111,20 @@ func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
 	return this
 }
 
-type Call struct {
+type call struct {
 	Expr *ast.CallExpr
 	Name string
 	Args []types.Type
 }
 
-func newCall(pkgInfo *loader.PackageInfo, expr *ast.CallExpr) *Call {
+func newCall(pkgInfo *loader.PackageInfo, expr *ast.CallExpr) *call {
 	fn, ok := expr.Fun.(*ast.Ident)
 	if !ok {
 		panic("unreachable, finder has already eliminated this option")
 	}
 	name := fn.Name
 	typs := getInputTypes(pkgInfo, expr)
-	return &Call{expr, name, typs}
+	return &call{expr, name, typs}
 }
 
 // argTypes returns the argument types of a function call.
@@ -137,7 +137,7 @@ func getInputTypes(pkgInfo *loader.PackageInfo, call *ast.CallExpr) []types.Type
 }
 
 // HasUndefined returns whether the call has undefined arguments
-func (this *Call) HasUndefined() bool {
+func (this *call) HasUndefined() bool {
 	for i := range this.Args {
 		if this.Args[i] == nil {
 			return true

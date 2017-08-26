@@ -33,7 +33,6 @@ package fmap
 import (
 	"fmt"
 	"go/types"
-	"log"
 	"strings"
 
 	"github.com/awalterschulze/goderive/derive"
@@ -62,7 +61,6 @@ type gen struct {
 }
 
 func (this *gen) Add(name string, typs []types.Type) (string, error) {
-	log.Printf("FMAP %s: %v", name, typs)
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
@@ -215,7 +213,6 @@ func (this *gen) sliceInOut(name string, typs []types.Type) (inTyp types.Type, o
 }
 
 func (this *gen) Generate(typs []types.Type) error {
-	log.Printf("FMAP %v", typs)
 	switch typs[1].(type) {
 	case *types.Slice:
 		return this.genSlice(typs)

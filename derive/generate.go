@@ -29,13 +29,25 @@ import (
 	"golang.org/x/tools/go/loader"
 )
 
+// Program is ready to generate code for a whole program.
+type Program interface {
+	Generate() error
+}
+
+// Plugins is a collection of plugins,
+// that given a list of paths becomes a Program.
+type Plugins interface {
+	Load(paths []string) (Program, error)
+}
+
 type plugins struct {
 	plugins  []Plugin
 	autoname bool
 	dedup    bool
 }
 
-func NewPlugins(ps []Plugin, autoname bool, dedup bool) *plugins {
+// NewPlugins returns a collection of plugins that is ready to generate code.
+func NewPlugins(ps []Plugin, autoname bool, dedup bool) Plugins {
 	sortPlugins(ps)
 	return &plugins{
 		plugins:  ps,
@@ -62,7 +74,7 @@ type program struct {
 	program  *loader.Program
 }
 
-func (p *plugins) Load(paths []string) (*program, error) {
+func (p *plugins) Load(paths []string) (Program, error) {
 	loaded, err := load(paths...)
 	if err != nil {
 		return nil, err
@@ -82,8 +94,8 @@ func union(this, that map[string]struct{}) map[string]struct{} {
 	return this
 }
 
-func NewPackage(program *loader.Program, pkgInfo *loader.PackageInfo, plugins []Plugin, autoname, dedup bool) (*pkg, error) {
-	fileInfos := NewFileInfos(program, pkgInfo)
+func newPackage(program *loader.Program, pkgInfo *loader.PackageInfo, plugins []Plugin, autoname, dedup bool) (*pkg, error) {
+	fileInfos := newFileInfos(program, pkgInfo)
 	reserved := make(map[string]struct{})
 	for _, fileFuncs := range fileInfos {
 		reserved = union(reserved, fileFuncs.funcNames)
@@ -165,7 +177,7 @@ type pkg struct {
 	undefined  []*ast.CallExpr
 }
 
-func (pkg *pkg) Add(call *Call) (string, error) {
+func (pkg *pkg) Add(call *call) (string, error) {
 	for _, p := range pkg.plugins {
 		if !strings.HasPrefix(call.Name, p.GetPrefix()) {
 			continue
@@ -262,7 +274,7 @@ func (pg *program) generatePackage(pkgInfo *loader.PackageInfo) error {
 	var undefined string
 	thisprogram := pg.program
 	for generated {
-		pkgGen, err := NewPackage(thisprogram, pkgInfo, pg.plugins, pg.autoname, pg.dedup)
+		pkgGen, err := newPackage(thisprogram, pkgInfo, pg.plugins, pg.autoname, pg.dedup)
 		if err != nil {
 			return err
 		}

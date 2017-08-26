@@ -12,6 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// Package main implements the goderive binary.
+// This pulls in all the plugins, parses the flags and runs the generators using the derive library.
 package main
 
 import (

@@ -16,6 +16,7 @@ package derive
 
 import "github.com/kisielk/gotool"
 
+// ImportPaths returns the import paths to use for the given command line.
 func ImportPaths(args []string) []string {
 	return gotool.ImportPaths(args)
 }

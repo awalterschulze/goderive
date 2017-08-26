@@ -20,15 +20,15 @@ import (
 
 type qual struct {
 	p        *types.Package
-	importer Importer
+	importer importer
 	imported map[*types.Package]Import
 }
 
-type Importer interface {
+type importer interface {
 	NewImport(path string) Import
 }
 
-func newQualifier(importer Importer, p *types.Package) types.Qualifier {
+func newQualifier(importer importer, p *types.Package) types.Qualifier {
 	q := &qual{
 		p:        p,
 		importer: importer,
@@ -37,14 +37,14 @@ func newQualifier(importer Importer, p *types.Package) types.Qualifier {
 	return q.Qualifier
 }
 
-func (this *qual) Qualifier(p *types.Package) string {
-	if this.p == p {
+func (q *qual) Qualifier(p *types.Package) string {
+	if q.p == p {
 		return ""
 	}
-	if _, ok := this.imported[p]; !ok {
-		this.imported[p] = this.importer.NewImport(p.Path())
+	if _, ok := q.imported[p]; !ok {
+		q.imported[p] = q.importer.NewImport(p.Path())
 	}
-	return this.imported[p]()
+	return q.imported[p]()
 }
 
 func bypassQual(p *types.Package) string {

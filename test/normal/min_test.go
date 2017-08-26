@@ -50,7 +50,7 @@ func TestMinStruct(t *testing.T) {
 	list = random(list).([]*BuiltInTypes)
 	min := deriveMinStructs(list, nil)
 	sorted := deriveSortStructs(list)
-	var othermin *BuiltInTypes = nil
+	var othermin *BuiltInTypes
 	if len(sorted) > 0 {
 		othermin = sorted[0]
 	}

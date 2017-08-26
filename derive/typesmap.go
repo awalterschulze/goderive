@@ -20,6 +20,8 @@ import (
 	"strconv"
 )
 
+// TypesMap is a map of input types to function names.
+// It also keeps track of which functions have been generated.
 type TypesMap interface {
 	SetFuncName(name string, typs ...types.Type) (newName string, err error)
 	GetFuncName(typs ...types.Type) string

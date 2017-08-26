@@ -4056,7 +4056,7 @@ func deriveJoinEE(f func() (int64, error), err error) (int64, error) {
 	return f()
 }
 
-func deriveJoinChannels(in <-chan <-chan int) <-chan int {
+func deriveJoinChannels(in <-chan (<-chan int)) <-chan int {
 	out := make(chan int)
 	go func() {
 		wait := sync.WaitGroup{}
@@ -4116,7 +4116,47 @@ func deriveJoinErrorAndValues(f func() (string, int, error), err error) (string,
 	return f()
 }
 
-func deriveJoinSliceOfChannels(in []<-chan int) <-chan int {
+func deriveJoinSendRecvChannels(in chan (<-chan int64)) <-chan int64 {
+	out := make(chan int64)
+	go func() {
+		wait := sync.WaitGroup{}
+		for c := range in {
+			wait.Add(1)
+			res := c
+			go func() {
+				for r := range res {
+					out <- r
+				}
+				wait.Done()
+			}()
+		}
+		wait.Wait()
+		close(out)
+	}()
+	return out
+}
+
+func deriveJoinSliceOfRecvChannels(in []<-chan int) <-chan int {
+	out := make(chan int)
+	go func() {
+		wait := sync.WaitGroup{}
+		for _, c := range in {
+			wait.Add(1)
+			res := c
+			go func() {
+				for r := range res {
+					out <- r
+				}
+				wait.Done()
+			}()
+		}
+		wait.Wait()
+		close(out)
+	}()
+	return out
+}
+
+func deriveJoinSliceOfSendRecvChannels(in []chan int) chan int {
 	out := make(chan int)
 	go func() {
 		wait := sync.WaitGroup{}

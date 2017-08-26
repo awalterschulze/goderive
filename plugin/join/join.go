@@ -81,7 +81,7 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 			}
 			return g.SetFuncName(name, typs...)
 		case *types.Chan:
-			_, err := g.sliceOfChanType(name, typs)
+			_, _, err := g.sliceOfChanType(name, typs)
 			if err != nil {
 				return "", err
 			}
@@ -105,11 +105,20 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 			return g.SetFuncName(name, ts...)
 		}
 	case *types.Chan:
-		_, err := g.chanType(name, typs)
-		if err != nil {
-			return "", err
+		switch t.Elem().(type) {
+		case *types.Chan:
+			_, _, err := g.chanType(name, typs)
+			if err != nil {
+				return "", err
+			}
+			return g.SetFuncName(name, typs...)
+		default:
+			// _, err := g.chanVariantType(name, typs)
+			// if err != nil {
+			// 	return "", err
+			// }
+			// return g.SetFuncName(name, typs...)
 		}
-		return g.SetFuncName(name, typs...)
 	}
 	return "", fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
 }
@@ -143,36 +152,36 @@ func (g *gen) errorType(name string, typs []types.Type) ([]types.Type, error) {
 	return outTyps, nil
 }
 
-func (g *gen) chanType(name string, typs []types.Type) (types.Type, error) {
+func (g *gen) chanType(name string, typs []types.Type) (types.Type, types.ChanDir, error) {
 	if len(typs) != 1 {
-		return nil, fmt.Errorf("%s does not have one argument", name)
+		return nil, types.SendRecv, fmt.Errorf("%s does not have one argument", name)
 	}
 	chanTyp, ok := typs[0].(*types.Chan)
 	if !ok {
-		return nil, fmt.Errorf("%s, the argument, %s, is not of type chan", name, typs[0])
+		return nil, types.SendRecv, fmt.Errorf("%s, the argument, %s, is not of type chan", name, typs[0])
 	}
 	chanOfChanTyp, ok := chanTyp.Elem().(*types.Chan)
 	if !ok {
-		return nil, fmt.Errorf("%s, the argument, %s, is not of type chan of chan", name, typs[0])
+		return nil, types.SendRecv, fmt.Errorf("%s, the argument, %s, is not of type chan of chan", name, typs[0])
 	}
 	elemType := chanOfChanTyp.Elem()
-	return elemType, nil
+	return elemType, chanTyp.Dir(), nil
 }
 
-func (g *gen) sliceOfChanType(name string, typs []types.Type) (types.Type, error) {
+func (g *gen) sliceOfChanType(name string, typs []types.Type) (types.Type, types.ChanDir, error) {
 	if len(typs) != 1 {
-		return nil, fmt.Errorf("%s does not have one argument", name)
+		return nil, types.SendRecv, fmt.Errorf("%s does not have one argument", name)
 	}
 	sliceTyp, ok := typs[0].(*types.Slice)
 	if !ok {
-		return nil, fmt.Errorf("%s, the argument, %s, is not of type slice", name, typs[0])
+		return nil, types.SendRecv, fmt.Errorf("%s, the argument, %s, is not of type slice", name, typs[0])
 	}
 	sliceOfChanTyp, ok := sliceTyp.Elem().(*types.Chan)
 	if !ok {
-		return nil, fmt.Errorf("%s, the argument, %s, is not of type slice of chan", name, typs[0])
+		return nil, types.SendRecv, fmt.Errorf("%s, the argument, %s, is not of type slice of chan", name, typs[0])
 	}
 	elemType := sliceOfChanTyp.Elem()
-	return elemType, nil
+	return elemType, sliceOfChanTyp.Dir(), nil
 }
 
 func (g *gen) sliceType(name string, typs []types.Type) (types.Type, error) {
@@ -281,13 +290,17 @@ func (g *gen) genChan(typs []types.Type) error {
 	p := g.printer
 	g.Generating(typs...)
 	name := g.GetFuncName(typs...)
-	elemTyp, err := g.chanType(name, typs)
+	elemTyp, dir, err := g.chanType(name, typs)
 	if err != nil {
 		return err
 	}
+	dirStr := ""
+	if dir == types.RecvOnly {
+		dirStr = "<-"
+	}
 	typStr := g.TypeString(elemTyp)
 	p.P("")
-	p.P("func %s(in <-chan <-chan %s) <-chan %s {", name, typStr, typStr)
+	p.P("func %s(in %schan (<-chan %s)) <-chan %s {", name, dirStr, typStr, typStr)
 	p.In()
 	p.P("out := make(chan %s)", typStr)
 	p.P("go func() {")
@@ -323,13 +336,17 @@ func (g *gen) genSliceOfChan(typs []types.Type) error {
 	p := g.printer
 	g.Generating(typs...)
 	name := g.GetFuncName(typs...)
-	elemTyp, err := g.sliceOfChanType(name, typs)
+	elemTyp, dir, err := g.sliceOfChanType(name, typs)
 	if err != nil {
 		return err
 	}
 	typStr := g.TypeString(elemTyp)
+	dirStr := ""
+	if dir == types.RecvOnly {
+		dirStr = "<-"
+	}
 	p.P("")
-	p.P("func %s(in []<-chan %s) <-chan %s {", name, typStr, typStr)
+	p.P("func %s(in []%schan %s) %schan %s {", name, dirStr, typStr, dirStr, typStr)
 	p.In()
 	p.P("out := make(chan %s)", typStr)
 	p.P("go func() {")

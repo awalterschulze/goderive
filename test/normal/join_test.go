@@ -125,7 +125,7 @@ func TestJoinErrorAndValues(t *testing.T) {
 	}
 }
 
-func TestJoinChannel(t *testing.T) {
+func TestJoinRecvChannel(t *testing.T) {
 	cc := make(chan (<-chan int))
 	c1 := make(chan int)
 	c2 := make(chan int)
@@ -155,7 +155,36 @@ func TestJoinChannel(t *testing.T) {
 	}
 }
 
-func TestJoinSliceOfChannel(t *testing.T) {
+func TestJoinSendRecvChannel(t *testing.T) {
+	cc := make(chan (<-chan int64))
+	c1 := make(chan int64)
+	c2 := make(chan int64)
+	go func() {
+		c1 <- 1
+		close(c1)
+	}()
+	go func() {
+		c2 <- 2
+		c2 <- 3
+		close(c2)
+	}()
+	go func() {
+		cc <- c1
+		cc <- c2
+		close(cc)
+	}()
+	c := deriveJoinSendRecvChannels(cc)
+	got := int64(0)
+	for i := range c {
+		got += i
+	}
+	want := int64(6)
+	if got != want {
+		t.Fatalf("got %d != want %d", got, want)
+	}
+}
+
+func TestJoinSliceOfRecvChannel(t *testing.T) {
 	c1 := make(chan int)
 	c2 := make(chan int)
 	go func() {
@@ -168,7 +197,31 @@ func TestJoinSliceOfChannel(t *testing.T) {
 		close(c2)
 	}()
 	cc := [](<-chan int){c1, c2}
-	c := deriveJoinSliceOfChannels(cc)
+	c := deriveJoinSliceOfRecvChannels(cc)
+	got := 0
+	for i := range c {
+		got += i
+	}
+	want := 6
+	if got != want {
+		t.Fatalf("got %d != want %d", got, want)
+	}
+}
+
+func TestJoinSliceOfSendRecvChannel(t *testing.T) {
+	c1 := make(chan int)
+	c2 := make(chan int)
+	go func() {
+		c1 <- 1
+		close(c1)
+	}()
+	go func() {
+		c2 <- 2
+		c2 <- 3
+		close(c2)
+	}()
+	cc := [](chan int){c1, c2}
+	c := deriveJoinSliceOfSendRecvChannels(cc)
 	got := 0
 	for i := range c {
 		got += i

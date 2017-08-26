@@ -126,7 +126,9 @@ Concurrency Functions:
     - `deriveFmap(func(A) B, <-chan A) <-chan B`
   - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join)
     - `deriveJoin(<-chan <-chan T) <-chan T`
+    - `deriveJoin(chan <-chan T) <-chan T`
     - `deriveJoin([]<-chan T) <-chan T`
+    - `deriveJoin([]chan T) chan T`
   - [Pipeline](http://godoc.org/github.com/awalterschulze/goderive/plugin/pipeline)
     - `derivePipeline(func(A) <-chan B, func(B) <-chan C) func(A) <-chan C`
   - [Do](http://godoc.org/github.com/awalterschulze/goderive/plugin/do)

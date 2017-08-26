@@ -65,7 +65,7 @@ func derivePipeline(f func(lines []string) <-chan string, g func(line string) <-
 	}
 }
 
-func deriveJoin(in <-chan <-chan int) <-chan int {
+func deriveJoin(in <-chan (<-chan int)) <-chan int {
 	out := make(chan int)
 	go func() {
 		wait := sync.WaitGroup{}

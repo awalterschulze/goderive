@@ -97,15 +97,15 @@ type gen struct {
 	fmtPkg     derive.Import
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 1 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
-	return this.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate(typs []types.Type) error {
-	return this.genFunc(typs[0])
+func (g *gen) Generate(typs []types.Type) error {
+	return g.genFunc(typs[0])
 }
 
 func (g *gen) TypeString(typ types.Type) string {

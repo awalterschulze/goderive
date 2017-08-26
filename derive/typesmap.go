@@ -55,60 +55,60 @@ func newTypesMap(qual types.Qualifier, prefix string, reserved map[string]struct
 	}
 }
 
-func (this *typesMap) Prefix() string {
-	return this.prefix
+func (tm *typesMap) Prefix() string {
+	return tm.prefix
 }
 
-func (this *typesMap) TypeString(typ types.Type) string {
-	return types.TypeString(types.Default(typ), this.qual)
+func (tm *typesMap) TypeString(typ types.Type) string {
+	return types.TypeString(types.Default(typ), tm.qual)
 }
 
-func (this *typesMap) TypeStringBypass(typ types.Type) string {
+func (tm *typesMap) TypeStringBypass(typ types.Type) string {
 	return types.TypeString(types.Default(typ), bypassQual)
 }
 
-func (this *typesMap) IsExternal(typ *types.Named) bool {
-	q := this.qual(typ.Obj().Pkg())
+func (tm *typesMap) IsExternal(typ *types.Named) bool {
+	q := tm.qual(typ.Obj().Pkg())
 	return q != ""
 }
 
-func (this *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, error) {
+func (tm *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, error) {
 	// log.Printf("SetFuncName: %s(%v)", funcName, typs)
-	if fName, ok := this.nameOf(typs); ok {
+	if fName, ok := tm.nameOf(typs); ok {
 		if fName == funcName {
 			return funcName, nil
 		}
-		if this.dedup {
+		if tm.dedup {
 			return fName, nil
 		}
 		return "", fmt.Errorf("ambigious function names for type %s = (%s | %s)", typs, fName, funcName)
 	}
-	if ts, ok := this.funcToTyps[funcName]; ok {
+	if ts, ok := tm.funcToTyps[funcName]; ok {
 		if eq(ts, typs) {
 			return funcName, nil
 		}
-		if this.autoname {
-			return this.GetFuncName(typs...), nil
+		if tm.autoname {
+			return tm.GetFuncName(typs...), nil
 		}
 		return "", fmt.Errorf("conflicting function names %s(%v) and %s(%v)", funcName, ts, funcName, typs)
 	}
-	this.funcToTyps[funcName] = typs
-	this.typss = append(this.typss, typs)
+	tm.funcToTyps[funcName] = typs
+	tm.typss = append(tm.typss, typs)
 	return funcName, nil
 }
 
-func (this *typesMap) GetFuncName(typs ...types.Type) string {
+func (tm *typesMap) GetFuncName(typs ...types.Type) string {
 	// log.Printf("GetFuncName: %v", typs)
-	name, ok := this.nameOf(typs)
+	name, ok := tm.nameOf(typs)
 	if !ok {
-		name = this.newName(typs)
-		this.SetFuncName(name, typs...)
+		name = tm.newName(typs)
+		tm.SetFuncName(name, typs...)
 	}
 	// log.Printf("GotFuncName: %s(%v)", name, typs)
 	return name
 }
 
-func (this *typesMap) newName(typs []types.Type) string {
+func (tm *typesMap) newName(typs []types.Type) string {
 	name := ""
 	if len(typs) > 0 {
 		switch t := typs[0].(type) {
@@ -119,23 +119,23 @@ func (this *typesMap) newName(typs []types.Type) string {
 			case types.Bool, types.Int, types.Int8, types.Int16, types.Int32, types.Int64,
 				types.Uint, types.Uint8, types.Uint16, types.Uint32, types.Uint64,
 				types.Float32, types.Float64, types.String:
-				name = this.TypeString(t)
+				name = tm.TypeString(t)
 			}
 		}
 	}
 	i := 0
-	funcName := this.prefix
-	_, exists := this.funcToTyps[funcName]
-	_, isreserved := this.reserved[funcName]
+	funcName := tm.prefix
+	_, exists := tm.funcToTyps[funcName]
+	_, isreserved := tm.reserved[funcName]
 	for exists || isreserved {
 		if i > len(name) {
-			funcName = this.prefix + "_" + name + strconv.Itoa(i)
+			funcName = tm.prefix + "_" + name + strconv.Itoa(i)
 		} else {
-			funcName = this.prefix + "_" + name[:i]
+			funcName = tm.prefix + "_" + name[:i]
 		}
 		i++
-		_, exists = this.funcToTyps[funcName]
-		_, isreserved = this.reserved[funcName]
+		_, exists = tm.funcToTyps[funcName]
+		_, isreserved = tm.reserved[funcName]
 	}
 	return funcName
 }
@@ -152,16 +152,16 @@ func eq(this, that []types.Type) bool {
 	return true
 }
 
-func (this *typesMap) nameOf(typs []types.Type) (string, bool) {
+func (tm *typesMap) nameOf(typs []types.Type) (string, bool) {
 	for _, t := range typs {
 		if n, ok := t.(*types.Named); ok {
 			pkg := n.Obj().Pkg()
 			if pkg != nil {
-				this.qual(pkg)
+				tm.qual(pkg)
 			}
 		}
 	}
-	for name, ts := range this.funcToTyps {
+	for name, ts := range tm.funcToTyps {
 		if eq(typs, ts) {
 			return name, true
 		}
@@ -169,35 +169,35 @@ func (this *typesMap) nameOf(typs []types.Type) (string, bool) {
 	return "", false
 }
 
-func (this *typesMap) Generating(typs ...types.Type) {
-	name, ok := this.nameOf(typs)
+func (tm *typesMap) Generating(typs ...types.Type) {
+	name, ok := tm.nameOf(typs)
 	if !ok {
-		panic(fmt.Sprintf("generating unknown %s for types: %v", this.prefix, typs))
+		panic(fmt.Sprintf("generating unknown %s for types: %v", tm.prefix, typs))
 	}
-	this.generated[name] = true
+	tm.generated[name] = true
 }
 
-func (this *typesMap) isGenerated(typs []types.Type) bool {
-	name, ok := this.nameOf(typs)
+func (tm *typesMap) isGenerated(typs []types.Type) bool {
+	name, ok := tm.nameOf(typs)
 	if !ok {
 		return false
 	}
-	return this.generated[name]
+	return tm.generated[name]
 }
 
-func (this *typesMap) ToGenerate() [][]types.Type {
-	typss := make([][]types.Type, 0, len(this.typss))
-	for i, typs := range this.typss {
-		if !this.isGenerated(typs) {
-			typss = append(typss, this.typss[i])
+func (tm *typesMap) ToGenerate() [][]types.Type {
+	typss := make([][]types.Type, 0, len(tm.typss))
+	for i, typs := range tm.typss {
+		if !tm.isGenerated(typs) {
+			typss = append(typss, tm.typss[i])
 		}
 	}
 	return typss
 }
 
-func (this *typesMap) Done() bool {
-	for _, typs := range this.typss {
-		if !this.isGenerated(typs) {
+func (tm *typesMap) Done() bool {
+	for _, typs := range tm.typss {
+		if !tm.isGenerated(typs) {
 			return false
 		}
 	}

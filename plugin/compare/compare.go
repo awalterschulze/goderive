@@ -433,9 +433,8 @@ func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, 
 		if named, ok := ref.(*types.Named); ok {
 			if hasCompareMethod(named) {
 				return fmt.Sprintf("%s.Compare(%s)", wrap(thisField), thatField), nil
-			} else {
-				return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
 			}
+			return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
 		}
 		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
 	case *types.Array, *types.Map:
@@ -449,9 +448,8 @@ func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, 
 		named, isNamed := fieldType.(*types.Named)
 		if isNamed && hasCompareMethod(named) {
 			return fmt.Sprintf("%s.Compare(&%s)", thisField, thatField), nil
-		} else {
-			return g.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))
 		}
+		return g.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return "", fmt.Errorf("unsupported field type %s", g.TypeString(fieldType))
 	}

@@ -53,7 +53,7 @@ func TestMaxStruct(t *testing.T) {
 	list = random(list).([]*BuiltInTypes)
 	max := deriveMaxStructs(list, nil)
 	sorted := deriveSortStructs(list)
-	var othermax *BuiltInTypes = nil
+	var othermax *BuiltInTypes
 	if len(sorted) > 0 {
 		othermax = sorted[len(sorted)-1]
 	}

@@ -80,35 +80,35 @@ type finder struct {
 	funcNames map[string]struct{}
 }
 
-func (this *finder) Visit(node ast.Node) (w ast.Visitor) {
+func (f *finder) Visit(node ast.Node) (w ast.Visitor) {
 	call, ok := node.(*ast.CallExpr)
 	if !ok {
-		return this
+		return f
 	}
 	fn, ok := call.Fun.(*ast.Ident)
 	if !ok {
-		return this
+		return f
 	}
-	def, ok := this.pkgInfo.Uses[fn]
+	def, ok := f.pkgInfo.Uses[fn]
 	if !ok {
-		this.undefined = append(this.undefined, call)
-		return this
+		f.undefined = append(f.undefined, call)
+		return f
 	}
 	if _, ok := def.(*types.Builtin); ok {
-		return this
+		return f
 	}
-	file := this.program.Fset.File(def.Pos())
+	file := f.program.Fset.File(def.Pos())
 	if file == nil {
 		// probably a cast, for example float64()
-		return this
+		return f
 	}
 	_, filename := filepath.Split(file.Name())
 	if filename == derivedFilename {
-		this.derived = append(this.derived, call)
-		return this
+		f.derived = append(f.derived, call)
+		return f
 	}
-	this.funcNames[fn.Name] = struct{}{}
-	return this
+	f.funcNames[fn.Name] = struct{}{}
+	return f
 }
 
 type call struct {
@@ -137,12 +137,12 @@ func getInputTypes(pkgInfo *loader.PackageInfo, call *ast.CallExpr) []types.Type
 }
 
 // HasUndefined returns whether the call has undefined arguments
-func (this *call) HasUndefined() bool {
-	for i := range this.Args {
-		if this.Args[i] == nil {
+func (c *call) HasUndefined() bool {
+	for i := range c.Args {
+		if c.Args[i] == nil {
 			return true
 		}
-		if basic, ok := this.Args[i].(*types.Basic); ok {
+		if basic, ok := c.Args[i].(*types.Basic); ok {
 			if basic.Kind() == types.Invalid {
 				return true
 			}

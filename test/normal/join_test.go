@@ -121,7 +121,7 @@ func TestJoinErrorAndValues(t *testing.T) {
 		t.Fatalf("got %s != want %s", got, want)
 	}
 	if goti != wanti {
-		t.Fatalf("got %d != want %d", got, want)
+		t.Fatalf("got %d != want %d", goti, wanti)
 	}
 }
 

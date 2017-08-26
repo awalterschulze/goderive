@@ -62,7 +62,7 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 		return "", fmt.Errorf("%s, expected 1 result for the input function", name)
 	}
 	if _, ok := sig.Results().At(0).Type().(*types.Signature); !ok {
-		return "", fmt.Errorf("%s, does not return a function")
+		return "", fmt.Errorf("%s, does not return a function", name)
 	}
 	return this.SetFuncName(name, sig)
 }

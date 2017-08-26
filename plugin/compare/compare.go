@@ -213,7 +213,6 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		}
 		p.P("return 0")
 		return nil
-		fmt.Printf("unnamed struct %v\n", g.TypeString(typ))
 	case *types.Basic:
 		switch ttyp.Kind() {
 		case types.String:

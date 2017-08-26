@@ -103,7 +103,7 @@ func TestGoString(t *testing.T) {
 					} else if !reflect.ValueOf(this).IsNil() {
 						buf := bytes.NewBuffer(nil)
 						enc := gob.NewEncoder(buf)
-						// Suprisingly many things that gob cannot encode.
+						// Surprisingly many things that gob cannot encode.
 						if err := enc.Encode(this); err == nil {
 							first = false
 							fmt.Fprintf(f, "t.Run(%q, func(t *testing.T) {\n", desc)

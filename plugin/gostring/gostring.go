@@ -15,7 +15,7 @@
 // Package gostring contains the implementation of the gostring plugin, which generates the deriveGoString function.
 //
 // The deriveGoString function returns a string that reproduces the argument's value in valid go syntax.
-// The deriveGoString funciton does a recursive print, even printing pointer values, unlike the default %#v operand.
+// The deriveGoString function does a recursive print, even printing pointer values, unlike the default %#v operand.
 //
 // When goderive walks over your code it is looking for a function that:
 //  - was not implemented (or was previously derived) and

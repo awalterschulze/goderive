@@ -23,7 +23,7 @@
 //   deriveFmap(func(A) (B, error), func() (A, error)) (func() (B, error), error)
 //   deriveFmap(func(A), func() (A, error)) error
 //   deriveFmap(func(A) (B, c, d, ...), func() (A, error)) (func() (B, c, d, ...), error)
-// deriveFmap will propogate the error and not apply the first function to the result of the second function, if the second function returns an error.
+// deriveFmap will propagate the error and not apply the first function to the result of the second function, if the second function returns an error.
 //
 // deriveFmap can also be applied to a channel.
 //   deriveFmap(func(A) B, <-chan A) <-chan B

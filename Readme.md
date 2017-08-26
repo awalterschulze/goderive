@@ -6,6 +6,61 @@
 
 It does thing by parsing your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. 
 
+## Examples
+
+In the following code the `deriveEqual` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveEqual`.
+
+```go
+package main
+
+type MyStruct struct {
+	Int64     int64
+	StringPtr *string
+}
+
+func (this *MyStruct) Equal(that *MyStruct) bool {
+	return deriveEqual(this, that)
+}
+```
+
+goderive will then generate the following code in a `derived.gen.go` file in the same package:
+
+```go
+func deriveEqual(this, that *MyStruct) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.Int64 == that.Int64 &&
+			((this.StringPtr == nil && that.StringPtr == nil) || 
+        (this.StringPtr != nil && that.StringPtr != nil && *(this.StringPtr) == *(that.StringPtr)))
+}
+```
+
+Recursive Examples:
+
+  - [Equal](https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal)
+  - [Compare](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compare)
+  - [DeepCopy](https://github.com/awalterschulze/goderive/tree/master/example/plugin/deepcopy)
+  - [GoString](https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring)
+
+Set Examples:
+
+  - [Keys](https://github.com/awalterschulze/goderive/tree/master/example/plugin/keys)
+  - [Sort](https://github.com/awalterschulze/goderive/tree/master/example/plugin/sort)
+  - [Unique](https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique)
+  - [Set](https://github.com/awalterschulze/goderive/tree/master/example/plugin/set)
+  - [Min](https://github.com/awalterschulze/goderive/tree/master/example/plugin/min)
+  - [Max](https://github.com/awalterschulze/goderive/tree/master/example/plugin/max)
+  - [Contains](https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains)
+  - [Intersect](https://github.com/awalterschulze/goderive/tree/master/example/plugin/intersect)
+  - [Union](https://github.com/awalterschulze/goderive/tree/master/example/plugin/union)
+
+Concurrency Examples:
+
+  - [Pipeline](https://github.com/awalterschulze/goderive/tree/master/example/plugin/pipeline)
+  - [Do](https://github.com/awalterschulze/goderive/tree/master/example/plugin/do)
+
+## Functions
+
 Recursive Functions:
 
   - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal) `deriveEqual(T, T) bool`
@@ -77,7 +132,7 @@ When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and
   - has a predefined prefix.
 
-Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.  
+Functions which have been previously derived will be regenerated to keep them up to date with the latest modifications to your types.  This keeps these functions, which are truly mundane to write, maintainable.
 
 For example when someone in your team adds a new field to a struct and forgets to update the CopyTo method.  This problem is solved by goderive, by generating generated functions given the new types.
 
@@ -86,59 +141,6 @@ These are customizable using command line flags.
 
 Let `goderive` edit your function names in your source code, by enabling `autoname` and `dedup` using the command line flags.
 These flags respectively makes sure than your functions have unique names and that you don't generate multiple functions that do the same thing.
-
-## Examples
-
-In the following code the `deriveEqual` function will be spotted as a function that was not implemented (or was previously derived) and has a prefix `deriveEqual`.
-
-```go
-package main
-
-type MyStruct struct {
-	Int64     int64
-	StringPtr *string
-}
-
-func (this *MyStruct) Equal(that *MyStruct) bool {
-	return deriveEqual(this, that)
-}
-```
-
-goderive will then generate the following code in a `derived.gen.go` file in the same package:
-
-```go
-func deriveEqual(this, that *MyStruct) bool {
-	return (this == nil && that == nil) ||
-		this != nil && that != nil &&
-			this.Int64 == that.Int64 &&
-			((this.StringPtr == nil && that.StringPtr == nil) || 
-        (this.StringPtr != nil && that.StringPtr != nil && *(this.StringPtr) == *(that.StringPtr)))
-}
-```
-
-Recursive Examples:
-
-  - [Equal](https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal)
-  - [Compare](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compare)
-  - [DeepCopy](https://github.com/awalterschulze/goderive/tree/master/example/plugin/deepcopy)
-  - [GoString](https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring)
-
-Set Examples:
-
-  - [Keys](https://github.com/awalterschulze/goderive/tree/master/example/plugin/keys)
-  - [Sort](https://github.com/awalterschulze/goderive/tree/master/example/plugin/sort)
-  - [Unique](https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique)
-  - [Set](https://github.com/awalterschulze/goderive/tree/master/example/plugin/set)
-  - [Min](https://github.com/awalterschulze/goderive/tree/master/example/plugin/min)
-  - [Max](https://github.com/awalterschulze/goderive/tree/master/example/plugin/max)
-  - [Contains](https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains)
-  - [Intersect](https://github.com/awalterschulze/goderive/tree/master/example/plugin/intersect)
-  - [Union](https://github.com/awalterschulze/goderive/tree/master/example/plugin/union)
-
-Concurrency Examples:
-
-  - [Pipeline](https://github.com/awalterschulze/goderive/tree/master/example/plugin/pipeline)
-  - [Do](https://github.com/awalterschulze/goderive/tree/master/example/plugin/do)
 
 ## How to run
 

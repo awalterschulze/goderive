@@ -27,7 +27,7 @@ func TestIntersectMap(t *testing.T) {
 	if len(intersection) > len(m2) {
 		t.Fatalf("length of intersection is bigger than the second original set: %d > %d", len(intersection), len(m2))
 	}
-	for key, _ := range intersection {
+	for key := range intersection {
 		if _, ok := m1[key]; !ok {
 			t.Fatalf("key %v does not exist in set 1 %#v", key, m1)
 		}

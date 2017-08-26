@@ -23,12 +23,12 @@ func TestSet(t *testing.T) {
 	if len(m2) != len(m) {
 		t.Fatalf("length of keys: want %d got %d", len(m), len(m2))
 	}
-	for key, _ := range m2 {
+	for key := range m2 {
 		if _, ok := m[key]; !ok {
 			t.Fatalf("key %v does not exist in %#v", key, m)
 		}
 	}
-	for key, _ := range m {
+	for key := range m {
 		if _, ok := m2[key]; !ok {
 			t.Fatalf("key %v does not exist in %#v", key, m2)
 		}

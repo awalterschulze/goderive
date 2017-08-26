@@ -21,12 +21,12 @@ func TestUnionMap(t *testing.T) {
 	m1 := random(m).(map[int64]struct{})
 	m2 := random(m).(map[int64]struct{})
 	union := deriveUnionSetOfInt64s(m1, m2)
-	for key, _ := range m1 {
+	for key := range m1 {
 		if _, ok := union[key]; !ok {
 			t.Fatalf("key %v does not exist in union %#v", key, union)
 		}
 	}
-	for key, _ := range m2 {
+	for key := range m2 {
 		if _, ok := union[key]; !ok {
 			t.Fatalf("key %v does not exist in union %#v", key, union)
 		}

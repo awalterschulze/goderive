@@ -2,8 +2,8 @@
 
 package max
 
-// deriveCompare compares this and that and returns
-//   * 0 if they are equal,
+// deriveCompare returns:
+//   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
 func deriveCompare(this, that boat) int {
@@ -31,8 +31,8 @@ func deriveMaxs(list []boat, def boat) boat {
 	return m
 }
 
-// deriveCompare_ compares this and that and returns
-//   * 0 if they are equal,
+// deriveCompare_ returns:
+//   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
 func deriveCompare_(this, that *boat) int {
@@ -51,8 +51,8 @@ func deriveCompare_(this, that *boat) int {
 	return 0
 }
 
-// deriveCompare_i compares this and that and returns
-//   * 0 if they are equal,
+// deriveCompare_i returns:
+//   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
 func deriveCompare_i(this, that int) int {

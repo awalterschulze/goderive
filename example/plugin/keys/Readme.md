@@ -35,7 +35,7 @@ func deriveSort(list []string) []string {
 
 func deriveKeys(m map[string]int) []string {
 	keys := make([]string, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys

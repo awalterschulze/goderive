@@ -72,7 +72,7 @@ func (this *gen) genFuncFor(typ *types.Map) error {
 	p.P("func %s(m %s) []%s {", this.GetFuncName(typ), typeStr, keyTypeStr)
 	p.In()
 	p.P("keys := make([]%s, 0, len(m))", keyTypeStr)
-	p.P("for key, _ := range m {")
+	p.P("for key := range m {")
 	p.In()
 	p.P("keys = append(keys, key)")
 	p.Out()

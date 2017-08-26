@@ -3888,7 +3888,7 @@ func deriveSortedStrings(list []string) []string {
 
 func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
 	keys := make([]int64, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -3896,7 +3896,7 @@ func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
 
 func deriveKeysForFmap(m map[int]string) []int {
 	keys := make([]int, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -3904,7 +3904,7 @@ func deriveKeysForFmap(m map[int]string) []int {
 
 func deriveKeysForMapStringToString(m map[string]string) []string {
 	keys := make([]string, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -3912,7 +3912,7 @@ func deriveKeysForMapStringToString(m map[string]string) []string {
 
 func deriveKeysForMapIntToInt64(m map[int]int64) []int {
 	keys := make([]int, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -3920,7 +3920,7 @@ func deriveKeysForMapIntToInt64(m map[int]int64) []int {
 
 func deriveKeysForMapInt64ToInt64(m map[int64]int64) []int64 {
 	keys := make([]int64, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9813,7 +9813,7 @@ func deriveSort_6(list []MyEnum) []MyEnum {
 
 func deriveKeys(m map[string]uint32) []string {
 	keys := make([]string, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9821,7 +9821,7 @@ func deriveKeys(m map[string]uint32) []string {
 
 func deriveKeys_(m map[uint8]int64) []uint8 {
 	keys := make([]uint8, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9829,7 +9829,7 @@ func deriveKeys_(m map[uint8]int64) []uint8 {
 
 func deriveKeys_1(m map[bool]string) []bool {
 	keys := make([]bool, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9837,7 +9837,7 @@ func deriveKeys_1(m map[bool]string) []bool {
 
 func deriveKeys_2(m map[string]bool) []string {
 	keys := make([]string, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9845,7 +9845,7 @@ func deriveKeys_2(m map[string]bool) []string {
 
 func deriveKeys_3(m map[complex128]complex64) []complex128 {
 	keys := make([]complex128, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9853,7 +9853,7 @@ func deriveKeys_3(m map[complex128]complex64) []complex128 {
 
 func deriveKeys_4(m map[float64]uint32) []float64 {
 	keys := make([]float64, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9861,7 +9861,7 @@ func deriveKeys_4(m map[float64]uint32) []float64 {
 
 func deriveKeys_5(m map[uint16]uint8) []uint16 {
 	keys := make([]uint16, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9869,7 +9869,7 @@ func deriveKeys_5(m map[uint16]uint8) []uint16 {
 
 func deriveKeys_6(m map[Name]string) []Name {
 	keys := make([]Name, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9877,7 +9877,7 @@ func deriveKeys_6(m map[Name]string) []Name {
 
 func deriveKeys_7(m map[string]Name) []string {
 	keys := make([]string, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9885,7 +9885,7 @@ func deriveKeys_7(m map[string]Name) []string {
 
 func deriveKeys_8(m map[string]*Name) []string {
 	keys := make([]string, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9893,7 +9893,7 @@ func deriveKeys_8(m map[string]*Name) []string {
 
 func deriveKeys_9(m map[string][]Name) []string {
 	keys := make([]string, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9901,7 +9901,7 @@ func deriveKeys_9(m map[string][]Name) []string {
 
 func deriveKeys_10(m map[string][]*Name) []string {
 	keys := make([]string, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9909,7 +9909,7 @@ func deriveKeys_10(m map[string][]*Name) []string {
 
 func deriveKeys_11(m map[int]RecursiveType) []int {
 	keys := make([]int, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9917,7 +9917,7 @@ func deriveKeys_11(m map[int]RecursiveType) []int {
 
 func deriveKeys_12(m map[int32]MyEnum) []int32 {
 	keys := make([]int32, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9925,7 +9925,7 @@ func deriveKeys_12(m map[int32]MyEnum) []int32 {
 
 func deriveKeys_13(m map[MyEnum]int32) []MyEnum {
 	keys := make([]MyEnum, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -9933,7 +9933,7 @@ func deriveKeys_13(m map[MyEnum]int32) []MyEnum {
 
 func deriveKeys_14(m map[int]time.Duration) []int {
 	keys := make([]int, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
@@ -10307,7 +10307,7 @@ func deriveEqual_85(this, that *vendortest.AVendoredObject) bool {
 
 func deriveKeys_15(m map[int]int) []int {
 	keys := make([]int, 0, len(m))
-	for key, _ := range m {
+	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys

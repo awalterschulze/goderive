@@ -11,3 +11,4 @@ gofmt:
 .PHONY: travis
 travis:
 	make test
+	go vet ./...

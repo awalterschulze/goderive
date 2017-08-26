@@ -215,7 +215,7 @@ func (pkg *pkg) Print() error {
 	if err != nil {
 		return err
 	}
-	if err := pkg.printer.WriteTo(f); err != nil {
+	if _, err := pkg.printer.WriteTo(f); err != nil {
 		return err
 	}
 	return f.Close()

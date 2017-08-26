@@ -18,6 +18,7 @@ import (
 	"go/types"
 )
 
+// Plugin is used to create a Generator.
 type Plugin interface {
 	GetPrefix() string
 	SetPrefix(string)
@@ -25,12 +26,14 @@ type Plugin interface {
 	New(typesMap TypesMap, p Printer, deps map[string]Dependency) Generator
 }
 
+// Generator generates code for input types.
 type Generator interface {
 	TypesMap
 	Add(name string, typs []types.Type) (string, error)
 	Generate(typs []types.Type) error
 }
 
+// Dependency is used by other plugins to generate more functions.
 type Dependency interface {
 	GetFuncName(typs ...types.Type) string
 }
@@ -41,6 +44,11 @@ type plugin struct {
 	newFunc func(typesMap TypesMap, p Printer, deps map[string]Dependency) Generator
 }
 
+// NewPlugin is used by a plugin library to create a plugin, that can be added to the Plugins list.
+// For example:
+//   func NewPlugin() derive.Plugin {
+//     return derive.NewPlugin("all", "deriveAll", New)
+//   }
 func NewPlugin(name, prefix string, newFunc func(typesMap TypesMap, p Printer, deps map[string]Dependency) Generator) Plugin {
 	return &plugin{
 		name:    name,

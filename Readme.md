@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/awalterschulze/goderive.svg?branch=master)](https://travis-ci.org/awalterschulze/goderive)
 
-`goderive` parses your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. 
+`goderive` derives mundane golang functions that you do not want to maintain and keeps them up to date.
+
+It does thing by parsing your go code for functions which are not implemented and then generates these functions for you by deriving their implementations from the parameter types. 
 
 Recursive Functions:
 

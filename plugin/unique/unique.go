@@ -51,28 +51,28 @@ type gen struct {
 	contains derive.Dependency
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 1 {
 		return "", fmt.Errorf("%s does not have one argument", name)
 	}
-	return this.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	typ := typs[0]
 	sliceType, ok := typ.(*types.Slice)
 	if !ok {
-		return fmt.Errorf("%s, the first argument, %s, is not of type slice", this.GetFuncName(typ), this.TypeString(typ))
+		return fmt.Errorf("%s, the first argument, %s, is not of type slice", g.GetFuncName(typ), g.TypeString(typ))
 	}
-	return this.genFuncFor(sliceType)
+	return g.genFuncFor(sliceType)
 }
 
-func (this *gen) genFuncFor(typ *types.Slice) error {
-	p := this.printer
-	this.Generating(typ)
-	typeStr := this.TypeString(typ)
+func (g *gen) genFuncFor(typ *types.Slice) error {
+	p := g.printer
+	g.Generating(typ)
+	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(list %s) %s {", this.GetFuncName(typ), typeStr, typeStr)
+	p.P("func %s(list %s) %s {", g.GetFuncName(typ), typeStr, typeStr)
 	p.In()
 	p.P("if len(list) == 0 {")
 	p.In()
@@ -82,7 +82,7 @@ func (this *gen) genFuncFor(typ *types.Slice) error {
 	p.P("u := 1")
 	p.P("for i := 1; i < len(list); i++ {")
 	p.In()
-	p.P("if !%s(list[:u], list[i]) {", this.contains.GetFuncName(typ))
+	p.P("if !%s(list[:u], list[i]) {", g.contains.GetFuncName(typ))
 	p.In()
 	p.P("if i != u {")
 	p.In()

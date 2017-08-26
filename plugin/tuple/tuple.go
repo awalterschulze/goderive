@@ -48,7 +48,7 @@ type gen struct {
 	printer derive.Printer
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) == 0 {
 		return "", fmt.Errorf("%s has zero arguments", name)
 	}
@@ -58,24 +58,24 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 			for i := range tuptypes {
 				tuptypes[i] = tup.At(i).Type()
 			}
-			return this.SetFuncName(name, tuptypes...)
+			return g.SetFuncName(name, tuptypes...)
 		}
 	}
-	return this.SetFuncName(name, typs...)
+	return g.SetFuncName(name, typs...)
 }
 
-func (this *gen) Generate(typs []types.Type) error {
-	return this.genFuncFor(typs)
+func (g *gen) Generate(typs []types.Type) error {
+	return g.genFuncFor(typs)
 }
 
-func (this *gen) genFuncFor(typs []types.Type) error {
-	p := this.printer
-	this.Generating(typs...)
+func (g *gen) genFuncFor(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
 	typStrs := make([]string, len(typs))
 	paramStrs := make([]string, len(typs))
 	varStrs := make([]string, len(typs))
 	for i, t := range typs {
-		typStrs[i] = this.TypeString(t)
+		typStrs[i] = g.TypeString(t)
 		varStrs[i] = "v" + strconv.Itoa(i)
 		paramStrs[i] = varStrs[i] + " " + typStrs[i]
 	}
@@ -83,7 +83,7 @@ func (this *gen) genFuncFor(typs []types.Type) error {
 	if len(typs) > 1 {
 		typStr = "(" + typStr + ")"
 	}
-	funcName := this.GetFuncName(typs...)
+	funcName := g.GetFuncName(typs...)
 	p.P("")
 	p.P("func %s(%s) func() %s {", funcName, strings.Join(paramStrs, ", "), typStr)
 	p.In()

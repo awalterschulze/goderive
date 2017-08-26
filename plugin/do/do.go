@@ -102,7 +102,7 @@ type gen struct {
 	printer derive.Printer
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) < 2 {
 		return "", fmt.Errorf("%s expected at least two arguments", name)
 	}
@@ -111,17 +111,17 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 		if !ok {
 			return "", fmt.Errorf("%s's argument number %d is not a function, but %s", name, i, typ)
 		}
-		if _, err := this.errorOut(name, sig); err != nil {
+		if _, err := g.errorOut(name, sig); err != nil {
 			return "", err
 		}
 	}
-	return this.SetFuncName(name, typs...)
+	return g.SetFuncName(name, typs...)
 }
 
-func (this *gen) errorOut(name string, sig *types.Signature) (typ types.Type, err error) {
+func (g *gen) errorOut(name string, sig *types.Signature) (typ types.Type, err error) {
 	params := sig.Params()
 	if params.Len() != 0 {
-		return nil, fmt.Errorf("%s, the function argument does not take zero parameters", this.TypeString(sig))
+		return nil, fmt.Errorf("%s, the function argument does not take zero parameters", g.TypeString(sig))
 	}
 	res := sig.Results()
 	if res.Len() != 2 {
@@ -134,31 +134,31 @@ func (this *gen) errorOut(name string, sig *types.Signature) (typ types.Type, er
 	return elemTyp, nil
 }
 
-func (this *gen) Generate(typs []types.Type) error {
-	name := this.GetFuncName(typs...)
+func (g *gen) Generate(typs []types.Type) error {
+	name := g.GetFuncName(typs...)
 	outs := make([]types.Type, len(typs))
 	outstrs := make([]string, len(typs))
 	funcstrs := make([]string, len(typs))
 	vars := make([]string, len(typs))
 	for i, typ := range typs {
-		out, err := this.errorOut(name, typ.(*types.Signature))
+		out, err := g.errorOut(name, typ.(*types.Signature))
 		if err != nil {
 			return err
 		}
 		outs[i] = out
-		outstrs[i] = this.TypeString(out)
+		outstrs[i] = g.TypeString(out)
 		funcstrs[i] = fmt.Sprintf("f%d func() (%s, error)", i, outstrs[i])
 		vars[i] = fmt.Sprintf("v%d", i)
 	}
 	outstrs = append(outstrs, "error")
-	this.Generating(typs...)
-	p := this.printer
+	g.Generating(typs...)
+	p := g.printer
 	p.P("")
 	p.P("func %s(%s) (%s) {", name, strings.Join(funcstrs, ", "), strings.Join(outstrs, ", "))
 	p.In()
 	p.P("errChan := make(chan error)")
 	for i := range typs {
-		p.P("var %s %s", vars[i], this.TypeString(outs[i]))
+		p.P("var %s %s", vars[i], g.TypeString(outs[i]))
 		p.P("go func() {")
 		p.In()
 		p.P("var %serr error", vars[i])

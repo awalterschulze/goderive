@@ -50,7 +50,7 @@ type gen struct {
 	min      derive.Dependency
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
@@ -66,27 +66,27 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	default:
 		return "", fmt.Errorf("%s takes an unsupported type: %s", name, typ)
 	}
-	return this.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	switch typ := typs[0].(type) {
 	case *types.Slice:
-		return this.genSlice(typ)
+		return g.genSlice(typ)
 	case *types.Map:
-		return this.genMap(typ)
+		return g.genMap(typ)
 	}
-	return fmt.Errorf("%s, the argument type, %s, is not of type slice or map[T]struct{}", this.GetFuncName(typs[0]), typs[0])
+	return fmt.Errorf("%s, the argument type, %s, is not of type slice or map[T]struct{}", g.GetFuncName(typs[0]), typs[0])
 }
 
-func (this *gen) genMap(typ *types.Map) error {
-	p := this.printer
-	this.Generating(typ)
-	typeStr := this.TypeString(typ.Key())
+func (g *gen) genMap(typ *types.Map) error {
+	p := g.printer
+	g.Generating(typ)
+	typeStr := g.TypeString(typ.Key())
 	p.P("")
-	p.P("func %s(this, that map[%s]struct{}) map[%s]struct{} {", this.GetFuncName(typ), typeStr, typeStr)
+	p.P("func %s(this, that map[%s]struct{}) map[%s]struct{} {", g.GetFuncName(typ), typeStr, typeStr)
 	p.In()
-	minFunc := this.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])
+	minFunc := g.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])
 	p.P("intersect := make(map[%s]struct{}, %s(len(this), len(that)))", typeStr, minFunc)
 	p.P("for k := range this {")
 	p.In()
@@ -103,18 +103,18 @@ func (this *gen) genMap(typ *types.Map) error {
 	return nil
 }
 
-func (this *gen) genSlice(typ *types.Slice) error {
-	p := this.printer
-	this.Generating(typ)
-	typeStr := this.TypeString(typ.Elem())
+func (g *gen) genSlice(typ *types.Slice) error {
+	p := g.printer
+	g.Generating(typ)
+	typeStr := g.TypeString(typ.Elem())
 	p.P("")
-	p.P("func %s(this, that []%s) []%s {", this.GetFuncName(typ), typeStr, typeStr)
+	p.P("func %s(this, that []%s) []%s {", g.GetFuncName(typ), typeStr, typeStr)
 	p.In()
-	minFunc := this.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])
+	minFunc := g.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])
 	p.P("intersect := make([]%s, 0, %s(len(this), len(that)))", typeStr, minFunc)
 	p.P("for i, v := range this {")
 	p.In()
-	p.P("if %s(that, v) {", this.contains.GetFuncName(typ))
+	p.P("if %s(that, v) {", g.contains.GetFuncName(typ))
 	p.In()
 	p.P("intersect = append(intersect, this[i])")
 	p.Out()

@@ -52,25 +52,25 @@ type gen struct {
 	join    derive.Dependency
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s expected two arguments", name)
 	}
-	_, b1, err := this.funcInChanOut(name, typs[0])
+	_, b1, err := g.funcInChanOut(name, typs[0])
 	if err != nil {
 		return "", err
 	}
-	b2, _, err := this.funcInChanOut(name, typs[1])
+	b2, _, err := g.funcInChanOut(name, typs[1])
 	if err != nil {
 		return "", err
 	}
 	if !types.Identical(b1, b2) {
 		return "", fmt.Errorf("%s function one's output %s is not the same as function two's input %s", name, b1, b2)
 	}
-	return this.SetFuncName(name, typs...)
+	return g.SetFuncName(name, typs...)
 }
 
-func (this *gen) funcInChanOut(name string, typ types.Type) (inTyp, outTyp types.Type, err error) {
+func (g *gen) funcInChanOut(name string, typ types.Type) (inTyp, outTyp types.Type, err error) {
 	sig, ok := typ.(*types.Signature)
 	if !ok {
 		return nil, nil, fmt.Errorf("%s is not a function: %s", name, typ)
@@ -86,31 +86,31 @@ func (this *gen) funcInChanOut(name string, typ types.Type) (inTyp, outTyp types
 	resType := results.At(0).Type()
 	chanType, ok := resType.(*types.Chan)
 	if !ok {
-		return nil, nil, fmt.Errorf("%s, the result, %s, is not of type chan", name, this.TypeString(resType))
+		return nil, nil, fmt.Errorf("%s, the result, %s, is not of type chan", name, g.TypeString(resType))
 	}
 	return params.At(0).Type(), chanType.Elem(), nil
 }
 
-func (this *gen) Generate(typs []types.Type) error {
-	name := this.GetFuncName(typs...)
-	a, b1, err := this.funcInChanOut(name, typs[0])
+func (g *gen) Generate(typs []types.Type) error {
+	name := g.GetFuncName(typs...)
+	a, b1, err := g.funcInChanOut(name, typs[0])
 	if err != nil {
 		return err
 	}
-	_, c, err := this.funcInChanOut(name, typs[1])
+	_, c, err := g.funcInChanOut(name, typs[1])
 	if err != nil {
 		return err
 	}
-	this.Generating(typs...)
-	p := this.printer
+	g.Generating(typs...)
+	p := g.printer
 	cc := types.NewChan(types.RecvOnly, types.NewChan(types.RecvOnly, c))
-	t0str := this.TypeString(typs[0])
-	t1str := this.TypeString(typs[1])
-	astr := this.TypeString(a)
-	cstr := this.TypeString(c)
-	ccstr := this.join.GetFuncName(cc)
+	t0str := g.TypeString(typs[0])
+	t1str := g.TypeString(typs[1])
+	astr := g.TypeString(a)
+	cstr := g.TypeString(c)
+	ccstr := g.join.GetFuncName(cc)
 
-	fmapFunc := this.fmap.GetFuncName(typs[1], types.NewChan(types.RecvOnly, b1))
+	fmapFunc := g.fmap.GetFuncName(typs[1], types.NewChan(types.RecvOnly, b1))
 	p.P("")
 	p.P("func %s(f %s, g %s) func(%s) <-chan %s {", name, t0str, t1str, astr, cstr)
 	p.In()

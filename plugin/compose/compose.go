@@ -53,22 +53,22 @@ type gen struct {
 	join    derive.Dependency
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
 	switch typs[0].(type) {
 	case *types.Signature:
-		_, _, _, err := this.errorType(name, typs)
+		_, _, _, err := g.errorType(name, typs)
 		if err != nil {
 			return "", err
 		}
-		return this.SetFuncName(name, typs...)
+		return g.SetFuncName(name, typs...)
 	}
 	return "", fmt.Errorf("unsupported type %s", typs[0])
 }
 
-func (this *gen) errorType(name string, typs []types.Type) ([]types.Type, []types.Type, []types.Type, error) {
+func (g *gen) errorType(name string, typs []types.Type) ([]types.Type, []types.Type, []types.Type, error) {
 	if len(typs) != 2 {
 		return nil, nil, nil, fmt.Errorf("%s does not have two arguments", name)
 	}
@@ -115,18 +115,18 @@ func (this *gen) errorType(name string, typs []types.Type) ([]types.Type, []type
 	return as, bs, cs, nil
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	switch typs[0].(type) {
 	case *types.Signature:
-		return this.genError(typs)
+		return g.genError(typs)
 	}
 	return fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string) or (a function and error)", typs[0])
 }
 
-func (this *gen) typeStrings(typs []types.Type) []string {
+func (g *gen) typeStrings(typs []types.Type) []string {
 	ss := make([]string, len(typs))
 	for i := range typs {
-		ss[i] = this.TypeString(typs[i])
+		ss[i] = g.TypeString(typs[i])
 	}
 	return ss
 }
@@ -154,15 +154,15 @@ func zip(ss, rr []string) []string {
 	return qq
 }
 
-func (this *gen) genError(typs []types.Type) error {
-	p := this.printer
-	this.Generating(typs...)
-	name := this.GetFuncName(typs...)
-	as, bs, cs, err := this.errorType(name, typs)
+func (g *gen) genError(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
+	name := g.GetFuncName(typs...)
+	as, bs, cs, err := g.errorType(name, typs)
 	if err != nil {
 		return err
 	}
-	ats, bts, cts := this.typeStrings(as), this.typeStrings(bs), this.typeStrings(cs)
+	ats, bts, cts := g.typeStrings(as), g.typeStrings(bs), g.typeStrings(cs)
 	bterrs := append(append([]string{}, bts...), "error")
 	cterrs := append(append([]string{}, cts...), "error")
 	a, b, c := strings.Join(ats, ", "), strings.Join(bterrs, ", "), strings.Join(cterrs, ", ")

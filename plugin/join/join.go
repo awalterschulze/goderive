@@ -61,7 +61,7 @@ type gen struct {
 	syncPkg    derive.Import
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) == 0 {
 		return "", fmt.Errorf("%s does not have at least one argument", name)
 	}
@@ -69,46 +69,46 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	case *types.Slice:
 		switch t.Elem().(type) {
 		case *types.Slice:
-			_, err := this.sliceType(name, typs)
+			_, err := g.sliceType(name, typs)
 			if err != nil {
 				return "", err
 			}
-			return this.SetFuncName(name, typs...)
+			return g.SetFuncName(name, typs...)
 		case *types.Basic:
-			err := this.stringType(name, typs)
+			err := g.stringType(name, typs)
 			if err != nil {
 				return "", err
 			}
-			return this.SetFuncName(name, typs...)
+			return g.SetFuncName(name, typs...)
 		}
 	case *types.Signature:
-		_, err := this.errorType(name, typs)
+		_, err := g.errorType(name, typs)
 		if err != nil {
 			return "", err
 		}
-		return this.SetFuncName(name, typs...)
+		return g.SetFuncName(name, typs...)
 	case *types.Tuple:
 		if t.Len() == 2 {
 			ts := make([]types.Type, 2)
 			ts[0] = t.At(0).Type()
 			ts[1] = t.At(1).Type()
-			_, err := this.errorType(name, ts)
+			_, err := g.errorType(name, ts)
 			if err != nil {
 				return "", err
 			}
-			return this.SetFuncName(name, ts...)
+			return g.SetFuncName(name, ts...)
 		}
 	case *types.Chan:
-		_, err := this.chanType(name, typs)
+		_, err := g.chanType(name, typs)
 		if err != nil {
 			return "", err
 		}
-		return this.SetFuncName(name, typs...)
+		return g.SetFuncName(name, typs...)
 	}
 	return "", fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
 }
 
-func (this *gen) errorType(name string, typs []types.Type) ([]types.Type, error) {
+func (g *gen) errorType(name string, typs []types.Type) ([]types.Type, error) {
 	if len(typs) != 2 {
 		return nil, fmt.Errorf("%s does not have two arguments", name)
 	}
@@ -137,7 +137,7 @@ func (this *gen) errorType(name string, typs []types.Type) ([]types.Type, error)
 	return outTyps, nil
 }
 
-func (this *gen) chanType(name string, typs []types.Type) (types.Type, error) {
+func (g *gen) chanType(name string, typs []types.Type) (types.Type, error) {
 	if len(typs) != 1 {
 		return nil, fmt.Errorf("%s does not have one argument", name)
 	}
@@ -153,7 +153,7 @@ func (this *gen) chanType(name string, typs []types.Type) (types.Type, error) {
 	return elemType, nil
 }
 
-func (this *gen) sliceType(name string, typs []types.Type) (types.Type, error) {
+func (g *gen) sliceType(name string, typs []types.Type) (types.Type, error) {
 	if len(typs) != 1 {
 		return nil, fmt.Errorf("%s does not have one argument", name)
 	}
@@ -169,7 +169,7 @@ func (this *gen) sliceType(name string, typs []types.Type) (types.Type, error) {
 	return elemType, nil
 }
 
-func (this *gen) stringType(name string, typs []types.Type) error {
+func (g *gen) stringType(name string, typs []types.Type) error {
 	if len(typs) != 1 {
 		return fmt.Errorf("%s does not have one argument", name)
 	}
@@ -187,35 +187,35 @@ func (this *gen) stringType(name string, typs []types.Type) error {
 	return nil
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	switch t := typs[0].(type) {
 	case *types.Slice:
 		switch t.Elem().(type) {
 		case *types.Slice:
-			return this.genSlice(typs)
+			return g.genSlice(typs)
 		case *types.Basic:
-			return this.genString(typs)
+			return g.genString(typs)
 		}
 	case *types.Signature:
-		return this.genError(typs)
+		return g.genError(typs)
 	case *types.Tuple:
 		if t.Len() == 2 {
 			ts := make([]types.Type, 2)
 			ts[0] = t.At(0).Type()
 			ts[1] = t.At(1).Type()
-			return this.genError(ts)
+			return g.genError(ts)
 		}
 	case *types.Chan:
-		return this.genChan(typs)
+		return g.genChan(typs)
 	}
 	return fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string) or (a function and error)", typs[0])
 }
 
-func (this *gen) genError(typs []types.Type) error {
-	p := this.printer
-	this.Generating(typs...)
-	name := this.GetFuncName(typs...)
-	outTyps, err := this.errorType(name, typs)
+func (g *gen) genError(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
+	name := g.GetFuncName(typs...)
+	outTyps, err := g.errorType(name, typs)
 	if err != nil {
 		return err
 	}
@@ -235,7 +235,7 @@ func (this *gen) genError(typs []types.Type) error {
 		outs := make([]string, len(outTyps))
 		zeros := make([]string, len(outTyps))
 		for i := range outTyps {
-			outs[i] = this.TypeString(outTyps[i])
+			outs[i] = g.TypeString(outTyps[i])
 			zeros[i] = derive.Zero(outTyps[i])
 		}
 		outStr := strings.Join(outs, ", ")
@@ -253,22 +253,22 @@ func (this *gen) genError(typs []types.Type) error {
 	return nil
 }
 
-func (this *gen) genChan(typs []types.Type) error {
-	p := this.printer
-	this.Generating(typs...)
-	name := this.GetFuncName(typs...)
-	elemTyp, err := this.chanType(name, typs)
+func (g *gen) genChan(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
+	name := g.GetFuncName(typs...)
+	elemTyp, err := g.chanType(name, typs)
 	if err != nil {
 		return err
 	}
-	typStr := this.TypeString(elemTyp)
+	typStr := g.TypeString(elemTyp)
 	p.P("")
 	p.P("func %s(in <-chan <-chan %s) <-chan %s {", name, typStr, typStr)
 	p.In()
 	p.P("out := make(chan %s)", typStr)
 	p.P("go func() {")
 	p.In()
-	p.P("wait := %s.WaitGroup{}", this.syncPkg())
+	p.P("wait := %s.WaitGroup{}", g.syncPkg())
 	p.P("for c := range in {")
 	p.In()
 	p.P("wait.Add(1)")
@@ -295,15 +295,15 @@ func (this *gen) genChan(typs []types.Type) error {
 	return nil
 }
 
-func (this *gen) genSlice(typs []types.Type) error {
-	p := this.printer
-	this.Generating(typs...)
-	name := this.GetFuncName(typs...)
-	elemTyp, err := this.sliceType(name, typs)
+func (g *gen) genSlice(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
+	name := g.GetFuncName(typs...)
+	elemTyp, err := g.sliceType(name, typs)
 	if err != nil {
 		return err
 	}
-	typStr := this.TypeString(elemTyp)
+	typStr := g.TypeString(elemTyp)
 	p.P("")
 	p.P("func %s(list [][]%s) []%s {", name, typStr, typStr)
 	p.In()
@@ -330,14 +330,14 @@ func (this *gen) genSlice(typs []types.Type) error {
 	return nil
 }
 
-func (this *gen) genString(typs []types.Type) error {
-	p := this.printer
-	this.Generating(typs...)
-	name := this.GetFuncName(typs...)
+func (g *gen) genString(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
+	name := g.GetFuncName(typs...)
 	p.P("")
 	p.P("func %s(list []string) string {", name)
 	p.In()
-	p.P("return %s.Join(list, \"\")", this.stringsPkg())
+	p.P("return %s.Join(list, \"\")", g.stringsPkg())
 	p.Out()
 	p.P("}")
 	return nil

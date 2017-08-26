@@ -60,12 +60,12 @@ type gen struct {
 	compare derive.Dependency
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
 	if types.Identical(typs[0], typs[1]) {
-		return this.SetFuncName(name, typs[0], typs[1])
+		return g.SetFuncName(name, typs[0], typs[1])
 	}
 	sliceType, ok := typs[0].(*types.Slice)
 	if !ok {
@@ -74,32 +74,32 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if !types.AssignableTo(typs[1], sliceType.Elem()) {
 		return "", fmt.Errorf("%s, the second argument, %s, is not is assignable to an element that of the slice type %s", name, typs[1], typs[0])
 	}
-	return this.SetFuncName(name, typs[0], typs[1])
+	return g.SetFuncName(name, typs[0], typs[1])
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	if types.Identical(typs[0], typs[1]) {
-		return this.genTwo(typs[0], typs[1])
+		return g.genTwo(typs[0], typs[1])
 	}
 	sliceType, ok := typs[0].(*types.Slice)
 	if !ok {
-		return fmt.Errorf("%s, the first argument, %s, is not of type slice", this.GetFuncName(typs[0], typs[1]), typs[0])
+		return fmt.Errorf("%s, the first argument, %s, is not of type slice", g.GetFuncName(typs[0], typs[1]), typs[0])
 	}
-	return this.genSlice(sliceType, typs[1])
+	return g.genSlice(sliceType, typs[1])
 }
 
-func (this *gen) genTwo(typ, typ2 types.Type) error {
-	p := this.printer
-	this.Generating(typ, typ2)
-	typeStr := this.TypeString(typ)
+func (g *gen) genTwo(typ, typ2 types.Type) error {
+	p := g.printer
+	g.Generating(typ, typ2)
+	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(a, b %s) %s {", this.GetFuncName(typ, typ2), typeStr, typeStr)
+	p.P("func %s(a, b %s) %s {", g.GetFuncName(typ, typ2), typeStr, typeStr)
 	p.In()
 	switch typ.(type) {
 	case *types.Basic:
 		p.P("if a > b {")
 	default:
-		p.P("if %s(a, b) > 0 {", this.compare.GetFuncName(typ))
+		p.P("if %s(a, b) > 0 {", g.compare.GetFuncName(typ))
 	}
 	p.In()
 	p.P("return a")
@@ -111,13 +111,13 @@ func (this *gen) genTwo(typ, typ2 types.Type) error {
 	return nil
 }
 
-func (this *gen) genSlice(typ *types.Slice, typ2 types.Type) error {
-	p := this.printer
-	this.Generating(typ, typ2)
+func (g *gen) genSlice(typ *types.Slice, typ2 types.Type) error {
+	p := g.printer
+	g.Generating(typ, typ2)
 	etyp := typ.Elem()
-	typeStr := this.TypeString(etyp)
+	typeStr := g.TypeString(etyp)
 	p.P("")
-	p.P("func %s(list []%s, def %s) %s {", this.GetFuncName(typ, typ2), typeStr, typeStr, typeStr)
+	p.P("func %s(list []%s, def %s) %s {", g.GetFuncName(typ, typ2), typeStr, typeStr, typeStr)
 	p.In()
 	p.P("if len(list) == 0 {")
 	p.In()
@@ -132,7 +132,7 @@ func (this *gen) genSlice(typ *types.Slice, typ2 types.Type) error {
 	case *types.Basic:
 		p.P("if v > m {")
 	default:
-		p.P("if %s(v, m) > 0 {", this.compare.GetFuncName(etyp))
+		p.P("if %s(v, m) > 0 {", g.compare.GetFuncName(etyp))
 	}
 	p.In()
 	p.P("m = list[i]")

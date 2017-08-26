@@ -46,27 +46,27 @@ type gen struct {
 	printer derive.Printer
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 1 {
 		return "", fmt.Errorf("%s does not have one argument", name)
 	}
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return "", fmt.Errorf("%s, the first argument, %s, is not of type function", name, this.TypeString(typs[0]))
+		return "", fmt.Errorf("%s, the first argument, %s, is not of type function", name, g.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() < 2 {
 		return "", fmt.Errorf("%s, the first argument is a function, but wanted a function with more than one argument", name)
 	}
-	return this.SetFuncName(name, sig)
+	return g.SetFuncName(name, sig)
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return fmt.Errorf("%s, the first argument, %s, is not of type function", this.GetFuncName(typs[0]), this.TypeString(typs[0]))
+		return fmt.Errorf("%s, the first argument, %s, is not of type function", g.GetFuncName(typs[0]), g.TypeString(typs[0]))
 	}
-	return this.genFuncFor(sig)
+	return g.genFuncFor(sig)
 }
 
 func currySig(sig *types.Signature) (first *types.Var, returnFunc *types.Signature) {
@@ -93,14 +93,14 @@ func varnames(tup *types.Tuple) []string {
 	return as
 }
 
-func (this *gen) genFuncFor(ftyp *types.Signature) error {
-	p := this.printer
-	this.Generating(ftyp)
-	fStr := this.TypeString(ftyp)
-	funcName := this.GetFuncName(ftyp)
+func (g *gen) genFuncFor(ftyp *types.Signature) error {
+	p := g.printer
+	g.Generating(ftyp)
+	fStr := g.TypeString(ftyp)
+	funcName := g.GetFuncName(ftyp)
 	firstVar, gtyp := currySig(ftyp)
-	firstStr := this.TypeString(types.NewTuple(firstVar))
-	gStr := this.TypeString(gtyp)
+	firstStr := g.TypeString(types.NewTuple(firstVar))
+	gStr := g.TypeString(gtyp)
 	p.P("")
 	p.P("func %s(f %s) func%s %s {", funcName, fStr, firstStr, gStr)
 	p.In()

@@ -53,48 +53,48 @@ type gen struct {
 	compare derive.Dependency
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 1 {
 		return "", fmt.Errorf("%s does not have one argument", name)
 	}
-	return this.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	typ := typs[0]
 	sliceType, ok := typ.(*types.Slice)
 	if !ok {
-		return fmt.Errorf("%s, the first argument, %s, is not of type slice", this.GetFuncName(typ), this.TypeString(typ))
+		return fmt.Errorf("%s, the first argument, %s, is not of type slice", g.GetFuncName(typ), g.TypeString(typ))
 	}
-	return this.genFuncFor(sliceType)
+	return g.genFuncFor(sliceType)
 }
 
-func (this *gen) genFuncFor(typ *types.Slice) error {
-	p := this.printer
-	this.Generating(typ)
-	typeStr := this.TypeString(typ)
+func (g *gen) genFuncFor(typ *types.Slice) error {
+	p := g.printer
+	g.Generating(typ)
+	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(list %s) %s {", this.GetFuncName(typ), typeStr, typeStr)
+	p.P("func %s(list %s) %s {", g.GetFuncName(typ), typeStr, typeStr)
 	p.In()
 	etyp := typ.Elem()
 	switch ttyp := etyp.Underlying().(type) {
 	case *types.Basic:
 		switch ttyp.Kind() {
 		case types.String:
-			p.P(this.sortPkg() + ".Strings(list)")
+			p.P(g.sortPkg() + ".Strings(list)")
 		case types.Float64:
-			p.P(this.sortPkg() + ".Float64s(list)")
+			p.P(g.sortPkg() + ".Float64s(list)")
 		case types.Int:
-			p.P(this.sortPkg() + ".Ints(list)")
+			p.P(g.sortPkg() + ".Ints(list)")
 		case types.Complex64, types.Complex128, types.Bool:
-			p.P(this.sortPkg() + ".Slice(list, func(i, j int) bool { return " + this.compare.GetFuncName(ttyp) + "(list[i], list[j]) < 0 })")
+			p.P(g.sortPkg() + ".Slice(list, func(i, j int) bool { return " + g.compare.GetFuncName(ttyp) + "(list[i], list[j]) < 0 })")
 		default:
-			p.P(this.sortPkg() + ".Slice(list, func(i, j int) bool { return list[i] < list[j] })")
+			p.P(g.sortPkg() + ".Slice(list, func(i, j int) bool { return list[i] < list[j] })")
 		}
 	case *types.Pointer, *types.Struct, *types.Slice, *types.Array, *types.Map:
-		p.P(this.sortPkg() + ".Slice(list, func(i, j int) bool { return " + this.compare.GetFuncName(etyp) + "(list[i], list[j]) < 0 })")
+		p.P(g.sortPkg() + ".Slice(list, func(i, j int) bool { return " + g.compare.GetFuncName(etyp) + "(list[i], list[j]) < 0 })")
 	default:
-		return fmt.Errorf("unsupported compare type: %s", this.TypeString(typ))
+		return fmt.Errorf("unsupported compare type: %s", g.TypeString(typ))
 	}
 	p.P("return list")
 	p.Out()

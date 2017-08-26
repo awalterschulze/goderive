@@ -49,7 +49,7 @@ type gen struct {
 	equal   derive.Dependency
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
@@ -60,16 +60,16 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if !types.AssignableTo(typs[1], sliceType.Elem()) {
 		return "", fmt.Errorf("%s, the second argument, %s, is not is assignable to an element that of the slice type %s", name, typs[1], typs[0])
 	}
-	return this.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	typ := typs[0]
 	sliceType, ok := typ.(*types.Slice)
 	if !ok {
-		return fmt.Errorf("%s, the first argument, %s, is not of type slice", this.GetFuncName(typ), typ)
+		return fmt.Errorf("%s, the first argument, %s, is not of type slice", g.GetFuncName(typ), typ)
 	}
-	return this.genFuncFor(sliceType)
+	return g.genFuncFor(sliceType)
 }
 
 func canEqual(tt types.Type) bool {
@@ -92,20 +92,20 @@ func canEqual(tt types.Type) bool {
 	return false
 }
 
-func (this *gen) genFuncFor(typ *types.Slice) error {
-	p := this.printer
-	this.Generating(typ)
+func (g *gen) genFuncFor(typ *types.Slice) error {
+	p := g.printer
+	g.Generating(typ)
 	etyp := typ.Elem()
-	typeStr := this.TypeString(etyp)
+	typeStr := g.TypeString(etyp)
 	p.P("")
-	p.P("func %s(list []%s, item %s) bool {", this.GetFuncName(typ), typeStr, typeStr)
+	p.P("func %s(list []%s, item %s) bool {", g.GetFuncName(typ), typeStr, typeStr)
 	p.In()
 	p.P("for _, v := range list {")
 	p.In()
 	if canEqual(etyp) {
 		p.P("if v == item {")
 	} else {
-		p.P("if %s(v, item) {", this.equal.GetFuncName(etyp))
+		p.P("if %s(v, item) {", g.equal.GetFuncName(etyp))
 	}
 	p.In()
 	p.P("return true")

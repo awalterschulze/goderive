@@ -45,28 +45,28 @@ type gen struct {
 	printer derive.Printer
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 1 {
 		return "", fmt.Errorf("%s does not have one argument", name)
 	}
-	return this.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	typ := typs[0]
 	sliceType, ok := typ.(*types.Slice)
 	if !ok {
-		return fmt.Errorf("%s, the first argument, %s, is not of type slice", this.GetFuncName(typ), typ)
+		return fmt.Errorf("%s, the first argument, %s, is not of type slice", g.GetFuncName(typ), typ)
 	}
-	return this.genFuncFor(sliceType)
+	return g.genFuncFor(sliceType)
 }
 
-func (this *gen) genFuncFor(typ *types.Slice) error {
-	p := this.printer
-	this.Generating(typ)
-	typeStr := this.TypeString(typ.Elem())
+func (g *gen) genFuncFor(typ *types.Slice) error {
+	p := g.printer
+	g.Generating(typ)
+	typeStr := g.TypeString(typ.Elem())
 	p.P("")
-	p.P("func %s(list []%s) map[%s]struct{} {", this.GetFuncName(typ), typeStr, typeStr)
+	p.P("func %s(list []%s) map[%s]struct{} {", g.GetFuncName(typ), typeStr, typeStr)
 	p.In()
 	p.P("set := make(map[%s]struct{}, len(list))", typeStr)
 	p.P("for _, v := range list {")

@@ -45,17 +45,17 @@ type gen struct {
 	printer derive.Printer
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
 	sliceTyp, ok := typs[1].(*types.Slice)
 	if !ok {
-		return "", fmt.Errorf("%s, the second argument, %s, is not of type slice", name, this.TypeString(typs[1]))
+		return "", fmt.Errorf("%s, the second argument, %s, is not of type slice", name, g.TypeString(typs[1]))
 	}
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return "", fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[0]))
+		return "", fmt.Errorf("%s, the second argument, %s, is not of type function", name, g.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() != 1 {
@@ -75,19 +75,19 @@ func (this *gen) Add(name string, typs []types.Type) (string, error) {
 	if !types.Identical(outTyp, types.Typ[types.Bool]) {
 		return "", fmt.Errorf("%s, the function argument has a single result, but %s is not a bool", name, outTyp)
 	}
-	return this.SetFuncName(name, inTyp)
+	return g.SetFuncName(name, inTyp)
 }
 
-func (this *gen) Generate(typs []types.Type) error {
-	return this.genFuncFor(typs[0])
+func (g *gen) Generate(typs []types.Type) error {
+	return g.genFuncFor(typs[0])
 }
 
-func (this *gen) genFuncFor(in types.Type) error {
-	p := this.printer
-	this.Generating(in)
-	inStr := this.TypeString(in)
+func (g *gen) genFuncFor(in types.Type) error {
+	p := g.printer
+	g.Generating(in)
+	inStr := g.TypeString(in)
 	p.P("")
-	p.P("func %s(pred func(%s) bool, list []%s) []%s {", this.GetFuncName(in), inStr, inStr, inStr)
+	p.P("func %s(pred func(%s) bool, list []%s) []%s {", g.GetFuncName(in), inStr, inStr, inStr)
 	p.In()
 	p.P("out := make([]%s, 0, len(list))", inStr)
 	p.P("for i, elem := range list {")

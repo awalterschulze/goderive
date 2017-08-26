@@ -103,19 +103,19 @@ type gen struct {
 	unsafePkg  derive.Import
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
 	if !types.Identical(typs[0], typs[1]) {
 		return "", fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
-			name, this.TypeString(typs[0]), this.TypeString(typs[1]))
+			name, g.TypeString(typs[0]), g.TypeString(typs[1]))
 	}
-	return this.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate(typs []types.Type) error {
-	return this.genFunc(typs[0])
+func (g *gen) Generate(typs []types.Type) error {
+	return g.genFunc(typs[0])
 }
 
 func (g *gen) genFunc(typ types.Type) error {

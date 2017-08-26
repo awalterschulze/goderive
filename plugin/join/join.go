@@ -80,6 +80,12 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 				return "", err
 			}
 			return g.SetFuncName(name, typs...)
+		case *types.Chan:
+			_, err := g.sliceOfChanType(name, typs)
+			if err != nil {
+				return "", err
+			}
+			return g.SetFuncName(name, typs...)
 		}
 	case *types.Signature:
 		_, err := g.errorType(name, typs)
@@ -153,6 +159,22 @@ func (g *gen) chanType(name string, typs []types.Type) (types.Type, error) {
 	return elemType, nil
 }
 
+func (g *gen) sliceOfChanType(name string, typs []types.Type) (types.Type, error) {
+	if len(typs) != 1 {
+		return nil, fmt.Errorf("%s does not have one argument", name)
+	}
+	sliceTyp, ok := typs[0].(*types.Slice)
+	if !ok {
+		return nil, fmt.Errorf("%s, the argument, %s, is not of type slice", name, typs[0])
+	}
+	sliceOfChanTyp, ok := sliceTyp.Elem().(*types.Chan)
+	if !ok {
+		return nil, fmt.Errorf("%s, the argument, %s, is not of type slice of chan", name, typs[0])
+	}
+	elemType := sliceOfChanTyp.Elem()
+	return elemType, nil
+}
+
 func (g *gen) sliceType(name string, typs []types.Type) (types.Type, error) {
 	if len(typs) != 1 {
 		return nil, fmt.Errorf("%s does not have one argument", name)
@@ -195,6 +217,8 @@ func (g *gen) Generate(typs []types.Type) error {
 			return g.genSlice(typs)
 		case *types.Basic:
 			return g.genString(typs)
+		case *types.Chan:
+			return g.genSliceOfChan(typs)
 		}
 	case *types.Signature:
 		return g.genError(typs)
@@ -270,6 +294,48 @@ func (g *gen) genChan(typs []types.Type) error {
 	p.In()
 	p.P("wait := %s.WaitGroup{}", g.syncPkg())
 	p.P("for c := range in {")
+	p.In()
+	p.P("wait.Add(1)")
+	p.P("res := c")
+	p.P("go func() {")
+	p.In()
+	p.P("for r := range res {")
+	p.In()
+	p.P("out <- r")
+	p.Out()
+	p.P("}")
+	p.P("wait.Done()")
+	p.Out()
+	p.P("}()")
+	p.Out()
+	p.P("}")
+	p.P("wait.Wait()")
+	p.P("close(out)")
+	p.Out()
+	p.P("}()")
+	p.P("return out")
+	p.Out()
+	p.P("}")
+	return nil
+}
+
+func (g *gen) genSliceOfChan(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
+	name := g.GetFuncName(typs...)
+	elemTyp, err := g.sliceOfChanType(name, typs)
+	if err != nil {
+		return err
+	}
+	typStr := g.TypeString(elemTyp)
+	p.P("")
+	p.P("func %s(in []<-chan %s) <-chan %s {", name, typStr, typStr)
+	p.In()
+	p.P("out := make(chan %s)", typStr)
+	p.P("go func() {")
+	p.In()
+	p.P("wait := %s.WaitGroup{}", g.syncPkg())
+	p.P("for _, c := range in {")
 	p.In()
 	p.P("wait.Add(1)")
 	p.P("res := c")

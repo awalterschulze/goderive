@@ -4116,6 +4116,26 @@ func deriveJoinErrorAndValues(f func() (string, int, error), err error) (string,
 	return f()
 }
 
+func deriveJoinSliceOfChannels(in []<-chan int) <-chan int {
+	out := make(chan int)
+	go func() {
+		wait := sync.WaitGroup{}
+		for _, c := range in {
+			wait.Add(1)
+			res := c
+			go func() {
+				for r := range res {
+					out <- r
+				}
+				wait.Done()
+			}()
+		}
+		wait.Wait()
+		close(out)
+	}()
+	return out
+}
+
 func deriveFmapForKeys(f func(int) string, list []int) []string {
 	out := make([]string, len(list))
 	for i, elem := range list {

@@ -60,43 +60,43 @@ type gen struct {
 	tuple   derive.Dependency
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
 	switch typs[1].(type) {
 	case *types.Slice:
-		_, _, err := this.sliceInOut(name, typs)
+		_, _, err := g.sliceInOut(name, typs)
 		if err != nil {
 			return "", err
 		}
-		return this.SetFuncName(name, typs...)
+		return g.SetFuncName(name, typs...)
 	case *types.Basic:
-		_, err := this.stringOut(name, typs)
+		_, err := g.stringOut(name, typs)
 		if err != nil {
 			return "", err
 		}
-		return this.SetFuncName(name, typs...)
+		return g.SetFuncName(name, typs...)
 	case *types.Signature:
-		_, _, err := this.errorInOut(name, typs)
+		_, _, err := g.errorInOut(name, typs)
 		if err != nil {
 			return "", err
 		}
-		return this.SetFuncName(name, typs...)
+		return g.SetFuncName(name, typs...)
 	case *types.Chan:
-		_, _, err := this.chanInOut(name, typs)
+		_, _, err := g.chanInOut(name, typs)
 		if err != nil {
 			return "", err
 		}
-		return this.SetFuncName(name, typs...)
+		return g.SetFuncName(name, typs...)
 	}
 	return "", fmt.Errorf("unsupported type %s, not a slice or a string", typs[1])
 }
 
-func (this *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, outs *types.Tuple, err error) {
+func (g *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, outs *types.Tuple, err error) {
 	esig, ok := typs[1].(*types.Signature)
 	if !ok {
-		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type function", name, this.TypeString(typs[1]))
+		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type function", name, g.TypeString(typs[1]))
 	}
 	eparams := esig.Params()
 	if eparams.Len() != 0 {
@@ -112,7 +112,7 @@ func (this *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, o
 	elemTyp := eres.At(0).Type()
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return nil, nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, this.TypeString(typs[0]))
+		return nil, nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, g.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() != 1 {
@@ -127,18 +127,18 @@ func (this *gen) errorInOut(name string, typs []types.Type) (inTyp types.Type, o
 	return inTyp, res, nil
 }
 
-func (this *gen) stringOut(name string, typs []types.Type) (outTyp types.Type, err error) {
+func (g *gen) stringOut(name string, typs []types.Type) (outTyp types.Type, err error) {
 	typs[1] = types.Default(typs[1])
 	basic, ok := typs[1].(*types.Basic)
 	if !ok {
-		return nil, fmt.Errorf("%s, the second argument, %s, is not of type basic", name, this.TypeString(typs[1]))
+		return nil, fmt.Errorf("%s, the second argument, %s, is not of type basic", name, g.TypeString(typs[1]))
 	}
 	if basic.Kind() != types.String {
 		return nil, fmt.Errorf("%s, the second argument, %v, is not a string", name, basic)
 	}
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, this.TypeString(typs[0]))
+		return nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, g.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() != 1 {
@@ -158,14 +158,14 @@ func (this *gen) stringOut(name string, typs []types.Type) (outTyp types.Type, e
 	return outTyp, nil
 }
 
-func (this *gen) chanInOut(name string, typs []types.Type) (inTyp, outTyp types.Type, err error) {
+func (g *gen) chanInOut(name string, typs []types.Type) (inTyp, outTyp types.Type, err error) {
 	chanType, ok := typs[1].(*types.Chan)
 	if !ok {
-		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type chan", name, this.TypeString(typs[1]))
+		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type chan", name, g.TypeString(typs[1]))
 	}
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return nil, nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, this.TypeString(typs[0]))
+		return nil, nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, g.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() != 1 {
@@ -185,14 +185,14 @@ func (this *gen) chanInOut(name string, typs []types.Type) (inTyp, outTyp types.
 	return inTyp, outTyp, nil
 }
 
-func (this *gen) sliceInOut(name string, typs []types.Type) (inTyp types.Type, outTyp types.Type, err error) {
+func (g *gen) sliceInOut(name string, typs []types.Type) (inTyp types.Type, outTyp types.Type, err error) {
 	sliceTyp, ok := typs[1].(*types.Slice)
 	if !ok {
-		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type slice", name, this.TypeString(typs[1]))
+		return nil, nil, fmt.Errorf("%s, the second argument, %s, is not of type slice", name, g.TypeString(typs[1]))
 	}
 	sig, ok := typs[0].(*types.Signature)
 	if !ok {
-		return nil, nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, this.TypeString(typs[0]))
+		return nil, nil, fmt.Errorf("%s, the first argument, %s, is not of type function", name, g.TypeString(typs[0]))
 	}
 	params := sig.Params()
 	if params.Len() != 1 {
@@ -212,30 +212,30 @@ func (this *gen) sliceInOut(name string, typs []types.Type) (inTyp types.Type, o
 	return inTyp, outTyp, nil
 }
 
-func (this *gen) Generate(typs []types.Type) error {
+func (g *gen) Generate(typs []types.Type) error {
 	switch typs[1].(type) {
 	case *types.Slice:
-		return this.genSlice(typs)
+		return g.genSlice(typs)
 	case *types.Basic:
-		return this.genString(typs)
+		return g.genString(typs)
 	case *types.Signature:
-		return this.genError(typs)
+		return g.genError(typs)
 	case *types.Chan:
-		return this.genChan(typs)
+		return g.genChan(typs)
 	}
 	return fmt.Errorf("unsupported type %s, not a slice or a string", typs[1])
 }
 
-func (this *gen) genChan(typs []types.Type) error {
-	name := this.GetFuncName(typs...)
-	in, out, err := this.chanInOut(name, typs)
+func (g *gen) genChan(typs []types.Type) error {
+	name := g.GetFuncName(typs...)
+	in, out, err := g.chanInOut(name, typs)
 	if err != nil {
 		return err
 	}
-	this.Generating(typs...)
-	p := this.printer
-	inStr := this.TypeString(in)
-	outStr := this.TypeString(out)
+	g.Generating(typs...)
+	p := g.printer
+	inStr := g.TypeString(in)
+	outStr := g.TypeString(out)
 	outerStr := outStr
 	if strings.HasPrefix(outStr, "<-") {
 		outerStr = "(" + outStr + ")"
@@ -261,16 +261,16 @@ func (this *gen) genChan(typs []types.Type) error {
 	return nil
 }
 
-func (this *gen) genSlice(typs []types.Type) error {
-	name := this.GetFuncName(typs...)
-	in, out, err := this.sliceInOut(name, typs)
+func (g *gen) genSlice(typs []types.Type) error {
+	name := g.GetFuncName(typs...)
+	in, out, err := g.sliceInOut(name, typs)
 	if err != nil {
 		return err
 	}
-	this.Generating(typs...)
-	p := this.printer
-	inStr := this.TypeString(in)
-	outStr := this.TypeString(out)
+	g.Generating(typs...)
+	p := g.printer
+	inStr := g.TypeString(in)
+	outStr := g.TypeString(out)
 	p.P("")
 	p.P("func %s(f func(%s) %s, list []%s) []%s {", name, inStr, outStr, inStr, outStr)
 	p.In()
@@ -286,15 +286,15 @@ func (this *gen) genSlice(typs []types.Type) error {
 	return nil
 }
 
-func (this *gen) genString(typs []types.Type) error {
-	name := this.GetFuncName(typs...)
-	out, err := this.stringOut(name, typs)
+func (g *gen) genString(typs []types.Type) error {
+	name := g.GetFuncName(typs...)
+	out, err := g.stringOut(name, typs)
 	if err != nil {
 		return err
 	}
-	this.Generating(typs...)
-	p := this.printer
-	outStr := this.TypeString(out)
+	g.Generating(typs...)
+	p := g.printer
+	outStr := g.TypeString(out)
 	p.P("")
 	p.P("func %s(f func(rune) %s, ss string) []%s {", name, outStr, outStr)
 	p.In()
@@ -310,15 +310,15 @@ func (this *gen) genString(typs []types.Type) error {
 	return nil
 }
 
-func (this *gen) genError(typs []types.Type) error {
-	name := this.GetFuncName(typs...)
-	in, out, err := this.errorInOut(name, typs)
+func (g *gen) genError(typs []types.Type) error {
+	name := g.GetFuncName(typs...)
+	in, out, err := g.errorInOut(name, typs)
 	if err != nil {
 		return err
 	}
-	this.Generating(typs...)
-	p := this.printer
-	inStr := this.TypeString(in)
+	g.Generating(typs...)
+	p := g.printer
+	inStr := g.TypeString(in)
 	p.P("")
 	switch out.Len() {
 	case 0:
@@ -337,7 +337,7 @@ func (this *gen) genError(typs []types.Type) error {
 		return nil
 	case 1:
 		t := out.At(0).Type()
-		outStr := this.TypeString(t)
+		outStr := g.TypeString(t)
 		zeroStr := derive.Zero(t)
 		p.P("func %s(f func(%s) %s, g func() (%s, error)) (%s, error) {", name, inStr, outStr, inStr, outStr)
 		p.In()
@@ -355,7 +355,7 @@ func (this *gen) genError(typs []types.Type) error {
 		outTypStrs := make([]string, out.Len())
 		for i := range outTyps {
 			outTyps[i] = out.At(i).Type()
-			outTypStrs[i] = this.TypeString(outTyps[i])
+			outTypStrs[i] = g.TypeString(outTyps[i])
 		}
 		outStr := strings.Join(outTypStrs, ", ")
 		p.P("func %s(f func(%s) (%s), g func() (%s, error)) (func() (%s), error) {", name, inStr, outStr, inStr, outStr)
@@ -366,7 +366,7 @@ func (this *gen) genError(typs []types.Type) error {
 		p.P("return nil, err")
 		p.Out()
 		p.P("}")
-		p.P("return %s(f(v)), nil", this.tuple.GetFuncName(outTyps...))
+		p.P("return %s(f(v)), nil", g.tuple.GetFuncName(outTyps...))
 		p.Out()
 		p.P("}")
 	}

@@ -99,19 +99,19 @@ type gen struct {
 	sort       derive.Dependency
 }
 
-func (this *gen) Add(name string, typs []types.Type) (string, error) {
+func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 2 {
 		return "", fmt.Errorf("%s does not have two arguments", name)
 	}
 	if !types.Identical(typs[0], typs[1]) {
 		return "", fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
-			name, this.TypeString(typs[0]), this.TypeString(typs[1]))
+			name, g.TypeString(typs[0]), g.TypeString(typs[1]))
 	}
-	return this.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs[0])
 }
 
-func (this *gen) Generate(typs []types.Type) error {
-	return this.genFunc(typs[0])
+func (g *gen) Generate(typs []types.Type) error {
+	return g.genFunc(typs[0])
 }
 
 func hasCompareMethod(typ *types.Named) bool {
@@ -421,38 +421,38 @@ func wrap(value string) string {
 	return value
 }
 
-func (this *gen) field(thisField, thatField string, fieldType types.Type) (string, error) {
+func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, error) {
 	switch typ := fieldType.Underlying().(type) {
 	case *types.Basic:
 		if typ.Kind() == types.String {
-			return fmt.Sprintf("%s.Compare(%s, %s)", this.stringsPkg(), thisField, thatField), nil
+			return fmt.Sprintf("%s.Compare(%s, %s)", g.stringsPkg(), thisField, thatField), nil
 		}
-		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(fieldType), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(fieldType), thisField, thatField), nil
 	case *types.Pointer:
 		ref := typ.Elem()
 		if named, ok := ref.(*types.Named); ok {
 			if hasCompareMethod(named) {
 				return fmt.Sprintf("%s.Compare(%s)", wrap(thisField), thatField), nil
 			} else {
-				return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+				return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
 			}
 		}
-		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
 	case *types.Array, *types.Map:
-		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
 	case *types.Slice:
 		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
-			return fmt.Sprintf("%s.Compare(%s, %s)", this.bytesPkg(), thisField, thatField), nil
+			return fmt.Sprintf("%s.Compare(%s, %s)", g.bytesPkg(), thisField, thatField), nil
 		}
-		return fmt.Sprintf("%s(%s, %s)", this.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
 	case *types.Struct:
 		named, isNamed := fieldType.(*types.Named)
 		if isNamed && hasCompareMethod(named) {
 			return fmt.Sprintf("%s.Compare(&%s)", thisField, thatField), nil
 		} else {
-			return this.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))
+			return g.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))
 		}
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
-		return "", fmt.Errorf("unsupported field type %s", this.TypeString(fieldType))
+		return "", fmt.Errorf("unsupported field type %s", g.TypeString(fieldType))
 	}
 }

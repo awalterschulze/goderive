@@ -3367,7 +3367,7 @@ func deriveFilterJudy(pred func(string) bool, list []string) []string {
 }
 
 func deriveUnionSetOfInt64s(union, that map[int64]struct{}) map[int64]struct{} {
-	for k, _ := range that {
+	for k := range that {
 		union[k] = struct{}{}
 	}
 	return union

@@ -84,7 +84,7 @@ func (this *gen) genMap(typ *types.Map) error {
 	p.P("")
 	p.P("func %s(union, that map[%s]struct{}) map[%s]struct{} {", this.GetFuncName(typ), typeStr, typeStr)
 	p.In()
-	p.P("for k, _ := range that {")
+	p.P("for k := range that {")
 	p.In()
 	p.P("union[k] = struct{}{}")
 	p.Out()

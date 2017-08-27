@@ -25,8 +25,13 @@
 //
 // The deriveJoin function can also join channels
 //    deriveJoin(<-chan <-chan T) <-chan T
+//    deriveJoin(chan <-chan T) <-chan T
+//    deriveJoin([]<-chan T) <-chan T
+//    deriveJoin([]chan T) <-chan T
 // deriveJoin immediately return the output channel and start up a go routine to process the main incoming channel.
 // It will then start up a go routine to listen on every new incoming channel and send those events to the outgoing channel.
+//    deriveJoin(chan T, chan T, ...) <-chan T
+// deriveJoin with a variable number of channels as parameter will do a select over those channels, until all are closed.
 package join
 
 import (
@@ -113,11 +118,11 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 			}
 			return g.SetFuncName(name, typs...)
 		default:
-			// _, err := g.chanVariantType(name, typs)
-			// if err != nil {
-			// 	return "", err
-			// }
-			// return g.SetFuncName(name, typs...)
+			_, _, err := g.chanVariantTypes(name, typs)
+			if err != nil {
+				return "", err
+			}
+			return g.SetFuncName(name, typs...)
 		}
 	}
 	return "", fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string)", typs[0])
@@ -166,6 +171,28 @@ func (g *gen) chanType(name string, typs []types.Type) (types.Type, types.ChanDi
 	}
 	elemType := chanOfChanTyp.Elem()
 	return elemType, chanTyp.Dir(), nil
+}
+
+func (g *gen) chanVariantTypes(name string, typs []types.Type) ([]types.Type, []types.ChanDir, error) {
+	if len(typs) < 2 {
+		return nil, nil, fmt.Errorf("%s does not have at least two arguments", name)
+	}
+	chanTyps := make([]types.Type, len(typs))
+	dirs := make([]types.ChanDir, len(typs))
+	for i := range typs {
+		chanTyp, ok := typs[i].(*types.Chan)
+		if !ok {
+			return nil, nil, fmt.Errorf("%s, the argument, %s, is not of type chan", name, typs[0])
+		}
+		chanTyps[i] = chanTyp.Elem()
+		if i != 0 {
+			if !types.Identical(chanTyps[i], chanTyps[i-1]) {
+				return nil, nil, fmt.Errorf("%s, channel types are different %s != %s", name, typs[i-1], typs[i])
+			}
+		}
+		dirs[i] = chanTyp.Dir()
+	}
+	return chanTyps, dirs, nil
 }
 
 func (g *gen) sliceOfChanType(name string, typs []types.Type) (types.Type, types.ChanDir, error) {
@@ -239,7 +266,12 @@ func (g *gen) Generate(typs []types.Type) error {
 			return g.genError(ts)
 		}
 	case *types.Chan:
-		return g.genChan(typs)
+		switch t.Elem().(type) {
+		case *types.Chan:
+			return g.genChan(typs)
+		default:
+			return g.genChanVariant(typs)
+		}
 	}
 	return fmt.Errorf("unsupported type %s, not (a slice of slices) or (a slice of string) or (a function and error)", typs[0])
 }
@@ -332,6 +364,62 @@ func (g *gen) genChan(typs []types.Type) error {
 	return nil
 }
 
+func (g *gen) genChanVariant(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
+	name := g.GetFuncName(typs...)
+	elemTyps, dirs, err := g.chanVariantTypes(name, typs)
+	if err != nil {
+		return err
+	}
+	dirstrs := make([]string, len(typs))
+	elemstrs := make([]string, len(typs))
+	pairs := make([]string, len(typs))
+	typStr := g.TypeString(elemTyps[0])
+	csnil := make([]string, len(typs))
+	for i := range typs {
+		if dirs[i] == types.RecvOnly {
+			dirstrs[i] = "<-"
+		}
+		elemstrs[i] = g.TypeString(elemTyps[i])
+		pairs[i] = fmt.Sprintf("c%d %schan %s", i, dirstrs[i], elemstrs[i])
+		csnil[i] = fmt.Sprintf("c%d != nil", i)
+	}
+	p.P("")
+	p.P("func %s(%s) <-chan %s {", name, strings.Join(pairs, ", "), typStr)
+	p.In()
+	p.P("out := make(chan %s)", typStr)
+	p.P("go func() {")
+	p.In()
+	p.P("for %s {", strings.Join(csnil, " || "))
+	p.In()
+	p.P("select {")
+	for i := range typs {
+		p.P("case v%d, ok%d := <-c%d:", i, i, i)
+		p.In()
+		p.P("if !ok%d {", i)
+		p.In()
+		p.P("c%d = nil", i)
+		p.Out()
+		p.P("} else {")
+		p.In()
+		p.P("out <- v%d", i)
+		p.Out()
+		p.P("}")
+		p.Out()
+	}
+	p.P("}")
+	p.Out()
+	p.P("}")
+	p.P("close(out)")
+	p.Out()
+	p.P("}()")
+	p.P("return out")
+	p.Out()
+	p.P("}")
+	return nil
+}
+
 func (g *gen) genSliceOfChan(typs []types.Type) error {
 	p := g.printer
 	g.Generating(typs...)
@@ -346,7 +434,7 @@ func (g *gen) genSliceOfChan(typs []types.Type) error {
 		dirStr = "<-"
 	}
 	p.P("")
-	p.P("func %s(in []%schan %s) %schan %s {", name, dirStr, typStr, dirStr, typStr)
+	p.P("func %s(in []%schan %s) <-chan %s {", name, dirStr, typStr, typStr)
 	p.In()
 	p.P("out := make(chan %s)", typStr)
 	p.P("go func() {")

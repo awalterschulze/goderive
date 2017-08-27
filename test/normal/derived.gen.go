@@ -4156,7 +4156,7 @@ func deriveJoinSliceOfRecvChannels(in []<-chan int) <-chan int {
 	return out
 }
 
-func deriveJoinSliceOfSendRecvChannels(in []chan int) chan int {
+func deriveJoinSliceOfSendRecvChannels(in []chan int) <-chan int {
 	out := make(chan int)
 	go func() {
 		wait := sync.WaitGroup{}
@@ -4171,6 +4171,30 @@ func deriveJoinSliceOfSendRecvChannels(in []chan int) chan int {
 			}()
 		}
 		wait.Wait()
+		close(out)
+	}()
+	return out
+}
+
+func deriveJoinVariantOfSendRecvChannels(c0 chan int, c1 chan int) <-chan int {
+	out := make(chan int)
+	go func() {
+		for c0 != nil || c1 != nil {
+			select {
+			case v0, ok0 := <-c0:
+				if !ok0 {
+					c0 = nil
+				} else {
+					out <- v0
+				}
+			case v1, ok1 := <-c1:
+				if !ok1 {
+					c1 = nil
+				} else {
+					out <- v1
+				}
+			}
+		}
 		close(out)
 	}()
 	return out

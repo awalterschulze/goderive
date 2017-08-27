@@ -231,3 +231,26 @@ func TestJoinSliceOfSendRecvChannel(t *testing.T) {
 		t.Fatalf("got %d != want %d", got, want)
 	}
 }
+
+func TestJoinVariantOfSendRecvChannel(t *testing.T) {
+	c1 := make(chan int)
+	c2 := make(chan int)
+	go func() {
+		c1 <- 1
+		close(c1)
+	}()
+	go func() {
+		c2 <- 2
+		c2 <- 3
+		close(c2)
+	}()
+	c := deriveJoinVariantOfSendRecvChannels(c1, c2)
+	got := 0
+	for i := range c {
+		got += i
+	}
+	want := 6
+	if got != want {
+		t.Fatalf("got %d != want %d", got, want)
+	}
+}

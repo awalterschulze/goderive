@@ -30,6 +30,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/curry"
 	"github.com/awalterschulze/goderive/plugin/deepcopy"
 	"github.com/awalterschulze/goderive/plugin/do"
+	"github.com/awalterschulze/goderive/plugin/dup"
 	"github.com/awalterschulze/goderive/plugin/equal"
 	"github.com/awalterschulze/goderive/plugin/filter"
 	"github.com/awalterschulze/goderive/plugin/flip"
@@ -83,6 +84,7 @@ func main() {
 		compose.NewPlugin(),
 		do.NewPlugin(),
 		pipeline.NewPlugin(),
+		dup.NewPlugin(),
 	}
 	log.SetFlags(0)
 	flag.Parse()

@@ -4387,6 +4387,20 @@ func deriveMaxStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	return m
 }
 
+// deriveDup duplicates messages received on c to both c1 and c2.
+func deriveDup(c chan int) (c1, c2 <-chan int) {
+	cc1, cc2 := make(chan int, cap(c)), make(chan int, cap(c))
+	go func() {
+		for v := range c {
+			cc1 <- v
+			cc2 <- v
+		}
+		close(cc1)
+		close(cc2)
+	}()
+	return cc1, cc2
+}
+
 // deriveAny reports whether the predicate returns true for any of the elements in the given slice.
 func deriveAny(pred func(int) bool, list []int) bool {
 	for _, elem := range list {

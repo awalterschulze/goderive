@@ -134,6 +134,8 @@ Concurrency Functions:
     - `derivePipeline(func(A) <-chan B, func(B) <-chan C) func(A) <-chan C`
   - [Do](http://godoc.org/github.com/awalterschulze/goderive/plugin/do)
     - `deriveDo(func() (A, error), func (B, error)) (A, B, error)`
+  - [Dup](http://godoc.org/github.com/awalterschulze/goderive/plugin/dup)
+    - `deriveDup(c <-chan T) (c1, c2 <-chan T)`
 
 When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and

@@ -15,10 +15,10 @@
 			"revisionTime": "2017-08-28T04:23:10Z"
 		},
 		{
-			"checksumSHA1": "p3gWsy4fQOSXGRMUHr3TnmVFias=",
+			"checksumSHA1": "8bP6iLolDGDRKAnx89Qb/OatWDE=",
 			"path": "golang.org/x/tools/go/ast/astutil",
-			"revision": "e011c1062a41d0e2614279f1dc8cf7f1bf6aaac3",
-			"revisionTime": "2017-05-12T20:54:58Z"
+			"revision": "1736caf17f29e06c0475c0d334e921f1d96a6598",
+			"revisionTime": "2017-08-25T14:08:19Z"
 		},
 		{
 			"checksumSHA1": "AnXFEvmaJ7w2Q7hWPcLUmCbPgq0=",

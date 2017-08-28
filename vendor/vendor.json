@@ -3,10 +3,16 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "9fvV44Csmu+K5BpFvEBs2p8alBI=",
+			"checksumSHA1": "/OoEj0wxK7Rd25jAlZv1xi+e9wg=",
 			"path": "github.com/kisielk/gotool",
-			"revision": "0de1eaf82fa3f583ce21fde859f1e7e0c5e9b220",
-			"revisionTime": "2016-11-30T08:01:11Z"
+			"revision": "d6ce6262d87e3a4e153e86023ff56ae771554a41",
+			"revisionTime": "2017-08-28T04:23:10Z"
+		},
+		{
+			"checksumSHA1": "9jyCVFMF5GDl15Vqp2ZxRmmNftE=",
+			"path": "github.com/kisielk/gotool/internal/load",
+			"revision": "d6ce6262d87e3a4e153e86023ff56ae771554a41",
+			"revisionTime": "2017-08-28T04:23:10Z"
 		},
 		{
 			"checksumSHA1": "p3gWsy4fQOSXGRMUHr3TnmVFias=",

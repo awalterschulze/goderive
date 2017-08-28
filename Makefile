@@ -12,3 +12,7 @@ gofmt:
 travis:
 	make test
 	go vet ./...
+
+updatedeps:
+	govendor fetch +vendor
+	git checkout vendor/vendortest/vendortest.go

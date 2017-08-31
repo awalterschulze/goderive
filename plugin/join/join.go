@@ -54,8 +54,8 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 	return &gen{
 		TypesMap:   typesMap,
 		printer:    p,
-		stringsPkg: p.NewImport("strings"),
-		syncPkg:    p.NewImport("sync"),
+		stringsPkg: p.NewImport("strings", "strings"),
+		syncPkg:    p.NewImport("sync", "sync"),
 	}
 }
 

@@ -55,6 +55,7 @@ func TestGoString(t *testing.T) {
 		&NamedTypes{},
 		// &Time{},
 		&Duration{},
+		&Nickname{},
 	}
 	filename := "gostring_gen_test.go"
 	f, err := os.Create(filename)
@@ -73,6 +74,7 @@ func TestGoString(t *testing.T) {
 	f.WriteString("\t\"time\"\n")
 	f.WriteString("\textra \"github.com/awalterschulze/goderive/test/extra\"\n")
 	f.WriteString("\ttest \"github.com/awalterschulze/goderive/test/normal\"\n")
+	f.WriteString("\tpickle \"github.com/awalterschulze/goderive/test/nickname\"\n")
 	f.WriteString(")\n")
 	f.WriteString("\n")
 	f.WriteString("func TestGeneratedGoString(t *testing.T) {\n")

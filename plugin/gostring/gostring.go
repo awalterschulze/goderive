@@ -83,9 +83,9 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 	return &gen{
 		TypesMap:   typesMap,
 		printer:    p,
-		strconvPkg: p.NewImport("strconv"),
-		bytesPkg:   p.NewImport("bytes"),
-		fmtPkg:     p.NewImport("fmt"),
+		strconvPkg: p.NewImport("strconv", "strconv"),
+		bytesPkg:   p.NewImport("bytes", "bytes"),
+		fmtPkg:     p.NewImport("fmt", "fmt"),
 	}
 }
 

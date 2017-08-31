@@ -30,7 +30,7 @@ type Printer interface {
 	Out()
 	WriteTo(w io.Writer) (int64, error)
 
-	NewImport(path string) Import
+	NewImport(name, path string) Import
 	HasContent() bool
 }
 
@@ -78,11 +78,11 @@ func makeAlias(path string) string {
 	return fullpaths[len(fullpaths)-1]
 }
 
-func (p *printer) NewImport(path string) Import {
+func (p *printer) NewImport(name, path string) Import {
 	return func() string {
 		path = unvendor(path)
 		fullpath := makeFullpath(path)
-		alias := makeAlias(path)
+		alias := name
 
 		if _, ok := p.imports[alias]; !ok {
 			p.imports[alias] = path

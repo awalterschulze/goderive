@@ -41,7 +41,7 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 	return &gen{
 		TypesMap: typesMap,
 		printer:  p,
-		sortPkg:  p.NewImport("sort"),
+		sortPkg:  p.NewImport("sort", "sort"),
 		compare:  deps["compare"],
 	}
 }

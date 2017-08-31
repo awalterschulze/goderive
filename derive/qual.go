@@ -25,7 +25,7 @@ type qual struct {
 }
 
 type importer interface {
-	NewImport(path string) Import
+	NewImport(name, path string) Import
 }
 
 func newQualifier(importer importer, p *types.Package) types.Qualifier {
@@ -42,7 +42,7 @@ func (q *qual) Qualifier(p *types.Package) string {
 		return ""
 	}
 	if _, ok := q.imported[p]; !ok {
-		q.imported[p] = q.importer.NewImport(p.Path())
+		q.imported[p] = q.importer.NewImport(p.Name(), p.Path())
 	}
 	return q.imported[p]()
 }

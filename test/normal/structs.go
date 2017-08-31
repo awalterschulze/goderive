@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"github.com/awalterschulze/goderive/test/extra"
+	"github.com/awalterschulze/goderive/test/nickname"
 )
 
 type Empty struct{}
@@ -704,4 +705,24 @@ func (this *Duration) DeepCopy(that *Duration) {
 
 func (this *Duration) GoString() string {
 	return deriveGoStringDuration(this)
+}
+
+type Nickname struct {
+	Alias map[string][]*pickle.Rick
+}
+
+func (this *Nickname) Equal(that *Nickname) bool {
+	return deriveEqualPtrToNickname(this, that)
+}
+
+func (this *Nickname) Compare(that *Nickname) int {
+	return deriveComparePtrToNickname(this, that)
+}
+
+func (this *Nickname) DeepCopy(that *Nickname) {
+	deriveDeepCopyPtrToNickname(that, this)
+}
+
+func (this *Nickname) GoString() string {
+	return deriveGoStringNickname(this)
 }

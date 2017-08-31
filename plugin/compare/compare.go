@@ -79,10 +79,10 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 	return &gen{
 		TypesMap:   typesMap,
 		printer:    p,
-		bytesPkg:   p.NewImport("bytes"),
-		stringsPkg: p.NewImport("strings"),
-		reflectPkg: p.NewImport("reflect"),
-		unsafePkg:  p.NewImport("unsafe"),
+		bytesPkg:   p.NewImport("bytes", "bytes"),
+		stringsPkg: p.NewImport("strings", "strings"),
+		reflectPkg: p.NewImport("reflect", "reflect"),
+		unsafePkg:  p.NewImport("unsafe", "unsafe"),
 		keys:       deps["keys"],
 		sort:       deps["sort"],
 	}

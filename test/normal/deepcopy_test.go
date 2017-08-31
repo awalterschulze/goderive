@@ -49,6 +49,7 @@ func TestCloneStructs(t *testing.T) {
 		&Enums{},
 		&NamedTypes{},
 		&Duration{},
+		&Nickname{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

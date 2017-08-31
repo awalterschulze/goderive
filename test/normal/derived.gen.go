@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"fmt"
 	extra "github.com/awalterschulze/goderive/test/extra"
+	pickle "github.com/awalterschulze/goderive/test/nickname"
 	"reflect"
 	"sort"
 	"strings"
@@ -690,6 +691,22 @@ func deriveGoStringDuration(this *Duration) string {
 		}
 		if this.MD != nil {
 			fmt.Fprintf(buf, "this.MD = %s\n", deriveGoString_61(this.MD))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+func deriveGoStringNickname(this *Nickname) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *test.Nickname {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &test.Nickname{}\n")
+		if this.Alias != nil {
+			fmt.Fprintf(buf, "this.Alias = %s\n", deriveGoString_62(this.Alias))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -2335,6 +2352,16 @@ func deriveDeepCopyPtrToDuration(dst, src *Duration) {
 	}
 }
 
+// deriveDeepCopyPtrToNickname recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToNickname(dst, src *Nickname) {
+	if src.Alias != nil {
+		dst.Alias = make(map[string][]*pickle.Rick, len(src.Alias))
+		deriveDeepCopy_43(dst.Alias, src.Alias)
+	} else {
+		dst.Alias = nil
+	}
+}
+
 func deriveContainsInt64s(list []int64, item int64) bool {
 	for _, v := range list {
 		if v == item {
@@ -3362,6 +3389,26 @@ func deriveComparePtrToDuration(this, that *Duration) int {
 	return 0
 }
 
+// deriveComparePtrToNickname returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveComparePtrToNickname(this, that *Nickname) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if c := deriveCompare_128(this.Alias, that.Alias); c != 0 {
+		return c
+	}
+	return 0
+}
+
 // deriveCompareComplex32 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
@@ -3831,6 +3878,12 @@ func deriveEqualPtrToDuration(this, that *Duration) bool {
 			deriveEqual_83(this.MD, that.MD)
 }
 
+func deriveEqualPtrToNickname(this, that *Nickname) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			deriveEqual_84(this.Alias, that.Alias)
+}
+
 func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
 	return this == that
 }
@@ -3947,7 +4000,7 @@ func deriveEqual1(this, that BuiltInTypes) bool {
 func deriveEqual(this, that *UseVendor) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqual_84(this.Vendors, that.Vendors)
+			deriveEqual_85(this.Vendors, that.Vendors)
 }
 
 func deriveCurryMarshal(f func(data []byte, v interface{}) error) func(data []byte) func(v interface{}) error {
@@ -4455,7 +4508,7 @@ func deriveGoString(this []*bool) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*bool, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_62(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_63(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4471,7 +4524,7 @@ func deriveGoString_(this []*byte) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*byte, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_63(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_64(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4487,7 +4540,7 @@ func deriveGoString_1(this []*complex128) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*complex128, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_64(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_65(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4503,7 +4556,7 @@ func deriveGoString_2(this []*complex64) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*complex64, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_65(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_66(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4519,7 +4572,7 @@ func deriveGoString_3(this []*float64) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*float64, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_66(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_67(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4535,7 +4588,7 @@ func deriveGoString_4(this []*float32) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*float32, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_67(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_68(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4567,7 +4620,7 @@ func deriveGoString_6(this []*int16) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*int16, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_68(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_69(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4583,7 +4636,7 @@ func deriveGoString_7(this []*int32) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*int32, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_69(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_70(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4599,7 +4652,7 @@ func deriveGoString_8(this []*int64) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*int64, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_70(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_71(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4615,7 +4668,7 @@ func deriveGoString_9(this []*int8) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*int8, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_71(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_72(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4631,7 +4684,7 @@ func deriveGoString_10(this []*string) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*string, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_72(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_73(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4647,7 +4700,7 @@ func deriveGoString_11(this []*uint) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uint, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_73(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_74(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4663,7 +4716,7 @@ func deriveGoString_12(this []*uint16) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uint16, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_74(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_75(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4679,7 +4732,7 @@ func deriveGoString_13(this []*uint32) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uint32, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_75(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_76(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4695,7 +4748,7 @@ func deriveGoString_14(this []*uint64) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uint64, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_76(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_77(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4711,7 +4764,7 @@ func deriveGoString_15(this []*uintptr) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uintptr, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_77(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_78(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -4724,7 +4777,7 @@ func deriveGoString_16(this [1]*bool) string {
 	fmt.Fprintf(buf, "func() [1]*bool {\n")
 	fmt.Fprintf(buf, "this := [1]*bool{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_62(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_63(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4736,7 +4789,7 @@ func deriveGoString_17(this [2]*byte) string {
 	fmt.Fprintf(buf, "func() [2]*byte {\n")
 	fmt.Fprintf(buf, "this := [2]*byte{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_63(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_64(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4748,7 +4801,7 @@ func deriveGoString_18(this [3]*complex128) string {
 	fmt.Fprintf(buf, "func() [3]*complex128 {\n")
 	fmt.Fprintf(buf, "this := [3]*complex128{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_64(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_65(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4760,7 +4813,7 @@ func deriveGoString_19(this [4]*complex64) string {
 	fmt.Fprintf(buf, "func() [4]*complex64 {\n")
 	fmt.Fprintf(buf, "this := [4]*complex64{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_65(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_66(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4772,7 +4825,7 @@ func deriveGoString_20(this [5]*float64) string {
 	fmt.Fprintf(buf, "func() [5]*float64 {\n")
 	fmt.Fprintf(buf, "this := [5]*float64{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_66(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_67(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4784,7 +4837,7 @@ func deriveGoString_21(this [6]*float32) string {
 	fmt.Fprintf(buf, "func() [6]*float32 {\n")
 	fmt.Fprintf(buf, "this := [6]*float32{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_67(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_68(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4808,7 +4861,7 @@ func deriveGoString_23(this [8]*int16) string {
 	fmt.Fprintf(buf, "func() [8]*int16 {\n")
 	fmt.Fprintf(buf, "this := [8]*int16{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_68(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_69(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4820,7 +4873,7 @@ func deriveGoString_24(this [9]*int32) string {
 	fmt.Fprintf(buf, "func() [9]*int32 {\n")
 	fmt.Fprintf(buf, "this := [9]*int32{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_69(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_70(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4832,7 +4885,7 @@ func deriveGoString_25(this [10]*int64) string {
 	fmt.Fprintf(buf, "func() [10]*int64 {\n")
 	fmt.Fprintf(buf, "this := [10]*int64{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_70(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_71(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4844,7 +4897,7 @@ func deriveGoString_26(this [11]*int8) string {
 	fmt.Fprintf(buf, "func() [11]*int8 {\n")
 	fmt.Fprintf(buf, "this := [11]*int8{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_71(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_72(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4856,7 +4909,7 @@ func deriveGoString_27(this [12]*rune) string {
 	fmt.Fprintf(buf, "func() [12]*rune {\n")
 	fmt.Fprintf(buf, "this := [12]*rune{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_69(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_70(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4868,7 +4921,7 @@ func deriveGoString_28(this [13]*string) string {
 	fmt.Fprintf(buf, "func() [13]*string {\n")
 	fmt.Fprintf(buf, "this := [13]*string{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_72(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_73(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4880,7 +4933,7 @@ func deriveGoString_29(this [14]*uint) string {
 	fmt.Fprintf(buf, "func() [14]*uint {\n")
 	fmt.Fprintf(buf, "this := [14]*uint{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_73(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_74(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4892,7 +4945,7 @@ func deriveGoString_30(this [15]*uint16) string {
 	fmt.Fprintf(buf, "func() [15]*uint16 {\n")
 	fmt.Fprintf(buf, "this := [15]*uint16{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_74(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_75(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4904,7 +4957,7 @@ func deriveGoString_31(this [16]*uint32) string {
 	fmt.Fprintf(buf, "func() [16]*uint32 {\n")
 	fmt.Fprintf(buf, "this := [16]*uint32{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_75(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_76(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4916,7 +4969,7 @@ func deriveGoString_32(this [17]*uint64) string {
 	fmt.Fprintf(buf, "func() [17]*uint64 {\n")
 	fmt.Fprintf(buf, "this := [17]*uint64{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_76(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_77(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4928,7 +4981,7 @@ func deriveGoString_33(this [18]*uint8) string {
 	fmt.Fprintf(buf, "func() [18]*uint8 {\n")
 	fmt.Fprintf(buf, "this := [18]*uint8{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_63(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_64(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4940,7 +4993,7 @@ func deriveGoString_34(this [19]*uintptr) string {
 	fmt.Fprintf(buf, "func() [19]*uintptr {\n")
 	fmt.Fprintf(buf, "this := [19]*uintptr{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_77(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_78(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4952,7 +5005,7 @@ func deriveGoString_35(this [10]*bool) string {
 	fmt.Fprintf(buf, "func() [10]*bool {\n")
 	fmt.Fprintf(buf, "this := [10]*bool{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_62(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_63(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -4983,7 +5036,7 @@ func deriveGoString_37(this [][]string) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([][]string, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_78(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_79(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5416,6 +5469,22 @@ func deriveGoString_61(this map[int]time.Duration) string {
 	return buf.String()
 }
 
+func deriveGoString_62(this map[string][]*pickle.Rick) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() map[string][]*pickle.Rick {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := make(map[string][]*pickle.Rick)\n")
+		for k, v := range this {
+			fmt.Fprintf(buf, "this[%#v] = %s\n", k, deriveGoString_80(v))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
 // deriveDeepCopy recursively copies the contents of src into dst.
 func deriveDeepCopy(dst, src []*bool) {
 	for src_i, src_value := range src {
@@ -5767,7 +5836,7 @@ func deriveDeepCopy_26(dst, src *[]int) {
 func deriveDeepCopy_27(dst, src *map[int]int) {
 	if *src != nil {
 		*dst = make(map[int]int, len(*src))
-		deriveDeepCopy_43(*dst, *src)
+		deriveDeepCopy_44(*dst, *src)
 	} else {
 		*dst = nil
 	}
@@ -6020,6 +6089,33 @@ func deriveDeepCopy_41(dst, src []*time.Duration) {
 func deriveDeepCopy_42(dst, src map[int]time.Duration) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_43 recursively copies the contents of src into dst.
+func deriveDeepCopy_43(dst, src map[string][]*pickle.Rick) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
+		}
+		if src_value == nil {
+			dst[src_key] = nil
+		} else {
+			if dst[src_key] != nil {
+				if len(src_value) > len(dst[src_key]) {
+					if cap(dst[src_key]) >= len(src_value) {
+						dst[src_key] = (dst[src_key])[:len(src_value)]
+					} else {
+						dst[src_key] = make([]*pickle.Rick, len(src_value))
+					}
+				} else if len(src_value) < len(dst[src_key]) {
+					dst[src_key] = (dst[src_key])[:len(src_value)]
+				}
+			} else {
+				dst[src_key] = make([]*pickle.Rick, len(src_value))
+			}
+			deriveDeepCopy_45(dst[src_key], src_value)
+		}
 	}
 }
 
@@ -8593,7 +8689,7 @@ func deriveCompare_103(this, that *[4]int) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompare_128(*this, *that)
+	return deriveCompare_129(*this, *that)
 }
 
 // deriveCompare_104 returns:
@@ -8610,7 +8706,7 @@ func deriveCompare_104(this, that *map[int]int) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompare_129(*this, *that)
+	return deriveCompare_130(*this, *that)
 }
 
 // deriveCompare_105 returns:
@@ -9327,6 +9423,45 @@ func deriveCompare_127(this, that map[int]time.Duration) int {
 			}
 		} else {
 			if c := deriveCompare_i(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+// deriveCompare_128 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_128(this, that map[string][]*pickle.Rick) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedStrings(deriveKeys_15(this))
+	thatkeys := deriveSortedStrings(deriveKeys_15(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompare_131(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
 				return c
 			}
 		}
@@ -10531,7 +10666,26 @@ func deriveEqual_83(this, that map[int]time.Duration) bool {
 	return true
 }
 
-func deriveEqual_84(this, that []*vendortest.AVendoredObject) bool {
+func deriveEqual_84(this, that map[string][]*pickle.Rick) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(deriveEqual_86(v, thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqual_85(this, that []*vendortest.AVendoredObject) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -10539,7 +10693,7 @@ func deriveEqual_84(this, that []*vendortest.AVendoredObject) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_85(this[i], that[i])) {
+		if !(deriveEqual_87(this[i], that[i])) {
 			return false
 		}
 	}
@@ -10714,7 +10868,15 @@ func deriveKeys_14(m map[int]time.Duration) []int {
 	return keys
 }
 
-func deriveGoString_62(this *bool) string {
+func deriveKeys_15(m map[string][]*pickle.Rick) []string {
+	keys := make([]string, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func deriveGoString_63(this *bool) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *bool {\n")
 	if this == nil {
@@ -10728,7 +10890,7 @@ func deriveGoString_62(this *bool) string {
 	return buf.String()
 }
 
-func deriveGoString_63(this *byte) string {
+func deriveGoString_64(this *byte) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *byte {\n")
 	if this == nil {
@@ -10742,7 +10904,7 @@ func deriveGoString_63(this *byte) string {
 	return buf.String()
 }
 
-func deriveGoString_64(this *complex128) string {
+func deriveGoString_65(this *complex128) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *complex128 {\n")
 	if this == nil {
@@ -10756,7 +10918,7 @@ func deriveGoString_64(this *complex128) string {
 	return buf.String()
 }
 
-func deriveGoString_65(this *complex64) string {
+func deriveGoString_66(this *complex64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *complex64 {\n")
 	if this == nil {
@@ -10770,7 +10932,7 @@ func deriveGoString_65(this *complex64) string {
 	return buf.String()
 }
 
-func deriveGoString_66(this *float64) string {
+func deriveGoString_67(this *float64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *float64 {\n")
 	if this == nil {
@@ -10784,7 +10946,7 @@ func deriveGoString_66(this *float64) string {
 	return buf.String()
 }
 
-func deriveGoString_67(this *float32) string {
+func deriveGoString_68(this *float32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *float32 {\n")
 	if this == nil {
@@ -10798,7 +10960,7 @@ func deriveGoString_67(this *float32) string {
 	return buf.String()
 }
 
-func deriveGoString_68(this *int16) string {
+func deriveGoString_69(this *int16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int16 {\n")
 	if this == nil {
@@ -10812,7 +10974,7 @@ func deriveGoString_68(this *int16) string {
 	return buf.String()
 }
 
-func deriveGoString_69(this *int32) string {
+func deriveGoString_70(this *int32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int32 {\n")
 	if this == nil {
@@ -10826,7 +10988,7 @@ func deriveGoString_69(this *int32) string {
 	return buf.String()
 }
 
-func deriveGoString_70(this *int64) string {
+func deriveGoString_71(this *int64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int64 {\n")
 	if this == nil {
@@ -10840,7 +11002,7 @@ func deriveGoString_70(this *int64) string {
 	return buf.String()
 }
 
-func deriveGoString_71(this *int8) string {
+func deriveGoString_72(this *int8) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int8 {\n")
 	if this == nil {
@@ -10854,7 +11016,7 @@ func deriveGoString_71(this *int8) string {
 	return buf.String()
 }
 
-func deriveGoString_72(this *string) string {
+func deriveGoString_73(this *string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *string {\n")
 	if this == nil {
@@ -10868,7 +11030,7 @@ func deriveGoString_72(this *string) string {
 	return buf.String()
 }
 
-func deriveGoString_73(this *uint) string {
+func deriveGoString_74(this *uint) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint {\n")
 	if this == nil {
@@ -10882,7 +11044,7 @@ func deriveGoString_73(this *uint) string {
 	return buf.String()
 }
 
-func deriveGoString_74(this *uint16) string {
+func deriveGoString_75(this *uint16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint16 {\n")
 	if this == nil {
@@ -10896,7 +11058,7 @@ func deriveGoString_74(this *uint16) string {
 	return buf.String()
 }
 
-func deriveGoString_75(this *uint32) string {
+func deriveGoString_76(this *uint32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint32 {\n")
 	if this == nil {
@@ -10910,7 +11072,7 @@ func deriveGoString_75(this *uint32) string {
 	return buf.String()
 }
 
-func deriveGoString_76(this *uint64) string {
+func deriveGoString_77(this *uint64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint64 {\n")
 	if this == nil {
@@ -10924,7 +11086,7 @@ func deriveGoString_76(this *uint64) string {
 	return buf.String()
 }
 
-func deriveGoString_77(this *uintptr) string {
+func deriveGoString_78(this *uintptr) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uintptr {\n")
 	if this == nil {
@@ -10938,7 +11100,7 @@ func deriveGoString_77(this *uintptr) string {
 	return buf.String()
 }
 
-func deriveGoString_78(this []string) string {
+func deriveGoString_79(this []string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []string {\n")
 	if this == nil {
@@ -11009,10 +11171,38 @@ func deriveGoString_D(this time.Duration) string {
 	return buf.String()
 }
 
-// deriveDeepCopy_43 recursively copies the contents of src into dst.
-func deriveDeepCopy_43(dst, src map[int]int) {
+func deriveGoString_80(this []*pickle.Rick) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() []*pickle.Rick {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := make([]*pickle.Rick, %d)\n", len(this))
+		for i := range this {
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_81(this[i]))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveDeepCopy_44 recursively copies the contents of src into dst.
+func deriveDeepCopy_44(dst, src map[int]int) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_45 recursively copies the contents of src into dst.
+func deriveDeepCopy_45(dst, src []*pickle.Rick) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(pickle.Rick)
+			*dst[src_i] = *src_value
+		}
 	}
 }
 
@@ -11024,11 +11214,11 @@ func deriveCompare_s(this, that string) int {
 	return strings.Compare(this, that)
 }
 
-// deriveCompare_128 returns:
+// deriveCompare_129 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_128(this, that [4]int) int {
+func deriveCompare_129(this, that [4]int) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
 			return -1
@@ -11043,11 +11233,11 @@ func deriveCompare_128(this, that [4]int) int {
 	return 0
 }
 
-// deriveCompare_129 returns:
+// deriveCompare_130 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_129(this, that map[int]int) int {
+func deriveCompare_130(this, that map[int]int) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -11063,8 +11253,8 @@ func deriveCompare_129(this, that map[int]int) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedInts(deriveKeys_15(this))
-	thatkeys := deriveSortedInts(deriveKeys_15(that))
+	thiskeys := deriveSortedInts(deriveKeys_16(this))
+	thatkeys := deriveSortedInts(deriveKeys_16(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -11082,6 +11272,34 @@ func deriveCompare_129(this, that map[int]int) int {
 	return 0
 }
 
+// deriveCompare_131 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_131(this, that []*pickle.Rick) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompare_132(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
 // deriveCompare_N returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
@@ -11090,16 +11308,71 @@ func deriveCompare_N(this, that Name) int {
 	return (&this).Compare(&that)
 }
 
-func deriveEqual_85(this, that *vendortest.AVendoredObject) bool {
+func deriveEqual_86(this, that []*pickle.Rick) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqual_88(this[i], that[i])) {
+			return false
+		}
+	}
+	return true
+}
+
+func deriveEqual_87(this, that *vendortest.AVendoredObject) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Name == that.Name
 }
 
-func deriveKeys_15(m map[int]int) []int {
+func deriveKeys_16(m map[int]int) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
+}
+
+func deriveGoString_81(this *pickle.Rick) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *pickle.Rick {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &pickle.Rick{}\n")
+		fmt.Fprintf(buf, "this.Portal = %#v\n", this.Portal)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveCompare_132 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_132(this, that *pickle.Rick) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if c := strings.Compare(this.Portal, that.Portal); c != 0 {
+		return c
+	}
+	return 0
+}
+
+func deriveEqual_88(this, that *pickle.Rick) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.Portal == that.Portal
 }

@@ -1,7 +1,8 @@
 .PHONY: test
 test:
-	make -C normal test
-	make -C nameerror test
-	make -C duperror test
-	make -C dedup test
-	make -C autoname test
+	cd normal && make test
+	cd nameerror && make test
+	cd duperror && make test
+	cd dedup && make test
+	cd autoname && make test
+	cd gopaths && make test

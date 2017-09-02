@@ -25,7 +25,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/kisielk/gotool"
 	"golang.org/x/tools/go/loader"
 )
 
@@ -96,6 +95,14 @@ func union(this, that map[string]struct{}) map[string]struct{} {
 
 func newPackage(program *loader.Program, pkgInfo *loader.PackageInfo, plugins []Plugin, autoname, dedup bool) (*pkg, error) {
 	fileInfos := newFileInfos(program, pkgInfo)
+	fullpath := ""
+	if len(fileInfos) > 0 {
+		abs, err := filepath.Abs(fileInfos[0].fullpath)
+		if err != nil {
+			return nil, err
+		}
+		fullpath = filepath.Dir(abs)
+	}
 	reserved := make(map[string]struct{})
 	for _, fileFuncs := range fileInfos {
 		reserved = union(reserved, fileFuncs.funcNames)
@@ -114,7 +121,7 @@ func newPackage(program *loader.Program, pkgInfo *loader.PackageInfo, plugins []
 	for _, plugin := range plugins {
 		generators[plugin.Name()] = plugin.New(typesmaps[plugin.Name()], printer, deps)
 	}
-	pkg := &pkg{pkgInfo, plugins, generators, printer, nil}
+	pkg := &pkg{pkgInfo, plugins, generators, printer, nil, fullpath}
 	for _, fileInfo := range fileInfos {
 
 		changed := false
@@ -175,6 +182,7 @@ type pkg struct {
 	generators map[string]Generator
 	printer    Printer
 	undefined  []*ast.CallExpr
+	fullpath   string
 }
 
 func (pkg *pkg) Add(call *call) (string, error) {
@@ -206,8 +214,7 @@ func (pkg *pkg) HasContent() bool {
 }
 
 func (pkg *pkg) Filename() string {
-	pkgpath := filepath.Join(filepath.Join(gotool.DefaultContext.BuildContext.GOPATH, "src"), pkg.info.Pkg.Path())
-	return filepath.Join(pkgpath, derivedFilename)
+	return filepath.Join(pkg.fullpath, derivedFilename)
 }
 
 func (pkg *pkg) Print() error {

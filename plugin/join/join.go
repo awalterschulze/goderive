@@ -37,6 +37,7 @@ package join
 import (
 	"fmt"
 	"go/types"
+	"strconv"
 	"strings"
 
 	"github.com/awalterschulze/goderive/derive"
@@ -286,6 +287,7 @@ func (g *gen) genError(typs []types.Type) error {
 	}
 	p.P("")
 	if len(outTyps) == 0 {
+		p.P("// %s returns the error or calls f and returns it's error.", name)
 		p.P("func %s(f func() error, err error) error {", name)
 		p.In()
 		p.P("if err != nil {")
@@ -304,6 +306,7 @@ func (g *gen) genError(typs []types.Type) error {
 			zeros[i] = derive.Zero(outTyps[i])
 		}
 		outStr := strings.Join(outs, ", ")
+		p.P("// %s returns the error or calls f and returns it's value and error.", name)
 		p.P("func %s(f func() (%s, error), err error) (%s, error) {", name, outStr, outStr)
 		p.In()
 		p.P("if err != nil {")
@@ -332,6 +335,7 @@ func (g *gen) genChan(typs []types.Type) error {
 	}
 	typStr := g.TypeString(elemTyp)
 	p.P("")
+	p.P("// %s listens on all channels resulting from the input channel and sends all their results on the output channel.", name)
 	p.P("func %s(in %schan (<-chan %s)) <-chan %s {", name, dirStr, typStr, typStr)
 	p.In()
 	p.P("out := make(chan %s)", typStr)
@@ -377,15 +381,18 @@ func (g *gen) genChanVariant(typs []types.Type) error {
 	pairs := make([]string, len(typs))
 	typStr := g.TypeString(elemTyps[0])
 	csnil := make([]string, len(typs))
+	cs := make([]string, len(typs))
 	for i := range typs {
 		if dirs[i] == types.RecvOnly {
 			dirstrs[i] = "<-"
 		}
 		elemstrs[i] = g.TypeString(elemTyps[i])
-		pairs[i] = fmt.Sprintf("c%d %schan %s", i, dirstrs[i], elemstrs[i])
-		csnil[i] = fmt.Sprintf("c%d != nil", i)
+		cs[i] = "c" + strconv.Itoa(i)
+		pairs[i] = fmt.Sprintf("%s %schan %s", cs[i], dirstrs[i], elemstrs[i])
+		csnil[i] = fmt.Sprintf("%s != nil", cs[i])
 	}
 	p.P("")
+	p.P("// %s listens on all input channels %s and %s, and sends all their results onto the single output channel.", name, strings.Join(cs[:len(cs)-1], ", "), cs[len(cs)-1])
 	p.P("func %s(%s) <-chan %s {", name, strings.Join(pairs, ", "), typStr)
 	p.In()
 	p.P("out := make(chan %s)", typStr)
@@ -434,6 +441,7 @@ func (g *gen) genSliceOfChan(typs []types.Type) error {
 		dirStr = "<-"
 	}
 	p.P("")
+	p.P("// %s listens on all input channels and sends all their results onto the single output channel.", name)
 	p.P("func %s(in []%schan %s) <-chan %s {", name, dirStr, typStr, typStr)
 	p.In()
 	p.P("out := make(chan %s)", typStr)
@@ -476,21 +484,22 @@ func (g *gen) genSlice(typs []types.Type) error {
 	}
 	typStr := g.TypeString(elemTyp)
 	p.P("")
-	p.P("func %s(list [][]%s) []%s {", name, typStr, typStr)
+	p.P("// %s concatenates the list of lists into one list.", name)
+	p.P("func %s(listOfLists [][]%s) []%s {", name, typStr, typStr)
 	p.In()
-	p.P("if list == nil {")
+	p.P("if listOfLists == nil {")
 	p.In()
 	p.P("return nil")
 	p.Out()
 	p.P("}")
 	p.P("l := 0")
-	p.P("for _, elem := range list {")
+	p.P("for _, elem := range listOfLists {")
 	p.In()
 	p.P("l += len(elem)")
 	p.Out()
 	p.P("}")
 	p.P("res := make([]%s, 0, l)", typStr)
-	p.P("for _, elem := range list {")
+	p.P("for _, elem := range listOfLists {")
 	p.In()
 	p.P("res = append(res, elem...)")
 	p.Out()
@@ -506,6 +515,7 @@ func (g *gen) genString(typs []types.Type) error {
 	g.Generating(typs...)
 	name := g.GetFuncName(typs...)
 	p.P("")
+	p.P("// %s concatenates the list of strings into one string.", name)
 	p.P("func %s(list []string) string {", name)
 	p.In()
 	p.P("return %s.Join(list, \"\")", g.stringsPkg())

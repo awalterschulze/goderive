@@ -21,6 +21,7 @@ goderive will generate the following code:
 
 package intersect
 
+// deriveIntersect returns the intersection of the two lists' values
 func deriveIntersect(this, that []int) []int {
 	intersect := make([]int, 0, deriveMin(len(this), len(that)))
 	for i, v := range this {

@@ -27,6 +27,7 @@ func deriveTakeWhile(pred func(int) bool, list []int) []int {
 	return out
 }
 
+// deriveIntersectSetOfInt64s returns the intersection of the two maps' keys.
 func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{} {
 	intersect := make(map[int64]struct{}, deriveMinInt(len(this), len(that)))
 	for k := range this {
@@ -37,6 +38,7 @@ func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{
 	return intersect
 }
 
+// deriveIntersectOfInt64s returns the intersection of the two lists' values
 func deriveIntersectOfInt64s(this, that []int64) []int64 {
 	intersect := make([]int64, 0, deriveMinInt(len(this), len(that)))
 	for i, v := range this {
@@ -54,6 +56,7 @@ func derivePipeline(f func(lines []string) <-chan string, g func(line string) <-
 	}
 }
 
+// deriveGoStringEmpty returns a recursive representation of this as a valid go string.
 func deriveGoStringEmpty(this *Empty) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.Empty {\n")
@@ -66,6 +69,7 @@ func deriveGoStringEmpty(this *Empty) string {
 	return buf.String()
 }
 
+// deriveGoStringBuiltInTypes returns a recursive representation of this as a valid go string.
 func deriveGoStringBuiltInTypes(this *BuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.BuiltInTypes {\n")
@@ -98,6 +102,7 @@ func deriveGoStringBuiltInTypes(this *BuiltInTypes) string {
 	return buf.String()
 }
 
+// deriveGoStringPtrToBuiltInTypes returns a recursive representation of this as a valid go string.
 func deriveGoStringPtrToBuiltInTypes(this *PtrToBuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.PtrToBuiltInTypes {\n")
@@ -168,6 +173,7 @@ func deriveGoStringPtrToBuiltInTypes(this *PtrToBuiltInTypes) string {
 	return buf.String()
 }
 
+// deriveGoStringSliceOfBuiltInTypes returns a recursive representation of this as a valid go string.
 func deriveGoStringSliceOfBuiltInTypes(this *SliceOfBuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.SliceOfBuiltInTypes {\n")
@@ -238,6 +244,7 @@ func deriveGoStringSliceOfBuiltInTypes(this *SliceOfBuiltInTypes) string {
 	return buf.String()
 }
 
+// deriveGoStringSliceOfPtrToBuiltInTypes returns a recursive representation of this as a valid go string.
 func deriveGoStringSliceOfPtrToBuiltInTypes(this *SliceOfPtrToBuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.SliceOfPtrToBuiltInTypes {\n")
@@ -308,6 +315,7 @@ func deriveGoStringSliceOfPtrToBuiltInTypes(this *SliceOfPtrToBuiltInTypes) stri
 	return buf.String()
 }
 
+// deriveGoStringArrayOfBuiltInTypes returns a recursive representation of this as a valid go string.
 func deriveGoStringArrayOfBuiltInTypes(this *ArrayOfBuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.ArrayOfBuiltInTypes {\n")
@@ -341,6 +349,7 @@ func deriveGoStringArrayOfBuiltInTypes(this *ArrayOfBuiltInTypes) string {
 	return buf.String()
 }
 
+// deriveGoStringArrayOfPtrToBuiltInTypes returns a recursive representation of this as a valid go string.
 func deriveGoStringArrayOfPtrToBuiltInTypes(this *ArrayOfPtrToBuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.ArrayOfPtrToBuiltInTypes {\n")
@@ -374,6 +383,7 @@ func deriveGoStringArrayOfPtrToBuiltInTypes(this *ArrayOfPtrToBuiltInTypes) stri
 	return buf.String()
 }
 
+// deriveGoStringMapsOfSimplerBuiltInTypes returns a recursive representation of this as a valid go string.
 func deriveGoStringMapsOfSimplerBuiltInTypes(this *MapsOfSimplerBuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.MapsOfSimplerBuiltInTypes {\n")
@@ -393,6 +403,7 @@ func deriveGoStringMapsOfSimplerBuiltInTypes(this *MapsOfSimplerBuiltInTypes) st
 	return buf.String()
 }
 
+// deriveGoStringMapsOfBuiltInTypes returns a recursive representation of this as a valid go string.
 func deriveGoStringMapsOfBuiltInTypes(this *MapsOfBuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.MapsOfBuiltInTypes {\n")
@@ -421,6 +432,7 @@ func deriveGoStringMapsOfBuiltInTypes(this *MapsOfBuiltInTypes) string {
 	return buf.String()
 }
 
+// deriveGoStringSliceToSlice returns a recursive representation of this as a valid go string.
 func deriveGoStringSliceToSlice(this *SliceToSlice) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.SliceToSlice {\n")
@@ -443,6 +455,7 @@ func deriveGoStringSliceToSlice(this *SliceToSlice) string {
 	return buf.String()
 }
 
+// deriveGoStringPtrTo returns a recursive representation of this as a valid go string.
 func deriveGoStringPtrTo(this *PtrTo) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.PtrTo {\n")
@@ -468,6 +481,7 @@ func deriveGoStringPtrTo(this *PtrTo) string {
 	return buf.String()
 }
 
+// deriveGoStringName returns a recursive representation of this as a valid go string.
 func deriveGoStringName(this *Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.Name {\n")
@@ -482,6 +496,7 @@ func deriveGoStringName(this *Name) string {
 	return buf.String()
 }
 
+// deriveGoStringStructs returns a recursive representation of this as a valid go string.
 func deriveGoStringStructs(this *Structs) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.Structs {\n")
@@ -505,6 +520,7 @@ func deriveGoStringStructs(this *Structs) string {
 	return buf.String()
 }
 
+// deriveGoStringMapWithStructs returns a recursive representation of this as a valid go string.
 func deriveGoStringMapWithStructs(this *MapWithStructs) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.MapWithStructs {\n")
@@ -533,6 +549,7 @@ func deriveGoStringMapWithStructs(this *MapWithStructs) string {
 	return buf.String()
 }
 
+// deriveGoStringRecursiveType returns a recursive representation of this as a valid go string.
 func deriveGoStringRecursiveType(this *RecursiveType) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.RecursiveType {\n")
@@ -552,6 +569,7 @@ func deriveGoStringRecursiveType(this *RecursiveType) string {
 	return buf.String()
 }
 
+// deriveGoStringEmbeddedStruct1 returns a recursive representation of this as a valid go string.
 func deriveGoStringEmbeddedStruct1(this *EmbeddedStruct1) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.EmbeddedStruct1 {\n")
@@ -569,6 +587,7 @@ func deriveGoStringEmbeddedStruct1(this *EmbeddedStruct1) string {
 	return buf.String()
 }
 
+// deriveGoStringEmbeddedStruct2 returns a recursive representation of this as a valid go string.
 func deriveGoStringEmbeddedStruct2(this *EmbeddedStruct2) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.EmbeddedStruct2 {\n")
@@ -586,6 +605,7 @@ func deriveGoStringEmbeddedStruct2(this *EmbeddedStruct2) string {
 	return buf.String()
 }
 
+// deriveGoStringStructWithStructFieldWithoutEqualMethod returns a recursive representation of this as a valid go string.
 func deriveGoStringStructWithStructFieldWithoutEqualMethod(this *StructWithStructFieldWithoutEqualMethod) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.StructWithStructFieldWithoutEqualMethod {\n")
@@ -603,6 +623,7 @@ func deriveGoStringStructWithStructFieldWithoutEqualMethod(this *StructWithStruc
 	return buf.String()
 }
 
+// deriveGoStringStructWithStructWithFromAnotherPackage returns a recursive representation of this as a valid go string.
 func deriveGoStringStructWithStructWithFromAnotherPackage(this *StructWithStructWithFromAnotherPackage) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.StructWithStructWithFromAnotherPackage {\n")
@@ -620,6 +641,7 @@ func deriveGoStringStructWithStructWithFromAnotherPackage(this *StructWithStruct
 	return buf.String()
 }
 
+// deriveGoStringEnums returns a recursive representation of this as a valid go string.
 func deriveGoStringEnums(this *Enums) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.Enums {\n")
@@ -650,6 +672,7 @@ func deriveGoStringEnums(this *Enums) string {
 	return buf.String()
 }
 
+// deriveGoStringNamedTypes returns a recursive representation of this as a valid go string.
 func deriveGoStringNamedTypes(this *NamedTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.NamedTypes {\n")
@@ -672,6 +695,7 @@ func deriveGoStringNamedTypes(this *NamedTypes) string {
 	return buf.String()
 }
 
+// deriveGoStringDuration returns a recursive representation of this as a valid go string.
 func deriveGoStringDuration(this *Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.Duration {\n")
@@ -698,6 +722,7 @@ func deriveGoStringDuration(this *Duration) string {
 	return buf.String()
 }
 
+// deriveGoStringNickname returns a recursive representation of this as a valid go string.
 func deriveGoStringNickname(this *Nickname) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.Nickname {\n")
@@ -714,6 +739,7 @@ func deriveGoStringNickname(this *Nickname) string {
 	return buf.String()
 }
 
+// deriveGoStringPrivateEmbedded returns a recursive representation of this as a valid go string.
 func deriveGoStringPrivateEmbedded(this *PrivateEmbedded) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.PrivateEmbedded {\n")
@@ -728,6 +754,7 @@ func deriveGoStringPrivateEmbedded(this *PrivateEmbedded) string {
 	return buf.String()
 }
 
+// deriveGoStringIntSlices returns a recursive representation of this as a valid go string.
 func deriveGoStringIntSlices(this []int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []int {\n")
@@ -740,6 +767,7 @@ func deriveGoStringIntSlices(this []int) string {
 	return buf.String()
 }
 
+// deriveGoStringIntArray returns a recursive representation of this as a valid go string.
 func deriveGoStringIntArray(this [10]int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [10]int {\n")
@@ -748,6 +776,7 @@ func deriveGoStringIntArray(this [10]int) string {
 	return buf.String()
 }
 
+// deriveGoStringMapOfIntToInt returns a recursive representation of this as a valid go string.
 func deriveGoStringMapOfIntToInt(this map[int]int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[int]int {\n")
@@ -760,6 +789,7 @@ func deriveGoStringMapOfIntToInt(this map[int]int) string {
 	return buf.String()
 }
 
+// deriveGoStringIntPtr returns a recursive representation of this as a valid go string.
 func deriveGoStringIntPtr(this *int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int {\n")
@@ -774,6 +804,7 @@ func deriveGoStringIntPtr(this *int) string {
 	return buf.String()
 }
 
+// deriveGoStringIntPtrSlice returns a recursive representation of this as a valid go string.
 func deriveGoStringIntPtrSlice(this *[]int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *[]int {\n")
@@ -790,6 +821,7 @@ func deriveGoStringIntPtrSlice(this *[]int) string {
 	return buf.String()
 }
 
+// deriveGoStringIntPtrArray returns a recursive representation of this as a valid go string.
 func deriveGoStringIntPtrArray(this *[10]int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *[10]int {\n")
@@ -804,6 +836,7 @@ func deriveGoStringIntPtrArray(this *[10]int) string {
 	return buf.String()
 }
 
+// deriveGoStringIntPtrMap returns a recursive representation of this as a valid go string.
 func deriveGoStringIntPtrMap(this *map[int]int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *map[int]int {\n")
@@ -820,6 +853,7 @@ func deriveGoStringIntPtrMap(this *map[int]int) string {
 	return buf.String()
 }
 
+// deriveGoStringNoPointerStruct returns a recursive representation of this as a valid go string.
 func deriveGoStringNoPointerStruct(this BuiltInTypes) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.BuiltInTypes {\n")
@@ -4360,21 +4394,23 @@ func deriveKeysForMapInt64ToInt64(m map[int64]int64) []int64 {
 	return keys
 }
 
-func deriveJoinSS(list [][]string) []string {
-	if list == nil {
+// deriveJoinSS concatenates the list of lists into one list.
+func deriveJoinSS(listOfLists [][]string) []string {
+	if listOfLists == nil {
 		return nil
 	}
 	l := 0
-	for _, elem := range list {
+	for _, elem := range listOfLists {
 		l += len(elem)
 	}
 	res := make([]string, 0, l)
-	for _, elem := range list {
+	for _, elem := range listOfLists {
 		res = append(res, elem...)
 	}
 	return res
 }
 
+// deriveJoinEE returns the error or calls f and returns it's value and error.
 func deriveJoinEE(f func() (int64, error), err error) (int64, error) {
 	if err != nil {
 		return 0, err
@@ -4382,6 +4418,7 @@ func deriveJoinEE(f func() (int64, error), err error) (int64, error) {
 	return f()
 }
 
+// deriveJoinChannels listens on all channels resulting from the input channel and sends all their results on the output channel.
 func deriveJoinChannels(in <-chan (<-chan int)) <-chan int {
 	out := make(chan int)
 	go func() {
@@ -4402,25 +4439,28 @@ func deriveJoinChannels(in <-chan (<-chan int)) <-chan int {
 	return out
 }
 
-func deriveJoin(list [][]int) []int {
-	if list == nil {
+// deriveJoin concatenates the list of lists into one list.
+func deriveJoin(listOfLists [][]int) []int {
+	if listOfLists == nil {
 		return nil
 	}
 	l := 0
-	for _, elem := range list {
+	for _, elem := range listOfLists {
 		l += len(elem)
 	}
 	res := make([]int, 0, l)
-	for _, elem := range list {
+	for _, elem := range listOfLists {
 		res = append(res, elem...)
 	}
 	return res
 }
 
+// deriveJoinString concatenates the list of strings into one string.
 func deriveJoinString(list []string) string {
 	return strings.Join(list, "")
 }
 
+// deriveJoinJustError returns the error or calls f and returns it's error.
 func deriveJoinJustError(f func() error, err error) error {
 	if err != nil {
 		return err
@@ -4428,6 +4468,7 @@ func deriveJoinJustError(f func() error, err error) error {
 	return f()
 }
 
+// deriveJoinErrorAndString returns the error or calls f and returns it's value and error.
 func deriveJoinErrorAndString(f func() (string, error), err error) (string, error) {
 	if err != nil {
 		return "", err
@@ -4435,6 +4476,7 @@ func deriveJoinErrorAndString(f func() (string, error), err error) (string, erro
 	return f()
 }
 
+// deriveJoinErrorAndValues returns the error or calls f and returns it's value and error.
 func deriveJoinErrorAndValues(f func() (string, int, error), err error) (string, int, error) {
 	if err != nil {
 		return "", 0, err
@@ -4442,6 +4484,7 @@ func deriveJoinErrorAndValues(f func() (string, int, error), err error) (string,
 	return f()
 }
 
+// deriveJoinSendRecvChannels listens on all channels resulting from the input channel and sends all their results on the output channel.
 func deriveJoinSendRecvChannels(in chan (<-chan int64)) <-chan int64 {
 	out := make(chan int64)
 	go func() {
@@ -4462,6 +4505,7 @@ func deriveJoinSendRecvChannels(in chan (<-chan int64)) <-chan int64 {
 	return out
 }
 
+// deriveJoinSliceOfRecvChannels listens on all input channels and sends all their results onto the single output channel.
 func deriveJoinSliceOfRecvChannels(in []<-chan int) <-chan int {
 	out := make(chan int)
 	go func() {
@@ -4482,6 +4526,7 @@ func deriveJoinSliceOfRecvChannels(in []<-chan int) <-chan int {
 	return out
 }
 
+// deriveJoinSliceOfSendRecvChannels listens on all input channels and sends all their results onto the single output channel.
 func deriveJoinSliceOfSendRecvChannels(in []chan int) <-chan int {
 	out := make(chan int)
 	go func() {
@@ -4502,6 +4547,7 @@ func deriveJoinSliceOfSendRecvChannels(in []chan int) <-chan int {
 	return out
 }
 
+// deriveJoinVariantOfSendRecvChannels listens on all input channels c0 and c1, and sends all their results onto the single output channel.
 func deriveJoinVariantOfSendRecvChannels(c0 chan int, c1 chan int) <-chan int {
 	out := make(chan int)
 	go func() {
@@ -4553,6 +4599,7 @@ func deriveFmapString(f func(rune) bool, ss string) []bool {
 	return out
 }
 
+// deriveFmapError returns an error if g returns one, otherwise it applies f to g's result and returns it.
 func deriveFmapError(f func(int) int64, g func() (int, error)) (int64, error) {
 	v, err := g()
 	if err != nil {
@@ -4561,6 +4608,7 @@ func deriveFmapError(f func(int) int64, g func() (int, error)) (int64, error) {
 	return f(v), nil
 }
 
+// deriveFmapEE returns an error if g returns one, otherwise it applies f to g's result and returns it.
 func deriveFmapEE(f func(string) (int, error), g func() (string, error)) (func() (int, error), error) {
 	v, err := g()
 	if err != nil {
@@ -4569,6 +4617,7 @@ func deriveFmapEE(f func(string) (int, error), g func() (string, error)) (func()
 	return deriveTuple(f(v)), nil
 }
 
+// deriveFmapPrint returns an error if g returns one, otherwise it applies f to g's result.
 func deriveFmapPrint(f func(string), g func() (string, error)) error {
 	v, err := g()
 	if err != nil {
@@ -4578,6 +4627,7 @@ func deriveFmapPrint(f func(string), g func() (string, error)) error {
 	return nil
 }
 
+// deriveFmapMore returns an error if g returns one, otherwise it applies f to g's result and returns it.
 func deriveFmapMore(f func(string) (int, string, error), g func() (string, error)) (func() (int, string, error), error) {
 	v, err := g()
 	if err != nil {
@@ -4608,6 +4658,7 @@ func deriveFmapSS(f func(string) []string, list []string) [][]string {
 	return out
 }
 
+// deriveFmapEE64 returns an error if g returns one, otherwise it applies f to g's result and returns it.
 func deriveFmapEE64(f func(string) (int64, error), g func() (string, error)) (func() (int64, error), error) {
 	v, err := g()
 	if err != nil {
@@ -4792,6 +4843,7 @@ func deriveDo(f0 func() (string, error), f1 func() (int, error)) (string, int, e
 	return v0, v1, err
 }
 
+// deriveGoString returns a recursive representation of this as a valid go string.
 func deriveGoString(this []*bool) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*bool {\n")
@@ -4808,6 +4860,7 @@ func deriveGoString(this []*bool) string {
 	return buf.String()
 }
 
+// deriveGoString_ returns a recursive representation of this as a valid go string.
 func deriveGoString_(this []*byte) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*byte {\n")
@@ -4824,6 +4877,7 @@ func deriveGoString_(this []*byte) string {
 	return buf.String()
 }
 
+// deriveGoString_1 returns a recursive representation of this as a valid go string.
 func deriveGoString_1(this []*complex128) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*complex128 {\n")
@@ -4840,6 +4894,7 @@ func deriveGoString_1(this []*complex128) string {
 	return buf.String()
 }
 
+// deriveGoString_2 returns a recursive representation of this as a valid go string.
 func deriveGoString_2(this []*complex64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*complex64 {\n")
@@ -4856,6 +4911,7 @@ func deriveGoString_2(this []*complex64) string {
 	return buf.String()
 }
 
+// deriveGoString_3 returns a recursive representation of this as a valid go string.
 func deriveGoString_3(this []*float64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*float64 {\n")
@@ -4872,6 +4928,7 @@ func deriveGoString_3(this []*float64) string {
 	return buf.String()
 }
 
+// deriveGoString_4 returns a recursive representation of this as a valid go string.
 func deriveGoString_4(this []*float32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*float32 {\n")
@@ -4888,6 +4945,7 @@ func deriveGoString_4(this []*float32) string {
 	return buf.String()
 }
 
+// deriveGoString_5 returns a recursive representation of this as a valid go string.
 func deriveGoString_5(this []*int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*int {\n")
@@ -4904,6 +4962,7 @@ func deriveGoString_5(this []*int) string {
 	return buf.String()
 }
 
+// deriveGoString_6 returns a recursive representation of this as a valid go string.
 func deriveGoString_6(this []*int16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*int16 {\n")
@@ -4920,6 +4979,7 @@ func deriveGoString_6(this []*int16) string {
 	return buf.String()
 }
 
+// deriveGoString_7 returns a recursive representation of this as a valid go string.
 func deriveGoString_7(this []*int32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*int32 {\n")
@@ -4936,6 +4996,7 @@ func deriveGoString_7(this []*int32) string {
 	return buf.String()
 }
 
+// deriveGoString_8 returns a recursive representation of this as a valid go string.
 func deriveGoString_8(this []*int64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*int64 {\n")
@@ -4952,6 +5013,7 @@ func deriveGoString_8(this []*int64) string {
 	return buf.String()
 }
 
+// deriveGoString_9 returns a recursive representation of this as a valid go string.
 func deriveGoString_9(this []*int8) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*int8 {\n")
@@ -4968,6 +5030,7 @@ func deriveGoString_9(this []*int8) string {
 	return buf.String()
 }
 
+// deriveGoString_10 returns a recursive representation of this as a valid go string.
 func deriveGoString_10(this []*string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*string {\n")
@@ -4984,6 +5047,7 @@ func deriveGoString_10(this []*string) string {
 	return buf.String()
 }
 
+// deriveGoString_11 returns a recursive representation of this as a valid go string.
 func deriveGoString_11(this []*uint) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*uint {\n")
@@ -5000,6 +5064,7 @@ func deriveGoString_11(this []*uint) string {
 	return buf.String()
 }
 
+// deriveGoString_12 returns a recursive representation of this as a valid go string.
 func deriveGoString_12(this []*uint16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*uint16 {\n")
@@ -5016,6 +5081,7 @@ func deriveGoString_12(this []*uint16) string {
 	return buf.String()
 }
 
+// deriveGoString_13 returns a recursive representation of this as a valid go string.
 func deriveGoString_13(this []*uint32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*uint32 {\n")
@@ -5032,6 +5098,7 @@ func deriveGoString_13(this []*uint32) string {
 	return buf.String()
 }
 
+// deriveGoString_14 returns a recursive representation of this as a valid go string.
 func deriveGoString_14(this []*uint64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*uint64 {\n")
@@ -5048,6 +5115,7 @@ func deriveGoString_14(this []*uint64) string {
 	return buf.String()
 }
 
+// deriveGoString_15 returns a recursive representation of this as a valid go string.
 func deriveGoString_15(this []*uintptr) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*uintptr {\n")
@@ -5064,6 +5132,7 @@ func deriveGoString_15(this []*uintptr) string {
 	return buf.String()
 }
 
+// deriveGoString_16 returns a recursive representation of this as a valid go string.
 func deriveGoString_16(this [1]*bool) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [1]*bool {\n")
@@ -5076,6 +5145,7 @@ func deriveGoString_16(this [1]*bool) string {
 	return buf.String()
 }
 
+// deriveGoString_17 returns a recursive representation of this as a valid go string.
 func deriveGoString_17(this [2]*byte) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [2]*byte {\n")
@@ -5088,6 +5158,7 @@ func deriveGoString_17(this [2]*byte) string {
 	return buf.String()
 }
 
+// deriveGoString_18 returns a recursive representation of this as a valid go string.
 func deriveGoString_18(this [3]*complex128) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [3]*complex128 {\n")
@@ -5100,6 +5171,7 @@ func deriveGoString_18(this [3]*complex128) string {
 	return buf.String()
 }
 
+// deriveGoString_19 returns a recursive representation of this as a valid go string.
 func deriveGoString_19(this [4]*complex64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [4]*complex64 {\n")
@@ -5112,6 +5184,7 @@ func deriveGoString_19(this [4]*complex64) string {
 	return buf.String()
 }
 
+// deriveGoString_20 returns a recursive representation of this as a valid go string.
 func deriveGoString_20(this [5]*float64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [5]*float64 {\n")
@@ -5124,6 +5197,7 @@ func deriveGoString_20(this [5]*float64) string {
 	return buf.String()
 }
 
+// deriveGoString_21 returns a recursive representation of this as a valid go string.
 func deriveGoString_21(this [6]*float32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [6]*float32 {\n")
@@ -5136,6 +5210,7 @@ func deriveGoString_21(this [6]*float32) string {
 	return buf.String()
 }
 
+// deriveGoString_22 returns a recursive representation of this as a valid go string.
 func deriveGoString_22(this [7]*int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [7]*int {\n")
@@ -5148,6 +5223,7 @@ func deriveGoString_22(this [7]*int) string {
 	return buf.String()
 }
 
+// deriveGoString_23 returns a recursive representation of this as a valid go string.
 func deriveGoString_23(this [8]*int16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [8]*int16 {\n")
@@ -5160,6 +5236,7 @@ func deriveGoString_23(this [8]*int16) string {
 	return buf.String()
 }
 
+// deriveGoString_24 returns a recursive representation of this as a valid go string.
 func deriveGoString_24(this [9]*int32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [9]*int32 {\n")
@@ -5172,6 +5249,7 @@ func deriveGoString_24(this [9]*int32) string {
 	return buf.String()
 }
 
+// deriveGoString_25 returns a recursive representation of this as a valid go string.
 func deriveGoString_25(this [10]*int64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [10]*int64 {\n")
@@ -5184,6 +5262,7 @@ func deriveGoString_25(this [10]*int64) string {
 	return buf.String()
 }
 
+// deriveGoString_26 returns a recursive representation of this as a valid go string.
 func deriveGoString_26(this [11]*int8) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [11]*int8 {\n")
@@ -5196,6 +5275,7 @@ func deriveGoString_26(this [11]*int8) string {
 	return buf.String()
 }
 
+// deriveGoString_27 returns a recursive representation of this as a valid go string.
 func deriveGoString_27(this [12]*rune) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [12]*rune {\n")
@@ -5208,6 +5288,7 @@ func deriveGoString_27(this [12]*rune) string {
 	return buf.String()
 }
 
+// deriveGoString_28 returns a recursive representation of this as a valid go string.
 func deriveGoString_28(this [13]*string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [13]*string {\n")
@@ -5220,6 +5301,7 @@ func deriveGoString_28(this [13]*string) string {
 	return buf.String()
 }
 
+// deriveGoString_29 returns a recursive representation of this as a valid go string.
 func deriveGoString_29(this [14]*uint) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [14]*uint {\n")
@@ -5232,6 +5314,7 @@ func deriveGoString_29(this [14]*uint) string {
 	return buf.String()
 }
 
+// deriveGoString_30 returns a recursive representation of this as a valid go string.
 func deriveGoString_30(this [15]*uint16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [15]*uint16 {\n")
@@ -5244,6 +5327,7 @@ func deriveGoString_30(this [15]*uint16) string {
 	return buf.String()
 }
 
+// deriveGoString_31 returns a recursive representation of this as a valid go string.
 func deriveGoString_31(this [16]*uint32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [16]*uint32 {\n")
@@ -5256,6 +5340,7 @@ func deriveGoString_31(this [16]*uint32) string {
 	return buf.String()
 }
 
+// deriveGoString_32 returns a recursive representation of this as a valid go string.
 func deriveGoString_32(this [17]*uint64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [17]*uint64 {\n")
@@ -5268,6 +5353,7 @@ func deriveGoString_32(this [17]*uint64) string {
 	return buf.String()
 }
 
+// deriveGoString_33 returns a recursive representation of this as a valid go string.
 func deriveGoString_33(this [18]*uint8) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [18]*uint8 {\n")
@@ -5280,6 +5366,7 @@ func deriveGoString_33(this [18]*uint8) string {
 	return buf.String()
 }
 
+// deriveGoString_34 returns a recursive representation of this as a valid go string.
 func deriveGoString_34(this [19]*uintptr) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [19]*uintptr {\n")
@@ -5292,6 +5379,7 @@ func deriveGoString_34(this [19]*uintptr) string {
 	return buf.String()
 }
 
+// deriveGoString_35 returns a recursive representation of this as a valid go string.
 func deriveGoString_35(this [10]*bool) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [10]*bool {\n")
@@ -5304,6 +5392,7 @@ func deriveGoString_35(this [10]*bool) string {
 	return buf.String()
 }
 
+// deriveGoString_36 returns a recursive representation of this as a valid go string.
 func deriveGoString_36(this [][]int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [][]int {\n")
@@ -5320,6 +5409,7 @@ func deriveGoString_36(this [][]int) string {
 	return buf.String()
 }
 
+// deriveGoString_37 returns a recursive representation of this as a valid go string.
 func deriveGoString_37(this [][]string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [][]string {\n")
@@ -5336,6 +5426,7 @@ func deriveGoString_37(this [][]string) string {
 	return buf.String()
 }
 
+// deriveGoString_38 returns a recursive representation of this as a valid go string.
 func deriveGoString_38(this [][]*int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [][]*int {\n")
@@ -5352,6 +5443,7 @@ func deriveGoString_38(this [][]*int) string {
 	return buf.String()
 }
 
+// deriveGoString_39 returns a recursive representation of this as a valid go string.
 func deriveGoString_39(this *[4]int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *[4]int {\n")
@@ -5366,6 +5458,7 @@ func deriveGoString_39(this *[4]int) string {
 	return buf.String()
 }
 
+// deriveGoString_N returns a recursive representation of this as a valid go string.
 func deriveGoString_N(this Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.Name {\n")
@@ -5376,6 +5469,7 @@ func deriveGoString_N(this Name) string {
 	return buf.String()
 }
 
+// deriveGoString_40 returns a recursive representation of this as a valid go string.
 func deriveGoString_40(this []Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []test.Name {\n")
@@ -5392,6 +5486,7 @@ func deriveGoString_40(this []Name) string {
 	return buf.String()
 }
 
+// deriveGoString_41 returns a recursive representation of this as a valid go string.
 func deriveGoString_41(this []*Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*test.Name {\n")
@@ -5408,6 +5503,7 @@ func deriveGoString_41(this []*Name) string {
 	return buf.String()
 }
 
+// deriveGoString_42 returns a recursive representation of this as a valid go string.
 func deriveGoString_42(this map[Name]string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[test.Name]string {\n")
@@ -5427,6 +5523,7 @@ func deriveGoString_42(this map[Name]string) string {
 	return buf.String()
 }
 
+// deriveGoString_43 returns a recursive representation of this as a valid go string.
 func deriveGoString_43(this map[string]Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string]test.Name {\n")
@@ -5443,6 +5540,7 @@ func deriveGoString_43(this map[string]Name) string {
 	return buf.String()
 }
 
+// deriveGoString_44 returns a recursive representation of this as a valid go string.
 func deriveGoString_44(this map[string]*Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string]*test.Name {\n")
@@ -5459,6 +5557,7 @@ func deriveGoString_44(this map[string]*Name) string {
 	return buf.String()
 }
 
+// deriveGoString_45 returns a recursive representation of this as a valid go string.
 func deriveGoString_45(this map[string][]Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string][]test.Name {\n")
@@ -5475,6 +5574,7 @@ func deriveGoString_45(this map[string][]Name) string {
 	return buf.String()
 }
 
+// deriveGoString_46 returns a recursive representation of this as a valid go string.
 func deriveGoString_46(this map[string][]*Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string][]*test.Name {\n")
@@ -5491,6 +5591,7 @@ func deriveGoString_46(this map[string][]*Name) string {
 	return buf.String()
 }
 
+// deriveGoString_47 returns a recursive representation of this as a valid go string.
 func deriveGoString_47(this map[int]RecursiveType) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[int]test.RecursiveType {\n")
@@ -5507,6 +5608,7 @@ func deriveGoString_47(this map[int]RecursiveType) string {
 	return buf.String()
 }
 
+// deriveGoString_S returns a recursive representation of this as a valid go string.
 func deriveGoString_S(this Structs) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.Structs {\n")
@@ -5526,6 +5628,7 @@ func deriveGoString_S(this Structs) string {
 	return buf.String()
 }
 
+// deriveGoString_48 returns a recursive representation of this as a valid go string.
 func deriveGoString_48(this *StructWithoutEqualMethod) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.StructWithoutEqualMethod {\n")
@@ -5540,6 +5643,7 @@ func deriveGoString_48(this *StructWithoutEqualMethod) string {
 	return buf.String()
 }
 
+// deriveGoString_St returns a recursive representation of this as a valid go string.
 func deriveGoString_St(this StructWithoutEqualMethod) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.StructWithoutEqualMethod {\n")
@@ -5550,6 +5654,7 @@ func deriveGoString_St(this StructWithoutEqualMethod) string {
 	return buf.String()
 }
 
+// deriveGoString_49 returns a recursive representation of this as a valid go string.
 func deriveGoString_49(this *extra.StructWithoutEqualMethod) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *extra.StructWithoutEqualMethod {\n")
@@ -5564,6 +5669,7 @@ func deriveGoString_49(this *extra.StructWithoutEqualMethod) string {
 	return buf.String()
 }
 
+// deriveGoString_Str returns a recursive representation of this as a valid go string.
 func deriveGoString_Str(this extra.StructWithoutEqualMethod) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() extra.StructWithoutEqualMethod {\n")
@@ -5574,6 +5680,7 @@ func deriveGoString_Str(this extra.StructWithoutEqualMethod) string {
 	return buf.String()
 }
 
+// deriveGoString_50 returns a recursive representation of this as a valid go string.
 func deriveGoString_50(this *MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.MyEnum {\n")
@@ -5588,6 +5695,7 @@ func deriveGoString_50(this *MyEnum) string {
 	return buf.String()
 }
 
+// deriveGoString_51 returns a recursive representation of this as a valid go string.
 func deriveGoString_51(this []MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []test.MyEnum {\n")
@@ -5604,6 +5712,7 @@ func deriveGoString_51(this []MyEnum) string {
 	return buf.String()
 }
 
+// deriveGoString_52 returns a recursive representation of this as a valid go string.
 func deriveGoString_52(this []*MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*test.MyEnum {\n")
@@ -5620,6 +5729,7 @@ func deriveGoString_52(this []*MyEnum) string {
 	return buf.String()
 }
 
+// deriveGoString_53 returns a recursive representation of this as a valid go string.
 func deriveGoString_53(this map[int32]MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[int32]test.MyEnum {\n")
@@ -5636,6 +5746,7 @@ func deriveGoString_53(this map[int32]MyEnum) string {
 	return buf.String()
 }
 
+// deriveGoString_54 returns a recursive representation of this as a valid go string.
 func deriveGoString_54(this map[MyEnum]int32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[test.MyEnum]int32 {\n")
@@ -5655,6 +5766,7 @@ func deriveGoString_54(this map[MyEnum]int32) string {
 	return buf.String()
 }
 
+// deriveGoString_55 returns a recursive representation of this as a valid go string.
 func deriveGoString_55(this [2]MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [2]test.MyEnum {\n")
@@ -5667,6 +5779,7 @@ func deriveGoString_55(this [2]MyEnum) string {
 	return buf.String()
 }
 
+// deriveGoString_56 returns a recursive representation of this as a valid go string.
 func deriveGoString_56(this *MySlice) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.MySlice {\n")
@@ -5683,6 +5796,7 @@ func deriveGoString_56(this *MySlice) string {
 	return buf.String()
 }
 
+// deriveGoString_57 returns a recursive representation of this as a valid go string.
 func deriveGoString_57(this []MySlice) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []test.MySlice {\n")
@@ -5699,6 +5813,7 @@ func deriveGoString_57(this []MySlice) string {
 	return buf.String()
 }
 
+// deriveGoString_58 returns a recursive representation of this as a valid go string.
 func deriveGoString_58(this *time.Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *time.Duration {\n")
@@ -5713,6 +5828,7 @@ func deriveGoString_58(this *time.Duration) string {
 	return buf.String()
 }
 
+// deriveGoString_59 returns a recursive representation of this as a valid go string.
 func deriveGoString_59(this []time.Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []time.Duration {\n")
@@ -5729,6 +5845,7 @@ func deriveGoString_59(this []time.Duration) string {
 	return buf.String()
 }
 
+// deriveGoString_60 returns a recursive representation of this as a valid go string.
 func deriveGoString_60(this []*time.Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*time.Duration {\n")
@@ -5745,6 +5862,7 @@ func deriveGoString_60(this []*time.Duration) string {
 	return buf.String()
 }
 
+// deriveGoString_61 returns a recursive representation of this as a valid go string.
 func deriveGoString_61(this map[int]time.Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[int]time.Duration {\n")
@@ -5761,6 +5879,7 @@ func deriveGoString_61(this map[int]time.Duration) string {
 	return buf.String()
 }
 
+// deriveGoString_62 returns a recursive representation of this as a valid go string.
 func deriveGoString_62(this map[string][]*pickle.Rick) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string][]*pickle.Rick {\n")
@@ -5777,6 +5896,7 @@ func deriveGoString_62(this map[string][]*pickle.Rick) string {
 	return buf.String()
 }
 
+// deriveGoString_p returns a recursive representation of this as a valid go string.
 func deriveGoString_p(this privateStruct) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.privateStruct {\n")
@@ -11325,6 +11445,7 @@ func deriveKeys_15(m map[string][]*pickle.Rick) []string {
 	return keys
 }
 
+// deriveGoString_63 returns a recursive representation of this as a valid go string.
 func deriveGoString_63(this *bool) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *bool {\n")
@@ -11339,6 +11460,7 @@ func deriveGoString_63(this *bool) string {
 	return buf.String()
 }
 
+// deriveGoString_64 returns a recursive representation of this as a valid go string.
 func deriveGoString_64(this *byte) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *byte {\n")
@@ -11353,6 +11475,7 @@ func deriveGoString_64(this *byte) string {
 	return buf.String()
 }
 
+// deriveGoString_65 returns a recursive representation of this as a valid go string.
 func deriveGoString_65(this *complex128) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *complex128 {\n")
@@ -11367,6 +11490,7 @@ func deriveGoString_65(this *complex128) string {
 	return buf.String()
 }
 
+// deriveGoString_66 returns a recursive representation of this as a valid go string.
 func deriveGoString_66(this *complex64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *complex64 {\n")
@@ -11381,6 +11505,7 @@ func deriveGoString_66(this *complex64) string {
 	return buf.String()
 }
 
+// deriveGoString_67 returns a recursive representation of this as a valid go string.
 func deriveGoString_67(this *float64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *float64 {\n")
@@ -11395,6 +11520,7 @@ func deriveGoString_67(this *float64) string {
 	return buf.String()
 }
 
+// deriveGoString_68 returns a recursive representation of this as a valid go string.
 func deriveGoString_68(this *float32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *float32 {\n")
@@ -11409,6 +11535,7 @@ func deriveGoString_68(this *float32) string {
 	return buf.String()
 }
 
+// deriveGoString_69 returns a recursive representation of this as a valid go string.
 func deriveGoString_69(this *int16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int16 {\n")
@@ -11423,6 +11550,7 @@ func deriveGoString_69(this *int16) string {
 	return buf.String()
 }
 
+// deriveGoString_70 returns a recursive representation of this as a valid go string.
 func deriveGoString_70(this *int32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int32 {\n")
@@ -11437,6 +11565,7 @@ func deriveGoString_70(this *int32) string {
 	return buf.String()
 }
 
+// deriveGoString_71 returns a recursive representation of this as a valid go string.
 func deriveGoString_71(this *int64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int64 {\n")
@@ -11451,6 +11580,7 @@ func deriveGoString_71(this *int64) string {
 	return buf.String()
 }
 
+// deriveGoString_72 returns a recursive representation of this as a valid go string.
 func deriveGoString_72(this *int8) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int8 {\n")
@@ -11465,6 +11595,7 @@ func deriveGoString_72(this *int8) string {
 	return buf.String()
 }
 
+// deriveGoString_73 returns a recursive representation of this as a valid go string.
 func deriveGoString_73(this *string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *string {\n")
@@ -11479,6 +11610,7 @@ func deriveGoString_73(this *string) string {
 	return buf.String()
 }
 
+// deriveGoString_74 returns a recursive representation of this as a valid go string.
 func deriveGoString_74(this *uint) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint {\n")
@@ -11493,6 +11625,7 @@ func deriveGoString_74(this *uint) string {
 	return buf.String()
 }
 
+// deriveGoString_75 returns a recursive representation of this as a valid go string.
 func deriveGoString_75(this *uint16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint16 {\n")
@@ -11507,6 +11640,7 @@ func deriveGoString_75(this *uint16) string {
 	return buf.String()
 }
 
+// deriveGoString_76 returns a recursive representation of this as a valid go string.
 func deriveGoString_76(this *uint32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint32 {\n")
@@ -11521,6 +11655,7 @@ func deriveGoString_76(this *uint32) string {
 	return buf.String()
 }
 
+// deriveGoString_77 returns a recursive representation of this as a valid go string.
 func deriveGoString_77(this *uint64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint64 {\n")
@@ -11535,6 +11670,7 @@ func deriveGoString_77(this *uint64) string {
 	return buf.String()
 }
 
+// deriveGoString_78 returns a recursive representation of this as a valid go string.
 func deriveGoString_78(this *uintptr) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uintptr {\n")
@@ -11549,6 +11685,7 @@ func deriveGoString_78(this *uintptr) string {
 	return buf.String()
 }
 
+// deriveGoString_79 returns a recursive representation of this as a valid go string.
 func deriveGoString_79(this []string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []string {\n")
@@ -11561,6 +11698,7 @@ func deriveGoString_79(this []string) string {
 	return buf.String()
 }
 
+// deriveGoString_s returns a recursive representation of this as a valid go string.
 func deriveGoString_s(this string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() string {\n")
@@ -11569,6 +11707,7 @@ func deriveGoString_s(this string) string {
 	return buf.String()
 }
 
+// deriveGoString_R returns a recursive representation of this as a valid go string.
 func deriveGoString_R(this RecursiveType) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.RecursiveType {\n")
@@ -11584,6 +11723,7 @@ func deriveGoString_R(this RecursiveType) string {
 	return buf.String()
 }
 
+// deriveGoString_M returns a recursive representation of this as a valid go string.
 func deriveGoString_M(this MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.MyEnum {\n")
@@ -11592,6 +11732,7 @@ func deriveGoString_M(this MyEnum) string {
 	return buf.String()
 }
 
+// deriveGoString_i returns a recursive representation of this as a valid go string.
 func deriveGoString_i(this int32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() int32 {\n")
@@ -11600,6 +11741,7 @@ func deriveGoString_i(this int32) string {
 	return buf.String()
 }
 
+// deriveGoString_My returns a recursive representation of this as a valid go string.
 func deriveGoString_My(this MySlice) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.MySlice {\n")
@@ -11612,6 +11754,7 @@ func deriveGoString_My(this MySlice) string {
 	return buf.String()
 }
 
+// deriveGoString_D returns a recursive representation of this as a valid go string.
 func deriveGoString_D(this time.Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() time.Duration {\n")
@@ -11620,6 +11763,7 @@ func deriveGoString_D(this time.Duration) string {
 	return buf.String()
 }
 
+// deriveGoString_80 returns a recursive representation of this as a valid go string.
 func deriveGoString_80(this []*pickle.Rick) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*pickle.Rick {\n")
@@ -11781,6 +11925,7 @@ func deriveKeys_16(m map[int]int) []int {
 	return keys
 }
 
+// deriveGoString_81 returns a recursive representation of this as a valid go string.
 func deriveGoString_81(this *pickle.Rick) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *pickle.Rick {\n")

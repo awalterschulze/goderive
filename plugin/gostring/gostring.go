@@ -119,10 +119,12 @@ type bypass interface {
 func (g *gen) genFunc(typ types.Type) error {
 	p := g.printer
 	g.Generating(typ)
+	name := g.GetFuncName(typ)
 	typeStr := g.TypesMap.TypeString(typ)
 	gotypeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(this %s) string {", g.GetFuncName(typ), typeStr)
+	p.P("// %s returns a recursive representation of this as a valid go string.", name)
+	p.P("func %s(this %s) string {", name, typeStr)
 	p.In()
 	p.P("buf := %s.NewBuffer(nil)", g.bytesPkg())
 	p.P("%s.Fprintf(buf, \"func() %s {\\n\")", g.fmtPkg(), gotypeStr)

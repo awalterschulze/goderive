@@ -7,6 +7,7 @@ import (
 	"fmt"
 )
 
+// deriveGoString returns a recursive representation of this as a valid go string.
 func deriveGoString(this *MyStruct) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *gostring.MyStruct {\n")

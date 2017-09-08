@@ -325,6 +325,7 @@ func (g *gen) genError(typs []types.Type) error {
 	p.P("")
 	switch out.Len() {
 	case 0:
+		p.P("// %s returns an error if g returns one, otherwise it applies f to g's result.", name)
 		p.P("func %s(f func(%s), g func() (%s, error)) error {", name, inStr, inStr)
 		p.In()
 		p.P("v, err := g()")
@@ -342,6 +343,7 @@ func (g *gen) genError(typs []types.Type) error {
 		t := out.At(0).Type()
 		outStr := g.TypeString(t)
 		zeroStr := derive.Zero(t)
+		p.P("// %s returns an error if g returns one, otherwise it applies f to g's result and returns it.", name)
 		p.P("func %s(f func(%s) %s, g func() (%s, error)) (%s, error) {", name, inStr, outStr, inStr, outStr)
 		p.In()
 		p.P("v, err := g()")
@@ -361,6 +363,7 @@ func (g *gen) genError(typs []types.Type) error {
 			outTypStrs[i] = g.TypeString(outTyps[i])
 		}
 		outStr := strings.Join(outTypStrs, ", ")
+		p.P("// %s returns an error if g returns one, otherwise it applies f to g's result and returns it.", name)
 		p.P("func %s(f func(%s) (%s), g func() (%s, error)) (func() (%s), error) {", name, inStr, outStr, inStr, outStr)
 		p.In()
 		p.P("v, err := g()")

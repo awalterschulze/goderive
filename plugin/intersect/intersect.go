@@ -82,9 +82,11 @@ func (g *gen) Generate(typs []types.Type) error {
 func (g *gen) genMap(typ *types.Map) error {
 	p := g.printer
 	g.Generating(typ)
+	name := g.GetFuncName(typ)
 	typeStr := g.TypeString(typ.Key())
 	p.P("")
-	p.P("func %s(this, that map[%s]struct{}) map[%s]struct{} {", g.GetFuncName(typ), typeStr, typeStr)
+	p.P("// %s returns the intersection of the two maps' keys.", name)
+	p.P("func %s(this, that map[%s]struct{}) map[%s]struct{} {", name, typeStr, typeStr)
 	p.In()
 	minFunc := g.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])
 	p.P("intersect := make(map[%s]struct{}, %s(len(this), len(that)))", typeStr, minFunc)
@@ -106,9 +108,11 @@ func (g *gen) genMap(typ *types.Map) error {
 func (g *gen) genSlice(typ *types.Slice) error {
 	p := g.printer
 	g.Generating(typ)
+	name := g.GetFuncName(typ)
 	typeStr := g.TypeString(typ.Elem())
 	p.P("")
-	p.P("func %s(this, that []%s) []%s {", g.GetFuncName(typ), typeStr, typeStr)
+	p.P("// %s returns the intersection of the two lists' values", name)
+	p.P("func %s(this, that []%s) []%s {", name, typeStr, typeStr)
 	p.In()
 	minFunc := g.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])
 	p.P("intersect := make([]%s, 0, %s(len(this), len(that)))", typeStr, minFunc)

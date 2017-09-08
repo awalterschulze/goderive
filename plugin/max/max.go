@@ -92,8 +92,10 @@ func (g *gen) genTwo(typ, typ2 types.Type) error {
 	p := g.printer
 	g.Generating(typ, typ2)
 	typeStr := g.TypeString(typ)
+	name := g.GetFuncName(typ, typ2)
 	p.P("")
-	p.P("func %s(a, b %s) %s {", g.GetFuncName(typ, typ2), typeStr, typeStr)
+	p.P("// %s returns the maximum of the two input values.", name)
+	p.P("func %s(a, b %s) %s {", name, typeStr, typeStr)
 	p.In()
 	switch typ.(type) {
 	case *types.Basic:
@@ -114,10 +116,12 @@ func (g *gen) genTwo(typ, typ2 types.Type) error {
 func (g *gen) genSlice(typ *types.Slice, typ2 types.Type) error {
 	p := g.printer
 	g.Generating(typ, typ2)
+	name := g.GetFuncName(typ, typ2)
 	etyp := typ.Elem()
 	typeStr := g.TypeString(etyp)
 	p.P("")
-	p.P("func %s(list []%s, def %s) %s {", g.GetFuncName(typ, typ2), typeStr, typeStr, typeStr)
+	p.P("// %s returns the maximum value from the input list and the default value, if the list is empty.", name)
+	p.P("func %s(list []%s, def %s) %s {", name, typeStr, typeStr, typeStr)
 	p.In()
 	p.P("if len(list) == 0 {")
 	p.In()

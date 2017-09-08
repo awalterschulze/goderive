@@ -72,9 +72,11 @@ func (g *gen) Generate(typs []types.Type) error {
 func (g *gen) genFuncFor(typ *types.Slice) error {
 	p := g.printer
 	g.Generating(typ)
+	name := g.GetFuncName(typ)
 	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(list %s) %s {", g.GetFuncName(typ), typeStr, typeStr)
+	p.P("// %s sorts the slice inplace and also returns it.", name)
+	p.P("func %s(list %s) %s {", name, typeStr, typeStr)
 	p.In()
 	etyp := typ.Elem()
 	switch ttyp := etyp.Underlying().(type) {

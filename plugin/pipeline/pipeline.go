@@ -112,6 +112,7 @@ func (g *gen) Generate(typs []types.Type) error {
 
 	fmapFunc := g.fmap.GetFuncName(typs[1], types.NewChan(types.RecvOnly, b1))
 	p.P("")
+	p.P("// %s composes f and g into a concurrent pipeline.", name)
 	p.P("func %s(f %s, g %s) func(%s) <-chan %s {", name, t0str, t1str, astr, cstr)
 	p.In()
 	p.P("return func(a %s) <-chan %s {", astr, cstr)

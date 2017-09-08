@@ -112,6 +112,7 @@ func (g *gen) genSlice(typ *types.Slice) error {
 	typeStr := g.TypeString(typ.Elem())
 	p.P("")
 	p.P("// %s returns the intersection of the two lists' values", name)
+	p.P("// It assumes that the first list only contains unique items.")
 	p.P("func %s(this, that []%s) []%s {", name, typeStr, typeStr)
 	p.In()
 	minFunc := g.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])

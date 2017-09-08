@@ -65,11 +65,13 @@ func (g *gen) Generate(typs []types.Type) error {
 func (g *gen) genFuncFor(typ *types.Map) error {
 	p := g.printer
 	g.Generating(typ)
+	name := g.GetFuncName(typ)
 	typeStr := g.TypeString(typ)
 	keyType := typ.Key()
 	keyTypeStr := g.TypeString(keyType)
 	p.P("")
-	p.P("func %s(m %s) []%s {", g.GetFuncName(typ), typeStr, keyTypeStr)
+	p.P("// %s returns the keys of the input map as a slice.", name)
+	p.P("func %s(m %s) []%s {", name, typeStr, keyTypeStr)
 	p.In()
 	p.P("keys := make([]%s, 0, len(m))", keyTypeStr)
 	p.P("for key := range m {")

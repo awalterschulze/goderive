@@ -16,10 +16,11 @@ import (
 	"vendortest"
 )
 
-func deriveTakeWhile(pred func(int) bool, list []int) []int {
+// deriveTakeWhile returns the prefix of the list, where each item matches the predicate.
+func deriveTakeWhile(predicate func(int) bool, list []int) []int {
 	out := make([]int, 0, len(list))
 	for i, elem := range list {
-		if !pred(elem) {
+		if !predicate(elem) {
 			break
 		}
 		out = append(out, list[i])
@@ -39,6 +40,7 @@ func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{
 }
 
 // deriveIntersectOfInt64s returns the intersection of the two lists' values
+// It assumes that the first list only contains unique items.
 func deriveIntersectOfInt64s(this, that []int64) []int64 {
 	intersect := make([]int64, 0, deriveMinInt(len(this), len(that)))
 	for i, v := range this {
@@ -49,6 +51,7 @@ func deriveIntersectOfInt64s(this, that []int64) []int64 {
 	return intersect
 }
 
+// derivePipeline composes f and g into a concurrent pipeline.
 func derivePipeline(f func(lines []string) <-chan string, g func(line string) <-chan int) func([]string) <-chan int {
 	return func(a []string) <-chan int {
 		b := f(a)
@@ -2437,18 +2440,21 @@ func deriveContainsStruct(list []*BuiltInTypes, item *BuiltInTypes) bool {
 	return false
 }
 
+// deriveUncurryMarshal combines a function that returns a function, into one function.
 func deriveUncurryMarshal(f func(data []byte) func(v interface{}) error) func(data []byte, v interface{}) error {
 	return func(data []byte, v interface{}) error {
 		return f(data)(v)
 	}
 }
 
+// deriveUncurry3 combines a function that returns a function, into one function.
 func deriveUncurry3(f func(a int) func(b string, c bool) string) func(a int, b string, c bool) string {
 	return func(a int, b string, c bool) string {
 		return f(a)(b, c)
 	}
 }
 
+// deriveUncurryCurried combines a function that returns a function, into one function.
 func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c bool) string {
 	return func(b string, c bool) string {
 		return f(b)(c)
@@ -3604,6 +3610,8 @@ func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 	return 0
 }
 
+// deriveUniqueInt64s returns a list containing only the unique items from the input list.
+// It does this by reusing the input list.
 func deriveUniqueInt64s(list []int64) []int64 {
 	if len(list) == 0 {
 		return nil
@@ -3620,6 +3628,8 @@ func deriveUniqueInt64s(list []int64) []int64 {
 	return list[:u]
 }
 
+// deriveUniqueStructs returns a list containing only the unique items from the input list.
+// It does this by reusing the input list.
 func deriveUniqueStructs(list []*BuiltInTypes) []*BuiltInTypes {
 	if len(list) == 0 {
 		return nil
@@ -3658,6 +3668,8 @@ func deriveFilterJudy(predicate func(string) bool, list []string) []string {
 	return out
 }
 
+// deriveUnionSetOfInt64s returns the union of two maps, with respect to the keys.
+// It does this by adding the keys to the first map.
 func deriveUnionSetOfInt64s(union, that map[int64]struct{}) map[int64]struct{} {
 	for k := range that {
 		union[k] = struct{}{}
@@ -3665,33 +3677,43 @@ func deriveUnionSetOfInt64s(union, that map[int64]struct{}) map[int64]struct{} {
 	return union
 }
 
-func deriveUnionOfInt64s(union, that []int64) []int64 {
+// deriveUnionOfInt64s returns the union of the items of the two input lists.
+// It does this by append items to the first list.
+func deriveUnionOfInt64s(this, that []int64) []int64 {
 	for i, v := range that {
-		if !deriveContainsInt64s(union, v) {
-			union = append(union, that[i])
+		if !deriveContainsInt64s(this, v) {
+			this = append(this, that[i])
 		}
 	}
-	return union
+	return this
 }
 
+// deriveTuple1 returns a function, which returns the input values.
+// Since tuples are not first class citizens in Go, this is a way to fake it, because functions that return tuples are first class citizens.
 func deriveTuple1(v0 int) func() int {
 	return func() int {
 		return v0
 	}
 }
 
+// deriveTuple2 returns a function, which returns the input values.
+// Since tuples are not first class citizens in Go, this is a way to fake it, because functions that return tuples are first class citizens.
 func deriveTuple2(v0 int, v1 string) func() (int, string) {
 	return func() (int, string) {
 		return v0, v1
 	}
 }
 
+// deriveTuple3 returns a function, which returns the input values.
+// Since tuples are not first class citizens in Go, this is a way to fake it, because functions that return tuples are first class citizens.
 func deriveTuple3(v0 int, v1 string, v2 *BuiltInTypes) func() (int, string, *BuiltInTypes) {
 	return func() (int, string, *BuiltInTypes) {
 		return v0, v1, v2
 	}
 }
 
+// deriveTupleError returns a function, which returns the input values.
+// Since tuples are not first class citizens in Go, this is a way to fake it, because functions that return tuples are first class citizens.
 func deriveTupleError(v0 []byte, v1 error) func() ([]byte, error) {
 	return func() ([]byte, error) {
 		return v0, v1
@@ -4176,7 +4198,7 @@ func deriveEqual1(this, that BuiltInTypes) bool {
 	return this == that
 }
 
-// %!s(MISSING) returns an equal closure, with the first parameter already filled in.
+// deriveEqualCurry returns an equal closure, with the first parameter already filled in.
 func deriveEqualCurry(this *BuiltInTypes) func(*BuiltInTypes) bool {
 	return func(that *BuiltInTypes) bool {
 		return (this == nil && that == nil) ||
@@ -4334,26 +4356,31 @@ func deriveClone1(src BuiltInTypes) BuiltInTypes {
 	return *dst
 }
 
+// deriveSortedInts sorts the slice inplace and also returns it.
 func deriveSortedInts(list []int) []int {
 	sort.Ints(list)
 	return list
 }
 
+// deriveSortInt64s sorts the slice inplace and also returns it.
 func deriveSortInt64s(list []int64) []int64 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
+// deriveSortStructs sorts the slice inplace and also returns it.
 func deriveSortStructs(list []*BuiltInTypes) []*BuiltInTypes {
 	sort.Slice(list, func(i, j int) bool { return deriveComparePtrToBuiltInTypes(list[i], list[j]) < 0 })
 	return list
 }
 
+// deriveSortedStrings sorts the slice inplace and also returns it.
 func deriveSortedStrings(list []string) []string {
 	sort.Strings(list)
 	return list
 }
 
+// deriveKeysForInt64s returns the keys of the input map as a slice.
 func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
 	keys := make([]int64, 0, len(m))
 	for key := range m {
@@ -4362,6 +4389,7 @@ func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
 	return keys
 }
 
+// deriveKeysForFmap returns the keys of the input map as a slice.
 func deriveKeysForFmap(m map[int]string) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
@@ -4370,6 +4398,7 @@ func deriveKeysForFmap(m map[int]string) []int {
 	return keys
 }
 
+// deriveKeysForMapStringToString returns the keys of the input map as a slice.
 func deriveKeysForMapStringToString(m map[string]string) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -4378,6 +4407,7 @@ func deriveKeysForMapStringToString(m map[string]string) []string {
 	return keys
 }
 
+// deriveKeysForMapIntToInt64 returns the keys of the input map as a slice.
 func deriveKeysForMapIntToInt64(m map[int]int64) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
@@ -4386,6 +4416,7 @@ func deriveKeysForMapIntToInt64(m map[int]int64) []int {
 	return keys
 }
 
+// deriveKeysForMapInt64ToInt64 returns the keys of the input map as a slice.
 func deriveKeysForMapInt64ToInt64(m map[int64]int64) []int64 {
 	keys := make([]int64, 0, len(m))
 	for key := range m {
@@ -4694,6 +4725,7 @@ func deriveFlip3(f func(a int, b string, c bool) string) func(b string, a int, c
 	}
 }
 
+// deriveSetInt64s returns the input list as a map with the items of the list as the keys of the map.
 func deriveSetInt64s(list []int64) map[int64]struct{} {
 	set := make(map[int64]struct{}, len(list))
 	for _, v := range list {
@@ -4702,6 +4734,7 @@ func deriveSetInt64s(list []int64) map[int64]struct{} {
 	return set
 }
 
+// deriveMinInt64s returns the minimum value from the list, or the default value if the list is empty.
 func deriveMinInt64s(list []int64, def int64) int64 {
 	if len(list) == 0 {
 		return def
@@ -4716,6 +4749,7 @@ func deriveMinInt64s(list []int64, def int64) int64 {
 	return m
 }
 
+// deriveMinInt returns the mimimum of the two input values.
 func deriveMinInt(a, b int) int {
 	if a < b {
 		return a
@@ -4723,6 +4757,7 @@ func deriveMinInt(a, b int) int {
 	return b
 }
 
+// deriveMinStructs returns the minimum value from the list, or the default value if the list is empty.
 func deriveMinStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	if len(list) == 0 {
 		return def
@@ -4737,6 +4772,7 @@ func deriveMinStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	return m
 }
 
+// deriveMaxInt64s returns the maximum value from the input list and the default value, if the list is empty.
 func deriveMaxInt64s(list []int64, def int64) int64 {
 	if len(list) == 0 {
 		return def
@@ -4751,6 +4787,7 @@ func deriveMaxInt64s(list []int64, def int64) int64 {
 	return m
 }
 
+// deriveMaxInt returns the maximum of the two input values.
 func deriveMaxInt(a, b int) int {
 	if a > b {
 		return a
@@ -4758,6 +4795,7 @@ func deriveMaxInt(a, b int) int {
 	return b
 }
 
+// deriveMaxStructs returns the maximum value from the input list and the default value, if the list is empty.
 func deriveMaxStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	if len(list) == 0 {
 		return def
@@ -9945,18 +9983,24 @@ func deriveCompare_129(this, that *privateStruct) int {
 	return 0
 }
 
+// deriveTuple returns a function, which returns the input values.
+// Since tuples are not first class citizens in Go, this is a way to fake it, because functions that return tuples are first class citizens.
 func deriveTuple(v0 int, v1 error) func() (int, error) {
 	return func() (int, error) {
 		return v0, v1
 	}
 }
 
+// deriveTuple_ returns a function, which returns the input values.
+// Since tuples are not first class citizens in Go, this is a way to fake it, because functions that return tuples are first class citizens.
 func deriveTuple_(v0 int, v1 string, v2 error) func() (int, string, error) {
 	return func() (int, string, error) {
 		return v0, v1, v2
 	}
 }
 
+// deriveTuple_i returns a function, which returns the input values.
+// Since tuples are not first class citizens in Go, this is a way to fake it, because functions that return tuples are first class citizens.
 func deriveTuple_i(v0 int64, v1 error) func() (int64, error) {
 	return func() (int64, error) {
 		return v0, v1
@@ -11269,46 +11313,55 @@ func deriveEqual_86(this, that []*vendortest.AVendoredObject) bool {
 	return true
 }
 
+// deriveSort sorts the slice inplace and also returns it.
 func deriveSort(list []uint8) []uint8 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
+// deriveSort_ sorts the slice inplace and also returns it.
 func deriveSort_(list []bool) []bool {
 	sort.Slice(list, func(i, j int) bool { return deriveCompare(list[i], list[j]) < 0 })
 	return list
 }
 
+// deriveSort_1 sorts the slice inplace and also returns it.
 func deriveSort_1(list []complex128) []complex128 {
 	sort.Slice(list, func(i, j int) bool { return deriveCompareComplex64(list[i], list[j]) < 0 })
 	return list
 }
 
+// deriveSort_2 sorts the slice inplace and also returns it.
 func deriveSort_2(list []float64) []float64 {
 	sort.Float64s(list)
 	return list
 }
 
+// deriveSort_3 sorts the slice inplace and also returns it.
 func deriveSort_3(list []uint16) []uint16 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
+// deriveSort_4 sorts the slice inplace and also returns it.
 func deriveSort_4(list []Name) []Name {
 	sort.Slice(list, func(i, j int) bool { return deriveCompare_N(list[i], list[j]) < 0 })
 	return list
 }
 
+// deriveSort_5 sorts the slice inplace and also returns it.
 func deriveSort_5(list []int32) []int32 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
+// deriveSort_6 sorts the slice inplace and also returns it.
 func deriveSort_6(list []MyEnum) []MyEnum {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
+// deriveKeys returns the keys of the input map as a slice.
 func deriveKeys(m map[string]uint32) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -11317,6 +11370,7 @@ func deriveKeys(m map[string]uint32) []string {
 	return keys
 }
 
+// deriveKeys_ returns the keys of the input map as a slice.
 func deriveKeys_(m map[uint8]int64) []uint8 {
 	keys := make([]uint8, 0, len(m))
 	for key := range m {
@@ -11325,6 +11379,7 @@ func deriveKeys_(m map[uint8]int64) []uint8 {
 	return keys
 }
 
+// deriveKeys_1 returns the keys of the input map as a slice.
 func deriveKeys_1(m map[bool]string) []bool {
 	keys := make([]bool, 0, len(m))
 	for key := range m {
@@ -11333,6 +11388,7 @@ func deriveKeys_1(m map[bool]string) []bool {
 	return keys
 }
 
+// deriveKeys_2 returns the keys of the input map as a slice.
 func deriveKeys_2(m map[string]bool) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -11341,6 +11397,7 @@ func deriveKeys_2(m map[string]bool) []string {
 	return keys
 }
 
+// deriveKeys_3 returns the keys of the input map as a slice.
 func deriveKeys_3(m map[complex128]complex64) []complex128 {
 	keys := make([]complex128, 0, len(m))
 	for key := range m {
@@ -11349,6 +11406,7 @@ func deriveKeys_3(m map[complex128]complex64) []complex128 {
 	return keys
 }
 
+// deriveKeys_4 returns the keys of the input map as a slice.
 func deriveKeys_4(m map[float64]uint32) []float64 {
 	keys := make([]float64, 0, len(m))
 	for key := range m {
@@ -11357,6 +11415,7 @@ func deriveKeys_4(m map[float64]uint32) []float64 {
 	return keys
 }
 
+// deriveKeys_5 returns the keys of the input map as a slice.
 func deriveKeys_5(m map[uint16]uint8) []uint16 {
 	keys := make([]uint16, 0, len(m))
 	for key := range m {
@@ -11365,6 +11424,7 @@ func deriveKeys_5(m map[uint16]uint8) []uint16 {
 	return keys
 }
 
+// deriveKeys_6 returns the keys of the input map as a slice.
 func deriveKeys_6(m map[Name]string) []Name {
 	keys := make([]Name, 0, len(m))
 	for key := range m {
@@ -11373,6 +11433,7 @@ func deriveKeys_6(m map[Name]string) []Name {
 	return keys
 }
 
+// deriveKeys_7 returns the keys of the input map as a slice.
 func deriveKeys_7(m map[string]Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -11381,6 +11442,7 @@ func deriveKeys_7(m map[string]Name) []string {
 	return keys
 }
 
+// deriveKeys_8 returns the keys of the input map as a slice.
 func deriveKeys_8(m map[string]*Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -11389,6 +11451,7 @@ func deriveKeys_8(m map[string]*Name) []string {
 	return keys
 }
 
+// deriveKeys_9 returns the keys of the input map as a slice.
 func deriveKeys_9(m map[string][]Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -11397,6 +11460,7 @@ func deriveKeys_9(m map[string][]Name) []string {
 	return keys
 }
 
+// deriveKeys_10 returns the keys of the input map as a slice.
 func deriveKeys_10(m map[string][]*Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -11405,6 +11469,7 @@ func deriveKeys_10(m map[string][]*Name) []string {
 	return keys
 }
 
+// deriveKeys_11 returns the keys of the input map as a slice.
 func deriveKeys_11(m map[int]RecursiveType) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
@@ -11413,6 +11478,7 @@ func deriveKeys_11(m map[int]RecursiveType) []int {
 	return keys
 }
 
+// deriveKeys_12 returns the keys of the input map as a slice.
 func deriveKeys_12(m map[int32]MyEnum) []int32 {
 	keys := make([]int32, 0, len(m))
 	for key := range m {
@@ -11421,6 +11487,7 @@ func deriveKeys_12(m map[int32]MyEnum) []int32 {
 	return keys
 }
 
+// deriveKeys_13 returns the keys of the input map as a slice.
 func deriveKeys_13(m map[MyEnum]int32) []MyEnum {
 	keys := make([]MyEnum, 0, len(m))
 	for key := range m {
@@ -11429,6 +11496,7 @@ func deriveKeys_13(m map[MyEnum]int32) []MyEnum {
 	return keys
 }
 
+// deriveKeys_14 returns the keys of the input map as a slice.
 func deriveKeys_14(m map[int]time.Duration) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
@@ -11437,6 +11505,7 @@ func deriveKeys_14(m map[int]time.Duration) []int {
 	return keys
 }
 
+// deriveKeys_15 returns the keys of the input map as a slice.
 func deriveKeys_15(m map[string][]*pickle.Rick) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -11917,6 +11986,7 @@ func deriveEqual_88(this, that *vendortest.AVendoredObject) bool {
 			this.Name == that.Name
 }
 
+// deriveKeys_16 returns the keys of the input map as a slice.
 func deriveKeys_16(m map[int]int) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {

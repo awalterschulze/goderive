@@ -23,6 +23,7 @@ goderive will generate the following code:
 
 package set
 
+// deriveSet returns the input list as a map with the items of the list as the keys of the map.
 func deriveSet(list []int) map[int]struct{} {
 	set := make(map[int]struct{}, len(list))
 	for _, v := range list {

@@ -85,14 +85,16 @@ func (g *gen) Generate(typs []types.Type) error {
 func (g *gen) genFuncFor(in types.Type) error {
 	p := g.printer
 	g.Generating(in)
+	name := g.GetFuncName(in)
 	inStr := g.TypeString(in)
 	p.P("")
-	p.P("func %s(pred func(%s) bool, list []%s) []%s {", g.GetFuncName(in), inStr, inStr, inStr)
+	p.P("// %s returns the prefix of the list, where each item matches the predicate.", name)
+	p.P("func %s(predicate func(%s) bool, list []%s) []%s {", name, inStr, inStr, inStr)
 	p.In()
 	p.P("out := make([]%s, 0, len(list))", inStr)
 	p.P("for i, elem := range list {")
 	p.In()
-	p.P("if !pred(elem) {")
+	p.P("if !predicate(elem) {")
 	p.In()
 	p.P("break")
 	p.Out()

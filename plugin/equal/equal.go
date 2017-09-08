@@ -127,7 +127,7 @@ func (g *gen) genCurriedFunc(typ types.Type) error {
 	typeStr := g.TypeString(typ)
 	name := g.GetFuncName(typ)
 	p.P("")
-	p.P("// %s returns an equal closure, with the first parameter already filled in.")
+	p.P("// %s returns an equal closure, with the first parameter already filled in.", name)
 	p.P("func %s(this %s) func(%s) bool {", name, typeStr, typeStr)
 	p.In()
 	p.P("return func(that %s) bool {", typeStr)

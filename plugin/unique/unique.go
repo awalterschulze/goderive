@@ -70,9 +70,12 @@ func (g *gen) Generate(typs []types.Type) error {
 func (g *gen) genFuncFor(typ *types.Slice) error {
 	p := g.printer
 	g.Generating(typ)
+	name := g.GetFuncName(typ)
 	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(list %s) %s {", g.GetFuncName(typ), typeStr, typeStr)
+	p.P("// %s returns a list containing only the unique items from the input list.", name)
+	p.P("// It does this by reusing the input list.")
+	p.P("func %s(list %s) %s {", name, typeStr, typeStr)
 	p.In()
 	p.P("if len(list) == 0 {")
 	p.In()

@@ -83,9 +83,11 @@ func (g *gen) genFuncFor(typs []types.Type) error {
 	if len(typs) > 1 {
 		typStr = "(" + typStr + ")"
 	}
-	funcName := g.GetFuncName(typs...)
+	name := g.GetFuncName(typs...)
 	p.P("")
-	p.P("func %s(%s) func() %s {", funcName, strings.Join(paramStrs, ", "), typStr)
+	p.P("// %s returns a function, which returns the input values.", name)
+	p.P("// Since tuples are not first class citizens in Go, this is a way to fake it, because functions that return tuples are first class citizens.")
+	p.P("func %s(%s) func() %s {", name, strings.Join(paramStrs, ", "), typStr)
 	p.In()
 	p.P("return func() %s {", typStr)
 	p.In()

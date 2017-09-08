@@ -22,6 +22,7 @@ goderive will generate the following code:
 package intersect
 
 // deriveIntersect returns the intersection of the two lists' values
+// It assumes that the first list only contains unique items.
 func deriveIntersect(this, that []int) []int {
 	intersect := make([]int, 0, deriveMin(len(this), len(that)))
 	for i, v := range this {
@@ -42,6 +43,7 @@ func deriveContains(list []int, item int) bool {
 	return false
 }
 
+// deriveMin returns the mimimum of the two input values.
 func deriveMin(a, b int) int {
 	if a < b {
 		return a

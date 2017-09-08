@@ -64,9 +64,11 @@ func (g *gen) Generate(typs []types.Type) error {
 func (g *gen) genFuncFor(typ *types.Slice) error {
 	p := g.printer
 	g.Generating(typ)
+	name := g.GetFuncName(typ)
 	typeStr := g.TypeString(typ.Elem())
 	p.P("")
-	p.P("func %s(list []%s) map[%s]struct{} {", g.GetFuncName(typ), typeStr, typeStr)
+	p.P("// %s returns the input list as a map with the items of the list as the keys of the map.", name)
+	p.P("func %s(list []%s) map[%s]struct{} {", name, typeStr, typeStr)
 	p.In()
 	p.P("set := make(map[%s]struct{}, len(list))", typeStr)
 	p.P("for _, v := range list {")

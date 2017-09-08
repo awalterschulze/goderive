@@ -2,6 +2,8 @@
 
 package union
 
+// deriveUnique returns a list containing only the unique items from the input list.
+// It does this by reusing the input list.
 func deriveUnique(list []*Person) []*Person {
 	if len(list) == 0 {
 		return nil
@@ -29,13 +31,15 @@ func deriveFilter(predicate func(*Person) bool, list []*Person) []*Person {
 	return out
 }
 
-func deriveUnion(union, that []*Person) []*Person {
+// deriveUnion returns the union of the items of the two input lists.
+// It does this by append items to the first list.
+func deriveUnion(this, that []*Person) []*Person {
 	for i, v := range that {
-		if !deriveContains(union, v) {
-			union = append(union, that[i])
+		if !deriveContains(this, v) {
+			this = append(this, that[i])
 		}
 	}
-	return union
+	return this
 }
 
 // deriveContains returns whether the item is contained in the list.

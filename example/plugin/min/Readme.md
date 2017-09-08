@@ -42,6 +42,7 @@ func deriveFilter(predicate func(boat) bool, list []boat) []boat {
 	return out
 }
 
+// deriveMin returns the mimimum of the two input values.
 func deriveMin(a, b int) int {
 	if a < b {
 		return a
@@ -49,6 +50,7 @@ func deriveMin(a, b int) int {
 	return b
 }
 
+// deriveMins returns the minimum value from the list, or the default value if the list is empty.
 func deriveMins(list []boat, def boat) boat {
 	if len(list) == 0 {
 		return def

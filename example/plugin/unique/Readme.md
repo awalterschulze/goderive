@@ -22,6 +22,8 @@ goderive will generate the following code:
 
 package unique
 
+// deriveUnique returns a list containing only the unique items from the input list.
+// It does this by reusing the input list.
 func deriveUnique(list []*Visitor) []*Visitor {
 	if len(list) == 0 {
 		return nil

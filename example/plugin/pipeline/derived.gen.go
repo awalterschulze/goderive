@@ -6,6 +6,7 @@ import (
 	"sync"
 )
 
+// derivePipeline composes f and g into a concurrent pipeline.
 func derivePipeline(f func(lines []string) <-chan string, g func(line string) <-chan int) func([]string) <-chan int {
 	return func(a []string) <-chan int {
 		b := f(a)

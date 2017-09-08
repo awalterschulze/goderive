@@ -28,11 +28,13 @@ import (
 	"sort"
 )
 
+// deriveSort sorts the slice inplace and also returns it.
 func deriveSort(list []string) []string {
 	sort.Strings(list)
 	return list
 }
 
+// deriveKeys returns the keys of the input map as a slice.
 func deriveKeys(m map[string]int) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {

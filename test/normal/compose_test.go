@@ -27,7 +27,7 @@ func TestCompose(t *testing.T) {
 	parseFloat := func(i string) (float64, error) {
 		return strconv.ParseFloat(i, 64)
 	}
-	got, err := deriveCompose(read, parseFloat)
+	got, err := deriveCompose(read, parseFloat)()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -71,6 +71,31 @@ func TestCompose2(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := float64(12)
+	if got != want {
+		t.Fatalf("got %v, want %v", got, want)
+	}
+}
+
+func TestComposeVariadic(t *testing.T) {
+	read := func(s string) (string, error) {
+		return s, nil
+	}
+	parseFloat := func(i string) (float64, error) {
+		return strconv.ParseFloat(i, 64)
+	}
+	toInt := func(f float64) (int, error) {
+		i := int(f)
+		if float64(i) != f {
+			return 0, fmt.Errorf("%f is not a whole number", f)
+		}
+		return i, nil
+	}
+	parse := deriveComposeVariadic(read, parseFloat, toInt)
+	got, err := parse("1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := 1
 	if got != want {
 		t.Fatalf("got %v, want %v", got, want)
 	}

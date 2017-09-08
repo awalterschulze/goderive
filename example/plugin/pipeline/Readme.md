@@ -87,7 +87,7 @@ func deriveJoin(in <-chan (<-chan int)) <-chan int {
 
 // deriveFmap returns an output channel where the items are the result of the input function being applied to the items on the input channel.
 func deriveFmap(f func(string) <-chan int, in <-chan string) <-chan (<-chan int) {
-	out := make(chan (<-chan int))
+	out := make(chan (<-chan int), cap(in))
 	go func() {
 		for a := range in {
 			b := f(a)

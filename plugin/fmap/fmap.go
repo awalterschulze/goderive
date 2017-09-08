@@ -244,7 +244,7 @@ func (g *gen) genChan(typs []types.Type) error {
 	p.P("// %s returns an output channel where the items are the result of the input function being applied to the items on the input channel.", name)
 	p.P("func %s(f func(%s) %s, in <-chan %s) <-chan %s {", name, inStr, outStr, inStr, outerStr)
 	p.In()
-	p.P("out := make(chan %s)", outerStr)
+	p.P("out := make(chan %s, cap(in))", outerStr)
 	p.P("go func() {")
 	p.In()
 	p.P("for a := range in {")

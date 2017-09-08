@@ -4588,7 +4588,7 @@ func deriveFmapMore(f func(string) (int, string, error), g func() (string, error
 
 // deriveFmapChan returns an output channel where the items are the result of the input function being applied to the items on the input channel.
 func deriveFmapChan(f func(string) int, in <-chan string) <-chan int {
-	out := make(chan int)
+	out := make(chan int, cap(in))
 	go func() {
 		for a := range in {
 			b := f(a)
@@ -4618,7 +4618,7 @@ func deriveFmapEE64(f func(string) (int64, error), g func() (string, error)) (fu
 
 // deriveFmapChanChan returns an output channel where the items are the result of the input function being applied to the items on the input channel.
 func deriveFmapChanChan(f func(string) <-chan int, in <-chan string) <-chan (<-chan int) {
-	out := make(chan (<-chan int))
+	out := make(chan (<-chan int), cap(in))
 	go func() {
 		for a := range in {
 			b := f(a)

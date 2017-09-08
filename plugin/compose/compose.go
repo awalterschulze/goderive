@@ -14,10 +14,14 @@
 
 // Package compose contains the implementation of the compose plugin, which generates the deriveCompose function.
 //
-// The deriveCompose function composes a tuple containing an error and a function taking the value as input and returning its result, which also returns an error.
-//    deriveCompose(func() (A, error), func(A) (B, error)) (B, error)
+// The deriveCompose function composes multiple functions that return an error into one function.
+//    deriveCompose(func() (A, error), func(A) (B, error)) func() (B, error)
 //    deriveCompose(func(A) (B, error), func(B) (C, error)) func(A) (C, error)
 //    deriveCompose(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)
+//    deriveCompose(func(A...) (B..., error), ..., func(C...) (D..., error)) func(A...) (D..., error)
+//
+// Example output can be found here:
+// https://github.com/awalterschulze/goderive/tree/master/example/plugin/compose
 package compose
 
 import (
@@ -186,6 +190,7 @@ func (g *gen) genError(typs []types.Type) error {
 		vars[len(vars)-1][i] = "v_" + strconv.Itoa(len(vars)-1) + "_" + strconv.Itoa(i)
 	}
 	resFuncType := fmt.Sprintf("func(%s) %s", strings.Join(paramStrs[0], ", "), wrap(strings.Join(resultStrs[len(resultStrs)-1], ", ")))
+	p.P("")
 	p.P("func %s(%s) %s {", name, strings.Join(fVarType, ", "), resFuncType)
 	p.In()
 	p.P("return func(%s) %s {", strings.Join(firstVarTypes, ", "), wrap(strings.Join(resultStrs[len(resultStrs)-1], ", ")))

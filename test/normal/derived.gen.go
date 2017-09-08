@@ -2418,6 +2418,49 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 		return f(b)(c)
 	}
 }
+
+func deriveCompose(f0 func() (string, error), f1 func(string) (float64, error)) func() (float64, error) {
+	return func() (float64, error) {
+		v_1_0, err0 := f0()
+		if err0 != nil {
+			return 0, err0
+		}
+		v_2_0, err1 := f1(v_1_0)
+		if err1 != nil {
+			return 0, err1
+		}
+		return v_2_0, nil
+	}
+}
+
+func deriveComposeA(f0 func(string) (string, error), f1 func(string) (float64, error)) func(string) (float64, error) {
+	return func(v_0_0 string) (float64, error) {
+		v_1_0, err0 := f0(v_0_0)
+		if err0 != nil {
+			return 0, err0
+		}
+		v_2_0, err1 := f1(v_1_0)
+		if err1 != nil {
+			return 0, err1
+		}
+		return v_2_0, nil
+	}
+}
+
+func deriveCompose2(f0 func(string, string) ([]string, string, error), f1 func([]string, string) (float64, error)) func(string, string) (float64, error) {
+	return func(v_0_0 string, v_0_1 string) (float64, error) {
+		v_1_0, v_1_1, err0 := f0(v_0_0, v_0_1)
+		if err0 != nil {
+			return 0, err0
+		}
+		v_2_0, err1 := f1(v_1_0, v_1_1)
+		if err1 != nil {
+			return 0, err1
+		}
+		return v_2_0, nil
+	}
+}
+
 func deriveComposeVariadic(f0 func(string) (string, error), f1 func(string) (float64, error), f2 func(float64) (int, error)) func(string) (int, error) {
 	return func(v_0_0 string) (int, error) {
 		v_1_0, err0 := f0(v_0_0)
@@ -2433,45 +2476,6 @@ func deriveComposeVariadic(f0 func(string) (string, error), f1 func(string) (flo
 			return 0, err2
 		}
 		return v_3_0, nil
-	}
-}
-func deriveCompose(f0 func() (string, error), f1 func(string) (float64, error)) func() (float64, error) {
-	return func() (float64, error) {
-		v_1_0, err0 := f0()
-		if err0 != nil {
-			return 0, err0
-		}
-		v_2_0, err1 := f1(v_1_0)
-		if err1 != nil {
-			return 0, err1
-		}
-		return v_2_0, nil
-	}
-}
-func deriveComposeA(f0 func(string) (string, error), f1 func(string) (float64, error)) func(string) (float64, error) {
-	return func(v_0_0 string) (float64, error) {
-		v_1_0, err0 := f0(v_0_0)
-		if err0 != nil {
-			return 0, err0
-		}
-		v_2_0, err1 := f1(v_1_0)
-		if err1 != nil {
-			return 0, err1
-		}
-		return v_2_0, nil
-	}
-}
-func deriveCompose2(f0 func(string, string) ([]string, string, error), f1 func([]string, string) (float64, error)) func(string, string) (float64, error) {
-	return func(v_0_0 string, v_0_1 string) (float64, error) {
-		v_1_0, v_1_1, err0 := f0(v_0_0, v_0_1)
-		if err0 != nil {
-			return 0, err0
-		}
-		v_2_0, err1 := f1(v_1_0, v_1_1)
-		if err1 != nil {
-			return 0, err1
-		}
-		return v_2_0, nil
 	}
 }
 

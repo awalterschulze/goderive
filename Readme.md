@@ -57,6 +57,10 @@ Set Examples:
   - [Intersect](https://github.com/awalterschulze/goderive/tree/master/example/plugin/intersect)
   - [Union](https://github.com/awalterschulze/goderive/tree/master/example/plugin/union)
 
+Functional Examples:
+
+  - [Compose](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compose)
+
 Concurrency Examples:
 
   - [Pipeline](https://github.com/awalterschulze/goderive/tree/master/example/plugin/pipeline)
@@ -123,9 +127,10 @@ Functional Functions:
   - [Uncurry](http://godoc.org/github.com/awalterschulze/goderive/plugin/uncurry) `deriveUncurry(f func(A) func(B, ...) T) func(A, B, ...) T`
   - [Tuple](http://godoc.org/github.com/awalterschulze/goderive/plugin/tuple) `deriveTuple(A, B, ...) func() (A, B, ...)`
   - [Compose](http://godoc.org/github.com/awalterschulze/goderive/plugin/compose) 
-    - `deriveCompose(func() (A, error), func(A) (B, error)) (B, error)`
+    - `deriveCompose(func() (A, error), func(A) (B, error)) func() (B, error)`
     - `deriveCompose(func(A) (B, error), func(B) (C, error)) func(A) (C, error)`
     - `deriveCompose(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)`
+    - `deriveCompose(func(A...) (B..., error), ..., func(C...) (D..., error)) func(A...) (D..., error)`
 
 Concurrency Functions:
   - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)

@@ -41,6 +41,10 @@ func (this *Empty) GoString() string {
 	return deriveGoStringEmpty(this)
 }
 
+func (this *Empty) Clone() *Empty {
+	return deriveCloneEmpty(this)
+}
+
 type BuiltInTypes struct {
 	Bool       bool
 	Byte       byte
@@ -77,6 +81,10 @@ func (this *BuiltInTypes) DeepCopy(that *BuiltInTypes) {
 
 func (this *BuiltInTypes) GoString() string {
 	return deriveGoStringBuiltInTypes(this)
+}
+
+func (this *BuiltInTypes) Clone() *BuiltInTypes {
+	return deriveCloneBuiltInTypes(this)
 }
 
 type PrivateBuiltInTypes struct {
@@ -149,6 +157,10 @@ func (this *PtrToBuiltInTypes) DeepCopy(that *PtrToBuiltInTypes) {
 
 func (this *PtrToBuiltInTypes) GoString() string {
 	return deriveGoStringPtrToBuiltInTypes(this)
+}
+
+func (this *PtrToBuiltInTypes) Clone() *PtrToBuiltInTypes {
+	return deriveClonePtrToBuiltInTypes(this)
 }
 
 type SliceOfBuiltInTypes struct {

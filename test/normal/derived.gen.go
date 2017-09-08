@@ -3450,28 +3450,6 @@ func deriveComparePtrToPrivateEmbedded(this, that *PrivateEmbedded) int {
 	return 0
 }
 
-// deriveCompareCurryComplex64 returns a curried compare function, which returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
-func deriveCompareCurryComplex64(this complex128) func(complex128) int {
-	return func(that complex128) int {
-		if thisr, thatr := real(this), real(that); thisr == thatr {
-			if thisi, thati := imag(this), imag(that); thisi == thati {
-				return 0
-			} else if thisi < thati {
-				return -1
-			} else {
-				return 1
-			}
-		} else if thisr < thatr {
-			return -1
-		} else {
-			return 1
-		}
-	}
-}
-
 // deriveCompareComplex32 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
@@ -3509,6 +3487,28 @@ func deriveCompareComplex64(this, that complex128) int {
 		return -1
 	} else {
 		return 1
+	}
+}
+
+// deriveCompareCurryComplex64 returns a curried compare function, which returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompareCurryComplex64(this complex128) func(complex128) int {
+	return func(that complex128) int {
+		if thisr, thatr := real(this), real(that); thisr == thatr {
+			if thisi, thati := imag(this), imag(that); thisi == thati {
+				return 0
+			} else if thisi < thati {
+				return -1
+			} else {
+				return 1
+			}
+		} else if thisr < thatr {
+			return -1
+		} else {
+			return 1
+		}
 	}
 }
 
@@ -4120,6 +4120,103 @@ func deriveCurryCurried(f func(b string, c bool) string) func(b string) func(c b
 			return f(b, c)
 		}
 	}
+}
+
+// deriveClonePtrToBuiltInTypes returns a clone of the src parameter.
+func deriveClonePtrToBuiltInTypes(src *PtrToBuiltInTypes) *PtrToBuiltInTypes {
+	if src == nil {
+		return nil
+	}
+	dst := new(PtrToBuiltInTypes)
+	deriveDeepCopyPtrToPtrToBuiltInTypes(dst, src)
+	return dst
+}
+
+// deriveCloneEmpty returns a clone of the src parameter.
+func deriveCloneEmpty(src *Empty) *Empty {
+	if src == nil {
+		return nil
+	}
+	dst := new(Empty)
+	deriveDeepCopyPtrToEmpty(dst, src)
+	return dst
+}
+
+// deriveCloneBuiltInTypes returns a clone of the src parameter.
+func deriveCloneBuiltInTypes(src *BuiltInTypes) *BuiltInTypes {
+	if src == nil {
+		return nil
+	}
+	dst := new(BuiltInTypes)
+	deriveDeepCopyPtrToBuiltInTypes(dst, src)
+	return dst
+}
+
+// deriveCloneSliceOfint returns a clone of the src parameter.
+func deriveCloneSliceOfint(src []int) []int {
+	if src == nil {
+		return nil
+	}
+	dst := make([]int, len(src))
+	deriveDeepCopy_45(dst, src)
+	return dst
+}
+
+// deriveCloneMapOfintToint returns a clone of the src parameter.
+func deriveCloneMapOfintToint(src map[int]int) map[int]int {
+	if src == nil {
+		return nil
+	}
+	dst := make(map[int]int)
+	deriveDeepCopy_46(dst, src)
+	return dst
+}
+
+// deriveClonePtrToint returns a clone of the src parameter.
+func deriveClonePtrToint(src *int) *int {
+	if src == nil {
+		return nil
+	}
+	dst := new(int)
+	deriveDeepCopy_47(dst, src)
+	return dst
+}
+
+// deriveClonePtrToSliceOfint returns a clone of the src parameter.
+func deriveClonePtrToSliceOfint(src *[]int) *[]int {
+	if src == nil {
+		return nil
+	}
+	dst := new([]int)
+	deriveDeepCopy_26(dst, src)
+	return dst
+}
+
+// deriveClonePtrToArray10Ofint returns a clone of the src parameter.
+func deriveClonePtrToArray10Ofint(src *[10]int) *[10]int {
+	if src == nil {
+		return nil
+	}
+	dst := new([10]int)
+	deriveDeepCopy_48(dst, src)
+	return dst
+}
+
+// deriveClonePtrToMapOfintToint returns a clone of the src parameter.
+func deriveClonePtrToMapOfintToint(src *map[int]int) *map[int]int {
+	if src == nil {
+		return nil
+	}
+	dst := new(map[int]int)
+	deriveDeepCopy_27(dst, src)
+	return dst
+}
+
+// deriveClone1 returns a clone of the src parameter.
+func deriveClone1(src BuiltInTypes) BuiltInTypes {
+	dst := new(BuiltInTypes)
+	deriveDeepCopyPtrToBuiltInTypes(dst, &src)
+	return *dst
 }
 
 func deriveSortedInts(list []int) []int {
@@ -5953,7 +6050,7 @@ func deriveDeepCopy_26(dst, src *[]int) {
 func deriveDeepCopy_27(dst, src *map[int]int) {
 	if *src != nil {
 		*dst = make(map[int]int, len(*src))
-		deriveDeepCopy_45(*dst, *src)
+		deriveDeepCopy_46(*dst, *src)
 	} else {
 		*dst = nil
 	}
@@ -6231,7 +6328,7 @@ func deriveDeepCopy_43(dst, src map[string][]*pickle.Rick) {
 			} else {
 				dst[src_key] = make([]*pickle.Rick, len(src_value))
 			}
-			deriveDeepCopy_46(dst[src_key], src_value)
+			deriveDeepCopy_49(dst[src_key], src_value)
 		}
 	}
 }
@@ -6244,6 +6341,28 @@ func deriveDeepCopy_44(dst, src *privateStruct) {
 		dst.ptrfield = new(int)
 		*dst.ptrfield = *src.ptrfield
 	}
+}
+
+// deriveDeepCopy_45 recursively copies the contents of src into dst.
+func deriveDeepCopy_45(dst, src []int) {
+	copy(dst, src)
+}
+
+// deriveDeepCopy_46 recursively copies the contents of src into dst.
+func deriveDeepCopy_46(dst, src map[int]int) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_47 recursively copies the contents of src into dst.
+func deriveDeepCopy_47(dst, src *int) {
+	*dst = *src
+}
+
+// deriveDeepCopy_48 recursively copies the contents of src into dst.
+func deriveDeepCopy_48(dst, src *[10]int) {
+	*dst = *src
 }
 
 // deriveCompare returns:
@@ -11340,15 +11459,8 @@ func deriveGoString_80(this []*pickle.Rick) string {
 	return buf.String()
 }
 
-// deriveDeepCopy_45 recursively copies the contents of src into dst.
-func deriveDeepCopy_45(dst, src map[int]int) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
-	}
-}
-
-// deriveDeepCopy_46 recursively copies the contents of src into dst.
-func deriveDeepCopy_46(dst, src []*pickle.Rick) {
+// deriveDeepCopy_49 recursively copies the contents of src into dst.
+func deriveDeepCopy_49(dst, src []*pickle.Rick) {
 	for src_i, src_value := range src {
 		if src_value == nil {
 			dst[src_i] = nil

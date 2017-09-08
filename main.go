@@ -24,6 +24,7 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 	"github.com/awalterschulze/goderive/plugin/all"
 	"github.com/awalterschulze/goderive/plugin/any"
+	"github.com/awalterschulze/goderive/plugin/clone"
 	"github.com/awalterschulze/goderive/plugin/compare"
 	"github.com/awalterschulze/goderive/plugin/compose"
 	"github.com/awalterschulze/goderive/plugin/contains"
@@ -85,6 +86,7 @@ func main() {
 		do.NewPlugin(),
 		pipeline.NewPlugin(),
 		dup.NewPlugin(),
+		clone.NewPlugin(),
 	}
 	log.SetFlags(0)
 	flag.Parse()

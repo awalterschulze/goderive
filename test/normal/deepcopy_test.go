@@ -24,7 +24,7 @@ func deepcopy(this, that interface{}) {
 	method.Call([]reflect.Value{reflect.ValueOf(that)})
 }
 
-func TestCloneStructs(t *testing.T) {
+func TestDeepCopyStructs(t *testing.T) {
 	structs := []interface{}{
 		&Empty{},
 		&BuiltInTypes{},

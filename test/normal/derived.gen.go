@@ -714,6 +714,20 @@ func deriveGoStringNickname(this *Nickname) string {
 	return buf.String()
 }
 
+func deriveGoStringPrivateEmbedded(this *PrivateEmbedded) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *test.PrivateEmbedded {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &test.PrivateEmbedded{}\n")
+		fmt.Fprintf(buf, "this.privateStruct = %s\n", deriveGoString_p(this.privateStruct))
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
 func deriveGoStringIntSlices(this []int) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []int {\n")
@@ -2362,6 +2376,13 @@ func deriveDeepCopyPtrToNickname(dst, src *Nickname) {
 	}
 }
 
+// deriveDeepCopyPtrToPrivateEmbedded recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToPrivateEmbedded(dst, src *PrivateEmbedded) {
+	field := new(privateStruct)
+	deriveDeepCopy_44(field, &src.privateStruct)
+	dst.privateStruct = *field
+}
+
 func deriveContainsInt64s(list []int64, item int64) bool {
 	for _, v := range list {
 		if v == item {
@@ -3409,6 +3430,26 @@ func deriveComparePtrToNickname(this, that *Nickname) int {
 	return 0
 }
 
+// deriveComparePtrToPrivateEmbedded returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveComparePtrToPrivateEmbedded(this, that *PrivateEmbedded) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if c := deriveCompare_129(&this.privateStruct, &that.privateStruct); c != 0 {
+		return c
+	}
+	return 0
+}
+
 // deriveCompareComplex32 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
@@ -3884,6 +3925,12 @@ func deriveEqualPtrToNickname(this, that *Nickname) bool {
 			deriveEqual_84(this.Alias, that.Alias)
 }
 
+func deriveEqualPtrToPrivateEmbedded(this, that *PrivateEmbedded) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			deriveEqual_85(&this.privateStruct, &that.privateStruct)
+}
+
 func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
 	return this == that
 }
@@ -4000,7 +4047,7 @@ func deriveEqual1(this, that BuiltInTypes) bool {
 func deriveEqual(this, that *UseVendor) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqual_85(this.Vendors, that.Vendors)
+			deriveEqual_86(this.Vendors, that.Vendors)
 }
 
 func deriveCurryMarshal(f func(data []byte, v interface{}) error) func(data []byte) func(v interface{}) error {
@@ -5485,6 +5532,18 @@ func deriveGoString_62(this map[string][]*pickle.Rick) string {
 	return buf.String()
 }
 
+func deriveGoString_p(this privateStruct) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() test.privateStruct {\n")
+	fmt.Fprintf(buf, "this := &test.privateStruct{}\n")
+	if this.ptrfield != nil {
+		fmt.Fprintf(buf, "this.ptrfield = func (v int) *int { return &v }(%#v)\n", *this.ptrfield)
+	}
+	fmt.Fprintf(buf, "return *this\n")
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
 // deriveDeepCopy recursively copies the contents of src into dst.
 func deriveDeepCopy(dst, src []*bool) {
 	for src_i, src_value := range src {
@@ -5836,7 +5895,7 @@ func deriveDeepCopy_26(dst, src *[]int) {
 func deriveDeepCopy_27(dst, src *map[int]int) {
 	if *src != nil {
 		*dst = make(map[int]int, len(*src))
-		deriveDeepCopy_44(*dst, *src)
+		deriveDeepCopy_45(*dst, *src)
 	} else {
 		*dst = nil
 	}
@@ -6114,8 +6173,18 @@ func deriveDeepCopy_43(dst, src map[string][]*pickle.Rick) {
 			} else {
 				dst[src_key] = make([]*pickle.Rick, len(src_value))
 			}
-			deriveDeepCopy_45(dst[src_key], src_value)
+			deriveDeepCopy_46(dst[src_key], src_value)
 		}
+	}
+}
+
+// deriveDeepCopy_44 recursively copies the contents of src into dst.
+func deriveDeepCopy_44(dst, src *privateStruct) {
+	if src.ptrfield == nil {
+		dst.ptrfield = nil
+	} else {
+		dst.ptrfield = new(int)
+		*dst.ptrfield = *src.ptrfield
 	}
 }
 
@@ -8689,7 +8758,7 @@ func deriveCompare_103(this, that *[4]int) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompare_129(*this, *that)
+	return deriveCompare_130(*this, *that)
 }
 
 // deriveCompare_104 returns:
@@ -8706,7 +8775,7 @@ func deriveCompare_104(this, that *map[int]int) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompare_130(*this, *that)
+	return deriveCompare_131(*this, *that)
 }
 
 // deriveCompare_105 returns:
@@ -9457,7 +9526,7 @@ func deriveCompare_128(this, that map[string][]*pickle.Rick) int {
 		if thiskey == thatkey {
 			thisvalue := this[thiskey]
 			thatvalue := that[thatkey]
-			if c := deriveCompare_131(thisvalue, thatvalue); c != 0 {
+			if c := deriveCompare_132(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -9465,6 +9534,26 @@ func deriveCompare_128(this, that map[string][]*pickle.Rick) int {
 				return c
 			}
 		}
+	}
+	return 0
+}
+
+// deriveCompare_129 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_129(this, that *privateStruct) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if c := deriveCompare_8(this.ptrfield, that.ptrfield); c != 0 {
+		return c
 	}
 	return 0
 }
@@ -10678,14 +10767,20 @@ func deriveEqual_84(this, that map[string][]*pickle.Rick) bool {
 		if !ok {
 			return false
 		}
-		if !(deriveEqual_86(v, thatv)) {
+		if !(deriveEqual_87(v, thatv)) {
 			return false
 		}
 	}
 	return true
 }
 
-func deriveEqual_85(this, that []*vendortest.AVendoredObject) bool {
+func deriveEqual_85(this, that *privateStruct) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			((this.ptrfield == nil && that.ptrfield == nil) || (this.ptrfield != nil && that.ptrfield != nil && *(this.ptrfield) == *(that.ptrfield)))
+}
+
+func deriveEqual_86(this, that []*vendortest.AVendoredObject) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -10693,7 +10788,7 @@ func deriveEqual_85(this, that []*vendortest.AVendoredObject) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_87(this[i], that[i])) {
+		if !(deriveEqual_88(this[i], that[i])) {
 			return false
 		}
 	}
@@ -11187,15 +11282,15 @@ func deriveGoString_80(this []*pickle.Rick) string {
 	return buf.String()
 }
 
-// deriveDeepCopy_44 recursively copies the contents of src into dst.
-func deriveDeepCopy_44(dst, src map[int]int) {
+// deriveDeepCopy_45 recursively copies the contents of src into dst.
+func deriveDeepCopy_45(dst, src map[int]int) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
 	}
 }
 
-// deriveDeepCopy_45 recursively copies the contents of src into dst.
-func deriveDeepCopy_45(dst, src []*pickle.Rick) {
+// deriveDeepCopy_46 recursively copies the contents of src into dst.
+func deriveDeepCopy_46(dst, src []*pickle.Rick) {
 	for src_i, src_value := range src {
 		if src_value == nil {
 			dst[src_i] = nil
@@ -11214,11 +11309,11 @@ func deriveCompare_s(this, that string) int {
 	return strings.Compare(this, that)
 }
 
-// deriveCompare_129 returns:
+// deriveCompare_130 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_129(this, that [4]int) int {
+func deriveCompare_130(this, that [4]int) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
 			return -1
@@ -11233,11 +11328,11 @@ func deriveCompare_129(this, that [4]int) int {
 	return 0
 }
 
-// deriveCompare_130 returns:
+// deriveCompare_131 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_130(this, that map[int]int) int {
+func deriveCompare_131(this, that map[int]int) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -11272,11 +11367,11 @@ func deriveCompare_130(this, that map[int]int) int {
 	return 0
 }
 
-// deriveCompare_131 returns:
+// deriveCompare_132 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_131(this, that []*pickle.Rick) int {
+func deriveCompare_132(this, that []*pickle.Rick) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -11293,7 +11388,7 @@ func deriveCompare_131(this, that []*pickle.Rick) int {
 		return 1
 	}
 	for i := 0; i < len(this); i++ {
-		if c := deriveCompare_132(this[i], that[i]); c != 0 {
+		if c := deriveCompare_133(this[i], that[i]); c != 0 {
 			return c
 		}
 	}
@@ -11308,7 +11403,7 @@ func deriveCompare_N(this, that Name) int {
 	return (&this).Compare(&that)
 }
 
-func deriveEqual_86(this, that []*pickle.Rick) bool {
+func deriveEqual_87(this, that []*pickle.Rick) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -11316,14 +11411,14 @@ func deriveEqual_86(this, that []*pickle.Rick) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_88(this[i], that[i])) {
+		if !(deriveEqual_89(this[i], that[i])) {
 			return false
 		}
 	}
 	return true
 }
 
-func deriveEqual_87(this, that *vendortest.AVendoredObject) bool {
+func deriveEqual_88(this, that *vendortest.AVendoredObject) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Name == that.Name
@@ -11351,11 +11446,11 @@ func deriveGoString_81(this *pickle.Rick) string {
 	return buf.String()
 }
 
-// deriveCompare_132 returns:
+// deriveCompare_133 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_132(this, that *pickle.Rick) int {
+func deriveCompare_133(this, that *pickle.Rick) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -11371,7 +11466,7 @@ func deriveCompare_132(this, that *pickle.Rick) int {
 	return 0
 }
 
-func deriveEqual_88(this, that *pickle.Rick) bool {
+func deriveEqual_89(this, that *pickle.Rick) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Portal == that.Portal

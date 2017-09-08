@@ -223,4 +223,11 @@ func TestGoStringInline(t *testing.T) {
 			parse(t, deriveGoStringNoPointerStruct(this))
 		}
 	})
+	t.Run("privateembedded", func(t *testing.T) {
+		for i := 0; i < 100; i++ {
+			var strct *PrivateEmbedded
+			this := random(strct).(*PrivateEmbedded)
+			parse(t, this.GoString())
+		}
+	})
 }

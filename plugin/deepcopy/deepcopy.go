@@ -395,7 +395,7 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		if isNamed && hasDeepCopyMethod(named) {
 			p.P("%s.DeepCopy(field)", wrap(thisField))
 		} else {
-			p.P("%s(%s, %s)", g.GetFuncName(fieldType), thatField, thisField)
+			p.P("%s(field, &%s)", g.GetFuncName(types.NewPointer(fieldType)), wrap(thisField))
 		}
 		p.P("%s = *field", thatField)
 		return nil

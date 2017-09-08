@@ -52,6 +52,7 @@ func TestEqualStructs(t *testing.T) {
 		&Time{},
 		&Duration{},
 		&Nickname{},
+		&PrivateEmbedded{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

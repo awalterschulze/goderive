@@ -726,3 +726,41 @@ func (this *Nickname) DeepCopy(that *Nickname) {
 func (this *Nickname) GoString() string {
 	return deriveGoStringNickname(this)
 }
+
+type privateStruct struct {
+	ptrfield *int
+}
+
+type PrivateEmbedded struct {
+	privateStruct
+}
+
+func (this *PrivateEmbedded) Generate(rand *rand.Rand, size int) reflect.Value {
+	if size == 0 {
+		this = nil
+		return reflect.ValueOf(this)
+	}
+	this = &PrivateEmbedded{}
+	if size == 1 {
+		return reflect.ValueOf(this)
+	}
+	i := rand.Int()
+	this.ptrfield = &i
+	return reflect.ValueOf(this)
+}
+
+func (this *PrivateEmbedded) Equal(that *PrivateEmbedded) bool {
+	return deriveEqualPtrToPrivateEmbedded(this, that)
+}
+
+func (this *PrivateEmbedded) Compare(that *PrivateEmbedded) int {
+	return deriveComparePtrToPrivateEmbedded(this, that)
+}
+
+func (this *PrivateEmbedded) DeepCopy(that *PrivateEmbedded) {
+	deriveDeepCopyPtrToPrivateEmbedded(that, this)
+}
+
+func (this *PrivateEmbedded) GoString() string {
+	return deriveGoStringPrivateEmbedded(this)
+}

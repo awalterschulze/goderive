@@ -184,8 +184,8 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 			} else {
 				g.W("%s := &%s{}", this, gotypeStr)
 				for _, field := range fields.Fields {
-					if field.Private() {
-						return fmt.Errorf("private fields not supported, found %s in %v", field.DebugName(), g.TypeString(typ))
+					if field.Private() && external {
+						return fmt.Errorf("private fields of external structs not supported, found %s in %v", field.DebugName(), g.TypeString(typ))
 					}
 					thisField := field.Name(this, nil)
 					if err := g.genField(field.Type, thisField); err != nil {
@@ -203,9 +203,6 @@ func (g *gen) genStatement(typ types.Type, this string) error {
 		gotypeStr := g.TypeString(typ)
 		g.W("%s := &%s{}", this, gotypeStr)
 		for _, field := range fields.Fields {
-			if field.Private() {
-				return fmt.Errorf("private fields not supported, found %s in %v", field.DebugName(), g.TypeString(typ))
-			}
 			thisField := field.Name(this, nil)
 			if err := g.genField(field.Type, thisField); err != nil {
 				return err

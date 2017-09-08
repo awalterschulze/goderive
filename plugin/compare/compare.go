@@ -15,6 +15,8 @@
 // Package compare contains the implementation of the compare plugin, which generates the deriveCompare function.
 //
 // The deriveCompare function is a maintainable and fast way to implement fast Less functions.
+//   deriveCompare(T, T) bool
+//   deriveCompare(T) func(T) bool
 //
 // When goderive walks over your code it is looking for a function that:
 //  - was not implemented (or was previously derived) and
@@ -100,18 +102,23 @@ type gen struct {
 }
 
 func (g *gen) Add(name string, typs []types.Type) (string, error) {
-	if len(typs) != 2 {
-		return "", fmt.Errorf("%s does not have two arguments", name)
+	if len(typs) != 1 && len(typs) != 2 {
+		return "", fmt.Errorf("%s does not have one or two arguments", name)
 	}
-	if !types.Identical(typs[0], typs[1]) {
-		return "", fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
-			name, g.TypeString(typs[0]), g.TypeString(typs[1]))
+	if len(typs) == 2 {
+		if !types.Identical(typs[0], typs[1]) {
+			return "", fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
+				name, g.TypeString(typs[0]), g.TypeString(typs[1]))
+		}
 	}
-	return g.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs...)
 }
 
 func (g *gen) Generate(typs []types.Type) error {
-	return g.genFunc(typs[0])
+	if len(typs) == 1 {
+		return g.genCurriedFunc(typs[0])
+	}
+	return g.genFunc(typs)
 }
 
 func hasCompareMethod(typ *types.Named) bool {
@@ -144,18 +151,41 @@ func hasCompareMethod(typ *types.Named) bool {
 	return false
 }
 
-func (g *gen) genFunc(typ types.Type) error {
+func (g *gen) genCurriedFunc(typ types.Type) error {
 	p := g.printer
 	g.Generating(typ)
 	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("// %s returns:", g.GetFuncName(typ))
+	p.P("// %s returns a curried compare function, which returns:", g.GetFuncName(typ))
 	p.P("//   * 0 if this and that are equal,")
 	p.P("//   * -1 is this is smaller and")
 	p.P("//   * +1 is this is bigger.")
-	p.P("func %s(this, that %s) int {", g.GetFuncName(typ), typeStr)
+	p.P("func %s(this %s) func(%s) int {", g.GetFuncName(typ), typeStr, typeStr)
+	p.In()
+	p.P("return func(that %s) int {", typeStr)
 	p.In()
 	if err := g.genStatement(typ, "this", "that"); err != nil {
+		return err
+	}
+	p.Out()
+	p.P("}")
+	p.Out()
+	p.P("}")
+	return nil
+}
+
+func (g *gen) genFunc(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
+	typeStr := g.TypeString(typs[0])
+	p.P("")
+	p.P("// %s returns:", g.GetFuncName(typs...))
+	p.P("//   * 0 if this and that are equal,")
+	p.P("//   * -1 is this is smaller and")
+	p.P("//   * +1 is this is bigger.")
+	p.P("func %s(this, that %s) int {", g.GetFuncName(typs...), typeStr)
+	p.In()
+	if err := g.genStatement(typs[0], "this", "that"); err != nil {
 		return err
 	}
 	p.Out()
@@ -186,7 +216,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		named, isNamed := reftyp.(*types.Named)
 		strct, isStruct := reftyp.Underlying().(*types.Struct)
 		if !isStruct || !isNamed {
-			p.P("return %s(*%s, *%s)", g.GetFuncName(reftyp), this, that)
+			p.P("return %s(*%s, *%s)", g.GetFuncName(reftyp, reftyp), this, that)
 			return nil
 		}
 		external := g.TypesMap.IsExternal(named)
@@ -431,23 +461,23 @@ func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, 
 		if typ.Kind() == types.String {
 			return fmt.Sprintf("%s.Compare(%s, %s)", g.stringsPkg(), thisField, thatField), nil
 		}
-		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(fieldType), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(fieldType, fieldType), thisField, thatField), nil
 	case *types.Pointer:
 		ref := typ.Elem()
 		if named, ok := ref.(*types.Named); ok {
 			if hasCompareMethod(named) {
 				return fmt.Sprintf("%s.Compare(%s)", wrap(thisField), thatField), nil
 			}
-			return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
+			return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 		}
-		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 	case *types.Array, *types.Map:
-		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 	case *types.Slice:
 		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
 			return fmt.Sprintf("%s.Compare(%s, %s)", g.bytesPkg(), thisField, thatField), nil
 		}
-		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 	case *types.Struct:
 		named, isNamed := fieldType.(*types.Named)
 		if isNamed && hasCompareMethod(named) {

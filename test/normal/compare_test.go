@@ -114,3 +114,17 @@ func TestCompareComplex64(t *testing.T) {
 		t.Fatalf("compare: got %d want %d", c, 1)
 	}
 }
+
+func TestCompareCurry(t *testing.T) {
+	this := complex(float64(1.0), float64(-1.0))
+	that := complex(float64(1.0), float64(1.0))
+	if c := deriveCompareCurryComplex64(this)(this); c != 0 {
+		t.Fatalf("compare: got %d want %d", c, 0)
+	}
+	if c := deriveCompareCurryComplex64(this)(that); c != -1 {
+		t.Fatalf("compare: got %d want %d", c, -1)
+	}
+	if c := deriveCompareCurryComplex64(that)(this); c != 1 {
+		t.Fatalf("compare: got %d want %d", c, 1)
+	}
+}

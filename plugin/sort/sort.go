@@ -87,12 +87,12 @@ func (g *gen) genFuncFor(typ *types.Slice) error {
 		case types.Int:
 			p.P(g.sortPkg() + ".Ints(list)")
 		case types.Complex64, types.Complex128, types.Bool:
-			p.P(g.sortPkg() + ".Slice(list, func(i, j int) bool { return " + g.compare.GetFuncName(ttyp) + "(list[i], list[j]) < 0 })")
+			p.P(g.sortPkg() + ".Slice(list, func(i, j int) bool { return " + g.compare.GetFuncName(ttyp, ttyp) + "(list[i], list[j]) < 0 })")
 		default:
 			p.P(g.sortPkg() + ".Slice(list, func(i, j int) bool { return list[i] < list[j] })")
 		}
 	case *types.Pointer, *types.Struct, *types.Slice, *types.Array, *types.Map:
-		p.P(g.sortPkg() + ".Slice(list, func(i, j int) bool { return " + g.compare.GetFuncName(etyp) + "(list[i], list[j]) < 0 })")
+		p.P(g.sortPkg() + ".Slice(list, func(i, j int) bool { return " + g.compare.GetFuncName(etyp, etyp) + "(list[i], list[j]) < 0 })")
 	default:
 		return fmt.Errorf("unsupported compare type: %s", g.TypeString(typ))
 	}

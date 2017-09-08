@@ -3450,6 +3450,28 @@ func deriveComparePtrToPrivateEmbedded(this, that *PrivateEmbedded) int {
 	return 0
 }
 
+// deriveCompareCurryComplex64 returns a curried compare function, which returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompareCurryComplex64(this complex128) func(complex128) int {
+	return func(that complex128) int {
+		if thisr, thatr := real(this), real(that); thisr == thatr {
+			if thisi, thati := imag(this), imag(that); thisi == thati {
+				return 0
+			} else if thisi < thati {
+				return -1
+			} else {
+				return 1
+			}
+		} else if thisr < thatr {
+			return -1
+		} else {
+			return 1
+		}
+	}
+}
+
 // deriveCompareComplex32 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and

@@ -99,7 +99,7 @@ func (g *gen) genTwo(typ, typ2 types.Type) error {
 	case *types.Basic:
 		p.P("if a > b {")
 	default:
-		p.P("if %s(a, b) > 0 {", g.compare.GetFuncName(typ))
+		p.P("if %s(a, b) > 0 {", g.compare.GetFuncName(typ, typ))
 	}
 	p.In()
 	p.P("return a")
@@ -132,7 +132,7 @@ func (g *gen) genSlice(typ *types.Slice, typ2 types.Type) error {
 	case *types.Basic:
 		p.P("if v > m {")
 	default:
-		p.P("if %s(v, m) > 0 {", g.compare.GetFuncName(etyp))
+		p.P("if %s(v, m) > 0 {", g.compare.GetFuncName(etyp, etyp))
 	}
 	p.In()
 	p.P("m = list[i]")

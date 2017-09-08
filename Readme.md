@@ -69,7 +69,9 @@ Recursive Functions:
   - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal) 
     - `deriveEqual(T, T) bool`
     - `deriveEqual(T) func(T) bool`
-  - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare) `deriveCompare(T, T) int`
+  - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare) 
+    - `deriveCompare(T, T) int`
+    - `deriveCompare(T) func(T) int`
   - [DeepCopy](http://godoc.org/github.com/awalterschulze/goderive/plugin/deepcopy) 
     - `deriveDeepCopy(dst *T, src *T)`
     - `deriveDeepCopy(dst []T, src []T)`

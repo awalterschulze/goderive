@@ -2,6 +2,7 @@
 
 package pluginprefix
 
+// eq returns whether this and that are equal.
 func eq(this, that *MyStruct) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&

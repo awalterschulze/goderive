@@ -191,6 +191,7 @@ func (g *gen) genError(typs []types.Type) error {
 	}
 	resFuncType := fmt.Sprintf("func(%s) %s", strings.Join(paramStrs[0], ", "), wrap(strings.Join(resultStrs[len(resultStrs)-1], ", ")))
 	p.P("")
+	p.P("// %s composes functions %s and %s into one function, that takes the parameters from %s and returns the results from %s.", name, strings.Join(fs[:len(fs)-1], ", "), fs[len(fs)-1], fs[0], fs[len(fs)-1])
 	p.P("func %s(%s) %s {", name, strings.Join(fVarType, ", "), resFuncType)
 	p.In()
 	p.P("return func(%s) %s {", strings.Join(firstVarTypes, ", "), wrap(strings.Join(resultStrs[len(resultStrs)-1], ", ")))

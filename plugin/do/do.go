@@ -77,6 +77,7 @@ package do
 import (
 	"fmt"
 	"go/types"
+	"strconv"
 	"strings"
 
 	"github.com/awalterschulze/goderive/derive"
@@ -140,6 +141,7 @@ func (g *gen) Generate(typs []types.Type) error {
 	outstrs := make([]string, len(typs))
 	funcstrs := make([]string, len(typs))
 	vars := make([]string, len(typs))
+	fs := make([]string, len(typs))
 	for i, typ := range typs {
 		out, err := g.errorOut(name, typ.(*types.Signature))
 		if err != nil {
@@ -147,13 +149,15 @@ func (g *gen) Generate(typs []types.Type) error {
 		}
 		outs[i] = out
 		outstrs[i] = g.TypeString(out)
-		funcstrs[i] = fmt.Sprintf("f%d func() (%s, error)", i, outstrs[i])
+		fs[i] = "f" + strconv.Itoa(i)
+		funcstrs[i] = fmt.Sprintf("%s func() (%s, error)", fs[i], outstrs[i])
 		vars[i] = fmt.Sprintf("v%d", i)
 	}
 	outstrs = append(outstrs, "error")
 	g.Generating(typs...)
 	p := g.printer
 	p.P("")
+	p.P("// %s concurrently executes the input functions %s and %s and when all functions are finished the first error, if any, and results are returned.", name, strings.Join(fs[:len(fs)-1], ", "), fs[len(fs)-1])
 	p.P("func %s(%s) (%s) {", name, strings.Join(funcstrs, ", "), strings.Join(outstrs, ", "))
 	p.In()
 	p.P("errChan := make(chan error)")

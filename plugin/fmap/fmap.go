@@ -241,6 +241,7 @@ func (g *gen) genChan(typs []types.Type) error {
 		outerStr = "(" + outStr + ")"
 	}
 	p.P("")
+	p.P("// %s returns an output channel where the items are the result of the input function being applied to the items on the input channel.", name)
 	p.P("func %s(f func(%s) %s, in <-chan %s) <-chan %s {", name, inStr, outStr, inStr, outerStr)
 	p.In()
 	p.P("out := make(chan %s)", outerStr)
@@ -272,6 +273,7 @@ func (g *gen) genSlice(typs []types.Type) error {
 	inStr := g.TypeString(in)
 	outStr := g.TypeString(out)
 	p.P("")
+	p.P("// %s returns a list where each element of the input list has been morphed by the input function.", name)
 	p.P("func %s(f func(%s) %s, list []%s) []%s {", name, inStr, outStr, inStr, outStr)
 	p.In()
 	p.P("out := make([]%s, len(list))", outStr)
@@ -296,6 +298,7 @@ func (g *gen) genString(typs []types.Type) error {
 	p := g.printer
 	outStr := g.TypeString(out)
 	p.P("")
+	p.P("// %s morphs a string into list by apply the input function to each rune.", name)
 	p.P("func %s(f func(rune) %s, ss string) []%s {", name, outStr, outStr)
 	p.In()
 	p.P("out := make([]%s, len([]rune(ss)))", outStr)

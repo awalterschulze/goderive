@@ -6,6 +6,7 @@ import (
 	http "net/http"
 )
 
+// deriveCompose composes functions f0, f1, f2, f3, f4 and f5 into one function, that takes the parameters from f0 and returns the results from f5.
 func deriveCompose(f0 func(string) (*http.Response, error), f1 func(*http.Response) ([]byte, error), f2 func([]byte) (*user, error), f3 func(*user) (*newUser, error), f4 func(interface{}) ([]byte, error), f5 func([]byte) (*http.Response, error)) func(string) (*http.Response, error) {
 	return func(v_0_0 string) (*http.Response, error) {
 		v_1_0, err0 := f0(v_0_0)

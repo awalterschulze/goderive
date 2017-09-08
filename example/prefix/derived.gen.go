@@ -2,6 +2,7 @@
 
 package prefix
 
+// generateEqual returns whether this and that are equal.
 func generateEqual(this, that *MyStruct) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&

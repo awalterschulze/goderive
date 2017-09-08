@@ -31,6 +31,7 @@ func deriveIntersect(this, that []int) []int {
 	return intersect
 }
 
+// deriveContains returns whether the item is contained in the list.
 func deriveContains(list []int, item int) bool {
 	for _, v := range list {
 		if v == item {

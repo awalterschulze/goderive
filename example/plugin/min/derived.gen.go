@@ -2,10 +2,11 @@
 
 package min
 
-func deriveFilter(pred func(boat) bool, list []boat) []boat {
+// deriveFilter returns a list of all items in the list that matches the predicate.
+func deriveFilter(predicate func(boat) bool, list []boat) []boat {
 	out := make([]boat, 0, len(list))
 	for i, elem := range list {
-		if pred(elem) {
+		if predicate(elem) {
 			out = append(out, list[i])
 		}
 	}

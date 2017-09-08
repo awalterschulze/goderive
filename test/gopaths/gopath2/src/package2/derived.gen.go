@@ -2,6 +2,7 @@
 
 package package2
 
+// deriveEqual returns whether this and that are equal.
 func deriveEqual(this, that *Type2) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&

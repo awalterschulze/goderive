@@ -2383,6 +2383,7 @@ func deriveDeepCopyPtrToPrivateEmbedded(dst, src *PrivateEmbedded) {
 	dst.privateStruct = *field
 }
 
+// deriveContainsInt64s returns whether the item is contained in the list.
 func deriveContainsInt64s(list []int64, item int64) bool {
 	for _, v := range list {
 		if v == item {
@@ -2392,6 +2393,7 @@ func deriveContainsInt64s(list []int64, item int64) bool {
 	return false
 }
 
+// deriveContainsStruct returns whether the item is contained in the list.
 func deriveContainsStruct(list []*BuiltInTypes, item *BuiltInTypes) bool {
 	for _, v := range list {
 		if deriveEqualPtrToBuiltInTypes(v, item) {
@@ -2419,6 +2421,7 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 	}
 }
 
+// deriveCompose composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
 func deriveCompose(f0 func() (string, error), f1 func(string) (float64, error)) func() (float64, error) {
 	return func() (float64, error) {
 		v_1_0, err0 := f0()
@@ -2433,6 +2436,7 @@ func deriveCompose(f0 func() (string, error), f1 func(string) (float64, error)) 
 	}
 }
 
+// deriveComposeA composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
 func deriveComposeA(f0 func(string) (string, error), f1 func(string) (float64, error)) func(string) (float64, error) {
 	return func(v_0_0 string) (float64, error) {
 		v_1_0, err0 := f0(v_0_0)
@@ -2447,6 +2451,7 @@ func deriveComposeA(f0 func(string) (string, error), f1 func(string) (float64, e
 	}
 }
 
+// deriveCompose2 composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
 func deriveCompose2(f0 func(string, string) ([]string, string, error), f1 func([]string, string) (float64, error)) func(string, string) (float64, error) {
 	return func(v_0_0 string, v_0_1 string) (float64, error) {
 		v_1_0, v_1_1, err0 := f0(v_0_0, v_0_1)
@@ -2461,6 +2466,7 @@ func deriveCompose2(f0 func(string, string) ([]string, string, error), f1 func([
 	}
 }
 
+// deriveComposeVariadic composes functions f0, f1 and f2 into one function, that takes the parameters from f0 and returns the results from f2.
 func deriveComposeVariadic(f0 func(string) (string, error), f1 func(string) (float64, error), f2 func(float64) (int, error)) func(string) (int, error) {
 	return func(v_0_0 string) (int, error) {
 		v_1_0, err0 := f0(v_0_0)
@@ -3596,20 +3602,22 @@ func deriveUniqueStructs(list []*BuiltInTypes) []*BuiltInTypes {
 	return list[:u]
 }
 
-func deriveFilter(pred func(int) bool, list []int) []int {
+// deriveFilter returns a list of all items in the list that matches the predicate.
+func deriveFilter(predicate func(int) bool, list []int) []int {
 	out := make([]int, 0, len(list))
 	for i, elem := range list {
-		if pred(elem) {
+		if predicate(elem) {
 			out = append(out, list[i])
 		}
 	}
 	return out
 }
 
-func deriveFilterJudy(pred func(string) bool, list []string) []string {
+// deriveFilterJudy returns a list of all items in the list that matches the predicate.
+func deriveFilterJudy(predicate func(string) bool, list []string) []string {
 	out := make([]string, 0, len(list))
 	for i, elem := range list {
-		if pred(elem) {
+		if predicate(elem) {
 			out = append(out, list[i])
 		}
 	}
@@ -3656,10 +3664,12 @@ func deriveTupleError(v0 []byte, v1 error) func() ([]byte, error) {
 	}
 }
 
+// deriveEqualPtrToEmpty returns whether this and that are equal.
 func deriveEqualPtrToEmpty(this, that *Empty) bool {
 	return (this == nil && that == nil) || (this != nil) && (that != nil)
 }
 
+// deriveEqualPtrToBuiltInTypes returns whether this and that are equal.
 func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3684,6 +3694,7 @@ func deriveEqualPtrToBuiltInTypes(this, that *BuiltInTypes) bool {
 			this.UintPtr == that.UintPtr
 }
 
+// deriveEqualPtrToPrivateBuiltInTypes returns whether this and that are equal.
 func deriveEqualPtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3708,6 +3719,7 @@ func deriveEqualPtrToPrivateBuiltInTypes(this, that *PrivateBuiltInTypes) bool {
 			this.privateUintPtr == that.privateUintPtr
 }
 
+// deriveEqualPtrToPtrToBuiltInTypes returns whether this and that are equal.
 func deriveEqualPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3732,6 +3744,7 @@ func deriveEqualPtrToPtrToBuiltInTypes(this, that *PtrToBuiltInTypes) bool {
 			((this.UintPtr == nil && that.UintPtr == nil) || (this.UintPtr != nil && that.UintPtr != nil && *(this.UintPtr) == *(that.UintPtr)))
 }
 
+// deriveEqualPtrToSliceOfBuiltInTypes returns whether this and that are equal.
 func deriveEqualPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3756,6 +3769,7 @@ func deriveEqualPtrToSliceOfBuiltInTypes(this, that *SliceOfBuiltInTypes) bool {
 			deriveEqual_14(this.UintPtr, that.UintPtr)
 }
 
+// deriveEqualPtrToSliceOfPtrToBuiltInTypes returns whether this and that are equal.
 func deriveEqualPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3780,6 +3794,7 @@ func deriveEqualPtrToSliceOfPtrToBuiltInTypes(this, that *SliceOfPtrToBuiltInTyp
 			deriveEqual_31(this.UintPtr, that.UintPtr)
 }
 
+// deriveEqualPtrToArrayOfBuiltInTypes returns whether this and that are equal.
 func deriveEqualPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3805,6 +3820,7 @@ func deriveEqualPtrToArrayOfBuiltInTypes(this, that *ArrayOfBuiltInTypes) bool {
 			this.AnotherBoolOfDifferentSize == that.AnotherBoolOfDifferentSize
 }
 
+// deriveEqualPtrToArrayOfPtrToBuiltInTypes returns whether this and that are equal.
 func deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3830,6 +3846,7 @@ func deriveEqualPtrToArrayOfPtrToBuiltInTypes(this, that *ArrayOfPtrToBuiltInTyp
 			deriveEqual_51(this.AnotherBoolOfDifferentSize, that.AnotherBoolOfDifferentSize)
 }
 
+// deriveEqualPtrToMapsOfSimplerBuiltInTypes returns whether this and that are equal.
 func deriveEqualPtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3837,6 +3854,7 @@ func deriveEqualPtrToMapsOfSimplerBuiltInTypes(this, that *MapsOfSimplerBuiltInT
 			deriveEqual_53(this.Uint64ToInt64, that.Uint64ToInt64)
 }
 
+// deriveEqualPtrToMapsOfBuiltInTypes returns whether this and that are equal.
 func deriveEqualPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3847,6 +3865,7 @@ func deriveEqualPtrToMapsOfBuiltInTypes(this, that *MapsOfBuiltInTypes) bool {
 			deriveEqual_58(this.Uint16ToUint8, that.Uint16ToUint8)
 }
 
+// deriveEqualPtrToSliceToSlice returns whether this and that are equal.
 func deriveEqualPtrToSliceToSlice(this, that *SliceToSlice) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3855,6 +3874,7 @@ func deriveEqualPtrToSliceToSlice(this, that *SliceToSlice) bool {
 			deriveEqual_61(this.IntPtrs, that.IntPtrs)
 }
 
+// deriveEqualPtrToPtrTo returns whether this and that are equal.
 func deriveEqualPtrToPtrTo(this, that *PtrTo) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3864,12 +3884,14 @@ func deriveEqualPtrToPtrTo(this, that *PtrTo) bool {
 			((this.Map == nil && that.Map == nil) || (this.Map != nil && that.Map != nil && deriveEqualMapOfintToint(*(this.Map), *(that.Map))))
 }
 
+// deriveEqualPtrToName returns whether this and that are equal.
 func deriveEqualPtrToName(this, that *Name) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Name == that.Name
 }
 
+// deriveEqualPtrToStructs returns whether this and that are equal.
 func deriveEqualPtrToStructs(this, that *Structs) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3879,6 +3901,7 @@ func deriveEqualPtrToStructs(this, that *Structs) bool {
 			deriveEqual_63(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct)
 }
 
+// deriveEqualPtrToMapWithStructs returns whether this and that are equal.
 func deriveEqualPtrToMapWithStructs(this, that *MapWithStructs) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3889,6 +3912,7 @@ func deriveEqualPtrToMapWithStructs(this, that *MapWithStructs) bool {
 			deriveEqual_68(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName)
 }
 
+// deriveEqualPtrToRecursiveType returns whether this and that are equal.
 func deriveEqualPtrToRecursiveType(this, that *RecursiveType) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3896,6 +3920,7 @@ func deriveEqualPtrToRecursiveType(this, that *RecursiveType) bool {
 			deriveEqual_69(this.N, that.N)
 }
 
+// deriveEqualPtrToEmbeddedStruct1 returns whether this and that are equal.
 func deriveEqualPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3903,6 +3928,7 @@ func deriveEqualPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) bool {
 			this.Structs.Equal(that.Structs)
 }
 
+// deriveEqualPtrToEmbeddedStruct2 returns whether this and that are equal.
 func deriveEqualPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3910,12 +3936,14 @@ func deriveEqualPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) bool {
 			this.Name.Equal(that.Name)
 }
 
+// deriveEqualPtrToUnnamedStruct returns whether this and that are equal.
 func deriveEqualPtrToUnnamedStruct(this, that *UnnamedStruct) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Unnamed == that.Unnamed
 }
 
+// deriveEqualPtrToStructWithStructFieldWithoutEqualMethod returns whether this and that are equal.
 func deriveEqualPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3923,6 +3951,7 @@ func deriveEqualPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructW
 			this.B == that.B
 }
 
+// deriveEqualPtrToStructWithStructWithFromAnotherPackage returns whether this and that are equal.
 func deriveEqualPtrToStructWithStructWithFromAnotherPackage(this, that *StructWithStructWithFromAnotherPackage) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3930,12 +3959,14 @@ func deriveEqualPtrToStructWithStructWithFromAnotherPackage(this, that *StructWi
 			this.B == that.B
 }
 
+// deriveEqualPtrToFieldWithStructWithPrivateFields returns whether this and that are equal.
 func deriveEqualPtrToFieldWithStructWithPrivateFields(this, that *FieldWithStructWithPrivateFields) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			deriveEqual_72(this.A, that.A)
 }
 
+// deriveEqualPtrToEnums returns whether this and that are equal.
 func deriveEqualPtrToEnums(this, that *Enums) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3948,6 +3979,7 @@ func deriveEqualPtrToEnums(this, that *Enums) bool {
 			this.ArrayEnum == that.ArrayEnum
 }
 
+// deriveEqualPtrToNamedTypes returns whether this and that are equal.
 func deriveEqualPtrToNamedTypes(this, that *NamedTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3956,6 +3988,7 @@ func deriveEqualPtrToNamedTypes(this, that *NamedTypes) bool {
 			deriveEqual_79(this.SliceToSlice, that.SliceToSlice)
 }
 
+// deriveEqualPtrToTime returns whether this and that are equal.
 func deriveEqualPtrToTime(this, that *Time) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3963,6 +3996,7 @@ func deriveEqualPtrToTime(this, that *Time) bool {
 			((this.P == nil && that.P == nil) || (this.P != nil && that.P != nil && (*(this.P)).Equal(*(that.P))))
 }
 
+// deriveEqualPtrToDuration returns whether this and that are equal.
 func deriveEqualPtrToDuration(this, that *Duration) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -3973,22 +4007,26 @@ func deriveEqualPtrToDuration(this, that *Duration) bool {
 			deriveEqual_83(this.MD, that.MD)
 }
 
+// deriveEqualPtrToNickname returns whether this and that are equal.
 func deriveEqualPtrToNickname(this, that *Nickname) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			deriveEqual_84(this.Alias, that.Alias)
 }
 
+// deriveEqualPtrToPrivateEmbedded returns whether this and that are equal.
 func deriveEqualPtrToPrivateEmbedded(this, that *PrivateEmbedded) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			deriveEqual_85(&this.privateStruct, &that.privateStruct)
 }
 
+// deriveEqualInefficientDeriveTheDerived returns whether this and that are equal.
 func deriveEqualInefficientDeriveTheDerived(this, that int) bool {
 	return this == that
 }
 
+// deriveEqualSliceOfint returns whether this and that are equal.
 func deriveEqualSliceOfint(this, that []int) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -4004,6 +4042,7 @@ func deriveEqualSliceOfint(this, that []int) bool {
 	return true
 }
 
+// deriveEqualMapOfintToint returns whether this and that are equal.
 func deriveEqualMapOfintToint(this, that map[int]int) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -4023,6 +4062,7 @@ func deriveEqualMapOfintToint(this, that map[int]int) bool {
 	return true
 }
 
+// deriveEqualPtrToint returns whether this and that are equal.
 func deriveEqualPtrToint(this, that *int) bool {
 	if this == nil && that == nil {
 		return true
@@ -4033,6 +4073,7 @@ func deriveEqualPtrToint(this, that *int) bool {
 	return false
 }
 
+// deriveEqualPtrToSliceOfint returns whether this and that are equal.
 func deriveEqualPtrToSliceOfint(this, that *[]int) bool {
 	if this == nil && that == nil {
 		return true
@@ -4054,6 +4095,7 @@ func deriveEqualPtrToSliceOfint(this, that *[]int) bool {
 	return false
 }
 
+// deriveEqualPtrToArray10Ofint returns whether this and that are equal.
 func deriveEqualPtrToArray10Ofint(this, that *[10]int) bool {
 	if this == nil && that == nil {
 		return true
@@ -4069,6 +4111,7 @@ func deriveEqualPtrToArray10Ofint(this, that *[10]int) bool {
 	return false
 }
 
+// deriveEqualPtrToMapOfintToint returns whether this and that are equal.
 func deriveEqualPtrToMapOfintToint(this, that *map[int]int) bool {
 	if this == nil && that == nil {
 		return true
@@ -4094,10 +4137,12 @@ func deriveEqualPtrToMapOfintToint(this, that *map[int]int) bool {
 	return false
 }
 
+// deriveEqual1 returns whether this and that are equal.
 func deriveEqual1(this, that BuiltInTypes) bool {
 	return this == that
 }
 
+// %!s(MISSING) returns an equal closure, with the first parameter already filled in.
 func deriveEqualCurry(this *BuiltInTypes) func(*BuiltInTypes) bool {
 	return func(that *BuiltInTypes) bool {
 		return (this == nil && that == nil) ||
@@ -4124,12 +4169,14 @@ func deriveEqualCurry(this *BuiltInTypes) func(*BuiltInTypes) bool {
 	}
 }
 
+// deriveEqual returns whether this and that are equal.
 func deriveEqual(this, that *UseVendor) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			deriveEqual_86(this.Vendors, that.Vendors)
 }
 
+// deriveCurryMarshal returns a function that has one parameter, which corresponds to the input functions first parameter, and a result that is a function, which takes the rest of the parameters as input and finally returns the original input function's results.
 func deriveCurryMarshal(f func(data []byte, v interface{}) error) func(data []byte) func(v interface{}) error {
 	return func(data []byte) func(v interface{}) error {
 		return func(v interface{}) error {
@@ -4138,6 +4185,7 @@ func deriveCurryMarshal(f func(data []byte, v interface{}) error) func(data []by
 	}
 }
 
+// deriveCurry3 returns a function that has one parameter, which corresponds to the input functions first parameter, and a result that is a function, which takes the rest of the parameters as input and finally returns the original input function's results.
 func deriveCurry3(f func(a int, b string, c bool) string) func(a int) func(b string, c bool) string {
 	return func(a int) func(b string, c bool) string {
 		return func(b string, c bool) string {
@@ -4146,6 +4194,7 @@ func deriveCurry3(f func(a int, b string, c bool) string) func(a int) func(b str
 	}
 }
 
+// deriveCurryCurried returns a function that has one parameter, which corresponds to the input functions first parameter, and a result that is a function, which takes the rest of the parameters as input and finally returns the original input function's results.
 func deriveCurryCurried(f func(b string, c bool) string) func(b string) func(c bool) string {
 	return func(b string) func(c bool) string {
 		return func(c bool) string {
@@ -4477,6 +4526,7 @@ func deriveJoinVariantOfSendRecvChannels(c0 chan int, c1 chan int) <-chan int {
 	return out
 }
 
+// deriveFmapForKeys returns a list where each element of the input list has been morphed by the input function.
 func deriveFmapForKeys(f func(int) string, list []int) []string {
 	out := make([]string, len(list))
 	for i, elem := range list {
@@ -4485,6 +4535,7 @@ func deriveFmapForKeys(f func(int) string, list []int) []string {
 	return out
 }
 
+// deriveFmap returns a list where each element of the input list has been morphed by the input function.
 func deriveFmap(f func(int) int, list []int) []int {
 	out := make([]int, len(list))
 	for i, elem := range list {
@@ -4493,6 +4544,7 @@ func deriveFmap(f func(int) int, list []int) []int {
 	return out
 }
 
+// deriveFmapString morphs a string into list by apply the input function to each rune.
 func deriveFmapString(f func(rune) bool, ss string) []bool {
 	out := make([]bool, len([]rune(ss)))
 	for i, elem := range ss {
@@ -4534,6 +4586,7 @@ func deriveFmapMore(f func(string) (int, string, error), g func() (string, error
 	return deriveTuple_(f(v)), nil
 }
 
+// deriveFmapChan returns an output channel where the items are the result of the input function being applied to the items on the input channel.
 func deriveFmapChan(f func(string) int, in <-chan string) <-chan int {
 	out := make(chan int)
 	go func() {
@@ -4546,6 +4599,7 @@ func deriveFmapChan(f func(string) int, in <-chan string) <-chan int {
 	return out
 }
 
+// deriveFmapSS returns a list where each element of the input list has been morphed by the input function.
 func deriveFmapSS(f func(string) []string, list []string) [][]string {
 	out := make([][]string, len(list))
 	for i, elem := range list {
@@ -4562,6 +4616,7 @@ func deriveFmapEE64(f func(string) (int64, error), g func() (string, error)) (fu
 	return deriveTuple_i(f(v)), nil
 }
 
+// deriveFmapChanChan returns an output channel where the items are the result of the input function being applied to the items on the input channel.
 func deriveFmapChanChan(f func(string) <-chan int, in <-chan string) <-chan (<-chan int) {
 	out := make(chan (<-chan int))
 	go func() {
@@ -4574,12 +4629,14 @@ func deriveFmapChanChan(f func(string) <-chan int, in <-chan string) <-chan (<-c
 	return out
 }
 
+// deriveFlipMarshal returns the input function, but where first two parameters are flipped.
 func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interface{}, data []byte) error {
 	return func(v interface{}, data []byte) error {
 		return f(data, v)
 	}
 }
 
+// deriveFlip3 returns the input function, but where first two parameters are flipped.
 func deriveFlip3(f func(a int, b string, c bool) string) func(b string, a int, c bool) string {
 	return func(b string, a int, c bool) string {
 		return f(a, b, c)
@@ -4708,6 +4765,7 @@ func deriveAll(predicate func(int) bool, slice []int) bool {
 	return true
 }
 
+// deriveDo concurrently executes the input functions f0 and f1 and when all functions are finished the first error, if any, and results are returned.
 func deriveDo(f0 func() (string, error), f1 func() (int, error)) (string, int, error) {
 	errChan := make(chan error)
 	var v0 string
@@ -9785,6 +9843,7 @@ func deriveTuple_i(v0 int64, v1 error) func() (int64, error) {
 	}
 }
 
+// deriveEqual_ returns whether this and that are equal.
 func deriveEqual_(this, that []bool) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9800,6 +9859,7 @@ func deriveEqual_(this, that []bool) bool {
 	return true
 }
 
+// deriveEqual_1 returns whether this and that are equal.
 func deriveEqual_1(this, that []complex128) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9815,6 +9875,7 @@ func deriveEqual_1(this, that []complex128) bool {
 	return true
 }
 
+// deriveEqual_2 returns whether this and that are equal.
 func deriveEqual_2(this, that []complex64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9830,6 +9891,7 @@ func deriveEqual_2(this, that []complex64) bool {
 	return true
 }
 
+// deriveEqual_3 returns whether this and that are equal.
 func deriveEqual_3(this, that []float64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9845,6 +9907,7 @@ func deriveEqual_3(this, that []float64) bool {
 	return true
 }
 
+// deriveEqual_4 returns whether this and that are equal.
 func deriveEqual_4(this, that []float32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9860,6 +9923,7 @@ func deriveEqual_4(this, that []float32) bool {
 	return true
 }
 
+// deriveEqual_5 returns whether this and that are equal.
 func deriveEqual_5(this, that []int16) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9875,6 +9939,7 @@ func deriveEqual_5(this, that []int16) bool {
 	return true
 }
 
+// deriveEqual_6 returns whether this and that are equal.
 func deriveEqual_6(this, that []int32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9890,6 +9955,7 @@ func deriveEqual_6(this, that []int32) bool {
 	return true
 }
 
+// deriveEqual_7 returns whether this and that are equal.
 func deriveEqual_7(this, that []int64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9905,6 +9971,7 @@ func deriveEqual_7(this, that []int64) bool {
 	return true
 }
 
+// deriveEqual_8 returns whether this and that are equal.
 func deriveEqual_8(this, that []int8) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9920,6 +9987,7 @@ func deriveEqual_8(this, that []int8) bool {
 	return true
 }
 
+// deriveEqual_9 returns whether this and that are equal.
 func deriveEqual_9(this, that []string) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9935,6 +10003,7 @@ func deriveEqual_9(this, that []string) bool {
 	return true
 }
 
+// deriveEqual_10 returns whether this and that are equal.
 func deriveEqual_10(this, that []uint) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9950,6 +10019,7 @@ func deriveEqual_10(this, that []uint) bool {
 	return true
 }
 
+// deriveEqual_11 returns whether this and that are equal.
 func deriveEqual_11(this, that []uint16) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9965,6 +10035,7 @@ func deriveEqual_11(this, that []uint16) bool {
 	return true
 }
 
+// deriveEqual_12 returns whether this and that are equal.
 func deriveEqual_12(this, that []uint32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9980,6 +10051,7 @@ func deriveEqual_12(this, that []uint32) bool {
 	return true
 }
 
+// deriveEqual_13 returns whether this and that are equal.
 func deriveEqual_13(this, that []uint64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -9995,6 +10067,7 @@ func deriveEqual_13(this, that []uint64) bool {
 	return true
 }
 
+// deriveEqual_14 returns whether this and that are equal.
 func deriveEqual_14(this, that []uintptr) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10010,6 +10083,7 @@ func deriveEqual_14(this, that []uintptr) bool {
 	return true
 }
 
+// deriveEqual_15 returns whether this and that are equal.
 func deriveEqual_15(this, that []*bool) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10025,6 +10099,7 @@ func deriveEqual_15(this, that []*bool) bool {
 	return true
 }
 
+// deriveEqual_16 returns whether this and that are equal.
 func deriveEqual_16(this, that []*byte) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10040,6 +10115,7 @@ func deriveEqual_16(this, that []*byte) bool {
 	return true
 }
 
+// deriveEqual_17 returns whether this and that are equal.
 func deriveEqual_17(this, that []*complex128) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10055,6 +10131,7 @@ func deriveEqual_17(this, that []*complex128) bool {
 	return true
 }
 
+// deriveEqual_18 returns whether this and that are equal.
 func deriveEqual_18(this, that []*complex64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10070,6 +10147,7 @@ func deriveEqual_18(this, that []*complex64) bool {
 	return true
 }
 
+// deriveEqual_19 returns whether this and that are equal.
 func deriveEqual_19(this, that []*float64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10085,6 +10163,7 @@ func deriveEqual_19(this, that []*float64) bool {
 	return true
 }
 
+// deriveEqual_20 returns whether this and that are equal.
 func deriveEqual_20(this, that []*float32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10100,6 +10179,7 @@ func deriveEqual_20(this, that []*float32) bool {
 	return true
 }
 
+// deriveEqual_21 returns whether this and that are equal.
 func deriveEqual_21(this, that []*int) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10115,6 +10195,7 @@ func deriveEqual_21(this, that []*int) bool {
 	return true
 }
 
+// deriveEqual_22 returns whether this and that are equal.
 func deriveEqual_22(this, that []*int16) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10130,6 +10211,7 @@ func deriveEqual_22(this, that []*int16) bool {
 	return true
 }
 
+// deriveEqual_23 returns whether this and that are equal.
 func deriveEqual_23(this, that []*int32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10145,6 +10227,7 @@ func deriveEqual_23(this, that []*int32) bool {
 	return true
 }
 
+// deriveEqual_24 returns whether this and that are equal.
 func deriveEqual_24(this, that []*int64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10160,6 +10243,7 @@ func deriveEqual_24(this, that []*int64) bool {
 	return true
 }
 
+// deriveEqual_25 returns whether this and that are equal.
 func deriveEqual_25(this, that []*int8) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10175,6 +10259,7 @@ func deriveEqual_25(this, that []*int8) bool {
 	return true
 }
 
+// deriveEqual_26 returns whether this and that are equal.
 func deriveEqual_26(this, that []*string) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10190,6 +10275,7 @@ func deriveEqual_26(this, that []*string) bool {
 	return true
 }
 
+// deriveEqual_27 returns whether this and that are equal.
 func deriveEqual_27(this, that []*uint) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10205,6 +10291,7 @@ func deriveEqual_27(this, that []*uint) bool {
 	return true
 }
 
+// deriveEqual_28 returns whether this and that are equal.
 func deriveEqual_28(this, that []*uint16) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10220,6 +10307,7 @@ func deriveEqual_28(this, that []*uint16) bool {
 	return true
 }
 
+// deriveEqual_29 returns whether this and that are equal.
 func deriveEqual_29(this, that []*uint32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10235,6 +10323,7 @@ func deriveEqual_29(this, that []*uint32) bool {
 	return true
 }
 
+// deriveEqual_30 returns whether this and that are equal.
 func deriveEqual_30(this, that []*uint64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10250,6 +10339,7 @@ func deriveEqual_30(this, that []*uint64) bool {
 	return true
 }
 
+// deriveEqual_31 returns whether this and that are equal.
 func deriveEqual_31(this, that []*uintptr) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10265,6 +10355,7 @@ func deriveEqual_31(this, that []*uintptr) bool {
 	return true
 }
 
+// deriveEqual_32 returns whether this and that are equal.
 func deriveEqual_32(this, that [1]*bool) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10274,6 +10365,7 @@ func deriveEqual_32(this, that [1]*bool) bool {
 	return true
 }
 
+// deriveEqual_33 returns whether this and that are equal.
 func deriveEqual_33(this, that [2]*byte) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10283,6 +10375,7 @@ func deriveEqual_33(this, that [2]*byte) bool {
 	return true
 }
 
+// deriveEqual_34 returns whether this and that are equal.
 func deriveEqual_34(this, that [3]*complex128) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10292,6 +10385,7 @@ func deriveEqual_34(this, that [3]*complex128) bool {
 	return true
 }
 
+// deriveEqual_35 returns whether this and that are equal.
 func deriveEqual_35(this, that [4]*complex64) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10301,6 +10395,7 @@ func deriveEqual_35(this, that [4]*complex64) bool {
 	return true
 }
 
+// deriveEqual_36 returns whether this and that are equal.
 func deriveEqual_36(this, that [5]*float64) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10310,6 +10405,7 @@ func deriveEqual_36(this, that [5]*float64) bool {
 	return true
 }
 
+// deriveEqual_37 returns whether this and that are equal.
 func deriveEqual_37(this, that [6]*float32) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10319,6 +10415,7 @@ func deriveEqual_37(this, that [6]*float32) bool {
 	return true
 }
 
+// deriveEqual_38 returns whether this and that are equal.
 func deriveEqual_38(this, that [7]*int) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10328,6 +10425,7 @@ func deriveEqual_38(this, that [7]*int) bool {
 	return true
 }
 
+// deriveEqual_39 returns whether this and that are equal.
 func deriveEqual_39(this, that [8]*int16) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10337,6 +10435,7 @@ func deriveEqual_39(this, that [8]*int16) bool {
 	return true
 }
 
+// deriveEqual_40 returns whether this and that are equal.
 func deriveEqual_40(this, that [9]*int32) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10346,6 +10445,7 @@ func deriveEqual_40(this, that [9]*int32) bool {
 	return true
 }
 
+// deriveEqual_41 returns whether this and that are equal.
 func deriveEqual_41(this, that [10]*int64) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10355,6 +10455,7 @@ func deriveEqual_41(this, that [10]*int64) bool {
 	return true
 }
 
+// deriveEqual_42 returns whether this and that are equal.
 func deriveEqual_42(this, that [11]*int8) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10364,6 +10465,7 @@ func deriveEqual_42(this, that [11]*int8) bool {
 	return true
 }
 
+// deriveEqual_43 returns whether this and that are equal.
 func deriveEqual_43(this, that [12]*rune) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10373,6 +10475,7 @@ func deriveEqual_43(this, that [12]*rune) bool {
 	return true
 }
 
+// deriveEqual_44 returns whether this and that are equal.
 func deriveEqual_44(this, that [13]*string) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10382,6 +10485,7 @@ func deriveEqual_44(this, that [13]*string) bool {
 	return true
 }
 
+// deriveEqual_45 returns whether this and that are equal.
 func deriveEqual_45(this, that [14]*uint) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10391,6 +10495,7 @@ func deriveEqual_45(this, that [14]*uint) bool {
 	return true
 }
 
+// deriveEqual_46 returns whether this and that are equal.
 func deriveEqual_46(this, that [15]*uint16) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10400,6 +10505,7 @@ func deriveEqual_46(this, that [15]*uint16) bool {
 	return true
 }
 
+// deriveEqual_47 returns whether this and that are equal.
 func deriveEqual_47(this, that [16]*uint32) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10409,6 +10515,7 @@ func deriveEqual_47(this, that [16]*uint32) bool {
 	return true
 }
 
+// deriveEqual_48 returns whether this and that are equal.
 func deriveEqual_48(this, that [17]*uint64) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10418,6 +10525,7 @@ func deriveEqual_48(this, that [17]*uint64) bool {
 	return true
 }
 
+// deriveEqual_49 returns whether this and that are equal.
 func deriveEqual_49(this, that [18]*uint8) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10427,6 +10535,7 @@ func deriveEqual_49(this, that [18]*uint8) bool {
 	return true
 }
 
+// deriveEqual_50 returns whether this and that are equal.
 func deriveEqual_50(this, that [19]*uintptr) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10436,6 +10545,7 @@ func deriveEqual_50(this, that [19]*uintptr) bool {
 	return true
 }
 
+// deriveEqual_51 returns whether this and that are equal.
 func deriveEqual_51(this, that [10]*bool) bool {
 	for i := 0; i < len(this); i++ {
 		if !((this[i] == nil && that[i] == nil) || (this[i] != nil && that[i] != nil && *(this[i]) == *(that[i]))) {
@@ -10445,6 +10555,7 @@ func deriveEqual_51(this, that [10]*bool) bool {
 	return true
 }
 
+// deriveEqual_52 returns whether this and that are equal.
 func deriveEqual_52(this, that map[string]uint32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10464,6 +10575,7 @@ func deriveEqual_52(this, that map[string]uint32) bool {
 	return true
 }
 
+// deriveEqual_53 returns whether this and that are equal.
 func deriveEqual_53(this, that map[uint8]int64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10483,6 +10595,7 @@ func deriveEqual_53(this, that map[uint8]int64) bool {
 	return true
 }
 
+// deriveEqual_54 returns whether this and that are equal.
 func deriveEqual_54(this, that map[bool]string) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10502,6 +10615,7 @@ func deriveEqual_54(this, that map[bool]string) bool {
 	return true
 }
 
+// deriveEqual_55 returns whether this and that are equal.
 func deriveEqual_55(this, that map[string]bool) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10521,6 +10635,7 @@ func deriveEqual_55(this, that map[string]bool) bool {
 	return true
 }
 
+// deriveEqual_56 returns whether this and that are equal.
 func deriveEqual_56(this, that map[complex128]complex64) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10540,6 +10655,7 @@ func deriveEqual_56(this, that map[complex128]complex64) bool {
 	return true
 }
 
+// deriveEqual_57 returns whether this and that are equal.
 func deriveEqual_57(this, that map[float64]uint32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10559,6 +10675,7 @@ func deriveEqual_57(this, that map[float64]uint32) bool {
 	return true
 }
 
+// deriveEqual_58 returns whether this and that are equal.
 func deriveEqual_58(this, that map[uint16]uint8) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10578,6 +10695,7 @@ func deriveEqual_58(this, that map[uint16]uint8) bool {
 	return true
 }
 
+// deriveEqual_59 returns whether this and that are equal.
 func deriveEqual_59(this, that [][]int) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10593,6 +10711,7 @@ func deriveEqual_59(this, that [][]int) bool {
 	return true
 }
 
+// deriveEqual_60 returns whether this and that are equal.
 func deriveEqual_60(this, that [][]string) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10608,6 +10727,7 @@ func deriveEqual_60(this, that [][]string) bool {
 	return true
 }
 
+// deriveEqual_61 returns whether this and that are equal.
 func deriveEqual_61(this, that [][]*int) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10623,6 +10743,7 @@ func deriveEqual_61(this, that [][]*int) bool {
 	return true
 }
 
+// deriveEqual_62 returns whether this and that are equal.
 func deriveEqual_62(this, that []Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10638,6 +10759,7 @@ func deriveEqual_62(this, that []Name) bool {
 	return true
 }
 
+// deriveEqual_63 returns whether this and that are equal.
 func deriveEqual_63(this, that []*Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10653,6 +10775,7 @@ func deriveEqual_63(this, that []*Name) bool {
 	return true
 }
 
+// deriveEqual_64 returns whether this and that are equal.
 func deriveEqual_64(this, that map[Name]string) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10672,6 +10795,7 @@ func deriveEqual_64(this, that map[Name]string) bool {
 	return true
 }
 
+// deriveEqual_65 returns whether this and that are equal.
 func deriveEqual_65(this, that map[string]Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10691,6 +10815,7 @@ func deriveEqual_65(this, that map[string]Name) bool {
 	return true
 }
 
+// deriveEqual_66 returns whether this and that are equal.
 func deriveEqual_66(this, that map[string]*Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10710,6 +10835,7 @@ func deriveEqual_66(this, that map[string]*Name) bool {
 	return true
 }
 
+// deriveEqual_67 returns whether this and that are equal.
 func deriveEqual_67(this, that map[string][]Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10729,6 +10855,7 @@ func deriveEqual_67(this, that map[string][]Name) bool {
 	return true
 }
 
+// deriveEqual_68 returns whether this and that are equal.
 func deriveEqual_68(this, that map[string][]*Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10748,6 +10875,7 @@ func deriveEqual_68(this, that map[string][]*Name) bool {
 	return true
 }
 
+// deriveEqual_69 returns whether this and that are equal.
 func deriveEqual_69(this, that map[int]RecursiveType) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10767,18 +10895,21 @@ func deriveEqual_69(this, that map[int]RecursiveType) bool {
 	return true
 }
 
+// deriveEqual_70 returns whether this and that are equal.
 func deriveEqual_70(this, that *StructWithoutEqualMethod) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Num == that.Num
 }
 
+// deriveEqual_71 returns whether this and that are equal.
 func deriveEqual_71(this, that *extra.StructWithoutEqualMethod) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Number == that.Number
 }
 
+// deriveEqual_72 returns whether this and that are equal.
 func deriveEqual_72(this, that *extra.PrivateFieldAndNoEqualMethod) bool {
 	thisv := reflect.Indirect(reflect.ValueOf(this))
 	thatv := reflect.Indirect(reflect.ValueOf(that))
@@ -10791,6 +10922,7 @@ func deriveEqual_72(this, that *extra.PrivateFieldAndNoEqualMethod) bool {
 			deriveEqual_71(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr())))
 }
 
+// deriveEqual_73 returns whether this and that are equal.
 func deriveEqual_73(this, that *MyEnum) bool {
 	if this == nil && that == nil {
 		return true
@@ -10801,6 +10933,7 @@ func deriveEqual_73(this, that *MyEnum) bool {
 	return false
 }
 
+// deriveEqual_74 returns whether this and that are equal.
 func deriveEqual_74(this, that []MyEnum) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10816,6 +10949,7 @@ func deriveEqual_74(this, that []MyEnum) bool {
 	return true
 }
 
+// deriveEqual_75 returns whether this and that are equal.
 func deriveEqual_75(this, that []*MyEnum) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10831,6 +10965,7 @@ func deriveEqual_75(this, that []*MyEnum) bool {
 	return true
 }
 
+// deriveEqual_76 returns whether this and that are equal.
 func deriveEqual_76(this, that map[int32]MyEnum) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10850,6 +10985,7 @@ func deriveEqual_76(this, that map[int32]MyEnum) bool {
 	return true
 }
 
+// deriveEqual_77 returns whether this and that are equal.
 func deriveEqual_77(this, that map[MyEnum]int32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10869,6 +11005,7 @@ func deriveEqual_77(this, that map[MyEnum]int32) bool {
 	return true
 }
 
+// deriveEqual_78 returns whether this and that are equal.
 func deriveEqual_78(this, that *MySlice) bool {
 	if this == nil && that == nil {
 		return true
@@ -10890,6 +11027,7 @@ func deriveEqual_78(this, that *MySlice) bool {
 	return false
 }
 
+// deriveEqual_79 returns whether this and that are equal.
 func deriveEqual_79(this, that []MySlice) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10905,6 +11043,7 @@ func deriveEqual_79(this, that []MySlice) bool {
 	return true
 }
 
+// deriveEqual_80 returns whether this and that are equal.
 func deriveEqual_80(this, that *time.Duration) bool {
 	if this == nil && that == nil {
 		return true
@@ -10915,6 +11054,7 @@ func deriveEqual_80(this, that *time.Duration) bool {
 	return false
 }
 
+// deriveEqual_81 returns whether this and that are equal.
 func deriveEqual_81(this, that []time.Duration) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10930,6 +11070,7 @@ func deriveEqual_81(this, that []time.Duration) bool {
 	return true
 }
 
+// deriveEqual_82 returns whether this and that are equal.
 func deriveEqual_82(this, that []*time.Duration) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10945,6 +11086,7 @@ func deriveEqual_82(this, that []*time.Duration) bool {
 	return true
 }
 
+// deriveEqual_83 returns whether this and that are equal.
 func deriveEqual_83(this, that map[int]time.Duration) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10964,6 +11106,7 @@ func deriveEqual_83(this, that map[int]time.Duration) bool {
 	return true
 }
 
+// deriveEqual_84 returns whether this and that are equal.
 func deriveEqual_84(this, that map[string][]*pickle.Rick) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -10983,12 +11126,14 @@ func deriveEqual_84(this, that map[string][]*pickle.Rick) bool {
 	return true
 }
 
+// deriveEqual_85 returns whether this and that are equal.
 func deriveEqual_85(this, that *privateStruct) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			((this.ptrfield == nil && that.ptrfield == nil) || (this.ptrfield != nil && that.ptrfield != nil && *(this.ptrfield) == *(that.ptrfield)))
 }
 
+// deriveEqual_86 returns whether this and that are equal.
 func deriveEqual_86(this, that []*vendortest.AVendoredObject) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -11605,6 +11750,7 @@ func deriveCompare_N(this, that Name) int {
 	return (&this).Compare(&that)
 }
 
+// deriveEqual_87 returns whether this and that are equal.
 func deriveEqual_87(this, that []*pickle.Rick) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
@@ -11620,6 +11766,7 @@ func deriveEqual_87(this, that []*pickle.Rick) bool {
 	return true
 }
 
+// deriveEqual_88 returns whether this and that are equal.
 func deriveEqual_88(this, that *vendortest.AVendoredObject) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -11668,6 +11815,7 @@ func deriveCompare_133(this, that *pickle.Rick) int {
 	return 0
 }
 
+// deriveEqual_89 returns whether this and that are equal.
 func deriveEqual_89(this, that *pickle.Rick) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&

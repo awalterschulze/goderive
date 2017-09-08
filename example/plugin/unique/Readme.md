@@ -38,6 +38,7 @@ func deriveUnique(list []*Visitor) []*Visitor {
 	return list[:u]
 }
 
+// deriveContains returns whether the item is contained in the list.
 func deriveContains(list []*Visitor, item *Visitor) bool {
 	for _, v := range list {
 		if deriveEqual(v, item) {
@@ -47,6 +48,7 @@ func deriveContains(list []*Visitor, item *Visitor) bool {
 	return false
 }
 
+// deriveEqual returns whether this and that are equal.
 func deriveEqual(this, that *Visitor) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&

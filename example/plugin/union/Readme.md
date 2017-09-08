@@ -45,10 +45,11 @@ func deriveUnique(list []*Person) []*Person {
 	return list[:u]
 }
 
-func deriveFilter(pred func(*Person) bool, list []*Person) []*Person {
+// deriveFilter returns a list of all items in the list that matches the predicate.
+func deriveFilter(predicate func(*Person) bool, list []*Person) []*Person {
 	out := make([]*Person, 0, len(list))
 	for i, elem := range list {
-		if pred(elem) {
+		if predicate(elem) {
 			out = append(out, list[i])
 		}
 	}
@@ -64,6 +65,7 @@ func deriveUnion(union, that []*Person) []*Person {
 	return union
 }
 
+// deriveContains returns whether the item is contained in the list.
 func deriveContains(list []*Person, item *Person) bool {
 	for _, v := range list {
 		if deriveEqual(v, item) {
@@ -73,6 +75,7 @@ func deriveContains(list []*Person, item *Person) bool {
 	return false
 }
 
+// deriveEqual returns whether this and that are equal.
 func deriveEqual(this, that *Person) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&

@@ -95,10 +95,12 @@ func canEqual(tt types.Type) bool {
 func (g *gen) genFuncFor(typ *types.Slice) error {
 	p := g.printer
 	g.Generating(typ)
+	name := g.GetFuncName(typ)
 	etyp := typ.Elem()
 	typeStr := g.TypeString(etyp)
 	p.P("")
-	p.P("func %s(list []%s, item %s) bool {", g.GetFuncName(typ), typeStr, typeStr)
+	p.P("// %s returns whether the item is contained in the list.", name)
+	p.P("func %s(list []%s, item %s) bool {", name, typeStr, typeStr)
 	p.In()
 	p.P("for _, v := range list {")
 	p.In()

@@ -2,6 +2,7 @@
 
 package do
 
+// deriveDo concurrently executes the input functions f0 and f1 and when all functions are finished the first error, if any, and results are returned.
 func deriveDo(f0 func() (string, error), f1 func() (int, error)) (string, int, error) {
 	errChan := make(chan error)
 	var v0 string

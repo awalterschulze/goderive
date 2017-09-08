@@ -125,8 +125,10 @@ func (g *gen) genCurriedFunc(typ types.Type) error {
 	p := g.printer
 	g.Generating(typ)
 	typeStr := g.TypeString(typ)
+	name := g.GetFuncName(typ)
 	p.P("")
-	p.P("func %s(this %s) func(%s) bool {", g.GetFuncName(typ), typeStr, typeStr)
+	p.P("// %s returns an equal closure, with the first parameter already filled in.")
+	p.P("func %s(this %s) func(%s) bool {", name, typeStr, typeStr)
 	p.In()
 	p.P("return func(that %s) bool {", typeStr)
 	p.In()
@@ -144,8 +146,10 @@ func (g *gen) genFunc(typs []types.Type) error {
 	p := g.printer
 	g.Generating(typs...)
 	typeStr := g.TypeString(typs[0])
+	name := g.GetFuncName(typs...)
 	p.P("")
-	p.P("func %s(this, that %s) bool {", g.GetFuncName(typs...), typeStr)
+	p.P("// %s returns whether this and that are equal.", name)
+	p.P("func %s(this, that %s) bool {", name, typeStr)
 	p.In()
 	if err := g.genStatement(typs[0], "this", "that"); err != nil {
 		return nil

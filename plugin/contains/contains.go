@@ -105,7 +105,7 @@ func (g *gen) genFuncFor(typ *types.Slice) error {
 	if canEqual(etyp) {
 		p.P("if v == item {")
 	} else {
-		p.P("if %s(v, item) {", g.equal.GetFuncName(etyp))
+		p.P("if %s(v, item) {", g.equal.GetFuncName(etyp, etyp))
 	}
 	p.In()
 	p.P("return true")

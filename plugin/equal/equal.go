@@ -15,6 +15,8 @@
 // Package equal contains the implementation of the equal plugin, which generates the deriveEqual function.
 //
 // The deriveEqual function is a faster alternative to reflect.DeepEqual.
+//   deriveEqual(T, T) bool
+//   deriveEqual(T) func(T) bool
 //
 // When goderive walks over your code it is looking for a function that:
 //  - was not implemented (or was previously derived) and
@@ -100,28 +102,52 @@ type gen struct {
 }
 
 func (g *gen) Add(name string, typs []types.Type) (string, error) {
-	if len(typs) != 2 {
-		return "", fmt.Errorf("%s does not have two arguments", name)
+	if len(typs) != 2 && len(typs) != 1 {
+		return "", fmt.Errorf("%s does not have one or two arguments", name)
 	}
-	if !types.Identical(typs[0], typs[1]) {
-		return "", fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
-			name, g.TypeString(typs[0]), g.TypeString(typs[1]))
+	if len(typs) == 2 {
+		if !types.Identical(typs[0], typs[1]) {
+			return "", fmt.Errorf("%s has two arguments, but they are of different types %s != %s",
+				name, g.TypeString(typs[0]), g.TypeString(typs[1]))
+		}
 	}
-	return g.SetFuncName(name, typs[0])
+	return g.SetFuncName(name, typs...)
 }
 
 func (g *gen) Generate(typs []types.Type) error {
-	return g.genFunc(typs[0])
+	if len(typs) == 1 {
+		return g.genCurriedFunc(typs[0])
+	}
+	return g.genFunc(typs)
 }
 
-func (g *gen) genFunc(typ types.Type) error {
+func (g *gen) genCurriedFunc(typ types.Type) error {
 	p := g.printer
 	g.Generating(typ)
 	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("func %s(this, that %s) bool {", g.GetFuncName(typ), typeStr)
+	p.P("func %s(this %s) func(%s) bool {", g.GetFuncName(typ), typeStr, typeStr)
+	p.In()
+	p.P("return func(that %s) bool {", typeStr)
 	p.In()
 	if err := g.genStatement(typ, "this", "that"); err != nil {
+		return nil
+	}
+	p.Out()
+	p.P("}")
+	p.Out()
+	p.P("}")
+	return nil
+}
+
+func (g *gen) genFunc(typs []types.Type) error {
+	p := g.printer
+	g.Generating(typs...)
+	typeStr := g.TypeString(typs[0])
+	p.P("")
+	p.P("func %s(this, that %s) bool {", g.GetFuncName(typs...), typeStr)
+	p.In()
+	if err := g.genStatement(typs[0], "this", "that"); err != nil {
 		return nil
 	}
 	p.Out()
@@ -375,7 +401,7 @@ func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, 
 					// fall through to deferencing of pointers
 				}
 			} else {
-				return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
+				return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 			}
 		}
 		eqStr, err := g.field("*("+thisField+")", "*("+thatField+")", ref)
@@ -384,14 +410,14 @@ func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, 
 		}
 		return fmt.Sprintf("((%[1]s == nil && %[2]s == nil) || (%[1]s != nil && %[2]s != nil && %[3]s))", thisField, thatField, eqStr), nil
 	case *types.Array:
-		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 	case *types.Slice:
 		if b, ok := typ.Elem().(*types.Basic); ok && b.Kind() == types.Byte {
 			return fmt.Sprintf("%s.Equal(%s, %s)", g.bytesPkg(), thisField, thatField), nil
 		}
-		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 	case *types.Map:
-		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ), thisField, thatField), nil
+		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 	case *types.Struct:
 		if named, isNamed := fieldType.(*types.Named); isNamed {
 			inputType := equalMethodInputParam(named)

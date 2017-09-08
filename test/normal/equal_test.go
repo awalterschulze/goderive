@@ -162,3 +162,22 @@ func TestEqualInline(t *testing.T) {
 		}
 	})
 }
+
+func TestCurriedEqual(t *testing.T) {
+	item := &BuiltInTypes{
+		Int:     100,
+		String:  "abc",
+		Float64: r.Float64(),
+	}
+	items := random([]*BuiltInTypes{}).([]*BuiltInTypes)
+	contains := deriveAnyEqualCurry(deriveEqualCurry(item), items)
+	if contains {
+		t.Fatalf("should not be contained")
+	}
+	items = append(items, item)
+	eq := deriveEqualCurry(item)
+	contains = deriveAnyEqualCurry(eq, items)
+	if !contains {
+		t.Fatalf("expected to be contained")
+	}
+}

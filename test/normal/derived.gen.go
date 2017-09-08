@@ -4044,6 +4044,32 @@ func deriveEqual1(this, that BuiltInTypes) bool {
 	return this == that
 }
 
+func deriveEqualCurry(this *BuiltInTypes) func(*BuiltInTypes) bool {
+	return func(that *BuiltInTypes) bool {
+		return (this == nil && that == nil) ||
+			this != nil && that != nil &&
+				this.Bool == that.Bool &&
+				this.Byte == that.Byte &&
+				this.Complex128 == that.Complex128 &&
+				this.Complex64 == that.Complex64 &&
+				this.Float64 == that.Float64 &&
+				this.Float32 == that.Float32 &&
+				this.Int == that.Int &&
+				this.Int16 == that.Int16 &&
+				this.Int32 == that.Int32 &&
+				this.Int64 == that.Int64 &&
+				this.Int8 == that.Int8 &&
+				this.Rune == that.Rune &&
+				this.String == that.String &&
+				this.Uint == that.Uint &&
+				this.Uint16 == that.Uint16 &&
+				this.Uint32 == that.Uint32 &&
+				this.Uint64 == that.Uint64 &&
+				this.Uint8 == that.Uint8 &&
+				this.UintPtr == that.UintPtr
+	}
+}
+
 func deriveEqual(this, that *UseVendor) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
@@ -4503,6 +4529,16 @@ func deriveDup(c chan int) (c1, c2 <-chan int) {
 
 // deriveAny reports whether the predicate returns true for any of the elements in the given slice.
 func deriveAny(pred func(int) bool, list []int) bool {
+	for _, elem := range list {
+		if pred(elem) {
+			return true
+		}
+	}
+	return false
+}
+
+// deriveAnyEqualCurry reports whether the predicate returns true for any of the elements in the given slice.
+func deriveAnyEqualCurry(pred func(*BuiltInTypes) bool, list []*BuiltInTypes) bool {
 	for _, elem := range list {
 		if pred(elem) {
 			return true

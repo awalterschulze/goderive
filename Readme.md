@@ -159,6 +159,8 @@ For example when someone in your team adds a new field to a struct and forgets t
 Function prefixes are by default `deriveCamelCaseFunctionName`, for example `deriveEqual`.
 These are customizable using command line flags.
 
+You can derive functions for different types by using different suffixes with the same prefix. For example, if you wish to derive `Equal` for types `MyStruct` and `MySecondStruct`, name the functions `deriveEqualMyStruct` and `deriveEqualMySecondStruct` and `goderive` will derive both.
+
 Let `goderive` edit your function names in your source code, by enabling `autoname` and `dedup` using the command line flags.
 These flags respectively make sure that your functions have unique names and that you don't generate multiple functions that do the same thing.
 

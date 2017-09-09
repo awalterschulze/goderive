@@ -80,8 +80,7 @@ Recursive Functions:
     - `deriveDeepCopy(dst *T, src *T)`
     - `deriveDeepCopy(dst []T, src []T)`
     - `deriveDeepCopy(dst map[A]B, src map[A]B)`
-  - [Clone](http://godoc.org/github.com/awalterschulze/goderive/plugin/clone) 
-    - `deriveClone(T) T`
+  - [Clone](http://godoc.org/github.com/awalterschulze/goderive/plugin/clone) `deriveClone(T) T`
   - [GoString](http://godoc.org/github.com/awalterschulze/goderive/plugin/gostring) `deriveGoString(T) string` 
 
 Set Functions:

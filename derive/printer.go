@@ -64,6 +64,10 @@ func unvendor(path string) string {
 		lastvendor = lastvendor + 8
 		path = path[lastvendor:]
 	}
+	if strings.HasPrefix(path, "vendor/") {
+		lastvendor = lastvendor + 7
+		path = path[lastvendor:]
+	}
 	return path
 }
 

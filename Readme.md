@@ -200,6 +200,7 @@ These projects use goderive:
 
   - [katydid](https://github.com/katydid/katydid/blob/master/relapse/ast/derived.gen.go)
   - [go-geom](https://github.com/twpayne/go-geom/blob/master/derived.gen.go)
+  - [gominikanren](https://github.com/awalterschulze/gominikanren/blob/master/micro/derived.gen.go)
 
 Please let us know if you are using goderive by opening an issue or a pull request that adds your project to the list.
 

@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/awalterschulze/goderive.svg?branch=master)](https://travis-ci.org/awalterschulze/goderive)
 [![Go Report Card](https://goreportcard.com/badge/github.com/awalterschulze/goderive)](https://goreportcard.com/report/github.com/awalterschulze/goderive)
-![cover.run go](https://cover.run/go/github.com/awalterschulze/goderive/test/normal.svg)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square.svg)](https://godoc.org/github.com/awalterschulze/goderive)
 
 `goderive` derives mundane golang functions that you do not want to maintain and keeps them up to date.

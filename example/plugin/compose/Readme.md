@@ -20,8 +20,8 @@ func upgradeUser(endpoint, username string) error {
 
 	_, err := deriveCompose(
 		http.Get,
-		func(req *http.Response) ([]byte, error) {
-			return ioutil.ReadAll(req.Body)
+		func(resp *http.Response) ([]byte, error) {
+			return ioutil.ReadAll(resp.Body)
 		},
 		newUserFromJson,
 		newUserFromUser,

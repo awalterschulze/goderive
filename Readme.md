@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/awalterschulze/goderive.svg?branch=master)](https://travis-ci.org/awalterschulze/goderive)
 [![Go Report Card](https://goreportcard.com/badge/github.com/awalterschulze/goderive)](https://goreportcard.com/report/github.com/awalterschulze/goderive)
-![cover.run go](https://cover.run/go/github.com/awalterschulze/goderive/test/normal.svg)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square.svg)](https://godoc.org/github.com/awalterschulze/goderive)
 
 `goderive` derives mundane golang functions that you do not want to maintain and keeps them up to date.
@@ -200,6 +199,7 @@ These projects use goderive:
 
   - [katydid](https://github.com/katydid/katydid/blob/master/relapse/ast/derived.gen.go)
   - [go-geom](https://github.com/twpayne/go-geom/blob/master/derived.gen.go)
+  - [gominikanren](https://github.com/awalterschulze/gominikanren/blob/master/micro/derived.gen.go)
 
 Please let us know if you are using goderive by opening an issue or a pull request that adds your project to the list.
 

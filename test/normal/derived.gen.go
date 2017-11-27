@@ -3617,16 +3617,7 @@ func deriveUniqueInt64s(list []int64) []int64 {
 	if len(list) == 0 {
 		return nil
 	}
-	u := 1
-	for i := 1; i < len(list); i++ {
-		if !deriveContainsInt64s(list[:u], list[i]) {
-			if i != u {
-				list[u] = list[i]
-			}
-			u++
-		}
-	}
-	return list[:u]
+	return deriveKeysForInt64s(deriveSetInt64s(list))
 }
 
 // deriveUniqueStructs returns a list containing only the unique items from the input list.
@@ -3635,14 +3626,26 @@ func deriveUniqueStructs(list []*BuiltInTypes) []*BuiltInTypes {
 	if len(list) == 0 {
 		return nil
 	}
-	u := 1
-	for i := 1; i < len(list); i++ {
-		if !deriveContainsStruct(list[:u], list[i]) {
-			if i != u {
-				list[u] = list[i]
+	table := make(map[uint64][]int)
+	u := 0
+	for i := 0; i < len(list); i++ {
+		contains := false
+		hash := deriveHashBuiltInTypes(list[i])
+		indexes := table[hash]
+		for _, index := range indexes {
+			if deriveEqualPtrToBuiltInTypes(list[index], list[i]) {
+				contains = true
+				break
 			}
-			u++
 		}
+		if contains {
+			continue
+		}
+		if i != u {
+			list[u] = list[i]
+		}
+		table[hash] = append(table[hash], u)
+		u++
 	}
 	return list[:u]
 }

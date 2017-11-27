@@ -35,14 +35,26 @@ func deriveUnique(list []*Person) []*Person {
 	if len(list) == 0 {
 		return nil
 	}
-	u := 1
-	for i := 1; i < len(list); i++ {
-		if !deriveContains(list[:u], list[i]) {
-			if i != u {
-				list[u] = list[i]
+	table := make(map[uint64][]int)
+	u := 0
+	for i := 0; i < len(list); i++ {
+		contains := false
+		hash := deriveHash(list[i])
+		indexes := table[hash]
+		for _, index := range indexes {
+			if deriveEqual(list[index], list[i]) {
+				contains = true
+				break
 			}
-			u++
 		}
+		if contains {
+			continue
+		}
+		if i != u {
+			list[u] = list[i]
+		}
+		table[hash] = append(table[hash], u)
+		u++
 	}
 	return list[:u]
 }
@@ -69,6 +81,25 @@ func deriveUnion(this, that []*Person) []*Person {
 	return this
 }
 
+// deriveEqual returns whether this and that are equal.
+func deriveEqual(this, that *Person) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.Name == that.Name &&
+			((this.Vote == nil && that.Vote == nil) || (this.Vote != nil && that.Vote != nil && *(this.Vote) == *(that.Vote)))
+}
+
+// deriveHash returns the hash of the object.
+func deriveHash(object *Person) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_(object.Name)
+	h = 31*h + deriveHash_1(object.Vote)
+	return h
+}
+
 // deriveContains returns whether the item is contained in the list.
 func deriveContains(list []*Person, item *Person) bool {
 	for _, v := range list {
@@ -79,11 +110,20 @@ func deriveContains(list []*Person, item *Person) bool {
 	return false
 }
 
-// deriveEqual returns whether this and that are equal.
-func deriveEqual(this, that *Person) bool {
-	return (this == nil && that == nil) ||
-		this != nil && that != nil &&
-			this.Name == that.Name &&
-			((this.Vote == nil && that.Vote == nil) || (this.Vote != nil && that.Vote != nil && *(this.Vote) == *(that.Vote)))
+// deriveHash_ returns the hash of the object.
+func deriveHash_(object string) uint64 {
+	var h uint64
+	for _, c := range object {
+		h = 31*h + uint64(c)
+	}
+	return h
+}
+
+// deriveHash_1 returns the hash of the object.
+func deriveHash_1(object *string) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + deriveHash_(*object)
 }
 ```

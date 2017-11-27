@@ -41,14 +41,20 @@ func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Depe
 	return &gen{
 		TypesMap: typesMap,
 		printer:  p,
-		contains: deps["contains"],
+		hash:     deps["hash"],
+		keys:     deps["keys"],
+		set:      deps["set"],
+		equal:    deps["equal"],
 	}
 }
 
 type gen struct {
 	derive.TypesMap
-	printer  derive.Printer
-	contains derive.Dependency
+	printer derive.Printer
+	hash    derive.Dependency
+	keys    derive.Dependency
+	set     derive.Dependency
+	equal   derive.Dependency
 }
 
 func (g *gen) Add(name string, typs []types.Type) (string, error) {
@@ -82,19 +88,42 @@ func (g *gen) genFuncFor(typ *types.Slice) error {
 	p.P("return nil")
 	p.Out()
 	p.P("}")
-	p.P("u := 1")
-	p.P("for i := 1; i < len(list); i++ {")
+	if derive.IsComparable(typ.Elem()) {
+		maptyp := types.NewMap(typ.Elem(), types.NewStruct(nil, nil))
+		p.P("return %s(%s(list))", g.keys.GetFuncName(maptyp), g.set.GetFuncName(typ))
+		p.Out()
+		p.P("}")
+		return nil
+	}
+	p.P("table := make(map[uint64][]int)")
+	p.P("u := 0")
+	p.P("for i := 0; i < len(list); i++ {")
 	p.In()
-	p.P("if !%s(list[:u], list[i]) {", g.contains.GetFuncName(typ))
+	p.P("contains := false")
+	p.P("hash := %s(list[i])", g.hash.GetFuncName(typ.Elem()))
+	p.P("indexes := table[hash]")
+	p.P("for _, index := range indexes {")
 	p.In()
+	p.P("if %s(list[index], list[i]) {", g.equal.GetFuncName(typ.Elem(), typ.Elem()))
+	p.In()
+	p.P("contains = true")
+	p.P("break")
+	p.Out()
+	p.P("}")
+	p.Out()
+	p.P("}")
+	p.P("if contains {")
+	p.In()
+	p.P("continue")
+	p.Out()
+	p.P("}")
 	p.P("if i != u {")
 	p.In()
 	p.P("list[u] = list[i]")
 	p.Out()
 	p.P("}")
+	p.P("table[hash] = append(table[hash], u)")
 	p.P("u++")
-	p.Out()
-	p.P("}")
 	p.Out()
 	p.P("}")
 	p.P("return list[:u]")

@@ -67,3 +67,23 @@ func Zero(typ types.Type) string {
 	}
 	return "nil"
 }
+
+func IsComparable(tt types.Type) bool {
+	t := tt.Underlying()
+	switch typ := t.(type) {
+	case *types.Basic:
+		return typ.Kind() != types.UntypedNil
+	case *types.Struct:
+		for i := 0; i < typ.NumFields(); i++ {
+			f := typ.Field(i)
+			ft := f.Type()
+			if !IsComparable(ft) {
+				return false
+			}
+		}
+		return true
+	case *types.Array:
+		return IsComparable(typ.Elem())
+	}
+	return false
+}

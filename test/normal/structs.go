@@ -45,6 +45,10 @@ func (this *Empty) Clone() *Empty {
 	return deriveCloneEmpty(this)
 }
 
+func (this *Empty) Hash() uint64 {
+	return deriveHashEmpty(this)
+}
+
 type BuiltInTypes struct {
 	Bool       bool
 	Byte       byte
@@ -87,6 +91,10 @@ func (this *BuiltInTypes) Clone() *BuiltInTypes {
 	return deriveCloneBuiltInTypes(this)
 }
 
+func (this *BuiltInTypes) Hash() uint64 {
+	return deriveHashBuiltInTypes(this)
+}
+
 type PrivateBuiltInTypes struct {
 	privateBool       bool
 	privateByte       byte
@@ -119,6 +127,10 @@ func (this *PrivateBuiltInTypes) Compare(that *PrivateBuiltInTypes) int {
 
 func (this *PrivateBuiltInTypes) DeepCopy(that *PrivateBuiltInTypes) {
 	deriveDeepCopyPtrToPrivateBuiltInTypes(that, this)
+}
+
+func (this *PrivateBuiltInTypes) Hash() uint64 {
+	return deriveHashPtrToPrivateBuiltInTypes(this)
 }
 
 type PtrToBuiltInTypes struct {
@@ -163,6 +175,10 @@ func (this *PtrToBuiltInTypes) Clone() *PtrToBuiltInTypes {
 	return deriveClonePtrToBuiltInTypes(this)
 }
 
+func (this *PtrToBuiltInTypes) Hash() uint64 {
+	return deriveHashPtrToBuiltInTypes(this)
+}
+
 type SliceOfBuiltInTypes struct {
 	Bool       []bool
 	Byte       []byte
@@ -201,6 +217,10 @@ func (this *SliceOfBuiltInTypes) GoString() string {
 	return deriveGoStringSliceOfBuiltInTypes(this)
 }
 
+func (this *SliceOfBuiltInTypes) Hash() uint64 {
+	return deriveHashSliceOfBuiltInTypes(this)
+}
+
 type SliceOfPtrToBuiltInTypes struct {
 	Bool       []*bool
 	Byte       []*byte
@@ -237,6 +257,10 @@ func (this *SliceOfPtrToBuiltInTypes) DeepCopy(that *SliceOfPtrToBuiltInTypes) {
 
 func (this *SliceOfPtrToBuiltInTypes) GoString() string {
 	return deriveGoStringSliceOfPtrToBuiltInTypes(this)
+}
+
+func (this *SliceOfPtrToBuiltInTypes) Hash() uint64 {
+	return deriveHashSliceOfPtrToBuiltInTypes(this)
 }
 
 type ArrayOfBuiltInTypes struct {
@@ -279,6 +303,10 @@ func (this *ArrayOfBuiltInTypes) GoString() string {
 	return deriveGoStringArrayOfBuiltInTypes(this)
 }
 
+func (this *ArrayOfBuiltInTypes) Hash() uint64 {
+	return deriveHashArrayOfBuiltInTypes(this)
+}
+
 type ArrayOfPtrToBuiltInTypes struct {
 	Bool       [1]*bool
 	Byte       [2]*byte
@@ -319,6 +347,10 @@ func (this *ArrayOfPtrToBuiltInTypes) GoString() string {
 	return deriveGoStringArrayOfPtrToBuiltInTypes(this)
 }
 
+func (this *ArrayOfPtrToBuiltInTypes) Hash() uint64 {
+	return deriveHashArrayOfPtrToBuiltInTypes(this)
+}
+
 type MapsOfSimplerBuiltInTypes struct {
 	StringToUint32 map[string]uint32
 	Uint64ToInt64  map[uint8]int64
@@ -338,6 +370,10 @@ func (this *MapsOfSimplerBuiltInTypes) DeepCopy(that *MapsOfSimplerBuiltInTypes)
 
 func (this *MapsOfSimplerBuiltInTypes) GoString() string {
 	return deriveGoStringMapsOfSimplerBuiltInTypes(this)
+}
+
+func (this *MapsOfSimplerBuiltInTypes) Hash() uint64 {
+	return deriveHashMapsOfSimplerBuiltInTypes(this)
 }
 
 type MapsOfBuiltInTypes struct {
@@ -364,6 +400,10 @@ func (this *MapsOfBuiltInTypes) GoString() string {
 	return deriveGoStringMapsOfBuiltInTypes(this)
 }
 
+func (this *MapsOfBuiltInTypes) Hash() uint64 {
+	return deriveHashMapsOfBuiltInTypes(this)
+}
+
 type SliceToSlice struct {
 	Ints    [][]int
 	Strings [][]string
@@ -384,6 +424,10 @@ func (this *SliceToSlice) DeepCopy(that *SliceToSlice) {
 
 func (this *SliceToSlice) GoString() string {
 	return deriveGoStringSliceToSlice(this)
+}
+
+func (this *SliceToSlice) Hash() uint64 {
+	return deriveHashSliceToSlice(this)
 }
 
 type PtrTo struct {
@@ -409,6 +453,10 @@ func (this *PtrTo) GoString() string {
 	return deriveGoStringPtrTo(this)
 }
 
+func (this *PtrTo) Hash() uint64 {
+	return deriveHashPtrTo(this)
+}
+
 type Name struct {
 	Name string
 }
@@ -427,6 +475,10 @@ func (this *Name) DeepCopy(that *Name) {
 
 func (this *Name) GoString() string {
 	return deriveGoStringName(this)
+}
+
+func (this *Name) Hash() uint64 {
+	return deriveHashName(this)
 }
 
 type Structs struct {
@@ -450,6 +502,10 @@ func (this *Structs) DeepCopy(that *Structs) {
 
 func (this *Structs) GoString() string {
 	return deriveGoStringStructs(this)
+}
+
+func (this *Structs) Hash() uint64 {
+	return deriveHashStructs(this)
 }
 
 type MapWithStructs struct {
@@ -476,6 +532,10 @@ func (this *MapWithStructs) GoString() string {
 	return deriveGoStringMapWithStructs(this)
 }
 
+func (this *MapWithStructs) Hash() uint64 {
+	return deriveHashMapWithStructs(this)
+}
+
 type RecursiveType struct {
 	Bytes []byte
 	N     map[int]RecursiveType
@@ -495,6 +555,10 @@ func (this *RecursiveType) DeepCopy(that *RecursiveType) {
 
 func (this *RecursiveType) GoString() string {
 	return deriveGoStringRecursiveType(this)
+}
+
+func (this *RecursiveType) Hash() uint64 {
+	return deriveHashRecursiveType(this)
 }
 
 type EmbeddedStruct1 struct {
@@ -518,6 +582,10 @@ func (this *EmbeddedStruct1) GoString() string {
 	return deriveGoStringEmbeddedStruct1(this)
 }
 
+func (this *EmbeddedStruct1) Hash() uint64 {
+	return deriveHashEmbeddedStruct1(this)
+}
+
 type EmbeddedStruct2 struct {
 	Structs
 	*Name
@@ -537,6 +605,10 @@ func (this *EmbeddedStruct2) DeepCopy(that *EmbeddedStruct2) {
 
 func (this *EmbeddedStruct2) GoString() string {
 	return deriveGoStringEmbeddedStruct2(this)
+}
+
+func (this *EmbeddedStruct2) Hash() uint64 {
+	return deriveHashEmbeddedStruct2(this)
 }
 
 type UnnamedStruct struct {
@@ -574,6 +646,10 @@ func (this *StructWithStructFieldWithoutEqualMethod) GoString() string {
 	return deriveGoStringStructWithStructFieldWithoutEqualMethod(this)
 }
 
+func (this *StructWithStructFieldWithoutEqualMethod) Hash() uint64 {
+	return deriveHashStructWithStructFieldWithoutEqualMethod(this)
+}
+
 type StructWithoutEqualMethod struct {
 	Num int64
 }
@@ -597,6 +673,10 @@ func (this *StructWithStructWithFromAnotherPackage) DeepCopy(that *StructWithStr
 
 func (this *StructWithStructWithFromAnotherPackage) GoString() string {
 	return deriveGoStringStructWithStructWithFromAnotherPackage(this)
+}
+
+func (this *StructWithStructWithFromAnotherPackage) Hash() uint64 {
+	return deriveHashStructWithStructWithFromAnotherPackage(this)
 }
 
 type FieldWithStructWithPrivateFields struct {
@@ -643,6 +723,10 @@ func (this *Enums) GoString() string {
 	return deriveGoStringEnums(this)
 }
 
+func (this *Enums) Hash() uint64 {
+	return deriveHashEnums(this)
+}
+
 type NamedTypes struct {
 	Slice        MySlice
 	PtrToSlice   *MySlice
@@ -665,6 +749,10 @@ func (this *NamedTypes) DeepCopy(that *NamedTypes) {
 
 func (this *NamedTypes) GoString() string {
 	return deriveGoStringNamedTypes(this)
+}
+
+func (this *NamedTypes) Hash() uint64 {
+	return deriveHashNamedTypes(this)
 }
 
 type Time struct {
@@ -719,6 +807,10 @@ func (this *Duration) GoString() string {
 	return deriveGoStringDuration(this)
 }
 
+func (this *Duration) Hash() uint64 {
+	return deriveHashDuration(this)
+}
+
 type Nickname struct {
 	Alias map[string][]*pickle.Rick
 }
@@ -737,6 +829,10 @@ func (this *Nickname) DeepCopy(that *Nickname) {
 
 func (this *Nickname) GoString() string {
 	return deriveGoStringNickname(this)
+}
+
+func (this *Nickname) Hash() uint64 {
+	return deriveHashNickname(this)
 }
 
 type privateStruct struct {
@@ -775,4 +871,8 @@ func (this *PrivateEmbedded) DeepCopy(that *PrivateEmbedded) {
 
 func (this *PrivateEmbedded) GoString() string {
 	return deriveGoStringPrivateEmbedded(this)
+}
+
+func (this *PrivateEmbedded) Hash() uint64 {
+	return deriveHashPrivateEmbedded(this)
 }

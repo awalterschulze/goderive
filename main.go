@@ -37,6 +37,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/flip"
 	"github.com/awalterschulze/goderive/plugin/fmap"
 	"github.com/awalterschulze/goderive/plugin/gostring"
+	"github.com/awalterschulze/goderive/plugin/hash"
 	"github.com/awalterschulze/goderive/plugin/intersect"
 	"github.com/awalterschulze/goderive/plugin/join"
 	"github.com/awalterschulze/goderive/plugin/keys"
@@ -87,6 +88,7 @@ func main() {
 		pipeline.NewPlugin(),
 		dup.NewPlugin(),
 		clone.NewPlugin(),
+		hash.NewPlugin(),
 	}
 	log.SetFlags(0)
 	flag.Parse()

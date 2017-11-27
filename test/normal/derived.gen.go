@@ -7,6 +7,7 @@ import (
 	"fmt"
 	extra "github.com/awalterschulze/goderive/test/extra"
 	pickle "github.com/awalterschulze/goderive/test/nickname"
+	"math"
 	"reflect"
 	"sort"
 	"strings"
@@ -4603,6 +4604,478 @@ func deriveJoinVariantOfSendRecvChannels(c0 chan int, c1 chan int) <-chan int {
 	return out
 }
 
+// deriveHashEmpty returns the hash of the object.
+func deriveHashEmpty(object *Empty) uint64 {
+	if object == nil {
+		return 0
+	}
+	return 17
+}
+
+// deriveHashBuiltInTypes returns the hash of the object.
+func deriveHashBuiltInTypes(object *BuiltInTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash(object.Bool)
+	h = 31*h + uint64(object.Byte)
+	h = 31*h + (31 * ((31 * 17) + math.Float64bits(real(object.Complex128)))) + math.Float64bits(imag(object.Complex128))
+	h = 31*h + (31 * ((31 * 17) + uint64(math.Float32bits(real(object.Complex64))))) + uint64(math.Float32bits(imag(object.Complex64)))
+	h = 31*h + math.Float64bits(object.Float64)
+	h = 31*h + uint64(math.Float32bits(object.Float32))
+	h = 31*h + uint64(object.Int)
+	h = 31*h + uint64(object.Int16)
+	h = 31*h + uint64(object.Int32)
+	h = 31*h + uint64(object.Int64)
+	h = 31*h + uint64(object.Int8)
+	h = 31*h + uint64(object.Rune)
+	h = 31*h + deriveHash_(object.String)
+	h = 31*h + uint64(object.Uint)
+	h = 31*h + uint64(object.Uint16)
+	h = 31*h + uint64(object.Uint32)
+	h = 31*h + object.Uint64
+	h = 31*h + uint64(object.Uint8)
+	h = 31*h + uint64(object.UintPtr)
+	return h
+}
+
+// deriveHashPtrToPrivateBuiltInTypes returns the hash of the object.
+func deriveHashPtrToPrivateBuiltInTypes(object *PrivateBuiltInTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash(object.privateBool)
+	h = 31*h + uint64(object.privateByte)
+	h = 31*h + (31 * ((31 * 17) + math.Float64bits(real(object.privateComplex128)))) + math.Float64bits(imag(object.privateComplex128))
+	h = 31*h + (31 * ((31 * 17) + uint64(math.Float32bits(real(object.privateComplex64))))) + uint64(math.Float32bits(imag(object.privateComplex64)))
+	h = 31*h + math.Float64bits(object.privateFloat64)
+	h = 31*h + uint64(math.Float32bits(object.privateFloat32))
+	h = 31*h + uint64(object.privateInt)
+	h = 31*h + uint64(object.privateInt16)
+	h = 31*h + uint64(object.privateInt32)
+	h = 31*h + uint64(object.privateInt64)
+	h = 31*h + uint64(object.privateInt8)
+	h = 31*h + uint64(object.privateRune)
+	h = 31*h + deriveHash_(object.privateString)
+	h = 31*h + uint64(object.privateUint)
+	h = 31*h + uint64(object.privateUint16)
+	h = 31*h + uint64(object.privateUint32)
+	h = 31*h + object.privateUint64
+	h = 31*h + uint64(object.privateUint8)
+	h = 31*h + uint64(object.privateUintPtr)
+	return h
+}
+
+// deriveHashPtrToBuiltInTypes returns the hash of the object.
+func deriveHashPtrToBuiltInTypes(object *PtrToBuiltInTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_1(object.Bool)
+	h = 31*h + deriveHash_2(object.Byte)
+	h = 31*h + deriveHash_3(object.Complex128)
+	h = 31*h + deriveHash_4(object.Complex64)
+	h = 31*h + deriveHash_5(object.Float64)
+	h = 31*h + deriveHash_6(object.Float32)
+	h = 31*h + deriveHashPtrToint(object.Int)
+	h = 31*h + deriveHash_7(object.Int16)
+	h = 31*h + deriveHash_8(object.Int32)
+	h = 31*h + deriveHash_9(object.Int64)
+	h = 31*h + deriveHash_10(object.Int8)
+	h = 31*h + deriveHash_8(object.Rune)
+	h = 31*h + deriveHash_11(object.String)
+	h = 31*h + deriveHash_12(object.Uint)
+	h = 31*h + deriveHash_13(object.Uint16)
+	h = 31*h + deriveHash_14(object.Uint32)
+	h = 31*h + deriveHash_15(object.Uint64)
+	h = 31*h + deriveHash_2(object.Uint8)
+	h = 31*h + deriveHash_16(object.UintPtr)
+	return h
+}
+
+// deriveHashSliceOfBuiltInTypes returns the hash of the object.
+func deriveHashSliceOfBuiltInTypes(object *SliceOfBuiltInTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_17(object.Bool)
+	h = 31*h + deriveHash_18(object.Byte)
+	h = 31*h + deriveHash_19(object.Complex128)
+	h = 31*h + deriveHash_20(object.Complex64)
+	h = 31*h + deriveHash_21(object.Float64)
+	h = 31*h + deriveHash_22(object.Float32)
+	h = 31*h + deriveHashSliceOfint(object.Int)
+	h = 31*h + deriveHash_23(object.Int16)
+	h = 31*h + deriveHash_24(object.Int32)
+	h = 31*h + deriveHash_25(object.Int64)
+	h = 31*h + deriveHash_26(object.Int8)
+	h = 31*h + deriveHash_24(object.Rune)
+	h = 31*h + deriveHash_27(object.String)
+	h = 31*h + deriveHash_28(object.Uint)
+	h = 31*h + deriveHash_29(object.Uint16)
+	h = 31*h + deriveHash_30(object.Uint32)
+	h = 31*h + deriveHash_31(object.Uint64)
+	h = 31*h + deriveHash_18(object.Uint8)
+	h = 31*h + deriveHash_32(object.UintPtr)
+	return h
+}
+
+// deriveHashSliceOfPtrToBuiltInTypes returns the hash of the object.
+func deriveHashSliceOfPtrToBuiltInTypes(object *SliceOfPtrToBuiltInTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_33(object.Bool)
+	h = 31*h + deriveHash_34(object.Byte)
+	h = 31*h + deriveHash_35(object.Complex128)
+	h = 31*h + deriveHash_36(object.Complex64)
+	h = 31*h + deriveHash_37(object.Float64)
+	h = 31*h + deriveHash_38(object.Float32)
+	h = 31*h + deriveHash_39(object.Int)
+	h = 31*h + deriveHash_40(object.Int16)
+	h = 31*h + deriveHash_41(object.Int32)
+	h = 31*h + deriveHash_42(object.Int64)
+	h = 31*h + deriveHash_43(object.Int8)
+	h = 31*h + deriveHash_41(object.Rune)
+	h = 31*h + deriveHash_44(object.String)
+	h = 31*h + deriveHash_45(object.Uint)
+	h = 31*h + deriveHash_46(object.Uint16)
+	h = 31*h + deriveHash_47(object.Uint32)
+	h = 31*h + deriveHash_48(object.Uint64)
+	h = 31*h + deriveHash_34(object.Uint8)
+	h = 31*h + deriveHash_49(object.UintPtr)
+	return h
+}
+
+// deriveHashArrayOfBuiltInTypes returns the hash of the object.
+func deriveHashArrayOfBuiltInTypes(object *ArrayOfBuiltInTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_50(object.Bool)
+	h = 31*h + deriveHash_51(object.Byte)
+	h = 31*h + deriveHash_52(object.Complex128)
+	h = 31*h + deriveHash_53(object.Complex64)
+	h = 31*h + deriveHash_54(object.Float64)
+	h = 31*h + deriveHash_55(object.Float32)
+	h = 31*h + deriveHash_56(object.Int)
+	h = 31*h + deriveHash_57(object.Int16)
+	h = 31*h + deriveHash_58(object.Int32)
+	h = 31*h + deriveHash_59(object.Int64)
+	h = 31*h + deriveHash_60(object.Int8)
+	h = 31*h + deriveHash_61(object.Rune)
+	h = 31*h + deriveHash_62(object.String)
+	h = 31*h + deriveHash_63(object.Uint)
+	h = 31*h + deriveHash_64(object.Uint16)
+	h = 31*h + deriveHash_65(object.Uint32)
+	h = 31*h + deriveHash_66(object.Uint64)
+	h = 31*h + deriveHash_67(object.Uint8)
+	h = 31*h + deriveHash_68(object.UintPtr)
+	h = 31*h + deriveHash_69(object.AnotherBoolOfDifferentSize)
+	return h
+}
+
+// deriveHashArrayOfPtrToBuiltInTypes returns the hash of the object.
+func deriveHashArrayOfPtrToBuiltInTypes(object *ArrayOfPtrToBuiltInTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_70(object.Bool)
+	h = 31*h + deriveHash_71(object.Byte)
+	h = 31*h + deriveHash_72(object.Complex128)
+	h = 31*h + deriveHash_73(object.Complex64)
+	h = 31*h + deriveHash_74(object.Float64)
+	h = 31*h + deriveHash_75(object.Float32)
+	h = 31*h + deriveHash_76(object.Int)
+	h = 31*h + deriveHash_77(object.Int16)
+	h = 31*h + deriveHash_78(object.Int32)
+	h = 31*h + deriveHash_79(object.Int64)
+	h = 31*h + deriveHash_80(object.Int8)
+	h = 31*h + deriveHash_81(object.Rune)
+	h = 31*h + deriveHash_82(object.String)
+	h = 31*h + deriveHash_83(object.Uint)
+	h = 31*h + deriveHash_84(object.Uint16)
+	h = 31*h + deriveHash_85(object.Uint32)
+	h = 31*h + deriveHash_86(object.Uint64)
+	h = 31*h + deriveHash_87(object.Uint8)
+	h = 31*h + deriveHash_88(object.UintPtr)
+	h = 31*h + deriveHash_89(object.AnotherBoolOfDifferentSize)
+	return h
+}
+
+// deriveHashMapsOfSimplerBuiltInTypes returns the hash of the object.
+func deriveHashMapsOfSimplerBuiltInTypes(object *MapsOfSimplerBuiltInTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_90(object.StringToUint32)
+	h = 31*h + deriveHash_91(object.Uint64ToInt64)
+	return h
+}
+
+// deriveHashMapsOfBuiltInTypes returns the hash of the object.
+func deriveHashMapsOfBuiltInTypes(object *MapsOfBuiltInTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_92(object.BoolToString)
+	h = 31*h + deriveHash_93(object.StringToBool)
+	h = 31*h + deriveHash_94(object.Complex128ToComplex64)
+	h = 31*h + deriveHash_95(object.Float64ToUint32)
+	h = 31*h + deriveHash_96(object.Uint16ToUint8)
+	return h
+}
+
+// deriveHashSliceToSlice returns the hash of the object.
+func deriveHashSliceToSlice(object *SliceToSlice) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_97(object.Ints)
+	h = 31*h + deriveHash_98(object.Strings)
+	h = 31*h + deriveHash_99(object.IntPtrs)
+	return h
+}
+
+// deriveHashPtrTo returns the hash of the object.
+func deriveHashPtrTo(object *PtrTo) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHashPtrToint(object.Basic)
+	h = 31*h + deriveHashPtrToSliceOfint(object.Slice)
+	h = 31*h + deriveHash_100(object.Array)
+	h = 31*h + deriveHashPtrToMapOfintToint(object.Map)
+	return h
+}
+
+// deriveHashName returns the hash of the object.
+func deriveHashName(object *Name) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_(object.Name)
+	return h
+}
+
+// deriveHashStructs returns the hash of the object.
+func deriveHashStructs(object *Structs) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_N(object.Struct)
+	h = 31*h + deriveHashName(object.PtrToStruct)
+	h = 31*h + deriveHash_101(object.SliceOfStructs)
+	h = 31*h + deriveHash_102(object.SliceToPtrOfStruct)
+	return h
+}
+
+// deriveHashMapWithStructs returns the hash of the object.
+func deriveHashMapWithStructs(object *MapWithStructs) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_103(object.NameToString)
+	h = 31*h + deriveHash_104(object.StringToName)
+	h = 31*h + deriveHash_105(object.StringToPtrToName)
+	h = 31*h + deriveHash_106(object.StringToSliceOfName)
+	h = 31*h + deriveHash_107(object.StringToSliceOfPtrToName)
+	return h
+}
+
+// deriveHashRecursiveType returns the hash of the object.
+func deriveHashRecursiveType(object *RecursiveType) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_18(object.Bytes)
+	h = 31*h + deriveHash_108(object.N)
+	return h
+}
+
+// deriveHashEmbeddedStruct1 returns the hash of the object.
+func deriveHashEmbeddedStruct1(object *EmbeddedStruct1) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_N(object.Name)
+	h = 31*h + deriveHashStructs(object.Structs)
+	return h
+}
+
+// deriveHashEmbeddedStruct2 returns the hash of the object.
+func deriveHashEmbeddedStruct2(object *EmbeddedStruct2) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_S(object.Structs)
+	h = 31*h + deriveHashName(object.Name)
+	return h
+}
+
+// deriveHashStructWithStructFieldWithoutEqualMethod returns the hash of the object.
+func deriveHashStructWithStructFieldWithoutEqualMethod(object *StructWithStructFieldWithoutEqualMethod) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_109(object.A)
+	h = 31*h + deriveHash_St(object.B)
+	return h
+}
+
+// deriveHashStructWithStructWithFromAnotherPackage returns the hash of the object.
+func deriveHashStructWithStructWithFromAnotherPackage(object *StructWithStructWithFromAnotherPackage) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_110(object.A)
+	h = 31*h + deriveHash_Str(object.B)
+	return h
+}
+
+// deriveHashEnums returns the hash of the object.
+func deriveHashEnums(object *Enums) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + uint64(object.Enum)
+	h = 31*h + deriveHash_111(object.PtrToEnum)
+	h = 31*h + deriveHash_112(object.SliceToEnum)
+	h = 31*h + deriveHash_113(object.SliceToPtrToEnum)
+	h = 31*h + deriveHash_114(object.MapToEnum)
+	h = 31*h + deriveHash_115(object.EnumToMap)
+	h = 31*h + deriveHash_116(object.ArrayEnum)
+	return h
+}
+
+// deriveHashNamedTypes returns the hash of the object.
+func deriveHashNamedTypes(object *NamedTypes) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_25(object.Slice)
+	h = 31*h + deriveHash_117(object.PtrToSlice)
+	h = 31*h + deriveHash_118(object.SliceToSlice)
+	return h
+}
+
+// deriveHashDuration returns the hash of the object.
+func deriveHashDuration(object *Duration) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + uint64(object.D)
+	h = 31*h + deriveHash_119(object.P)
+	h = 31*h + deriveHash_120(object.Ds)
+	h = 31*h + deriveHash_121(object.DPs)
+	h = 31*h + deriveHash_122(object.MD)
+	return h
+}
+
+// deriveHashNickname returns the hash of the object.
+func deriveHashNickname(object *Nickname) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_123(object.Alias)
+	return h
+}
+
+// deriveHashPrivateEmbedded returns the hash of the object.
+func deriveHashPrivateEmbedded(object *PrivateEmbedded) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_p(object.privateStruct)
+	return h
+}
+
+// deriveHashSliceOfint returns the hash of the object.
+func deriveHashSliceOfint(object []int) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHashMapOfintToint returns the hash of the object.
+func deriveHashMapOfintToint(object map[int]int) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedInts(deriveKeys(object)) {
+		h = 31*h + uint64(k)
+		h = 31*h + uint64(object[k])
+	}
+	return h
+}
+
+// deriveHashPtrToint returns the hash of the object.
+func deriveHashPtrToint(object *int) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHashPtrToSliceOfint returns the hash of the object.
+func deriveHashPtrToSliceOfint(object *[]int) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + deriveHashSliceOfint(*object)
+}
+
+// deriveHashPtrToArray10Ofint returns the hash of the object.
+func deriveHashPtrToArray10Ofint(object *[10]int) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + deriveHash_124(*object)
+}
+
+// deriveHashPtrToMapOfintToint returns the hash of the object.
+func deriveHashPtrToMapOfintToint(object *map[int]int) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + deriveHashMapOfintToint(*object)
+}
+
+// deriveHash1 returns the hash of the object.
+func deriveHash1(object BuiltInTypes) uint64 {
+	return deriveHashBuiltInTypes(&object)
+}
+
 // deriveFmapForKeys returns a list where each element of the input list has been morphed by the input function.
 func deriveFmapForKeys(f func(int) string, list []int) []string {
 	out := make([]string, len(list))
@@ -8815,8 +9288,8 @@ func deriveCompare_92(this, that map[string]uint32) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedStrings(deriveKeys(this))
-	thatkeys := deriveSortedStrings(deriveKeys(that))
+	thiskeys := deriveSortedStrings(deriveKeys_(this))
+	thatkeys := deriveSortedStrings(deriveKeys_(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -8854,8 +9327,8 @@ func deriveCompare_93(this, that map[uint8]int64) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort(deriveKeys_(this))
-	thatkeys := deriveSort(deriveKeys_(that))
+	thiskeys := deriveSort(deriveKeys_1(this))
+	thatkeys := deriveSort(deriveKeys_1(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -8893,8 +9366,8 @@ func deriveCompare_94(this, that map[bool]string) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort_(deriveKeys_1(this))
-	thatkeys := deriveSort_(deriveKeys_1(that))
+	thiskeys := deriveSort_(deriveKeys_2(this))
+	thatkeys := deriveSort_(deriveKeys_2(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -8932,8 +9405,8 @@ func deriveCompare_95(this, that map[string]bool) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedStrings(deriveKeys_2(this))
-	thatkeys := deriveSortedStrings(deriveKeys_2(that))
+	thiskeys := deriveSortedStrings(deriveKeys_3(this))
+	thatkeys := deriveSortedStrings(deriveKeys_3(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -8971,8 +9444,8 @@ func deriveCompare_96(this, that map[complex128]complex64) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort_1(deriveKeys_3(this))
-	thatkeys := deriveSort_1(deriveKeys_3(that))
+	thiskeys := deriveSort_1(deriveKeys_4(this))
+	thatkeys := deriveSort_1(deriveKeys_4(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9010,8 +9483,8 @@ func deriveCompare_97(this, that map[float64]uint32) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort_2(deriveKeys_4(this))
-	thatkeys := deriveSort_2(deriveKeys_4(that))
+	thiskeys := deriveSort_2(deriveKeys_5(this))
+	thatkeys := deriveSort_2(deriveKeys_5(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9049,8 +9522,8 @@ func deriveCompare_98(this, that map[uint16]uint8) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort_3(deriveKeys_5(this))
-	thatkeys := deriveSort_3(deriveKeys_5(that))
+	thiskeys := deriveSort_3(deriveKeys_6(this))
+	thatkeys := deriveSort_3(deriveKeys_6(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9279,8 +9752,8 @@ func deriveCompare_107(this, that map[Name]string) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort_4(deriveKeys_6(this))
-	thatkeys := deriveSort_4(deriveKeys_6(that))
+	thiskeys := deriveSort_4(deriveKeys_7(this))
+	thatkeys := deriveSort_4(deriveKeys_7(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9318,8 +9791,8 @@ func deriveCompare_108(this, that map[string]Name) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedStrings(deriveKeys_7(this))
-	thatkeys := deriveSortedStrings(deriveKeys_7(that))
+	thiskeys := deriveSortedStrings(deriveKeys_8(this))
+	thatkeys := deriveSortedStrings(deriveKeys_8(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9357,8 +9830,8 @@ func deriveCompare_109(this, that map[string]*Name) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedStrings(deriveKeys_8(this))
-	thatkeys := deriveSortedStrings(deriveKeys_8(that))
+	thiskeys := deriveSortedStrings(deriveKeys_9(this))
+	thatkeys := deriveSortedStrings(deriveKeys_9(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9396,8 +9869,8 @@ func deriveCompare_110(this, that map[string][]Name) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedStrings(deriveKeys_9(this))
-	thatkeys := deriveSortedStrings(deriveKeys_9(that))
+	thiskeys := deriveSortedStrings(deriveKeys_10(this))
+	thatkeys := deriveSortedStrings(deriveKeys_10(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9435,8 +9908,8 @@ func deriveCompare_111(this, that map[string][]*Name) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedStrings(deriveKeys_10(this))
-	thatkeys := deriveSortedStrings(deriveKeys_10(that))
+	thiskeys := deriveSortedStrings(deriveKeys_11(this))
+	thatkeys := deriveSortedStrings(deriveKeys_11(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9474,8 +9947,8 @@ func deriveCompare_112(this, that map[int]RecursiveType) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedInts(deriveKeys_11(this))
-	thatkeys := deriveSortedInts(deriveKeys_11(that))
+	thiskeys := deriveSortedInts(deriveKeys_12(this))
+	thatkeys := deriveSortedInts(deriveKeys_12(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9675,8 +10148,8 @@ func deriveCompare_119(this, that map[int32]MyEnum) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort_5(deriveKeys_12(this))
-	thatkeys := deriveSort_5(deriveKeys_12(that))
+	thiskeys := deriveSort_5(deriveKeys_13(this))
+	thatkeys := deriveSort_5(deriveKeys_13(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9714,8 +10187,8 @@ func deriveCompare_120(this, that map[MyEnum]int32) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort_6(deriveKeys_13(this))
-	thatkeys := deriveSort_6(deriveKeys_13(that))
+	thiskeys := deriveSort_6(deriveKeys_14(this))
+	thatkeys := deriveSort_6(deriveKeys_14(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9905,8 +10378,8 @@ func deriveCompare_127(this, that map[int]time.Duration) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedInts(deriveKeys_14(this))
-	thatkeys := deriveSortedInts(deriveKeys_14(that))
+	thiskeys := deriveSortedInts(deriveKeys_15(this))
+	thatkeys := deriveSortedInts(deriveKeys_15(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -9944,8 +10417,8 @@ func deriveCompare_128(this, that map[string][]*pickle.Rick) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedStrings(deriveKeys_15(this))
-	thatkeys := deriveSortedStrings(deriveKeys_15(that))
+	thiskeys := deriveSortedStrings(deriveKeys_16(this))
+	thatkeys := deriveSortedStrings(deriveKeys_16(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -11362,8 +11835,8 @@ func deriveSort_6(list []MyEnum) []MyEnum {
 }
 
 // deriveKeys returns the keys of the input map as a slice.
-func deriveKeys(m map[string]uint32) []string {
-	keys := make([]string, 0, len(m))
+func deriveKeys(m map[int]int) []int {
+	keys := make([]int, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
@@ -11371,8 +11844,8 @@ func deriveKeys(m map[string]uint32) []string {
 }
 
 // deriveKeys_ returns the keys of the input map as a slice.
-func deriveKeys_(m map[uint8]int64) []uint8 {
-	keys := make([]uint8, 0, len(m))
+func deriveKeys_(m map[string]uint32) []string {
+	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
@@ -11380,8 +11853,8 @@ func deriveKeys_(m map[uint8]int64) []uint8 {
 }
 
 // deriveKeys_1 returns the keys of the input map as a slice.
-func deriveKeys_1(m map[bool]string) []bool {
-	keys := make([]bool, 0, len(m))
+func deriveKeys_1(m map[uint8]int64) []uint8 {
+	keys := make([]uint8, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
@@ -11389,8 +11862,8 @@ func deriveKeys_1(m map[bool]string) []bool {
 }
 
 // deriveKeys_2 returns the keys of the input map as a slice.
-func deriveKeys_2(m map[string]bool) []string {
-	keys := make([]string, 0, len(m))
+func deriveKeys_2(m map[bool]string) []bool {
+	keys := make([]bool, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
@@ -11398,43 +11871,7 @@ func deriveKeys_2(m map[string]bool) []string {
 }
 
 // deriveKeys_3 returns the keys of the input map as a slice.
-func deriveKeys_3(m map[complex128]complex64) []complex128 {
-	keys := make([]complex128, 0, len(m))
-	for key := range m {
-		keys = append(keys, key)
-	}
-	return keys
-}
-
-// deriveKeys_4 returns the keys of the input map as a slice.
-func deriveKeys_4(m map[float64]uint32) []float64 {
-	keys := make([]float64, 0, len(m))
-	for key := range m {
-		keys = append(keys, key)
-	}
-	return keys
-}
-
-// deriveKeys_5 returns the keys of the input map as a slice.
-func deriveKeys_5(m map[uint16]uint8) []uint16 {
-	keys := make([]uint16, 0, len(m))
-	for key := range m {
-		keys = append(keys, key)
-	}
-	return keys
-}
-
-// deriveKeys_6 returns the keys of the input map as a slice.
-func deriveKeys_6(m map[Name]string) []Name {
-	keys := make([]Name, 0, len(m))
-	for key := range m {
-		keys = append(keys, key)
-	}
-	return keys
-}
-
-// deriveKeys_7 returns the keys of the input map as a slice.
-func deriveKeys_7(m map[string]Name) []string {
+func deriveKeys_3(m map[string]bool) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
@@ -11442,8 +11879,44 @@ func deriveKeys_7(m map[string]Name) []string {
 	return keys
 }
 
+// deriveKeys_4 returns the keys of the input map as a slice.
+func deriveKeys_4(m map[complex128]complex64) []complex128 {
+	keys := make([]complex128, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_5 returns the keys of the input map as a slice.
+func deriveKeys_5(m map[float64]uint32) []float64 {
+	keys := make([]float64, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_6 returns the keys of the input map as a slice.
+func deriveKeys_6(m map[uint16]uint8) []uint16 {
+	keys := make([]uint16, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_7 returns the keys of the input map as a slice.
+func deriveKeys_7(m map[Name]string) []Name {
+	keys := make([]Name, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
 // deriveKeys_8 returns the keys of the input map as a slice.
-func deriveKeys_8(m map[string]*Name) []string {
+func deriveKeys_8(m map[string]Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
@@ -11452,7 +11925,7 @@ func deriveKeys_8(m map[string]*Name) []string {
 }
 
 // deriveKeys_9 returns the keys of the input map as a slice.
-func deriveKeys_9(m map[string][]Name) []string {
+func deriveKeys_9(m map[string]*Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
@@ -11461,7 +11934,7 @@ func deriveKeys_9(m map[string][]Name) []string {
 }
 
 // deriveKeys_10 returns the keys of the input map as a slice.
-func deriveKeys_10(m map[string][]*Name) []string {
+func deriveKeys_10(m map[string][]Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
@@ -11470,8 +11943,8 @@ func deriveKeys_10(m map[string][]*Name) []string {
 }
 
 // deriveKeys_11 returns the keys of the input map as a slice.
-func deriveKeys_11(m map[int]RecursiveType) []int {
-	keys := make([]int, 0, len(m))
+func deriveKeys_11(m map[string][]*Name) []string {
+	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
@@ -11479,25 +11952,7 @@ func deriveKeys_11(m map[int]RecursiveType) []int {
 }
 
 // deriveKeys_12 returns the keys of the input map as a slice.
-func deriveKeys_12(m map[int32]MyEnum) []int32 {
-	keys := make([]int32, 0, len(m))
-	for key := range m {
-		keys = append(keys, key)
-	}
-	return keys
-}
-
-// deriveKeys_13 returns the keys of the input map as a slice.
-func deriveKeys_13(m map[MyEnum]int32) []MyEnum {
-	keys := make([]MyEnum, 0, len(m))
-	for key := range m {
-		keys = append(keys, key)
-	}
-	return keys
-}
-
-// deriveKeys_14 returns the keys of the input map as a slice.
-func deriveKeys_14(m map[int]time.Duration) []int {
+func deriveKeys_12(m map[int]RecursiveType) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
@@ -11505,13 +11960,1377 @@ func deriveKeys_14(m map[int]time.Duration) []int {
 	return keys
 }
 
+// deriveKeys_13 returns the keys of the input map as a slice.
+func deriveKeys_13(m map[int32]MyEnum) []int32 {
+	keys := make([]int32, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_14 returns the keys of the input map as a slice.
+func deriveKeys_14(m map[MyEnum]int32) []MyEnum {
+	keys := make([]MyEnum, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
 // deriveKeys_15 returns the keys of the input map as a slice.
-func deriveKeys_15(m map[string][]*pickle.Rick) []string {
+func deriveKeys_15(m map[int]time.Duration) []int {
+	keys := make([]int, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_16 returns the keys of the input map as a slice.
+func deriveKeys_16(m map[string][]*pickle.Rick) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
 	return keys
+}
+
+// deriveHash returns the hash of the object.
+func deriveHash(object bool) uint64 {
+	if object {
+		return 1
+	}
+	return 0
+}
+
+// deriveHash_ returns the hash of the object.
+func deriveHash_(object string) uint64 {
+	var h uint64
+	for _, c := range object {
+		h = 31*h + uint64(c)
+	}
+	return h
+}
+
+// deriveHash_1 returns the hash of the object.
+func deriveHash_1(object *bool) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + deriveHash(*object)
+}
+
+// deriveHash_2 returns the hash of the object.
+func deriveHash_2(object *byte) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_3 returns the hash of the object.
+func deriveHash_3(object *complex128) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + (31 * ((31 * 17) + math.Float64bits(real(*object)))) + math.Float64bits(imag(*object))
+}
+
+// deriveHash_4 returns the hash of the object.
+func deriveHash_4(object *complex64) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + (31 * ((31 * 17) + uint64(math.Float32bits(real(*object))))) + uint64(math.Float32bits(imag(*object)))
+}
+
+// deriveHash_5 returns the hash of the object.
+func deriveHash_5(object *float64) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + math.Float64bits(*object)
+}
+
+// deriveHash_6 returns the hash of the object.
+func deriveHash_6(object *float32) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(math.Float32bits(*object))
+}
+
+// deriveHash_7 returns the hash of the object.
+func deriveHash_7(object *int16) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_8 returns the hash of the object.
+func deriveHash_8(object *int32) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_9 returns the hash of the object.
+func deriveHash_9(object *int64) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_10 returns the hash of the object.
+func deriveHash_10(object *int8) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_11 returns the hash of the object.
+func deriveHash_11(object *string) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + deriveHash_(*object)
+}
+
+// deriveHash_12 returns the hash of the object.
+func deriveHash_12(object *uint) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_13 returns the hash of the object.
+func deriveHash_13(object *uint16) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_14 returns the hash of the object.
+func deriveHash_14(object *uint32) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_15 returns the hash of the object.
+func deriveHash_15(object *uint64) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + *object
+}
+
+// deriveHash_16 returns the hash of the object.
+func deriveHash_16(object *uintptr) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_17 returns the hash of the object.
+func deriveHash_17(object []bool) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash(object[i])
+	}
+	return h
+}
+
+// deriveHash_18 returns the hash of the object.
+func deriveHash_18(object []byte) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_19 returns the hash of the object.
+func deriveHash_19(object []complex128) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + (31 * ((31 * 17) + math.Float64bits(real(object[i])))) + math.Float64bits(imag(object[i]))
+	}
+	return h
+}
+
+// deriveHash_20 returns the hash of the object.
+func deriveHash_20(object []complex64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + (31 * ((31 * 17) + uint64(math.Float32bits(real(object[i]))))) + uint64(math.Float32bits(imag(object[i])))
+	}
+	return h
+}
+
+// deriveHash_21 returns the hash of the object.
+func deriveHash_21(object []float64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + math.Float64bits(object[i])
+	}
+	return h
+}
+
+// deriveHash_22 returns the hash of the object.
+func deriveHash_22(object []float32) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(math.Float32bits(object[i]))
+	}
+	return h
+}
+
+// deriveHash_23 returns the hash of the object.
+func deriveHash_23(object []int16) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_24 returns the hash of the object.
+func deriveHash_24(object []int32) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_25 returns the hash of the object.
+func deriveHash_25(object []int64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_26 returns the hash of the object.
+func deriveHash_26(object []int8) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_27 returns the hash of the object.
+func deriveHash_27(object []string) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_(object[i])
+	}
+	return h
+}
+
+// deriveHash_28 returns the hash of the object.
+func deriveHash_28(object []uint) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_29 returns the hash of the object.
+func deriveHash_29(object []uint16) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_30 returns the hash of the object.
+func deriveHash_30(object []uint32) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_31 returns the hash of the object.
+func deriveHash_31(object []uint64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + object[i]
+	}
+	return h
+}
+
+// deriveHash_32 returns the hash of the object.
+func deriveHash_32(object []uintptr) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_33 returns the hash of the object.
+func deriveHash_33(object []*bool) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_1(object[i])
+	}
+	return h
+}
+
+// deriveHash_34 returns the hash of the object.
+func deriveHash_34(object []*byte) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_2(object[i])
+	}
+	return h
+}
+
+// deriveHash_35 returns the hash of the object.
+func deriveHash_35(object []*complex128) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_3(object[i])
+	}
+	return h
+}
+
+// deriveHash_36 returns the hash of the object.
+func deriveHash_36(object []*complex64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_4(object[i])
+	}
+	return h
+}
+
+// deriveHash_37 returns the hash of the object.
+func deriveHash_37(object []*float64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_5(object[i])
+	}
+	return h
+}
+
+// deriveHash_38 returns the hash of the object.
+func deriveHash_38(object []*float32) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_6(object[i])
+	}
+	return h
+}
+
+// deriveHash_39 returns the hash of the object.
+func deriveHash_39(object []*int) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHashPtrToint(object[i])
+	}
+	return h
+}
+
+// deriveHash_40 returns the hash of the object.
+func deriveHash_40(object []*int16) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_7(object[i])
+	}
+	return h
+}
+
+// deriveHash_41 returns the hash of the object.
+func deriveHash_41(object []*int32) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_8(object[i])
+	}
+	return h
+}
+
+// deriveHash_42 returns the hash of the object.
+func deriveHash_42(object []*int64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_9(object[i])
+	}
+	return h
+}
+
+// deriveHash_43 returns the hash of the object.
+func deriveHash_43(object []*int8) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_10(object[i])
+	}
+	return h
+}
+
+// deriveHash_44 returns the hash of the object.
+func deriveHash_44(object []*string) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_11(object[i])
+	}
+	return h
+}
+
+// deriveHash_45 returns the hash of the object.
+func deriveHash_45(object []*uint) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_12(object[i])
+	}
+	return h
+}
+
+// deriveHash_46 returns the hash of the object.
+func deriveHash_46(object []*uint16) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_13(object[i])
+	}
+	return h
+}
+
+// deriveHash_47 returns the hash of the object.
+func deriveHash_47(object []*uint32) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_14(object[i])
+	}
+	return h
+}
+
+// deriveHash_48 returns the hash of the object.
+func deriveHash_48(object []*uint64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_15(object[i])
+	}
+	return h
+}
+
+// deriveHash_49 returns the hash of the object.
+func deriveHash_49(object []*uintptr) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_16(object[i])
+	}
+	return h
+}
+
+// deriveHash_50 returns the hash of the object.
+func deriveHash_50(object [1]bool) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash(object[i])
+	}
+	return h
+}
+
+// deriveHash_51 returns the hash of the object.
+func deriveHash_51(object [2]byte) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_52 returns the hash of the object.
+func deriveHash_52(object [3]complex128) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + (31 * ((31 * 17) + math.Float64bits(real(object[i])))) + math.Float64bits(imag(object[i]))
+	}
+	return h
+}
+
+// deriveHash_53 returns the hash of the object.
+func deriveHash_53(object [4]complex64) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + (31 * ((31 * 17) + uint64(math.Float32bits(real(object[i]))))) + uint64(math.Float32bits(imag(object[i])))
+	}
+	return h
+}
+
+// deriveHash_54 returns the hash of the object.
+func deriveHash_54(object [5]float64) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + math.Float64bits(object[i])
+	}
+	return h
+}
+
+// deriveHash_55 returns the hash of the object.
+func deriveHash_55(object [6]float32) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(math.Float32bits(object[i]))
+	}
+	return h
+}
+
+// deriveHash_56 returns the hash of the object.
+func deriveHash_56(object [7]int) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_57 returns the hash of the object.
+func deriveHash_57(object [8]int16) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_58 returns the hash of the object.
+func deriveHash_58(object [9]int32) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_59 returns the hash of the object.
+func deriveHash_59(object [10]int64) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_60 returns the hash of the object.
+func deriveHash_60(object [11]int8) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_61 returns the hash of the object.
+func deriveHash_61(object [12]rune) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_62 returns the hash of the object.
+func deriveHash_62(object [13]string) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_(object[i])
+	}
+	return h
+}
+
+// deriveHash_63 returns the hash of the object.
+func deriveHash_63(object [14]uint) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_64 returns the hash of the object.
+func deriveHash_64(object [15]uint16) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_65 returns the hash of the object.
+func deriveHash_65(object [16]uint32) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_66 returns the hash of the object.
+func deriveHash_66(object [17]uint64) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + object[i]
+	}
+	return h
+}
+
+// deriveHash_67 returns the hash of the object.
+func deriveHash_67(object [18]uint8) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_68 returns the hash of the object.
+func deriveHash_68(object [19]uintptr) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_69 returns the hash of the object.
+func deriveHash_69(object [10]bool) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash(object[i])
+	}
+	return h
+}
+
+// deriveHash_70 returns the hash of the object.
+func deriveHash_70(object [1]*bool) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_1(object[i])
+	}
+	return h
+}
+
+// deriveHash_71 returns the hash of the object.
+func deriveHash_71(object [2]*byte) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_2(object[i])
+	}
+	return h
+}
+
+// deriveHash_72 returns the hash of the object.
+func deriveHash_72(object [3]*complex128) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_3(object[i])
+	}
+	return h
+}
+
+// deriveHash_73 returns the hash of the object.
+func deriveHash_73(object [4]*complex64) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_4(object[i])
+	}
+	return h
+}
+
+// deriveHash_74 returns the hash of the object.
+func deriveHash_74(object [5]*float64) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_5(object[i])
+	}
+	return h
+}
+
+// deriveHash_75 returns the hash of the object.
+func deriveHash_75(object [6]*float32) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_6(object[i])
+	}
+	return h
+}
+
+// deriveHash_76 returns the hash of the object.
+func deriveHash_76(object [7]*int) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHashPtrToint(object[i])
+	}
+	return h
+}
+
+// deriveHash_77 returns the hash of the object.
+func deriveHash_77(object [8]*int16) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_7(object[i])
+	}
+	return h
+}
+
+// deriveHash_78 returns the hash of the object.
+func deriveHash_78(object [9]*int32) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_8(object[i])
+	}
+	return h
+}
+
+// deriveHash_79 returns the hash of the object.
+func deriveHash_79(object [10]*int64) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_9(object[i])
+	}
+	return h
+}
+
+// deriveHash_80 returns the hash of the object.
+func deriveHash_80(object [11]*int8) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_10(object[i])
+	}
+	return h
+}
+
+// deriveHash_81 returns the hash of the object.
+func deriveHash_81(object [12]*rune) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_8(object[i])
+	}
+	return h
+}
+
+// deriveHash_82 returns the hash of the object.
+func deriveHash_82(object [13]*string) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_11(object[i])
+	}
+	return h
+}
+
+// deriveHash_83 returns the hash of the object.
+func deriveHash_83(object [14]*uint) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_12(object[i])
+	}
+	return h
+}
+
+// deriveHash_84 returns the hash of the object.
+func deriveHash_84(object [15]*uint16) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_13(object[i])
+	}
+	return h
+}
+
+// deriveHash_85 returns the hash of the object.
+func deriveHash_85(object [16]*uint32) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_14(object[i])
+	}
+	return h
+}
+
+// deriveHash_86 returns the hash of the object.
+func deriveHash_86(object [17]*uint64) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_15(object[i])
+	}
+	return h
+}
+
+// deriveHash_87 returns the hash of the object.
+func deriveHash_87(object [18]*uint8) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_2(object[i])
+	}
+	return h
+}
+
+// deriveHash_88 returns the hash of the object.
+func deriveHash_88(object [19]*uintptr) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_16(object[i])
+	}
+	return h
+}
+
+// deriveHash_89 returns the hash of the object.
+func deriveHash_89(object [10]*bool) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_1(object[i])
+	}
+	return h
+}
+
+// deriveHash_90 returns the hash of the object.
+func deriveHash_90(object map[string]uint32) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_(object)) {
+		h = 31*h + deriveHash_(k)
+		h = 31*h + uint64(object[k])
+	}
+	return h
+}
+
+// deriveHash_91 returns the hash of the object.
+func deriveHash_91(object map[uint8]int64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSort(deriveKeys_1(object)) {
+		h = 31*h + uint64(k)
+		h = 31*h + uint64(object[k])
+	}
+	return h
+}
+
+// deriveHash_92 returns the hash of the object.
+func deriveHash_92(object map[bool]string) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSort_(deriveKeys_2(object)) {
+		h = 31*h + deriveHash(k)
+		h = 31*h + deriveHash_(object[k])
+	}
+	return h
+}
+
+// deriveHash_93 returns the hash of the object.
+func deriveHash_93(object map[string]bool) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_3(object)) {
+		h = 31*h + deriveHash_(k)
+		h = 31*h + deriveHash(object[k])
+	}
+	return h
+}
+
+// deriveHash_94 returns the hash of the object.
+func deriveHash_94(object map[complex128]complex64) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSort_1(deriveKeys_4(object)) {
+		h = 31*h + (31 * ((31 * 17) + math.Float64bits(real(k)))) + math.Float64bits(imag(k))
+		h = 31*h + (31 * ((31 * 17) + uint64(math.Float32bits(real(object[k]))))) + uint64(math.Float32bits(imag(object[k])))
+	}
+	return h
+}
+
+// deriveHash_95 returns the hash of the object.
+func deriveHash_95(object map[float64]uint32) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSort_2(deriveKeys_5(object)) {
+		h = 31*h + math.Float64bits(k)
+		h = 31*h + uint64(object[k])
+	}
+	return h
+}
+
+// deriveHash_96 returns the hash of the object.
+func deriveHash_96(object map[uint16]uint8) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSort_3(deriveKeys_6(object)) {
+		h = 31*h + uint64(k)
+		h = 31*h + uint64(object[k])
+	}
+	return h
+}
+
+// deriveHash_97 returns the hash of the object.
+func deriveHash_97(object [][]int) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHashSliceOfint(object[i])
+	}
+	return h
+}
+
+// deriveHash_98 returns the hash of the object.
+func deriveHash_98(object [][]string) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_27(object[i])
+	}
+	return h
+}
+
+// deriveHash_99 returns the hash of the object.
+func deriveHash_99(object [][]*int) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_39(object[i])
+	}
+	return h
+}
+
+// deriveHash_100 returns the hash of the object.
+func deriveHash_100(object *[4]int) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + deriveHash_125(*object)
+}
+
+// deriveHash_N returns the hash of the object.
+func deriveHash_N(object Name) uint64 {
+	return deriveHashName(&object)
+}
+
+// deriveHash_101 returns the hash of the object.
+func deriveHash_101(object []Name) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_N(object[i])
+	}
+	return h
+}
+
+// deriveHash_102 returns the hash of the object.
+func deriveHash_102(object []*Name) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHashName(object[i])
+	}
+	return h
+}
+
+// deriveHash_103 returns the hash of the object.
+func deriveHash_103(object map[Name]string) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSort_4(deriveKeys_7(object)) {
+		h = 31*h + deriveHash_N(k)
+		h = 31*h + deriveHash_(object[k])
+	}
+	return h
+}
+
+// deriveHash_104 returns the hash of the object.
+func deriveHash_104(object map[string]Name) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_8(object)) {
+		h = 31*h + deriveHash_(k)
+		h = 31*h + deriveHash_N(object[k])
+	}
+	return h
+}
+
+// deriveHash_105 returns the hash of the object.
+func deriveHash_105(object map[string]*Name) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_9(object)) {
+		h = 31*h + deriveHash_(k)
+		h = 31*h + deriveHashName(object[k])
+	}
+	return h
+}
+
+// deriveHash_106 returns the hash of the object.
+func deriveHash_106(object map[string][]Name) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_10(object)) {
+		h = 31*h + deriveHash_(k)
+		h = 31*h + deriveHash_101(object[k])
+	}
+	return h
+}
+
+// deriveHash_107 returns the hash of the object.
+func deriveHash_107(object map[string][]*Name) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_11(object)) {
+		h = 31*h + deriveHash_(k)
+		h = 31*h + deriveHash_102(object[k])
+	}
+	return h
+}
+
+// deriveHash_108 returns the hash of the object.
+func deriveHash_108(object map[int]RecursiveType) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedInts(deriveKeys_12(object)) {
+		h = 31*h + uint64(k)
+		h = 31*h + deriveHash_R(object[k])
+	}
+	return h
+}
+
+// deriveHash_S returns the hash of the object.
+func deriveHash_S(object Structs) uint64 {
+	return deriveHashStructs(&object)
+}
+
+// deriveHash_109 returns the hash of the object.
+func deriveHash_109(object *StructWithoutEqualMethod) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + uint64(object.Num)
+	return h
+}
+
+// deriveHash_St returns the hash of the object.
+func deriveHash_St(object StructWithoutEqualMethod) uint64 {
+	return deriveHash_109(&object)
+}
+
+// deriveHash_110 returns the hash of the object.
+func deriveHash_110(object *extra.StructWithoutEqualMethod) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + uint64(object.Number)
+	return h
+}
+
+// deriveHash_Str returns the hash of the object.
+func deriveHash_Str(object extra.StructWithoutEqualMethod) uint64 {
+	return deriveHash_110(&object)
+}
+
+// deriveHash_111 returns the hash of the object.
+func deriveHash_111(object *MyEnum) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_112 returns the hash of the object.
+func deriveHash_112(object []MyEnum) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_113 returns the hash of the object.
+func deriveHash_113(object []*MyEnum) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_111(object[i])
+	}
+	return h
+}
+
+// deriveHash_114 returns the hash of the object.
+func deriveHash_114(object map[int32]MyEnum) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSort_5(deriveKeys_13(object)) {
+		h = 31*h + uint64(k)
+		h = 31*h + uint64(object[k])
+	}
+	return h
+}
+
+// deriveHash_115 returns the hash of the object.
+func deriveHash_115(object map[MyEnum]int32) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSort_6(deriveKeys_14(object)) {
+		h = 31*h + uint64(k)
+		h = 31*h + uint64(object[k])
+	}
+	return h
+}
+
+// deriveHash_116 returns the hash of the object.
+func deriveHash_116(object [2]MyEnum) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_117 returns the hash of the object.
+func deriveHash_117(object *MySlice) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + deriveHash_25(*object)
+}
+
+// deriveHash_118 returns the hash of the object.
+func deriveHash_118(object []MySlice) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_25(object[i])
+	}
+	return h
+}
+
+// deriveHash_119 returns the hash of the object.
+func deriveHash_119(object *time.Duration) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_120 returns the hash of the object.
+func deriveHash_120(object []time.Duration) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_121 returns the hash of the object.
+func deriveHash_121(object []*time.Duration) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_119(object[i])
+	}
+	return h
+}
+
+// deriveHash_122 returns the hash of the object.
+func deriveHash_122(object map[int]time.Duration) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedInts(deriveKeys_15(object)) {
+		h = 31*h + uint64(k)
+		h = 31*h + uint64(object[k])
+	}
+	return h
+}
+
+// deriveHash_123 returns the hash of the object.
+func deriveHash_123(object map[string][]*pickle.Rick) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_16(object)) {
+		h = 31*h + deriveHash_(k)
+		h = 31*h + deriveHash_126(object[k])
+	}
+	return h
+}
+
+// deriveHash_p returns the hash of the object.
+func deriveHash_p(object privateStruct) uint64 {
+	return deriveHash_127(&object)
+}
+
+// deriveHash_124 returns the hash of the object.
+func deriveHash_124(object [10]int) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
 }
 
 // deriveGoString_63 returns a recursive representation of this as a valid go string.
@@ -11908,8 +13727,8 @@ func deriveCompare_131(this, that map[int]int) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedInts(deriveKeys_16(this))
-	thatkeys := deriveSortedInts(deriveKeys_16(that))
+	thiskeys := deriveSortedInts(deriveKeys(this))
+	thatkeys := deriveSortedInts(deriveKeys(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -11986,13 +13805,40 @@ func deriveEqual_88(this, that *vendortest.AVendoredObject) bool {
 			this.Name == that.Name
 }
 
-// deriveKeys_16 returns the keys of the input map as a slice.
-func deriveKeys_16(m map[int]int) []int {
-	keys := make([]int, 0, len(m))
-	for key := range m {
-		keys = append(keys, key)
+// deriveHash_125 returns the hash of the object.
+func deriveHash_125(object [4]int) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
 	}
-	return keys
+	return h
+}
+
+// deriveHash_R returns the hash of the object.
+func deriveHash_R(object RecursiveType) uint64 {
+	return deriveHashRecursiveType(&object)
+}
+
+// deriveHash_126 returns the hash of the object.
+func deriveHash_126(object []*pickle.Rick) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_128(object[i])
+	}
+	return h
+}
+
+// deriveHash_127 returns the hash of the object.
+func deriveHash_127(object *privateStruct) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHashPtrToint(object.ptrfield)
+	return h
 }
 
 // deriveGoString_81 returns a recursive representation of this as a valid go string.
@@ -12035,4 +13881,14 @@ func deriveEqual_89(this, that *pickle.Rick) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Portal == that.Portal
+}
+
+// deriveHash_128 returns the hash of the object.
+func deriveHash_128(object *pickle.Rick) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_(object.Portal)
+	return h
 }

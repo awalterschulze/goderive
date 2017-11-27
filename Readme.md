@@ -43,6 +43,7 @@ Recursive Examples:
   - [Compare](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compare)
   - [DeepCopy](https://github.com/awalterschulze/goderive/tree/master/example/plugin/deepcopy)
   - [GoString](https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring)
+  - [Hash](https://github.com/awalterschulze/goderive/tree/master/example/plugin/hash)
 
 Set Examples:
 
@@ -81,6 +82,7 @@ Recursive Functions:
     - `deriveDeepCopy(dst map[A]B, src map[A]B)`
   - [Clone](http://godoc.org/github.com/awalterschulze/goderive/plugin/clone) `deriveClone(T) T`
   - [GoString](http://godoc.org/github.com/awalterschulze/goderive/plugin/gostring) `deriveGoString(T) string` 
+  - [Hash](http://godoc.org/github.com/awalterschulze/goderive/plugin/hash) `deriveHash(T) uint64` 
 
 Set Functions:
 

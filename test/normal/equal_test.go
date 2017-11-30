@@ -181,3 +181,31 @@ func TestCurriedEqual(t *testing.T) {
 		t.Fatalf("expected to be contained")
 	}
 }
+
+type SomeJson struct {
+	Name  string
+	Other KeyValue
+}
+
+type KeyValue map[string]interface{}
+
+func (kv KeyValue) Equal(that KeyValue) bool {
+	return reflect.DeepEqual(kv, that)
+}
+
+func TestMapTypes(t *testing.T) {
+	a := &SomeJson{Name: "a", Other: map[string]interface{}{
+		"b": 1,
+		"c": "C",
+	}}
+	b := &SomeJson{Name: "a", Other: map[string]interface{}{
+		"b": 2,
+		"c": "C",
+	}}
+	if deriveEqualMapTypes(a, b) {
+		t.Fatalf("expected not equal")
+	}
+	if !deriveEqualMapTypes(a, a) {
+		t.Fatalf("expected equal")
+	}
+}

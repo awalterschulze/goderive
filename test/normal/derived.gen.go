@@ -2441,6 +2441,13 @@ func deriveContainsStruct(list []*BuiltInTypes, item *BuiltInTypes) bool {
 	return false
 }
 
+// deriveUncurryCurried combines a function that returns a function, into one function.
+func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c bool) string {
+	return func(b string, c bool) string {
+		return f(b)(c)
+	}
+}
+
 // deriveUncurryMarshal combines a function that returns a function, into one function.
 func deriveUncurryMarshal(f func(data []byte) func(v interface{}) error) func(data []byte, v interface{}) error {
 	return func(data []byte, v interface{}) error {
@@ -2452,13 +2459,6 @@ func deriveUncurryMarshal(f func(data []byte) func(v interface{}) error) func(da
 func deriveUncurry3(f func(a int) func(b string, c bool) string) func(a int, b string, c bool) string {
 	return func(a int, b string, c bool) string {
 		return f(a)(b, c)
-	}
-}
-
-// deriveUncurryCurried combines a function that returns a function, into one function.
-func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c bool) string {
-	return func(b string, c bool) string {
-		return f(b)(c)
 	}
 }
 
@@ -4227,6 +4227,14 @@ func deriveEqualCurry(this *BuiltInTypes) func(*BuiltInTypes) bool {
 				this.Uint8 == that.Uint8 &&
 				this.UintPtr == that.UintPtr
 	}
+}
+
+// deriveEqualMapTypes returns whether this and that are equal.
+func deriveEqualMapTypes(this, that *SomeJson) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.Name == that.Name &&
+			this.Other.Equal(that.Other)
 }
 
 // deriveEqual returns whether this and that are equal.

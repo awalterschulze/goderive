@@ -121,7 +121,7 @@ func (g *gen) Generate(typs []types.Type) error {
 	return g.genFunc(typs)
 }
 
-func hasCompareMethod(typ *types.Named) bool {
+func compareMethodInputParam(typ *types.Named) *types.Type {
 	for i := 0; i < typ.NumMethods(); i++ {
 		meth := typ.Method(i)
 		if meth.Name() != "Compare" {
@@ -146,9 +146,10 @@ func hasCompareMethod(typ *types.Named) bool {
 		if b.Kind() != types.Int {
 			continue
 		}
-		return true
+		inputType := sig.Params().At(0).Type()
+		return &inputType
 	}
-	return false
+	return nil
 }
 
 func (g *gen) genCurriedFunc(typ types.Type) error {
@@ -456,6 +457,19 @@ func wrap(value string) string {
 }
 
 func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, error) {
+	if named, isNamed := fieldType.(*types.Named); isNamed {
+		inputType := compareMethodInputParam(named)
+		if inputType != nil {
+			ityp := *inputType
+			if _, ok := ityp.(*types.Pointer); ok {
+				return fmt.Sprintf("%s.Compare(&%s)", wrap(thisField), thatField), nil
+			} else if _, ok := ityp.(*types.Interface); ok {
+				return fmt.Sprintf("%s.Compare(&%s)", wrap(thisField), thatField), nil
+			} else {
+				return fmt.Sprintf("%s.Compare(%s)", wrap(thisField), thatField), nil
+			}
+		}
+	}
 	switch typ := fieldType.Underlying().(type) {
 	case *types.Basic:
 		if typ.Kind() == types.String {
@@ -465,10 +479,19 @@ func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, 
 	case *types.Pointer:
 		ref := typ.Elem()
 		if named, ok := ref.(*types.Named); ok {
-			if hasCompareMethod(named) {
-				return fmt.Sprintf("%s.Compare(%s)", wrap(thisField), thatField), nil
+			inputType := compareMethodInputParam(named)
+			if inputType != nil {
+				ityp := *inputType
+				if _, ok := ityp.(*types.Pointer); ok {
+					return fmt.Sprintf("%s.Compare(%s)", wrap(thisField), thatField), nil
+				} else if _, ok := ityp.(*types.Interface); ok {
+					return fmt.Sprintf("%s.Compare(%s)", wrap(thisField), thatField), nil
+				} else {
+					// fall through to deferencing of pointers
+				}
+			} else {
+				return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 			}
-			return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 		}
 		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 	case *types.Array, *types.Map:
@@ -479,10 +502,6 @@ func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, 
 		}
 		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(typ, typ), thisField, thatField), nil
 	case *types.Struct:
-		named, isNamed := fieldType.(*types.Named)
-		if isNamed && hasCompareMethod(named) {
-			return fmt.Sprintf("%s.Compare(&%s)", thisField, thatField), nil
-		}
 		return g.field("&"+thisField, "&"+thatField, types.NewPointer(fieldType))
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return "", fmt.Errorf("unsupported field type %s", g.TypeString(fieldType))

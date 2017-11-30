@@ -9,6 +9,10 @@ Contributing examples for a plugin can be done by creating a folder if one does 
 
 First create your example go file `foldername.go` with your example code.
 
+Please do not use words like foo, bar and MyStruct.
+Examples are more useful if they are as close as possible to actual use cases.
+Yes some current examples violate these rules, contributions that replace these examples will be highly appreciated.
+
 Next create a Readme.md in the folder with the following content:
 
 ````

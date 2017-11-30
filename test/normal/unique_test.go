@@ -36,7 +36,12 @@ func TestUniqueStructs(t *testing.T) {
 	input := []*BuiltInTypes{b1, b2, b3, b2, b1}
 	want := []*BuiltInTypes{b1, b2, b3}
 	got := deriveUniqueStructs(input)
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("got %v, want %v", got, want)
+	if len(got) != len(want) {
+		t.Fatalf("got too long: %#v", got)
+	}
+	for _, g := range got {
+		if !deriveContainsStruct(want, g) {
+			t.Fatalf("did not get %#v", g)
+		}
 	}
 }

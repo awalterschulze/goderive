@@ -15,7 +15,6 @@
 package test
 
 import (
-	"reflect"
 	"testing"
 )
 
@@ -23,8 +22,13 @@ func TestUniqueInt64s(t *testing.T) {
 	input := []int64{1, 2, 3, 2, 1}
 	want := []int64{1, 2, 3}
 	got := deriveUniqueInt64s(input)
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("got %v, want %v", got, want)
+	if len(got) != len(want) {
+		t.Fatalf("got too long: %#v", got)
+	}
+	for _, g := range got {
+		if !deriveContainsInt64s(want, g) {
+			t.Fatalf("did not get %d", g)
+		}
 	}
 }
 

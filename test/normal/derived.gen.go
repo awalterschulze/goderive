@@ -5256,6 +5256,141 @@ func deriveMinStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	return m
 }
 
+// deriveMemGet returns a memoized version of the input function.
+func deriveMemGet(f func() *BuiltInTypes) func() *BuiltInTypes {
+	memoized := false
+	var res0 *BuiltInTypes
+	return func() *BuiltInTypes {
+		if !memoized {
+			res0 = f()
+			memoized = true
+		}
+		return res0
+	}
+}
+
+// deriveMemInc returns a memoized version of the input function.
+func deriveMemInc(f func(n int) int) func(n int) int {
+	m := make(map[int]int)
+	return func(param0 int) int {
+		if v, ok := m[param0]; ok {
+			return v
+		}
+		v := f(param0)
+		m[param0] = v
+		return v
+	}
+}
+
+// deriveMemIncTo returns a memoized version of the input function.
+func deriveMemIncTo(f func(a Adder) int) func(a Adder) int {
+	m := make(map[Adder]int)
+	return func(param0 Adder) int {
+		if v, ok := m[param0]; ok {
+			return v
+		}
+		v := f(param0)
+		m[param0] = v
+		return v
+	}
+}
+
+// deriveMemAdd returns a memoized version of the input function.
+func deriveMemAdd(f func(a int, b int) int) func(a int, b int) int {
+	type input struct {
+		Param0 int
+		Param1 int
+	}
+	m := make(map[input]int)
+	return func(param0 int, param1 int) int {
+		in := input{param0, param1}
+		if v, ok := m[in]; ok {
+			return v
+		}
+		v := f(param0, param1)
+		m[in] = v
+		return v
+	}
+}
+
+// deriveMemAddTo returns a memoized version of the input function.
+func deriveMemAddTo(f func(a Adder, b int) int) func(a Adder, b int) int {
+	type input struct {
+		Param0 Adder
+		Param1 int
+	}
+	m := make(map[input]int)
+	return func(param0 Adder, param1 int) int {
+		in := input{param0, param1}
+		if v, ok := m[in]; ok {
+			return v
+		}
+		v := f(param0, param1)
+		m[in] = v
+		return v
+	}
+}
+
+// deriveMemSet returns a memoized version of the input function.
+func deriveMemSet(f func(a *BuiltInTypes, b int) *BuiltInTypes) func(a *BuiltInTypes, b int) *BuiltInTypes {
+	type input struct {
+		Param0 *BuiltInTypes
+		Param1 int
+	}
+	type mem struct {
+		in  input
+		out *BuiltInTypes
+	}
+	m := make(map[uint64][]mem)
+	return func(param0 *BuiltInTypes, param1 int) *BuiltInTypes {
+		in := input{param0, param1}
+		h := deriveHash_125(in)
+		vs, ok := m[h]
+		if ok {
+			for _, v := range vs {
+				if deriveEqual_87(v.in, in) {
+					return v.out
+				}
+			}
+		}
+		res0 := f(param0, param1)
+		m[h] = append(m[h], mem{in, res0})
+		return res0
+	}
+}
+
+// deriveMemSetErr returns a memoized version of the input function.
+func deriveMemSetErr(f func(a *BuiltInTypes, b int) (*BuiltInTypes, error)) func(a *BuiltInTypes, b int) (*BuiltInTypes, error) {
+	type input struct {
+		Param0 *BuiltInTypes
+		Param1 int
+	}
+	type output struct {
+		Res0 *BuiltInTypes
+		Res1 error
+	}
+	type mem struct {
+		in  input
+		out output
+	}
+	m := make(map[uint64][]mem)
+	return func(param0 *BuiltInTypes, param1 int) (*BuiltInTypes, error) {
+		in := input{param0, param1}
+		h := deriveHash_125(in)
+		vs, ok := m[h]
+		if ok {
+			for _, v := range vs {
+				if deriveEqual_87(v.in, in) {
+					return v.out.Res0, v.out.Res1
+				}
+			}
+		}
+		res0, res1 := f(param0, param1)
+		m[h] = append(m[h], mem{in, output{res0, res1}})
+		return res0, res1
+	}
+}
+
 // deriveMaxInt64s returns the maximum value from the input list and the default value, if the list is empty.
 func deriveMaxInt64s(list []int64, def int64) int64 {
 	if len(list) == 0 {
@@ -11767,7 +11902,7 @@ func deriveEqual_84(this, that map[string][]*pickle.Rick) bool {
 		if !ok {
 			return false
 		}
-		if !(deriveEqual_87(v, thatv)) {
+		if !(deriveEqual_88(v, thatv)) {
 			return false
 		}
 	}
@@ -11790,11 +11925,20 @@ func deriveEqual_86(this, that []*vendortest.AVendoredObject) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_88(this[i], that[i])) {
+		if !(deriveEqual_89(this[i], that[i])) {
 			return false
 		}
 	}
 	return true
+}
+
+// deriveEqual_87 returns whether this and that are equal.
+func deriveEqual_87(this, that struct {
+	Param0 *BuiltInTypes
+	Param1 int
+}) bool {
+	return this.Param0.Equal(that.Param0) &&
+		this.Param1 == that.Param1
 }
 
 // deriveSort sorts the slice inplace and also returns it.
@@ -13040,7 +13184,7 @@ func deriveHash_100(object *[4]int) uint64 {
 	if object == nil {
 		return 0
 	}
-	return (31 * 17) + deriveHash_125(*object)
+	return (31 * 17) + deriveHash_126(*object)
 }
 
 // deriveHash_N returns the hash of the object.
@@ -13325,14 +13469,14 @@ func deriveHash_123(object map[string][]*pickle.Rick) uint64 {
 	h := uint64(17)
 	for _, k := range deriveSortedStrings(deriveKeys_16(object)) {
 		h = 31*h + deriveHash_(k)
-		h = 31*h + deriveHash_126(object[k])
+		h = 31*h + deriveHash_127(object[k])
 	}
 	return h
 }
 
 // deriveHash_p returns the hash of the object.
 func deriveHash_p(object privateStruct) uint64 {
-	return deriveHash_127(&object)
+	return deriveHash_128(&object)
 }
 
 // deriveHash_124 returns the hash of the object.
@@ -13341,6 +13485,17 @@ func deriveHash_124(object [10]int) uint64 {
 	for i := 0; i < len(object); i++ {
 		h = 31*h + uint64(object[i])
 	}
+	return h
+}
+
+// deriveHash_125 returns the hash of the object.
+func deriveHash_125(object struct {
+	Param0 *BuiltInTypes
+	Param1 int
+}) uint64 {
+	h := uint64(17)
+	h = 31*h + deriveHashBuiltInTypes(object.Param0)
+	h = 31*h + uint64(object.Param1)
 	return h
 }
 
@@ -13793,8 +13948,8 @@ func deriveCompare_N(this, that Name) int {
 	return (&this).Compare(&that)
 }
 
-// deriveEqual_87 returns whether this and that are equal.
-func deriveEqual_87(this, that []*pickle.Rick) bool {
+// deriveEqual_88 returns whether this and that are equal.
+func deriveEqual_88(this, that []*pickle.Rick) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -13802,22 +13957,22 @@ func deriveEqual_87(this, that []*pickle.Rick) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_89(this[i], that[i])) {
+		if !(deriveEqual_90(this[i], that[i])) {
 			return false
 		}
 	}
 	return true
 }
 
-// deriveEqual_88 returns whether this and that are equal.
-func deriveEqual_88(this, that *vendortest.AVendoredObject) bool {
+// deriveEqual_89 returns whether this and that are equal.
+func deriveEqual_89(this, that *vendortest.AVendoredObject) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Name == that.Name
 }
 
-// deriveHash_125 returns the hash of the object.
-func deriveHash_125(object [4]int) uint64 {
+// deriveHash_126 returns the hash of the object.
+func deriveHash_126(object [4]int) uint64 {
 	h := uint64(17)
 	for i := 0; i < len(object); i++ {
 		h = 31*h + uint64(object[i])
@@ -13830,20 +13985,20 @@ func deriveHash_R(object RecursiveType) uint64 {
 	return deriveHashRecursiveType(&object)
 }
 
-// deriveHash_126 returns the hash of the object.
-func deriveHash_126(object []*pickle.Rick) uint64 {
+// deriveHash_127 returns the hash of the object.
+func deriveHash_127(object []*pickle.Rick) uint64 {
 	if object == nil {
 		return 0
 	}
 	h := uint64(17)
 	for i := 0; i < len(object); i++ {
-		h = 31*h + deriveHash_128(object[i])
+		h = 31*h + deriveHash_129(object[i])
 	}
 	return h
 }
 
-// deriveHash_127 returns the hash of the object.
-func deriveHash_127(object *privateStruct) uint64 {
+// deriveHash_128 returns the hash of the object.
+func deriveHash_128(object *privateStruct) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13887,15 +14042,15 @@ func deriveCompare_133(this, that *pickle.Rick) int {
 	return 0
 }
 
-// deriveEqual_89 returns whether this and that are equal.
-func deriveEqual_89(this, that *pickle.Rick) bool {
+// deriveEqual_90 returns whether this and that are equal.
+func deriveEqual_90(this, that *pickle.Rick) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Portal == that.Portal
 }
 
-// deriveHash_128 returns the hash of the object.
-func deriveHash_128(object *pickle.Rick) uint64 {
+// deriveHash_129 returns the hash of the object.
+func deriveHash_129(object *pickle.Rick) uint64 {
 	if object == nil {
 		return 0
 	}

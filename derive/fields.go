@@ -77,3 +77,11 @@ func Fields(typesMap TypesMap, typ *types.Struct, external bool) *Named {
 	}
 	return n
 }
+
+func GetStructFields(s *types.Struct) []*types.Var {
+	fields := make([]*types.Var, s.NumFields())
+	for i := 0; i < s.NumFields(); i++ {
+		fields[i] = s.Field(i)
+	}
+	return fields
+}

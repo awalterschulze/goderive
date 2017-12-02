@@ -42,6 +42,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/join"
 	"github.com/awalterschulze/goderive/plugin/keys"
 	"github.com/awalterschulze/goderive/plugin/max"
+	"github.com/awalterschulze/goderive/plugin/mem"
 	"github.com/awalterschulze/goderive/plugin/min"
 	"github.com/awalterschulze/goderive/plugin/pipeline"
 	"github.com/awalterschulze/goderive/plugin/set"
@@ -89,6 +90,7 @@ func main() {
 		dup.NewPlugin(),
 		clone.NewPlugin(),
 		hash.NewPlugin(),
+		mem.NewPlugin(),
 	}
 	log.SetFlags(0)
 	flag.Parse()

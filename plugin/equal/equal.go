@@ -149,7 +149,22 @@ func (g *gen) genFunc(typs []types.Type) error {
 	name := g.GetFuncName(typs...)
 	p.P("")
 	p.P("// %s returns whether this and that are equal.", name)
-	p.P("func %s(this, that %s) bool {", name, typeStr)
+	if strct, ok := typs[0].(*types.Struct); ok {
+		fields := derive.GetStructFields(strct)
+		fieldStrs, err := g.FieldStrings(fields)
+		if err != nil {
+			return err
+		}
+		p.P("func %s(this, that struct {", name)
+		p.In()
+		for _, fieldStr := range fieldStrs {
+			p.P(fieldStr)
+		}
+		p.Out()
+		p.P("}) bool {")
+	} else {
+		p.P("func %s(this, that %s) bool {", name, typeStr)
+	}
 	p.In()
 	if err := g.genStatement(typs[0], "this", "that"); err != nil {
 		return nil
@@ -241,6 +256,26 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 			p.P("return " + fieldStr)
 			return nil
 		}
+		fields := derive.Fields(g.TypesMap, ttyp, false)
+		for i, field := range fields.Fields {
+			fieldType := field.Type
+			thisField, thatField := field.Name(this, nil), field.Name(that, nil)
+			fieldStr, err := g.field(thisField, thatField, fieldType)
+			if err != nil {
+				return err
+			}
+			if (i + 1) != len(fields.Fields) {
+				fieldStr += " &&"
+			}
+			if i == 0 {
+				p.P("return %s", fieldStr)
+				p.In()
+			} else {
+				p.P(fieldStr)
+			}
+		}
+		p.Out()
+		return nil
 	case *types.Slice:
 		p.P("if %s == nil || %s == nil {", this, that)
 		p.In()

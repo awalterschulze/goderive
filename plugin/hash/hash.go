@@ -88,7 +88,22 @@ func (g *gen) genFunc(typs []types.Type) error {
 	name := g.GetFuncName(typs...)
 	p.P("")
 	p.P("// %s returns the hash of the object.", name)
-	p.P("func %s(object %s) uint64 {", name, typeStr)
+	if strct, ok := typs[0].(*types.Struct); ok {
+		fields := derive.GetStructFields(strct)
+		fieldStrs, err := g.FieldStrings(fields)
+		if err != nil {
+			return err
+		}
+		p.P("func %s(object struct {", name)
+		p.In()
+		for _, fieldStr := range fieldStrs {
+			p.P(fieldStr)
+		}
+		p.Out()
+		p.P("}) uint64 {")
+	} else {
+		p.P("func %s(object %s) uint64 {", name, typeStr)
+	}
 	p.In()
 	if err := g.genStatement("object", typs[0]); err != nil {
 		return nil
@@ -174,6 +189,24 @@ func (g *gen) genStatement(o string, typ types.Type) error {
 				return err
 			}
 			p.P("return " + fieldStr)
+			return nil
+		} else {
+			fields := derive.Fields(g.TypesMap, ttyp, false)
+			if len(fields.Fields) == 0 {
+				p.P("return 17")
+				return nil
+			}
+			p.P("h := uint64(17)")
+			for _, field := range fields.Fields {
+				fieldType := field.Type
+				fieldName := field.Name(o, nil)
+				fieldStr, err := g.field(fieldName, fieldType)
+				if err != nil {
+					return err
+				}
+				p.P("h = 31*h + %s", fieldStr)
+			}
+			p.P("return h")
 			return nil
 		}
 	case *types.Slice:

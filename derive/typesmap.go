@@ -15,7 +15,9 @@
 package derive
 
 import (
+	"bytes"
 	"fmt"
+	"go/format"
 	"go/types"
 	"strconv"
 )
@@ -29,6 +31,7 @@ type TypesMap interface {
 	ToGenerate() [][]types.Type
 	Prefix() string
 	TypeString(typ types.Type) string
+	FieldStrings(fields []*types.Var) ([]string, error)
 	IsExternal(typ *types.Named) bool
 	Done() bool
 }
@@ -65,6 +68,20 @@ func (tm *typesMap) TypeString(typ types.Type) string {
 	return types.TypeString(types.Default(typ), tm.qual)
 }
 
+func (tm *typesMap) FieldStrings(fields []*types.Var) ([]string, error) {
+	strct := types.NewStruct(fields, nil)
+	strctStr, err := format.Source([]byte("var a " + tm.TypeString(strct)))
+	if err != nil {
+		return nil, err
+	}
+	strctLines := bytes.Split(strctStr, []byte{'\n'})
+	ss := make([]string, len(strctLines)-2)
+	for i := range strctLines[1 : len(strctLines)-1] {
+		ss[i] = string(bytes.TrimSpace(strctLines[i+1]))
+	}
+	return ss, nil
+}
+
 func (tm *typesMap) TypeStringBypass(typ types.Type) string {
 	return types.TypeString(types.Default(typ), bypassQual)
 }
@@ -75,7 +92,6 @@ func (tm *typesMap) IsExternal(typ *types.Named) bool {
 }
 
 func (tm *typesMap) SetFuncName(funcName string, typs ...types.Type) (string, error) {
-	// log.Printf("SetFuncName: %s(%v)", funcName, typs)
 	if fName, ok := tm.nameOf(typs); ok {
 		if fName == funcName {
 			return funcName, nil

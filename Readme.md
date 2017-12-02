@@ -131,6 +131,8 @@ Functional Functions:
     - `deriveCompose(func(A) (B, error), func(B) (C, error)) func(A) (C, error)`
     - `deriveCompose(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)`
     - `deriveCompose(func(A...) (B..., error), ..., func(C...) (D..., error)) func(A...) (D..., error)`
+  - [Mem](http://godoc.org/github.com/awalterschulze/goderive/plugin/mem)
+    - `deriveMem(func(A...) (B...)) func(A...) (B...)`
 
 Concurrency Functions:
   - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)

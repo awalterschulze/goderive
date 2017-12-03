@@ -276,7 +276,7 @@ func (g *gen) genFunc(typ *types.Signature) error {
 			p.P("return %s", strings.Join(vars("o.Res", typ.Results().Len()), ", "))
 			p.Out()
 			p.P("}")
-			p.P("%s := f(%s)", strings.Join(resVars, ", "), strings.Join(params, ", "))
+			p.P("%s := f(%s)", strings.Join(resVars, ", "), strings.Join(paramVars, ", "))
 			p.P("m[in] = output{%s}", strings.Join(resVars, ", "))
 			p.P("return %s", strings.Join(resVars, ", "))
 			p.Out()

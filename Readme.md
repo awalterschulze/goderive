@@ -60,6 +60,7 @@ Set Examples:
 Functional Examples:
 
   - [Compose](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compose)
+  - [Mem](https://github.com/awalterschulze/goderive/tree/master/example/plugin/mem)
 
 Concurrency Examples:
 

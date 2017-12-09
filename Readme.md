@@ -61,6 +61,7 @@ Functional Examples:
 
   - [Compose](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compose)
   - [Mem](https://github.com/awalterschulze/goderive/tree/master/example/plugin/mem)
+  - [Traverse](https://github.com/awalterschulze/goderive/tree/master/example/plugin/traverse)
 
 Concurrency Examples:
 
@@ -134,6 +135,8 @@ Functional Functions:
     - `deriveCompose(func(A...) (B..., error), ..., func(C...) (D..., error)) func(A...) (D..., error)`
   - [Mem](http://godoc.org/github.com/awalterschulze/goderive/plugin/mem)
     - `deriveMem(func(A...) (B...)) func(A...) (B...)`
+  - [Traverse](http://godoc.org/github.com/awalterschulze/goderive/plugin/traverse)
+    - `deriveTraverse(func(A) (B, error), []A) ([]B, error)`
 
 Concurrency Functions:
   - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)

@@ -52,6 +52,19 @@ func deriveIntersectOfInt64s(this, that []int64) []int64 {
 	return intersect
 }
 
+// deriveTraverse returns a list where each element of the input list has been morphed by the input function or an error.
+func deriveTraverse(f func(string) (int, error), list []string) ([]int, error) {
+	out := make([]int, len(list))
+	var err error
+	for i, elem := range list {
+		out[i], err = f(elem)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return out, nil
+}
+
 // derivePipeline composes f and g into a concurrent pipeline.
 func derivePipeline(f func(lines []string) <-chan string, g func(line string) <-chan int) func([]string) <-chan int {
 	return func(a []string) <-chan int {

@@ -33,13 +33,16 @@ package min
 
 // deriveFilter returns a list of all items in the list that matches the predicate.
 func deriveFilter(predicate func(boat) bool, list []boat) []boat {
-	out := make([]boat, 0, len(list))
+	j := 0
 	for i, elem := range list {
 		if predicate(elem) {
-			out = append(out, list[i])
+			if i != j {
+				list[j] = list[i]
+			}
+			j++
 		}
 	}
-	return out
+	return list[:j]
 }
 
 // deriveMin returns the mimimum of the two input values.

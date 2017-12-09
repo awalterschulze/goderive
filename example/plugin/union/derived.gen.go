@@ -34,13 +34,16 @@ func deriveUnique(list []*Person) []*Person {
 
 // deriveFilter returns a list of all items in the list that matches the predicate.
 func deriveFilter(predicate func(*Person) bool, list []*Person) []*Person {
-	out := make([]*Person, 0, len(list))
+	j := 0
 	for i, elem := range list {
 		if predicate(elem) {
-			out = append(out, list[i])
+			if i != j {
+				list[j] = list[i]
+			}
+			j++
 		}
 	}
-	return out
+	return list[:j]
 }
 
 // deriveUnion returns the union of the items of the two input lists.

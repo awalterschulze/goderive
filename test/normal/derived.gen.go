@@ -3652,24 +3652,30 @@ func deriveUniqueStructs(list []*BuiltInTypes) []*BuiltInTypes {
 
 // deriveFilter returns a list of all items in the list that matches the predicate.
 func deriveFilter(predicate func(int) bool, list []int) []int {
-	out := make([]int, 0, len(list))
+	j := 0
 	for i, elem := range list {
 		if predicate(elem) {
-			out = append(out, list[i])
+			if i != j {
+				list[j] = list[i]
+			}
+			j++
 		}
 	}
-	return out
+	return list[:j]
 }
 
 // deriveFilterJudy returns a list of all items in the list that matches the predicate.
 func deriveFilterJudy(predicate func(string) bool, list []string) []string {
-	out := make([]string, 0, len(list))
+	j := 0
 	for i, elem := range list {
 		if predicate(elem) {
-			out = append(out, list[i])
+			if i != j {
+				list[j] = list[i]
+			}
+			j++
 		}
 	}
-	return out
+	return list[:j]
 }
 
 // deriveUnionSetOfInt64s returns the union of two maps, with respect to the keys.

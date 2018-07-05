@@ -1,6 +1,6 @@
 package min
 
-func postivive(i, j int) bool {
+func positive(i, j int) bool {
 	return deriveMin(i, j) >= 0
 }
 

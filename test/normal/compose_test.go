@@ -76,6 +76,47 @@ func TestCompose2(t *testing.T) {
 	}
 }
 
+func TestComposeRetBoolSuccess(t *testing.T) {
+	read := func(s string) (string, error) {
+		return s, nil
+	}
+	lenLessThan2 := func(i string) (bool, error) {
+		result := len(i) < 2
+		return result, nil
+	}
+	check := deriveComposeRetBool(read, lenLessThan2)
+	got, err := check("1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := true
+	if got != want {
+		t.Fatalf("got %v, want %v", got, want)
+	}
+}
+
+func TestComposeRetBoolFailed(t *testing.T) {
+	read := func(s string) (string, error) {
+		if s == "" {
+			return s, fmt.Errorf("empty string")
+		}
+		return s, nil
+	}
+	lenLessThan2 := func(i string) (bool, error) {
+		result := len(i) < 2
+		return result, nil
+	}
+	check := deriveComposeRetBool(read, lenLessThan2)
+	got, err := check("") // passing empty string will fail
+	if err == nil {
+		t.Fatalf("Expected error from empty string")
+	}
+	want := false
+	if got != want {
+		t.Fatalf("got %v, want %v", got, want)
+	}
+}
+
 func TestComposeVariadic(t *testing.T) {
 	read := func(s string) (string, error) {
 		return s, nil

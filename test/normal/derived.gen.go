@@ -2475,6 +2475,21 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 	}
 }
 
+// deriveComposeRetBool composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
+func deriveComposeRetBool(f0 func(string) (string, error), f1 func(string) (bool, error)) func(string) (bool, error) {
+	return func(v_0_0 string) (bool, error) {
+		v_1_0, err0 := f0(v_0_0)
+		if err0 != nil {
+			return false, err0
+		}
+		v_2_0, err1 := f1(v_1_0)
+		if err1 != nil {
+			return false, err1
+		}
+		return v_2_0, nil
+	}
+}
+
 // deriveCompose composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
 func deriveCompose(f0 func() (string, error), f1 func(string) (float64, error)) func() (float64, error) {
 	return func() (float64, error) {

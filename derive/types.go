@@ -61,6 +61,8 @@ func Zero(typ types.Type) string {
 		switch t.Kind() {
 		case types.String:
 			return `""`
+		case types.Bool:
+			return "false"
 		default:
 			return "0"
 		}

@@ -53,6 +53,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/uncurry"
 	"github.com/awalterschulze/goderive/plugin/union"
 	"github.com/awalterschulze/goderive/plugin/unique"
+	"github.com/ingun37/goderive/plugin/toerror"
 )
 
 var autoname = flag.Bool("autoname", false, "rename functions that are conflicting with other functions")
@@ -79,6 +80,7 @@ func main() {
 		takewhile.NewPlugin(),
 		unique.NewPlugin(),
 		flip.NewPlugin(),
+		toerror.NewPlugin(),
 		curry.NewPlugin(),
 		uncurry.NewPlugin(),
 		all.NewPlugin(),

@@ -2475,18 +2475,14 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 	}
 }
 
-// deriveComposeRetBool composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
-func deriveComposeRetBool(f0 func(string) (string, error), f1 func(string) (bool, error)) func(string) (bool, error) {
-	return func(v_0_0 string) (bool, error) {
-		v_1_0, err0 := f0(v_0_0)
-		if err0 != nil {
-			return false, err0
+// deriveToError is...
+func deriveToError(err error, f func(i int) (a string, b bool)) func(i int) (a string, e error) {
+	return func(i int) (a string, e error) {
+		out, success := f(i)
+		if success {
+			return out, nil
 		}
-		v_2_0, err1 := f1(v_1_0)
-		if err1 != nil {
-			return false, err1
-		}
-		return v_2_0, nil
+		return out, err
 	}
 }
 
@@ -2530,6 +2526,21 @@ func deriveCompose2(f0 func(string, string) ([]string, string, error), f1 func([
 		v_2_0, err1 := f1(v_1_0, v_1_1)
 		if err1 != nil {
 			return 0, err1
+		}
+		return v_2_0, nil
+	}
+}
+
+// deriveComposeRetBool composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
+func deriveComposeRetBool(f0 func(string) (string, error), f1 func(string) (bool, error)) func(string) (bool, error) {
+	return func(v_0_0 string) (bool, error) {
+		v_1_0, err0 := f0(v_0_0)
+		if err0 != nil {
+			return false, err0
+		}
+		v_2_0, err1 := f1(v_1_0)
+		if err1 != nil {
+			return false, err1
 		}
 		return v_2_0, nil
 	}

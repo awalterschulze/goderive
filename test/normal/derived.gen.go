@@ -2210,9 +2210,11 @@ func deriveDeepCopyPtrToEmbeddedStruct1(dst, src *EmbeddedStruct1) {
 
 // deriveDeepCopyPtrToEmbeddedStruct2 recursively copies the contents of src into dst.
 func deriveDeepCopyPtrToEmbeddedStruct2(dst, src *EmbeddedStruct2) {
-	field := new(Structs)
-	src.Structs.DeepCopy(field)
-	dst.Structs = *field
+	func() {
+		field := new(Structs)
+		src.Structs.DeepCopy(field)
+		dst.Structs = *field
+	}()
 	if src.Name == nil {
 		dst.Name = nil
 	} else {
@@ -2429,9 +2431,25 @@ func deriveDeepCopyPtrToNickname(dst, src *Nickname) {
 
 // deriveDeepCopyPtrToPrivateEmbedded recursively copies the contents of src into dst.
 func deriveDeepCopyPtrToPrivateEmbedded(dst, src *PrivateEmbedded) {
-	field := new(privateStruct)
-	deriveDeepCopy_44(field, &src.privateStruct)
-	dst.privateStruct = *field
+	func() {
+		field := new(privateStruct)
+		deriveDeepCopy_44(field, &src.privateStruct)
+		dst.privateStruct = *field
+	}()
+}
+
+// deriveDeepCopyPtrToStructOfStructs recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToStructOfStructs(dst, src *StructOfStructs) {
+	func() {
+		field := new(Structs)
+		src.S1.DeepCopy(field)
+		dst.S1 = *field
+	}()
+	func() {
+		field := new(Structs)
+		src.S2.DeepCopy(field)
+		dst.S2 = *field
+	}()
 }
 
 // deriveContainsInt64s returns whether the item is contained in the list.
@@ -2475,21 +2493,6 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 	}
 }
 
-// deriveComposeRetBool composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
-func deriveComposeRetBool(f0 func(string) (string, error), f1 func(string) (bool, error)) func(string) (bool, error) {
-	return func(v_0_0 string) (bool, error) {
-		v_1_0, err0 := f0(v_0_0)
-		if err0 != nil {
-			return false, err0
-		}
-		v_2_0, err1 := f1(v_1_0)
-		if err1 != nil {
-			return false, err1
-		}
-		return v_2_0, nil
-	}
-}
-
 // deriveCompose composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
 func deriveCompose(f0 func() (string, error), f1 func(string) (float64, error)) func() (float64, error) {
 	return func() (float64, error) {
@@ -2530,6 +2533,21 @@ func deriveCompose2(f0 func(string, string) ([]string, string, error), f1 func([
 		v_2_0, err1 := f1(v_1_0, v_1_1)
 		if err1 != nil {
 			return 0, err1
+		}
+		return v_2_0, nil
+	}
+}
+
+// deriveComposeRetBool composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
+func deriveComposeRetBool(f0 func(string) (string, error), f1 func(string) (bool, error)) func(string) (bool, error) {
+	return func(v_0_0 string) (bool, error) {
+		v_1_0, err0 := f0(v_0_0)
+		if err0 != nil {
+			return false, err0
+		}
+		v_2_0, err1 := f1(v_1_0)
+		if err1 != nil {
+			return false, err1
 		}
 		return v_2_0, nil
 	}
@@ -7055,9 +7073,11 @@ func deriveDeepCopy_33(dst, src map[string][]*Name) {
 // deriveDeepCopy_34 recursively copies the contents of src into dst.
 func deriveDeepCopy_34(dst, src map[int]RecursiveType) {
 	for src_key, src_value := range src {
-		field := new(RecursiveType)
-		src_value.DeepCopy(field)
-		dst[src_key] = *field
+		func() {
+			field := new(RecursiveType)
+			src_value.DeepCopy(field)
+			dst[src_key] = *field
+		}()
 	}
 }
 

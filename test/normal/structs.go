@@ -876,3 +876,11 @@ func (this *PrivateEmbedded) GoString() string {
 func (this *PrivateEmbedded) Hash() uint64 {
 	return deriveHashPrivateEmbedded(this)
 }
+
+type StructOfStructs struct {
+	S1, S2 Structs
+}
+
+func (this *StructOfStructs) DeepCopy(that *StructOfStructs) {
+	deriveDeepCopyPtrToStructOfStructs(that, this)
+}

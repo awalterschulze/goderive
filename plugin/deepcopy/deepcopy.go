@@ -390,6 +390,8 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("}")
 		return nil
 	case *types.Struct:
+		p.P("func() {")
+		p.In()
 		p.P("field := new(%s)", g.TypeString(fieldType))
 		named, isNamed := fieldType.(*types.Named)
 		if isNamed && hasDeepCopyMethod(named) {
@@ -398,6 +400,8 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 			p.P("%s(field, &%s)", g.GetFuncName(types.NewPointer(fieldType)), wrap(thisField))
 		}
 		p.P("%s = *field", thatField)
+		p.Out()
+		p.P("}()")
 		return nil
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return fmt.Errorf("unsupported field type %s", g.TypeString(fieldType))

@@ -37,3 +37,28 @@ func TestToError(t *testing.T) {
 		t.Fatalf("unexpected key 1 %v", e)
 	}
 }
+
+func TestToErrorWithTypeAssertion(t *testing.T) {
+	var iStr interface{} = "hello"
+	expectTypeAssertionToString := func() (a string, b bool) {
+		a, b = iStr.(string)
+		return
+	}
+	expectTypeAssertionToFloat := func() (a float64, b bool) {
+		a, b = iStr.(float64)
+		return
+	}
+	eFalse := fmt.Errorf("eFalse")
+
+	transformedStr := deriveToErrorWithTypeAssertionToString(eFalse, expectTypeAssertionToString)
+	str, e := transformedStr()
+	if !(e == nil && str == "hello") {
+		t.Fatalf("expected success: got %v %v", e, str)
+	}
+
+	transformedFloat := deriveToErrorWithTypeAssertionToFloat(eFalse, expectTypeAssertionToFloat)
+	f, e := transformedFloat()
+	if !(e != nil && e.Error() == eFalse.Error()) {
+		t.Fatalf("expected fail: %v %v", e.Error(), f)
+	}
+}

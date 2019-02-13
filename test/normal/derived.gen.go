@@ -2486,6 +2486,28 @@ func deriveToError(err error, f func(i int) (a string, b bool)) func(i int) (a s
 	}
 }
 
+// deriveToErrorWithTypeAssertionToString is...
+func deriveToErrorWithTypeAssertionToString(err error, f func() (a string, b bool)) func() (a string, e error) {
+	return func() (a string, e error) {
+		out, success := f()
+		if success {
+			return out, nil
+		}
+		return out, err
+	}
+}
+
+// deriveToErrorWithTypeAssertionToFloat is...
+func deriveToErrorWithTypeAssertionToFloat(err error, f func() (a float64, b bool)) func() (a float64, e error) {
+	return func() (a float64, e error) {
+		out, success := f()
+		if success {
+			return out, nil
+		}
+		return out, err
+	}
+}
+
 // deriveCompose composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
 func deriveCompose(f0 func() (string, error), f1 func(string) (float64, error)) func() (float64, error) {
 	return func() (float64, error) {

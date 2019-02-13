@@ -12,15 +12,16 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package curry contains the implementation of the curry plugin, which generates the deriveCurry function.
+// Package toerror contains the implementation of the toerror plugin, which generates the deriveToError function.
 //
-// The deriveCurry function curries the first two parameters of the input function.
-//   deriveCurry(f func(A, B, ...) T) func(A) func(B, ...) T
+// The deriveToError function transforms return type of a function from (a, bool) into (a, error).
+//   deriveToError(e error, f func(...) (T, bool)) func(...) (T, error)
 package toerror
 
 import (
 	"fmt"
 	"go/types"
+	"strings"
 
 	"github.com/awalterschulze/goderive/derive"
 )
@@ -58,10 +59,6 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if !ok {
 		return "", fmt.Errorf("%s, 2nd param %s, is not of type function", name, g.TypeString(typs[1]))
 	}
-	params := sig.Params()
-	if params.Len() != 1 {
-		return "", fmt.Errorf("%s, given function does not have 1 argument (got %v)", name, params.String())
-	}
 	results := sig.Results()
 	if results.Len() != 2 {
 		return "", fmt.Errorf("%s, return type of the given function must be a tuple length of 2", name)
@@ -79,9 +76,16 @@ func (g *gen) Generate(typs []types.Type) error {
 	return g.genFuncFor(g.GetFuncName(typs...), errTyp, funcTyp)
 }
 
+func varnames(tup *types.Tuple) []string {
+	as := make([]string, tup.Len())
+	for i := 0; i < tup.Len(); i++ {
+		as[i] = tup.At(i).Name()
+	}
+	return as
+}
+
 func (g *gen) genFuncFor(deriveFuncName string, etyp *types.Named, ftyp *types.Signature) error {
 	p := g.printer
-	// fStr := g.TypeString(ftyp) //mus be "func (a) (b, bool).."
 	newResultType := types.NewTuple(ftyp.Results().At(0), types.NewVar(1, nil, "e", etyp))
 	newSigType := types.NewSignature(nil, ftyp.Params(), newResultType, ftyp.Variadic())
 
@@ -91,7 +95,8 @@ func (g *gen) genFuncFor(deriveFuncName string, etyp *types.Named, ftyp *types.S
 	p.In()
 	p.P("return %s {", newSigType.String())
 	p.In()
-	p.P("out, success := f(%s)", newSigType.Params().At(0).Name())
+	as := varnames(newSigType.Params())
+	p.P("out, success := f(%s)", strings.Join(as, ", "))
 	p.P("if success {")
 	p.In()
 	p.P("return out, nil")

@@ -48,12 +48,12 @@ import (
 	"github.com/awalterschulze/goderive/plugin/set"
 	"github.com/awalterschulze/goderive/plugin/sort"
 	"github.com/awalterschulze/goderive/plugin/takewhile"
+	"github.com/awalterschulze/goderive/plugin/toerror"
 	"github.com/awalterschulze/goderive/plugin/traverse"
 	"github.com/awalterschulze/goderive/plugin/tuple"
 	"github.com/awalterschulze/goderive/plugin/uncurry"
 	"github.com/awalterschulze/goderive/plugin/union"
 	"github.com/awalterschulze/goderive/plugin/unique"
-	"github.com/ingun37/goderive/plugin/toerror"
 )
 
 var autoname = flag.Bool("autoname", false, "rename functions that are conflicting with other functions")

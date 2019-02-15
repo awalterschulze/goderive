@@ -83,17 +83,20 @@ func varnames(tup *types.Tuple) []string {
 	}
 	return as
 }
-
+func stripVarName(v *types.Var) *types.Var {
+	return types.NewVar(v.Pos(), v.Pkg(), "", v.Type())
+}
 func (g *gen) genFuncFor(deriveFuncName string, etyp *types.Named, ftyp *types.Signature) error {
 	p := g.printer
-	newResultType := types.NewTuple(ftyp.Results().At(0), types.NewVar(1, nil, "e", etyp))
+
+	newResultType := types.NewTuple(stripVarName(ftyp.Results().At(0)), types.NewVar(1, nil, "", etyp))
 	newSigType := types.NewSignature(nil, ftyp.Params(), newResultType, ftyp.Variadic())
 
 	p.P("")
 	p.P("// %s transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.", deriveFuncName)
-	p.P("func %s(err error, f %s) %s {", deriveFuncName, ftyp.String(), newSigType.String())
+	p.P("func %s(err error, f %s) %s {", deriveFuncName, g.TypeString(ftyp), g.TypeString(newSigType))
 	p.In()
-	p.P("return %s {", newSigType.String())
+	p.P("return %s {", g.TypeString(newSigType))
 	p.In()
 	as := varnames(newSigType.Params())
 	p.P("out, success := f(%s)", strings.Join(as, ", "))

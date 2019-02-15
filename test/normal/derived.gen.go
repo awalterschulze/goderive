@@ -2494,8 +2494,8 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 }
 
 // deriveToError transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
-func deriveToError(err error, f func(i int) (a string, b bool)) func(i int) (a string, e error) {
-	return func(i int) (a string, e error) {
+func deriveToError(err error, f func(i int) (a string, b bool)) func(i int) (string, error) {
+	return func(i int) (string, error) {
 		out, success := f(i)
 		if success {
 			return out, nil
@@ -2505,8 +2505,8 @@ func deriveToError(err error, f func(i int) (a string, b bool)) func(i int) (a s
 }
 
 // deriveToErrorWithTypeAssertionToString transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
-func deriveToErrorWithTypeAssertionToString(err error, f func() (a string, b bool)) func() (a string, e error) {
-	return func() (a string, e error) {
+func deriveToErrorWithTypeAssertionToString(err error, f func() (a string, b bool)) func() (string, error) {
+	return func() (string, error) {
 		out, success := f()
 		if success {
 			return out, nil
@@ -2516,8 +2516,8 @@ func deriveToErrorWithTypeAssertionToString(err error, f func() (a string, b boo
 }
 
 // deriveToErrorWithTypeAssertionToFloat transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
-func deriveToErrorWithTypeAssertionToFloat(err error, f func() (a float64, b bool)) func() (a float64, e error) {
-	return func() (a float64, e error) {
+func deriveToErrorWithTypeAssertionToFloat(err error, f func() (a float64, b bool)) func() (float64, error) {
+	return func() (float64, error) {
 		out, success := f()
 		if success {
 			return out, nil

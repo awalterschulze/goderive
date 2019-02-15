@@ -18,6 +18,7 @@ import (
 	"go/ast"
 	"go/types"
 	"path/filepath"
+	"strings"
 
 	"golang.org/x/tools/go/loader"
 )
@@ -146,6 +147,9 @@ func (c *call) HasUndefined() bool {
 			if basic.Kind() == types.Invalid {
 				return true
 			}
+		}
+		if strings.Index(c.Args[i].String(), "invalid type") >= 0 {
+			return true
 		}
 	}
 	return false

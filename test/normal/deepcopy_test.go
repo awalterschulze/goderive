@@ -51,6 +51,7 @@ func TestDeepCopyStructs(t *testing.T) {
 		&Duration{},
 		&Nickname{},
 		&PrivateEmbedded{},
+		&StructOfStructs{},
 	}
 	for _, this := range structs {
 		desc := reflect.TypeOf(this).Elem().Name()

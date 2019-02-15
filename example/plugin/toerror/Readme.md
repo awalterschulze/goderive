@@ -7,7 +7,7 @@ expectKey := func(k some_key) (some_value, bool) {
     value, keyExists = some_map[k]
     return value, keyExists
 }
-transformed := deriveToError(fmt.Errorf("eFalse"), expectKey)
+transformed := deriveToError(fmt.Errorf("false returned. something's wrong!"), expectKey)
 ```
 
 goderive will generate the following code:

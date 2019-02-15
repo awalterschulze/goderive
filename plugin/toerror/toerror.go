@@ -90,7 +90,7 @@ func (g *gen) genFuncFor(deriveFuncName string, etyp *types.Named, ftyp *types.S
 	newSigType := types.NewSignature(nil, ftyp.Params(), newResultType, ftyp.Variadic())
 
 	p.P("")
-	p.P("// %s is...", deriveFuncName)
+	p.P("// %s transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.", deriveFuncName)
 	p.P("func %s(err error, f %s) %s {", deriveFuncName, ftyp.String(), newSigType.String())
 	p.In()
 	p.P("return %s {", newSigType.String())

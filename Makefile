@@ -16,7 +16,11 @@ travis:
 	go vet ./example/...
 	go vet ./plugin/...
 	go vet ./test/normal/...
+	make diff
 
 updatedeps:
 	govendor fetch +vendor
 	git checkout vendor/vendortest/vendortest.go
+
+diff:
+	git diff --exit-code .

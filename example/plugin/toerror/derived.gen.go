@@ -2,48 +2,13 @@
 
 package toerror
 
-import (
-	http "net/http"
-)
-
 // deriveToError transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
-func deriveToError(err error, f func(u *user) (*newUser, bool)) func(u *user) (*newUser, error) {
-	return func(u *user) (*newUser, error) {
-		out, success := f(u)
+func deriveToError(err error, f func(key string) (value string, ok bool)) func(key string) (string, error) {
+	return func(key string) (string, error) {
+		out, success := f(key)
 		if success {
 			return out, nil
 		}
 		return out, err
-	}
-}
-
-// deriveCompose composes functions f0, f1, f2, f3, f4 and f5 into one function, that takes the parameters from f0 and returns the results from f5.
-func deriveCompose(f0 func(string) (*http.Response, error), f1 func(*http.Response) ([]byte, error), f2 func([]byte) (*user, error), f3 func(*user) (*newUser, error), f4 func(interface{}) ([]byte, error), f5 func([]byte) (*http.Response, error)) func(string) (*http.Response, error) {
-	return func(v_0_0 string) (*http.Response, error) {
-		v_1_0, err0 := f0(v_0_0)
-		if err0 != nil {
-			return nil, err0
-		}
-		v_2_0, err1 := f1(v_1_0)
-		if err1 != nil {
-			return nil, err1
-		}
-		v_3_0, err2 := f2(v_2_0)
-		if err2 != nil {
-			return nil, err2
-		}
-		v_4_0, err3 := f3(v_3_0)
-		if err3 != nil {
-			return nil, err3
-		}
-		v_5_0, err4 := f4(v_4_0)
-		if err4 != nil {
-			return nil, err4
-		}
-		v_6_0, err5 := f5(v_5_0)
-		if err5 != nil {
-			return nil, err5
-		}
-		return v_6_0, nil
 	}
 }

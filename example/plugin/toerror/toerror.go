@@ -2,9 +2,14 @@ package toerror
 
 import (
 	"fmt"
-	"reflect"
+	"net/http"
 )
 
-func getJsonTag(f reflect.StructTag) (string, error) {
-	return deriveToError(fmt.Errorf("json tag not exists"), f.Lookup)("json")
+func parseMajorHTTPVersion(versionString string) (int, error) {
+	return deriveCompose(
+		deriveToError(fmt.Errorf("HTTP version parsing failed."), http.ParseHTTPVersion),
+		func(major, minor int) (int, error) {
+			return major, nil
+		},
+	)(versionString)
 }

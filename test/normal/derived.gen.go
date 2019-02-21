@@ -2493,36 +2493,80 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 	}
 }
 
-// deriveToError transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
-func deriveToError(err error, f func(i int) (a string, b bool)) func(i int) (string, error) {
-	return func(i int) (string, error) {
-		out, success := f(i)
+// deriveToError0 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+func deriveToError0(err error, f func() bool) func() error {
+	return func() error {
+		success := f()
 		if success {
-			return out, nil
+			return nil
 		}
-		return out, err
+		return err
 	}
 }
 
-// deriveToErrorWithTypeAssertionToString transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
-func deriveToErrorWithTypeAssertionToString(err error, f func() (a string, b bool)) func() (string, error) {
-	return func() (string, error) {
-		out, success := f()
+// deriveToError1 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+func deriveToError1(err error, f func() (int, bool)) func() (int, error) {
+	return func() (int, error) {
+		out0, success := f()
 		if success {
-			return out, nil
+			return out0, nil
 		}
-		return out, err
+		return out0, err
 	}
 }
 
-// deriveToErrorWithTypeAssertionToFloat transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
-func deriveToErrorWithTypeAssertionToFloat(err error, f func() (a float64, b bool)) func() (float64, error) {
-	return func() (float64, error) {
-		out, success := f()
+// deriveToError2 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+func deriveToError2(err error, f func(a int) (int, bool)) func(a int) (int, error) {
+	return func(a int) (int, error) {
+		out0, success := f(a)
 		if success {
-			return out, nil
+			return out0, nil
 		}
-		return out, err
+		return out0, err
+	}
+}
+
+// deriveToError3 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+func deriveToError3(err error, f func(a int, b int) (int, bool)) func(a int, b int) (int, error) {
+	return func(a int, b int) (int, error) {
+		out0, success := f(a, b)
+		if success {
+			return out0, nil
+		}
+		return out0, err
+	}
+}
+
+// deriveToError4 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+func deriveToError4(err error, f func(a int, b int) (int, int, bool)) func(a int, b int) (int, int, error) {
+	return func(a int, b int) (int, int, error) {
+		out0, out1, success := f(a, b)
+		if success {
+			return out0, out1, nil
+		}
+		return out0, out1, err
+	}
+}
+
+// deriveToError5 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+func deriveToError5(err error, f func(lt *LocalType) (*LocalType, bool)) func(lt *LocalType) (*LocalType, error) {
+	return func(lt *LocalType) (*LocalType, error) {
+		out0, success := f(lt)
+		if success {
+			return out0, nil
+		}
+		return out0, err
+	}
+}
+
+// deriveToError6 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+func deriveToError6(err error, f func(t *time.Time) (*time.Time, bool)) func(t *time.Time) (*time.Time, error) {
+	return func(t *time.Time) (*time.Time, error) {
+		out0, success := f(t)
+		if success {
+			return out0, nil
+		}
+		return out0, err
 	}
 }
 

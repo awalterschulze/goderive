@@ -5,10 +5,10 @@ package toerror
 // deriveToError transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
 func deriveToError(err error, f func(key string) (value string, ok bool)) func(key string) (string, error) {
 	return func(key string) (string, error) {
-		out, success := f(key)
+		out0, success := f(key)
 		if success {
-			return out, nil
+			return out0, nil
 		}
-		return out, err
+		return out0, err
 	}
 }

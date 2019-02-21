@@ -60,11 +60,11 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 		return "", fmt.Errorf("%s, 2nd param %s, is not of type function", name, g.TypeString(typs[1]))
 	}
 	results := sig.Results()
-	if results.Len() != 2 {
-		return "", fmt.Errorf("%s, return type of the given function must be a tuple length of 2", name)
+	if results.Len() <= 0 {
+		return "", fmt.Errorf("%s, given function must return at least 1 bool type", name)
 	}
-	if !types.Identical(results.At(1).Type(), types.Typ[types.Bool]) {
-		return "", fmt.Errorf("%s expected secondary bool return type for the given function. (got %v)", name, results.String())
+	if !types.Identical(results.At(results.Len()-1).Type(), types.Typ[types.Bool]) {
+		return "", fmt.Errorf("%s, given function must return bool as last return type. (got %v)", name, results.String())
 	}
 	return g.SetFuncName(name, errTyp, funcTyp)
 }
@@ -86,10 +86,23 @@ func varnames(tup *types.Tuple) []string {
 func stripVarName(v *types.Var) *types.Var {
 	return types.NewVar(v.Pos(), v.Pkg(), "", v.Type())
 }
+func outs(num int, last string) string {
+	outs := make([]string, num, num)
+	for i := 0; i < num-1; i++ {
+		outs[i] = fmt.Sprintf("out%d", i)
+	}
+	outs[num-1] = last
+	return strings.Join(outs, ", ")
+}
 func (g *gen) genFuncFor(deriveFuncName string, etyp *types.Named, ftyp *types.Signature) error {
 	p := g.printer
-
-	newResultType := types.NewTuple(stripVarName(ftyp.Results().At(0)), types.NewVar(1, nil, "", etyp))
+	rlen := ftyp.Results().Len()
+	mutable := make([]*types.Var, rlen, rlen)
+	for i := 0; i < rlen-1; i++ {
+		mutable[i] = stripVarName(ftyp.Results().At(i))
+	}
+	mutable[rlen-1] = types.NewVar(ftyp.Results().At(rlen-1).Pos(), nil, "", etyp)
+	newResultType := types.NewTuple(mutable...)
 	newSigType := types.NewSignature(nil, ftyp.Params(), newResultType, ftyp.Variadic())
 
 	p.P("")
@@ -99,13 +112,13 @@ func (g *gen) genFuncFor(deriveFuncName string, etyp *types.Named, ftyp *types.S
 	p.P("return %s {", g.TypeString(newSigType))
 	p.In()
 	as := varnames(newSigType.Params())
-	p.P("out, success := f(%s)", strings.Join(as, ", "))
+	p.P("%s := f(%s)", outs(rlen, "success"), strings.Join(as, ", "))
 	p.P("if success {")
 	p.In()
-	p.P("return out, nil")
+	p.P("return %s", outs(rlen, "nil"))
 	p.Out()
 	p.P("}")
-	p.P("return out, err")
+	p.P("return %s", outs(rlen, "err"))
 	p.Out()
 	p.P("}")
 	p.Out()

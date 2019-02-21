@@ -17,48 +17,63 @@ package test
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
-func TestToError(t *testing.T) {
-	m := map[int]string{0: "0"}
-	expectKey := func(i int) (a string, b bool) {
-		a, b = m[i]
-		return
-	}
-	eFalse := fmt.Errorf("eFalse")
-	transformed := deriveToError(eFalse, expectKey)
-	str, e := transformed(0)
-	if !(e == nil && str == "0") {
-		t.Fatalf("expected key 0 %s", e.Error())
-	}
+type LocalType struct{}
 
-	str, e = transformed(1)
-	if !(e != nil && e.Error() == eFalse.Error()) {
-		t.Fatalf("unexpected key 1 %v", e)
-	}
+func true0() bool {
+	return true
+}
+func false0() bool {
+	return false
+}
+func true1() (int, bool) {
+	return 0, true
+}
+func true2(a int) (int, bool) {
+	return a, true
+}
+func true3(a, b int) (int, bool) {
+	return a + b, true
+}
+func true4(a, b int) (int, int, bool) {
+	return a, b, true
+}
+func true5(lt *LocalType) (*LocalType, bool) {
+	return lt, true
+}
+func true6(t *time.Time) (*time.Time, bool) {
+	return t, true
 }
 
-func TestToErrorWithTypeAssertion(t *testing.T) {
-	var iStr interface{} = "hello"
-	expectTypeAssertionToString := func() (a string, b bool) {
-		a, b = iStr.(string)
-		return
+// func fail
+func TestToError(t *testing.T) {
+	e := fmt.Errorf("error")
+	if r := deriveToError0(e, true0)(); !(r == nil) {
+		t.Fatal()
 	}
-	expectTypeAssertionToFloat := func() (a float64, b bool) {
-		a, b = iStr.(float64)
-		return
+	if r := deriveToError0(e, false0)(); !(r == e) {
+		t.Fatal()
 	}
-	eFalse := fmt.Errorf("eFalse")
-
-	transformedStr := deriveToErrorWithTypeAssertionToString(eFalse, expectTypeAssertionToString)
-	str, e := transformedStr()
-	if !(e == nil && str == "hello") {
-		t.Fatalf("expected success: got %v %v", e, str)
+	if r0, r1 := deriveToError1(e, true1)(); !(r0 == 0 && r1 == nil) {
+		t.Fatal()
 	}
-
-	transformedFloat := deriveToErrorWithTypeAssertionToFloat(eFalse, expectTypeAssertionToFloat)
-	f, e := transformedFloat()
-	if !(e != nil && e.Error() == eFalse.Error()) {
-		t.Fatalf("expected fail: %v %v", e.Error(), f)
+	if r0, r1 := deriveToError2(e, true2)(1); !(r0 == 1 && r1 == nil) {
+		t.Fatal()
+	}
+	if r0, r1 := deriveToError3(e, true3)(1, 2); !(r0 == 3 && r1 == nil) {
+		t.Fatal()
+	}
+	if r0, r1, r2 := deriveToError4(e, true4)(1, 2); !(r0 == 1 && r1 == 2 && r2 == nil) {
+		t.Fatal()
+	}
+	lt := LocalType{}
+	if r0, r1 := deriveToError5(e, true5)(&lt); !(r0 == &lt && r1 == nil) {
+		t.Fatal()
+	}
+	tm := time.Now()
+	if r0, r1 := deriveToError6(e, true6)(&tm); !(r0 == &tm && r1 == nil) {
+		t.Fatal()
 	}
 }

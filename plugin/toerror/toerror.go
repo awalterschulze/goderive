@@ -14,8 +14,8 @@
 
 // Package toerror contains the implementation of the toerror plugin, which generates the deriveToError function.
 //
-// The deriveToError function transforms return type of a function from (a, bool) into (a, error).
-//   deriveToError(e error, f func(...) (T, bool)) func(...) (T, error)
+// The deriveToError function transforms return type of a function from (B..., bool) into (B..., error).
+//   deriveToError(e error, f func(A...) (B..., bool)) func(A...) (B..., error)
 package toerror
 
 import (
@@ -26,13 +26,13 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 )
 
-// NewPlugin creates a new curry plugin.
-// This function returns the plugin name, default prefix and a constructor for the curry code generator.
+// NewPlugin creates a new toerror plugin.
+// This function returns the plugin name, default prefix and a constructor for the toerror code generator.
 func NewPlugin() derive.Plugin {
 	return derive.NewPlugin("toerror", "deriveToError", New)
 }
 
-// New is a constructor for the curry code generator.
+// New is a constructor for the toerror code generator.
 // This generator should be reconstructed for each package.
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
 	return &gen{

@@ -2,7 +2,7 @@
 
 package toerror
 
-// deriveToError transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+// deriveToError transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError(err error, f func(vers string) (major int, minor int, ok bool)) func(vers string) (int, int, error) {
 	return func(vers string) (int, int, error) {
 		out0, out1, success := f(vers)

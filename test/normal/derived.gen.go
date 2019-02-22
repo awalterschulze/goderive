@@ -2493,7 +2493,7 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 	}
 }
 
-// deriveToError0 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+// deriveToError0 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError0(err error, f func() bool) func() error {
 	return func() error {
 		success := f()
@@ -2504,7 +2504,7 @@ func deriveToError0(err error, f func() bool) func() error {
 	}
 }
 
-// deriveToError1 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+// deriveToError1 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError1(err error, f func() (int, bool)) func() (int, error) {
 	return func() (int, error) {
 		out0, success := f()
@@ -2515,7 +2515,7 @@ func deriveToError1(err error, f func() (int, bool)) func() (int, error) {
 	}
 }
 
-// deriveToError2 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+// deriveToError2 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError2(err error, f func(a int) (int, bool)) func(a int) (int, error) {
 	return func(a int) (int, error) {
 		out0, success := f(a)
@@ -2526,7 +2526,7 @@ func deriveToError2(err error, f func(a int) (int, bool)) func(a int) (int, erro
 	}
 }
 
-// deriveToError3 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+// deriveToError3 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError3(err error, f func(a int, b int) (int, bool)) func(a int, b int) (int, error) {
 	return func(a int, b int) (int, error) {
 		out0, success := f(a, b)
@@ -2537,7 +2537,7 @@ func deriveToError3(err error, f func(a int, b int) (int, bool)) func(a int, b i
 	}
 }
 
-// deriveToError4 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+// deriveToError4 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError4(err error, f func(a int, b int) (int, int, bool)) func(a int, b int) (int, int, error) {
 	return func(a int, b int) (int, int, error) {
 		out0, out1, success := f(a, b)
@@ -2548,7 +2548,7 @@ func deriveToError4(err error, f func(a int, b int) (int, int, bool)) func(a int
 	}
 }
 
-// deriveToError5 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+// deriveToError5 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError5(err error, f func(lt *LocalType) (*LocalType, bool)) func(lt *LocalType) (*LocalType, error) {
 	return func(lt *LocalType) (*LocalType, error) {
 		out0, success := f(lt)
@@ -2559,7 +2559,7 @@ func deriveToError5(err error, f func(lt *LocalType) (*LocalType, bool)) func(lt
 	}
 }
 
-// deriveToError6 transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+// deriveToError6 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError6(err error, f func(t *time.Time) (*time.Time, bool)) func(t *time.Time) (*time.Time, error) {
 	return func(t *time.Time) (*time.Time, error) {
 		out0, success := f(t)

@@ -10,11 +10,14 @@ import (
 	"net/http"
 )
 
-func parseMajorHTTPVersion(versionString string) (int, error) {
+func parseMinorHTTPVersion(versionString string) (int, error) {
 	return deriveCompose(
 		deriveToError(fmt.Errorf("HTTP version parsing failed"), http.ParseHTTPVersion),
 		func(major, minor int) (int, error) {
-			return major, nil
+			if major != 2 {
+				return 0, fmt.Errorf("only HTTP2 is supported")
+			}
+			return minor, nil
 		},
 	)(versionString)
 }
@@ -27,7 +30,7 @@ goderive will generate the following code:
 
 package toerror
 
-// deriveToError transforms sum-bool type into sum-error type. Main purpose is to make the given function composable. It returns given error when the result of the function is false.
+// deriveToError transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError(err error, f func(vers string) (major int, minor int, ok bool)) func(vers string) (int, int, error) {
 	return func(vers string) (int, int, error) {
 		out0, out1, success := f(vers)

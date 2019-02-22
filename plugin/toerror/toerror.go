@@ -87,7 +87,7 @@ func stripVarName(v *types.Var) *types.Var {
 	return types.NewVar(v.Pos(), v.Pkg(), "", v.Type())
 }
 func outs(num int, last string) string {
-	outs := make([]string, num, num)
+	outs := make([]string, num)
 	for i := 0; i < num-1; i++ {
 		outs[i] = fmt.Sprintf("out%d", i)
 	}

@@ -47,7 +47,6 @@ func true6(t *time.Time) (*time.Time, bool) {
 	return t, true
 }
 
-// func fail
 func TestToError(t *testing.T) {
 	e := fmt.Errorf("error")
 	if r := deriveToError0(e, true0)(); !(r == nil) {

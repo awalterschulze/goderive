@@ -140,6 +140,7 @@ Functional Functions:
     - `deriveTraverse(func(A) (B, error), []A) ([]B, error)`
   - [ToError](http://godoc.org/github.com/awalterschulze/goderive/plugin/toerror)
     - `deriveToError(error, func(A...) (B..., bool)) func(A...) (B..., error)`
+    - `deriveToError(error, func() bool) func() error`
 
 Concurrency Functions:
   - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)

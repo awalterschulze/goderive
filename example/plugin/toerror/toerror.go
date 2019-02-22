@@ -5,11 +5,14 @@ import (
 	"net/http"
 )
 
-func parseMajorHTTPVersion(versionString string) (int, error) {
+func parseMinorHTTPVersion(versionString string) (int, error) {
 	return deriveCompose(
 		deriveToError(fmt.Errorf("HTTP version parsing failed"), http.ParseHTTPVersion),
 		func(major, minor int) (int, error) {
-			return major, nil
+			if major != 2 {
+				return 0, fmt.Errorf("only HTTP2 is supported")
+			}
+			return minor, nil
 		},
 	)(versionString)
 }

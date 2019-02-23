@@ -10,7 +10,7 @@ I will do my best to guide you, whatever your skill level.
 *In all cases please open an issue* to discuss your idea or issue, before doing any work.
 I don't have time to do the work myself, so don't worry about losing the chance to implement your idea.
 
-If it is your first time contributing and don't have an idea of your own, then you can start with the list of (good first issues)[https://github.com/awalterschulze/goderive/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22]
+If it is your first time contributing and don't have an idea of your own, then you can start with the list of [good first issues](https://github.com/awalterschulze/goderive/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 ## Contributing Examples
 

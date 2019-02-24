@@ -169,6 +169,16 @@ Finally run `make test`.
 When all of this is working, please create a pull request.
 This is already a good time to get feedback, before creating an example.
 
+### Don't Repeat Yourself
+
+The DRY principle is great in programming, but in Go we violate this rule more often than in other languages, because of the lack of generics.  Even without this limitation it is still a balance and not every function is a great library function.
+Having said that the [derive](https://godoc.org/github.com/awalterschulze/goderive/derive) library contains quite a few functions, to help with generating code.  Some example include:
+
+  * [Zero](https://godoc.org/github.com/awalterschulze/goderive/derive#Zero) returns the zero value as a string, for a given type.
+  * [Fields](https://godoc.org/github.com/awalterschulze/goderive/derive#Fields) is useful for generating code that operates on structs.
+  * [TypesMap](https://godoc.org/github.com/awalterschulze/goderive/derive#TypesMap) is the go to for anything that requires more context.
+  * [IsError](https://godoc.org/github.com/awalterschulze/goderive/derive#IsError) returns whether a type implements the Error interface.
+
 ## Contributing Examples
 
 We can always use better examples.

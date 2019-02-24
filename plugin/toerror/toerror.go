@@ -66,14 +66,13 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if !types.Identical(results.At(results.Len()-1).Type(), types.Typ[types.Bool]) {
 		return "", fmt.Errorf("%s, given function must return bool as last return type. (got %v)", name, results.String())
 	}
-	return g.SetFuncName(name, errTyp, funcTyp)
+	return g.SetFuncName(name, funcTyp)
 }
 
 func (g *gen) Generate(typs []types.Type) error {
 	g.Generating(typs...)
-	errTyp := typs[0].(*types.Named)
-	funcTyp := typs[1].(*types.Signature)
-	return g.genFuncFor(g.GetFuncName(typs...), errTyp, funcTyp)
+	funcTyp := typs[0].(*types.Signature)
+	return g.genFuncFor(g.GetFuncName(typs...), funcTyp)
 }
 
 func varnames(tup *types.Tuple) []string {
@@ -94,14 +93,28 @@ func outs(num int, last string) string {
 	outs[num-1] = last
 	return strings.Join(outs, ", ")
 }
-func (g *gen) genFuncFor(deriveFuncName string, etyp *types.Named, ftyp *types.Signature) error {
+
+type basicErrorType struct {
+	types.Type
+}
+
+func (t basicErrorType) Underlying() types.Type {
+	return nil
+}
+
+func (t basicErrorType) String() string {
+	return "error"
+}
+
+func (g *gen) genFuncFor(deriveFuncName string, ftyp *types.Signature) error {
 	p := g.printer
 	rlen := ftyp.Results().Len()
 	mutable := make([]*types.Var, rlen, rlen)
 	for i := 0; i < rlen-1; i++ {
 		mutable[i] = stripVarName(ftyp.Results().At(i))
 	}
-	mutable[rlen-1] = types.NewVar(ftyp.Results().At(rlen-1).Pos(), nil, "", etyp)
+
+	mutable[rlen-1] = types.NewVar(ftyp.Results().At(rlen-1).Pos(), nil, "", basicErrorType{})
 	newResultType := types.NewTuple(mutable...)
 	newSigType := types.NewSignature(nil, ftyp.Params(), newResultType, ftyp.Variadic())
 

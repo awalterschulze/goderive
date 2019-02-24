@@ -2493,6 +2493,83 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 	}
 }
 
+// deriveToError0 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
+func deriveToError0(err error, f func() bool) func() error {
+	return func() error {
+		success := f()
+		if success {
+			return nil
+		}
+		return err
+	}
+}
+
+// deriveToError1 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
+func deriveToError1(err error, f func() (int, bool)) func() (int, error) {
+	return func() (int, error) {
+		out0, success := f()
+		if success {
+			return out0, nil
+		}
+		return out0, err
+	}
+}
+
+// deriveToError2 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
+func deriveToError2(err error, f func(a int) (int, bool)) func(a int) (int, error) {
+	return func(a int) (int, error) {
+		out0, success := f(a)
+		if success {
+			return out0, nil
+		}
+		return out0, err
+	}
+}
+
+// deriveToError3 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
+func deriveToError3(err error, f func(a int, b int) (int, bool)) func(a int, b int) (int, error) {
+	return func(a int, b int) (int, error) {
+		out0, success := f(a, b)
+		if success {
+			return out0, nil
+		}
+		return out0, err
+	}
+}
+
+// deriveToError4 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
+func deriveToError4(err error, f func(a int, b int) (int, int, bool)) func(a int, b int) (int, int, error) {
+	return func(a int, b int) (int, int, error) {
+		out0, out1, success := f(a, b)
+		if success {
+			return out0, out1, nil
+		}
+		return out0, out1, err
+	}
+}
+
+// deriveToError5 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
+func deriveToError5(err error, f func(lt *LocalType) (*LocalType, bool)) func(lt *LocalType) (*LocalType, error) {
+	return func(lt *LocalType) (*LocalType, error) {
+		out0, success := f(lt)
+		if success {
+			return out0, nil
+		}
+		return out0, err
+	}
+}
+
+// deriveToError6 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
+func deriveToError6(err error, f func(t *time.Time) (*time.Time, bool)) func(t *time.Time) (*time.Time, error) {
+	return func(t *time.Time) (*time.Time, error) {
+		out0, success := f(t)
+		if success {
+			return out0, nil
+		}
+		return out0, err
+	}
+}
+
 // deriveCompose composes functions f0 and f1 into one function, that takes the parameters from f0 and returns the results from f1.
 func deriveCompose(f0 func() (string, error), f1 func(string) (float64, error)) func() (float64, error) {
 	return func() (float64, error) {

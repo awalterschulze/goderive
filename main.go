@@ -48,6 +48,7 @@ import (
 	"github.com/awalterschulze/goderive/plugin/set"
 	"github.com/awalterschulze/goderive/plugin/sort"
 	"github.com/awalterschulze/goderive/plugin/takewhile"
+	"github.com/awalterschulze/goderive/plugin/toerror"
 	"github.com/awalterschulze/goderive/plugin/traverse"
 	"github.com/awalterschulze/goderive/plugin/tuple"
 	"github.com/awalterschulze/goderive/plugin/uncurry"
@@ -79,6 +80,7 @@ func main() {
 		takewhile.NewPlugin(),
 		unique.NewPlugin(),
 		flip.NewPlugin(),
+		toerror.NewPlugin(),
 		curry.NewPlugin(),
 		uncurry.NewPlugin(),
 		all.NewPlugin(),

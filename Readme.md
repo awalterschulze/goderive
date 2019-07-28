@@ -209,6 +209,7 @@ This should be easy to figure out by looking at [main.go](https://github.com/awa
 
 These projects use goderive:
 
+  - [DC/OS](https://github.com/dcos/dcos-cli/blob/af0434c0ca80cee7152a1880770dc878501b9ac5/pkg/httpclient/derived.gen.go)
   - [katydid](https://github.com/katydid/katydid/blob/master/relapse/ast/derived.gen.go)
   - [go-geom](https://github.com/twpayne/go-geom/blob/master/derived.gen.go)
   - [gominikanren](https://github.com/awalterschulze/gominikanren/blob/master/micro/derived.gen.go)

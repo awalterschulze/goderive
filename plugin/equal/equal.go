@@ -249,7 +249,7 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 			return nil
 		}
 		if _, isNamed := typ.(*types.Named); isNamed {
-			fieldStr, err := g.field("&"+this, "&"+that, types.NewPointer(ttyp))
+			fieldStr, err := g.field("&"+this, "&"+that, types.NewPointer(typ))
 			if err != nil {
 				return err
 			}

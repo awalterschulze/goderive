@@ -209,3 +209,19 @@ func TestMapTypes(t *testing.T) {
 		t.Fatalf("expected equal")
 	}
 }
+
+type Visitor struct {
+	UserName   *string
+	RemoteAddr string
+}
+
+func TestEqualStruct(t *testing.T) {
+	u := "u"
+	v := Visitor{
+		UserName:   &u,
+		RemoteAddr: "r",
+	}
+	if !deriveEqualVisitor(v, v) {
+		t.Fatalf("same is not equal")
+	}
+}

@@ -49,3 +49,21 @@ func TestUniqueStructs(t *testing.T) {
 		}
 	}
 }
+
+func TestUniqueStructsWithoutPointers(t *testing.T) {
+	var b *PtrToBuiltInTypes
+	b1 := random(b).(*PtrToBuiltInTypes)
+	b2 := random(b).(*PtrToBuiltInTypes)
+	b3 := random(b).(*PtrToBuiltInTypes)
+	input := []PtrToBuiltInTypes{*b1, *b2, *b3, *b2, *b1}
+	want := []PtrToBuiltInTypes{*b1, *b2, *b3}
+	got := deriveUniqueStructsPtrs(input)
+	if len(got) != len(want) {
+		t.Fatalf("got too long: %#v", got)
+	}
+	for _, g := range got {
+		if !deriveContainsStructPtr(want, g) {
+			t.Fatalf("did not get %#v", g)
+		}
+	}
+}

@@ -55,7 +55,7 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 
 func (g *gen) Generate(typs []types.Type) error {
 	typ := typs[0]
-	mapType, ok := typ.Underlying().(*types.Map)
+	mapType, ok := typ.(*types.Map)
 	if !ok {
 		return fmt.Errorf("%s, the first argument, %s, is not of type map", g.GetFuncName(typ), typ)
 	}

@@ -1,0 +1,9 @@
+# github.com/kisielk/gotool v0.0.0-20170828042310-d6ce6262d87e
+## explicit
+github.com/kisielk/gotool
+github.com/kisielk/gotool/internal/load
+# golang.org/x/tools v0.0.0-20170827122053-1736caf17f29
+## explicit
+golang.org/x/tools/go/ast/astutil
+golang.org/x/tools/go/buildutil
+golang.org/x/tools/go/loader

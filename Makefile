@@ -19,7 +19,8 @@ travis:
 	make diff
 
 updatedeps:
-	govendor fetch +vendor
+	go mod tidy
+	go mod vendor
 	git checkout vendor/vendortest/vendortest.go
 
 diff:

@@ -14,12 +14,10 @@
 
 package test
 
-import "testing"
-import "fmt"
-
-type Adder struct {
-	Int int
-}
+import (
+	"fmt"
+	"testing"
+)
 
 func TestMemGet(t *testing.T) {
 	called := 0

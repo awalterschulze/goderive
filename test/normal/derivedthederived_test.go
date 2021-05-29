@@ -14,12 +14,10 @@
 
 package test
 
-import "testing"
-import "reflect"
-
-type DeriveTheDerived struct {
-	Field int
-}
+import (
+	"reflect"
+	"testing"
+)
 
 func inefficientEqual(this, that *DeriveTheDerived) bool {
 	return deriveEqualInefficientDeriveTheDerived(

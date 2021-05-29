@@ -55,6 +55,44 @@ func TestSortedMapKeysTypeAlias(t *testing.T) {
 	}
 }
 
+func TestSortedMapKeysTypeAliasKey(t *testing.T) {
+	var m map[stringKeyAlias]string
+	m = random(m).(map[stringKeyAlias]string)
+	keys := deriveSortedStringKeyAlias(deriveKeysForMapStringAliasToString(m))
+	if len(keys) != len(m) {
+		t.Fatalf("length of keys: want %d got %d", len(m), len(keys))
+	}
+	for _, key := range keys {
+		if _, ok := m[key]; !ok {
+			t.Fatalf("key %v does not exist in %#v", key, m)
+		}
+	}
+	var unaliased []string
+	for _, val := range keys {
+		unaliased = append(unaliased, string(val))
+	}
+	if !sort.StringsAreSorted(unaliased) {
+		t.Fatalf("keys are not sorted %v", keys)
+	}
+}
+
+func TestSortedMapKeysTypeAliasValue(t *testing.T) {
+	var m map[string]stringAlias
+	m = random(m).(map[string]stringAlias)
+	keys := deriveSortedStrings(deriveKeysForMapStringToStringAlias(m))
+	if len(keys) != len(m) {
+		t.Fatalf("length of keys: want %d got %d", len(m), len(keys))
+	}
+	for _, key := range keys {
+		if _, ok := m[key]; !ok {
+			t.Fatalf("key %v does not exist in %#v", key, m)
+		}
+	}
+	if !sort.StringsAreSorted(keys) {
+		t.Fatalf("keys are not sorted %v", keys)
+	}
+}
+
 func TestSortedMapKeysInt(t *testing.T) {
 	var m map[int]int64
 	m = random(m).(map[int]int64)

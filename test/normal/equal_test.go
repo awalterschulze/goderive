@@ -182,17 +182,6 @@ func TestCurriedEqual(t *testing.T) {
 	}
 }
 
-type SomeJson struct {
-	Name  string
-	Other KeyValue
-}
-
-type KeyValue map[string]interface{}
-
-func (kv KeyValue) Equal(that KeyValue) bool {
-	return reflect.DeepEqual(kv, that)
-}
-
 func TestMapTypes(t *testing.T) {
 	a := &SomeJson{Name: "a", Other: map[string]interface{}{
 		"b": 1,
@@ -208,11 +197,6 @@ func TestMapTypes(t *testing.T) {
 	if !deriveEqualMapTypes(a, a) {
 		t.Fatalf("expected equal")
 	}
-}
-
-type Visitor struct {
-	UserName   *string
-	RemoteAddr string
 }
 
 func TestEqualStruct(t *testing.T) {

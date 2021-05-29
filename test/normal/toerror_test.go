@@ -20,8 +20,6 @@ import (
 	"time"
 )
 
-type LocalType struct{}
-
 func true0() bool {
 	return true
 }
@@ -39,9 +37,6 @@ func true3(a, b int) (int, bool) {
 }
 func true4(a, b int) (int, int, bool) {
 	return a, b, true
-}
-func true5(lt *LocalType) (*LocalType, bool) {
-	return lt, true
 }
 func true6(t *time.Time) (*time.Time, bool) {
 	return t, true

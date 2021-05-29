@@ -4565,6 +4565,24 @@ func deriveSortStructs(list []*BuiltInTypes) []*BuiltInTypes {
 	return list
 }
 
+// deriveSortedSliceIntAlias sorts the slice inplace and also returns it.
+func deriveSortedSliceIntAlias(list []intAlias) []intAlias {
+	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
+	return list
+}
+
+// deriveSortedSliceStringAlias sorts the slice inplace and also returns it.
+func deriveSortedSliceStringAlias(list []stringAlias) []stringAlias {
+	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
+	return list
+}
+
+// deriveSortedSliceFloat64Alias sorts the slice inplace and also returns it.
+func deriveSortedSliceFloat64Alias(list []float64Alias) []float64Alias {
+	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
+	return list
+}
+
 // deriveSortedStrings sorts the slice inplace and also returns it.
 func deriveSortedStrings(list []string) []string {
 	sort.Strings(list)

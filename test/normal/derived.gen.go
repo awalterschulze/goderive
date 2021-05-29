@@ -4589,6 +4589,12 @@ func deriveSortedStrings(list []string) []string {
 	return list
 }
 
+// deriveSortedStringKeyAlias sorts the slice inplace and also returns it.
+func deriveSortedStringKeyAlias(list []stringKeyAlias) []stringKeyAlias {
+	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
+	return list
+}
+
 // deriveKeysForInt64s returns the keys of the input map as a slice.
 func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
 	keys := make([]int64, 0, len(m))
@@ -4609,6 +4615,24 @@ func deriveKeysForFmap(m map[int]string) []int {
 
 // deriveKeysForMapStringToString returns the keys of the input map as a slice.
 func deriveKeysForMapStringToString(m map[string]string) []string {
+	keys := make([]string, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeysForMapStringAliasToString returns the keys of the input map as a slice.
+func deriveKeysForMapStringAliasToString(m map[stringKeyAlias]string) []stringKeyAlias {
+	keys := make([]stringKeyAlias, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeysForMapStringToStringAlias returns the keys of the input map as a slice.
+func deriveKeysForMapStringToStringAlias(m map[string]stringAlias) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)

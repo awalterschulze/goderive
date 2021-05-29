@@ -78,16 +78,36 @@ func (g *gen) genFuncFor(typ *types.Slice) error {
 	p.P("// %s sorts the slice inplace and also returns it.", name)
 	p.P("func %s(list %s) %s {", name, typeStr, typeStr)
 	p.In()
+	if err := g.printSortFunc(typ); err != nil {
+		return err
+	}
+	p.P("return list")
+	p.Out()
+	p.P("}")
+	return nil
+}
+
+func (g *gen) printSortFunc(typ *types.Slice) error {
+	p := g.printer
 	etyp := typ.Elem()
-	switch ttyp := etyp.Underlying().(type) {
+	switch ttyp := etyp.(type) {
 	case *types.Basic:
 		switch ttyp.Kind() {
 		case types.String:
 			p.P(g.sortPkg() + ".Strings(list)")
+			return nil
 		case types.Float64:
 			p.P(g.sortPkg() + ".Float64s(list)")
+			return nil
 		case types.Int:
 			p.P(g.sortPkg() + ".Ints(list)")
+			return nil
+		}
+	}
+
+	switch ttyp := etyp.Underlying().(type) {
+	case *types.Basic:
+		switch ttyp.Kind() {
 		case types.Complex64, types.Complex128, types.Bool:
 			p.P(g.sortPkg() + ".Slice(list, func(i, j int) bool { return " + g.compare.GetFuncName(ttyp, ttyp) + "(list[i], list[j]) < 0 })")
 		default:
@@ -98,8 +118,6 @@ func (g *gen) genFuncFor(typ *types.Slice) error {
 	default:
 		return fmt.Errorf("unsupported compare type: %s", g.TypeString(typ))
 	}
-	p.P("return list")
-	p.Out()
-	p.P("}")
+
 	return nil
 }

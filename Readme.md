@@ -1,6 +1,6 @@
 # goderive
 
-[![Build Status](https://travis-ci.org/awalterschulze/goderive.svg?branch=master)](https://travis-ci.org/awalterschulze/goderive)
+[![Build Status](https://github.com/awalterschulze/goderive/actions/workflows/go.yaml/badge.svg?branch=master)](https://github.com/awalterschulze/goderive/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/awalterschulze/goderive)](https://goreportcard.com/report/github.com/awalterschulze/goderive)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square.svg)](https://godoc.org/github.com/awalterschulze/goderive)
 

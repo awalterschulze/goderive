@@ -8,8 +8,8 @@ test:
 gofmt:
 	gofmt -l -s -w .
 
-.PHONY: travis
-travis:
+.PHONY: action
+action:
 	go version
 	make test
 	go vet ./derive/...

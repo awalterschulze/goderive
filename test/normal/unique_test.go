@@ -33,12 +33,18 @@ func TestUniqueInt64s(t *testing.T) {
 }
 
 func TestUniqueStructs(t *testing.T) {
-	var b *BuiltInTypes
-	b1 := random(b).(*BuiltInTypes)
-	b2 := random(b).(*BuiltInTypes)
-	b3 := random(b).(*BuiltInTypes)
-	input := []*BuiltInTypes{b1, b2, b3, b2, b1}
-	want := []*BuiltInTypes{b1, b2, b3}
+	randomWithoutNil := func() *BuiltInTypes {
+		var b *BuiltInTypes
+		for b == nil {
+			b = random(b).(*BuiltInTypes)
+		}
+		return b
+	}
+	b1 := randomWithoutNil()
+	b2 := randomWithoutNil()
+	b3 := randomWithoutNil()
+	input := []*BuiltInTypes{b1, b2, b3, b2, b1, nil, nil}
+	want := []*BuiltInTypes{b1, b2, b3, nil}
 	got := deriveUniqueStructs(input)
 	if len(got) != len(want) {
 		t.Fatalf("got too long: %#v", got)
@@ -51,12 +57,18 @@ func TestUniqueStructs(t *testing.T) {
 }
 
 func TestUniqueStructsWithoutPointers(t *testing.T) {
-	var b *PtrToBuiltInTypes
-	b1 := random(b).(*PtrToBuiltInTypes)
-	b2 := random(b).(*PtrToBuiltInTypes)
-	b3 := random(b).(*PtrToBuiltInTypes)
-	input := []PtrToBuiltInTypes{*b1, *b2, *b3, *b2, *b1}
-	want := []PtrToBuiltInTypes{*b1, *b2, *b3}
+	randomWithoutNil := func() PtrToBuiltInTypes {
+		var b *PtrToBuiltInTypes
+		for b == nil {
+			b = random(b).(*PtrToBuiltInTypes)
+		}
+		return *b
+	}
+	b1 := randomWithoutNil()
+	b2 := randomWithoutNil()
+	b3 := randomWithoutNil()
+	input := []PtrToBuiltInTypes{b1, b2, b3, b2, b1}
+	want := []PtrToBuiltInTypes{b1, b2, b3}
 	got := deriveUniqueStructsPtrs(input)
 	if len(got) != len(want) {
 		t.Fatalf("got too long: %#v", got)

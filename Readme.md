@@ -141,6 +141,7 @@ Functional Functions:
   - [ToError](http://godoc.org/github.com/awalterschulze/goderive/plugin/toerror)
     - `deriveToError(error, func(A...) (B..., bool)) func(A...) (B..., error)`
     - `deriveToError(error, func() bool) func() error`
+  - [Apply](http://godoc.org/github.com/awalterschulze/goderive/plugin/apply) `deriveApply(f func(...A, B) C, B) func(...A) C`
 
 Concurrency Functions:
   - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)

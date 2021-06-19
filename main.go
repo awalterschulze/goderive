@@ -24,6 +24,7 @@ import (
 	"github.com/awalterschulze/goderive/derive"
 	"github.com/awalterschulze/goderive/plugin/all"
 	"github.com/awalterschulze/goderive/plugin/any"
+	"github.com/awalterschulze/goderive/plugin/apply"
 	"github.com/awalterschulze/goderive/plugin/clone"
 	"github.com/awalterschulze/goderive/plugin/compare"
 	"github.com/awalterschulze/goderive/plugin/compose"
@@ -95,6 +96,7 @@ func main() {
 		hash.NewPlugin(),
 		mem.NewPlugin(),
 		traverse.NewPlugin(),
+		apply.NewPlugin(),
 	}
 	log.SetFlags(0)
 	flag.Parse()

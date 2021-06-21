@@ -4547,6 +4547,34 @@ func deriveClone1(src BuiltInTypes) BuiltInTypes {
 	return *dst
 }
 
+// deriveApplyMarshal applies the second argument to a given function's last argument and returns a function which which takes the rest of the parameters as input and finally returns the original input function's results.
+func deriveApplyMarshal(f func(v interface{}) ([]byte, error), v interface{}) func() ([]byte, error) {
+	return func() ([]byte, error) {
+		return f(v)
+	}
+}
+
+// deriveApplyMultiple applies the second argument to a given function's last argument and returns a function which which takes the rest of the parameters as input and finally returns the original input function's results.
+func deriveApplyMultiple(f func(a int, b string, c bool) string, c bool) func(a int, b string) string {
+	return func(a int, b string) string {
+		return f(a, b, c)
+	}
+}
+
+// deriveApply3 applies the second argument to a given function's last argument and returns a function which which takes the rest of the parameters as input and finally returns the original input function's results.
+func deriveApply3(f func(a string, b int, c bool) string, c bool) func(a string, b int) string {
+	return func(a string, b int) string {
+		return f(a, b, c)
+	}
+}
+
+// deriveApplyApplied applies the second argument to a given function's last argument and returns a function which which takes the rest of the parameters as input and finally returns the original input function's results.
+func deriveApplyApplied(f func(a string, b int) string, b int) func(a string) string {
+	return func(a string) string {
+		return f(a, b)
+	}
+}
+
 // deriveSortedInts sorts the slice inplace and also returns it.
 func deriveSortedInts(list []int) []int {
 	sort.Ints(list)

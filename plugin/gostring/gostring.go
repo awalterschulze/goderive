@@ -99,7 +99,7 @@ type gen struct {
 
 func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if len(typs) != 1 {
-		return "", fmt.Errorf("%s does not have two arguments", name)
+		return "", fmt.Errorf("%s does not have one argument", name)
 	}
 	return g.SetFuncName(name, typs[0])
 }

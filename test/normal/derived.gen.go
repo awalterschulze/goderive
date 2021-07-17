@@ -2504,9 +2504,9 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 }
 
 // deriveUncurryBlankIdentifier combines a function that returns a function, into one function.
-func deriveUncurryBlankIdentifier(f func(param_0 string) func(inner_param0 bool, c int) string) func(param_0 string, inner_param0 bool, c int) string {
-	return func(param_0 string, inner_param0 bool, c int) string {
-		return f(param_0)(inner_param0, c)
+func deriveUncurryBlankIdentifier(f func(param_0 string) func(innerParam_0 bool, c int) string) func(param_0 string, innerParam_0 bool, c int) string {
+	return func(param_0 string, innerParam_0 bool, c int) string {
+		return f(param_0)(innerParam_0, c)
 	}
 }
 

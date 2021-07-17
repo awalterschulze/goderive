@@ -22,12 +22,16 @@ import (
 var blackIdentifier = "_"
 
 // RenameBlankIdentifier returns a signature that all black identified are renamed.
-func RenameBlankIdentifier(sig *types.Signature) *types.Signature {
+func RenameBlankIdentifier(sig *types.Signature, prefixs ...string) *types.Signature {
+	prefix := "param_"
+	if len(prefixs) > 0 {
+		prefix = prefixs[0]
+	}
 	params := sig.Params()
 	if !hasBlankIdentifier(params) {
 		return sig
 	}
-	renamedTuple := rename(params)
+	renamedTuple := rename(params, prefix)
 	return types.NewSignature(sig.Recv(), renamedTuple, sig.Results(), sig.Variadic())
 }
 
@@ -40,12 +44,12 @@ func hasBlankIdentifier(tup *types.Tuple) bool {
 	return false
 }
 
-func rename(tup *types.Tuple) *types.Tuple {
+func rename(tup *types.Tuple, prefix string) *types.Tuple {
 	vars := make([]*types.Var, tup.Len())
 	for i := range vars {
 		varValue := tup.At(i)
 		if varValue.Name() == blackIdentifier {
-			varValue = types.NewVar(varValue.Pos(), varValue.Pkg(), "param_"+strconv.Itoa(i), varValue.Type())
+			varValue = types.NewVar(varValue.Pos(), varValue.Pkg(), prefix+strconv.Itoa(i), varValue.Type())
 		}
 		vars[i] = varValue
 	}

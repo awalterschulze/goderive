@@ -62,8 +62,8 @@ func TestUncurryCurried(t *testing.T) {
 }
 
 func TestUncurryBlankIdentifier(t *testing.T) {
-	curried := func(_ string) func(b bool, c int) string {
-		return func(b bool, c int) string {
+	curried := func(_ string) func(_ bool, c int) string {
+		return func(_ bool, c int) string {
 			return "ature1"
 		}
 	}

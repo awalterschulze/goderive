@@ -4469,10 +4469,10 @@ func deriveCurryCurried(f func(b string, c bool) string) func(b string) func(c b
 }
 
 // deriveCurryBlackIdentifier returns a function that has one parameter, which corresponds to the input functions first parameter, and a result that is a function, which takes the rest of the parameters as input and finally returns the original input function's results.
-func deriveCurryBlackIdentifier(f func(a string, param_1 bool, c int) string) func(a string) func(param_1 bool, c int) string {
-	return func(a string) func(param_1 bool, c int) string {
-		return func(param_1 bool, c int) string {
-			return f(a, param_1, c)
+func deriveCurryBlackIdentifier(f func(param_0 string, param_1 bool, param_2 int) string) func(param_0 string) func(param_1 bool, param_2 int) string {
+	return func(param_0 string) func(param_1 bool, param_2 int) string {
+		return func(param_1 bool, param_2 int) string {
+			return f(param_0, param_1, param_2)
 		}
 	}
 }

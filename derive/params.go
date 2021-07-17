@@ -17,6 +17,7 @@ package derive
 import (
 	"go/types"
 	"strconv"
+	"strings"
 )
 
 var blackIdentifier = "_"
@@ -48,7 +49,7 @@ func rename(tup *types.Tuple, prefix string) *types.Tuple {
 	vars := make([]*types.Var, tup.Len())
 	for i := range vars {
 		varValue := tup.At(i)
-		if varValue.Name() == blackIdentifier {
+		if varValue.Name() == blackIdentifier || strings.HasPrefix(varValue.Name(), prefix) {
 			varValue = types.NewVar(varValue.Pos(), varValue.Pkg(), prefix+strconv.Itoa(i), varValue.Type())
 		}
 		vars[i] = varValue

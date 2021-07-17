@@ -59,8 +59,8 @@ func TestCurryCurried(t *testing.T) {
 }
 
 func TestCurryBlankIdentifier(t *testing.T) {
-	f := func(a string, _ bool, c int) string {
-		return fmt.Sprintf("%s%v%d", a, true, c)
+	f := func(param_1 string, _ bool, param_0 int) string {
+		return fmt.Sprintf("%s%v%d", param_1, true, param_0)
 	}
 	curried := deriveCurryBlackIdentifier(f)
 	want := `atrue1`

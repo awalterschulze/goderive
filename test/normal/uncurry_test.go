@@ -60,3 +60,17 @@ func TestUncurryCurried(t *testing.T) {
 		t.Fatalf("got %s != want %s", got, want)
 	}
 }
+
+func TestUncurryBlankIdentifier(t *testing.T) {
+	curried := func(_ string) func(b bool, c int) string {
+		return func(b bool, c int) string {
+			return "ature1"
+		}
+	}
+	uncurried := deriveUncurryBlankIdentifier(curried)
+	want := `ature1`
+	got := uncurried("z", false, 0)
+	if got != want {
+		t.Fatalf("got %s != want %s", got, want)
+	}
+}

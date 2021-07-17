@@ -47,10 +47,11 @@ type gen struct {
 }
 
 func (g *gen) Add(name string, typs []types.Type) (string, error) {
-	if _, _, err := g.parseTypes(name, typs); err != nil {
+	sig, _, err := g.parseTypes(name, typs)
+	if err != nil {
 		return "", err
 	}
-	return g.SetFuncName(name, typs...)
+	return g.SetFuncName(name, derive.RenameBlankIdentifier(sig), typs[1])
 }
 
 func (g *gen) parseTypes(name string, typs []types.Type) (sig *types.Signature, lastArg types.Type, err error) {
@@ -74,8 +75,8 @@ func (g *gen) parseTypes(name string, typs []types.Type) (sig *types.Signature, 
 
 func applySig(sig *types.Signature) (last *types.Var, returnFunc *types.Signature) {
 	vs := vars(sig.Params())
-	last = vs[len(vs) - 1]
-	second := types.NewTuple(vs[:len(vs) - 1]...)
+	last = vs[len(vs)-1]
+	second := types.NewTuple(vs[:len(vs)-1]...)
 	returnFunc = types.NewSignature(nil, second, sig.Results(), sig.Variadic())
 	return
 }
@@ -95,6 +96,7 @@ func varnames(tup *types.Tuple) []string {
 	}
 	return as
 }
+
 func (g *gen) Generate(typs []types.Type) error {
 	name := g.GetFuncName(typs...)
 	ftyp, lastArg, err := g.parseTypes(name, typs)
@@ -120,4 +122,3 @@ func (g *gen) Generate(typs []types.Type) error {
 	p.P("}")
 	return nil
 }
-

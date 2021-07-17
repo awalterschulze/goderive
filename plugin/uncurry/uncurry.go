@@ -64,7 +64,7 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if _, ok := sig.Results().At(0).Type().(*types.Signature); !ok {
 		return "", fmt.Errorf("%s, does not return a function", name)
 	}
-	return g.SetFuncName(name, sig)
+	return g.SetFuncName(name, derive.RenameBlankIdentifier(sig))
 }
 
 func (g *gen) Generate(typs []types.Type) error {

@@ -2503,6 +2503,13 @@ func deriveUncurryCurried(f func(b string) func(c bool) string) func(b string, c
 	}
 }
 
+// deriveUncurryBlankIdentifier combines a function that returns a function, into one function.
+func deriveUncurryBlankIdentifier(f func(param_0 string) func(b bool, c int) string) func(param_0 string, b bool, c int) string {
+	return func(param_0 string, b bool, c int) string {
+		return f(param_0)(b, c)
+	}
+}
+
 // deriveToError0 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
 func deriveToError0(err error, f func() bool) func() error {
 	return func() error {
@@ -2573,6 +2580,17 @@ func deriveToError5(err error, f func(lt *LocalType) (*LocalType, bool)) func(lt
 func deriveToError6(err error, f func(t *time.Time) (*time.Time, bool)) func(t *time.Time) (*time.Time, error) {
 	return func(t *time.Time) (*time.Time, error) {
 		out0, success := f(t)
+		if success {
+			return out0, nil
+		}
+		return out0, err
+	}
+}
+
+// deriveToError7 transforms the given function's last bool type into an error type. The transformed function returns the given error when the result of the given function is false, otherwise it returns nil.
+func deriveToError7(err error, f func(param_0 string) (string, bool)) func(param_0 string) (string, error) {
+	return func(param_0 string) (string, error) {
+		out0, success := f(param_0)
 		if success {
 			return out0, nil
 		}
@@ -4450,6 +4468,15 @@ func deriveCurryCurried(f func(b string, c bool) string) func(b string) func(c b
 	}
 }
 
+// deriveCurryBlackIdentifier returns a function that has one parameter, which corresponds to the input functions first parameter, and a result that is a function, which takes the rest of the parameters as input and finally returns the original input function's results.
+func deriveCurryBlackIdentifier(f func(a string, param_1 bool, c int) string) func(a string) func(param_1 bool, c int) string {
+	return func(a string) func(param_1 bool, c int) string {
+		return func(param_1 bool, c int) string {
+			return f(a, param_1, c)
+		}
+	}
+}
+
 // deriveCloneEmpty returns a clone of the src parameter.
 func deriveCloneEmpty(src *Empty) *Empty {
 	if src == nil {
@@ -4572,6 +4599,13 @@ func deriveApply3(f func(a string, b int, c bool) string, c bool) func(a string,
 func deriveApplyApplied(f func(a string, b int) string, b int) func(a string) string {
 	return func(a string) string {
 		return f(a, b)
+	}
+}
+
+// deriveApplyBlankIdentifier applies the second argument to a given function's last argument and returns a function which which takes the rest of the parameters as input and finally returns the original input function's results.
+func deriveApplyBlankIdentifier(f func(a string, param_1 bool, c int) string, c int) func(a string, param_1 bool) string {
+	return func(a string, param_1 bool) string {
+		return f(a, param_1, c)
 	}
 }
 
@@ -5460,6 +5494,13 @@ func deriveFlipMarshal(f func(data []byte, v interface{}) error) func(v interfac
 func deriveFlip3(f func(a int, b string, c bool) string) func(b string, a int, c bool) string {
 	return func(b string, a int, c bool) string {
 		return f(a, b, c)
+	}
+}
+
+// deriveFlipBlankIdentifier returns the input function, but where first two parameters are flipped.
+func deriveFlipBlankIdentifier(f func(a string, param_1 bool, c int) string) func(param_1 bool, a string, c int) string {
+	return func(param_1 bool, a string, c int) string {
+		return f(a, param_1, c)
 	}
 }
 

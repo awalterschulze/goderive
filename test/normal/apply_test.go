@@ -56,3 +56,15 @@ func TestApplyApplied(t *testing.T) {
 		t.Fatalf("got %s != want %s", got, want)
 	}
 }
+
+func TestApplyBlankIdentifier(t *testing.T) {
+	f := func(a string, _ bool, c int) string {
+		return fmt.Sprintf("%s%v%d", a, true, c)
+	}
+	applied := deriveApplyBlankIdentifier(f, 1)
+	want := `atrue1`
+	got := applied("a", false)
+	if got != want {
+		t.Fatalf("got %s != want %s", got, want)
+	}
+}

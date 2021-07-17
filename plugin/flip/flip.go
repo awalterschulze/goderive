@@ -58,7 +58,7 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if params.Len() < 2 {
 		return "", fmt.Errorf("%s, the first argument is a function, but wanted a function with more than one argument", name)
 	}
-	return g.SetFuncName(name, sig)
+	return g.SetFuncName(name, derive.RenameBlankIdentifier(sig))
 }
 
 func (g *gen) Generate(typs []types.Type) error {

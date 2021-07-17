@@ -43,3 +43,15 @@ func TestFlip3(t *testing.T) {
 		t.Fatalf("got %s != want %s", got, want)
 	}
 }
+
+func TestFlipBlankIdentifier(t *testing.T) {
+	f := func(a string, _ bool, c int) string {
+		return fmt.Sprintf("%s%v%d", a, true, c)
+	}
+	flipped := deriveFlipBlankIdentifier(f)
+	want := `atrue1`
+	got := flipped(false, "a", 1)
+	if got != want {
+		t.Fatalf("got %s != want %s", got, want)
+	}
+}

@@ -66,7 +66,7 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if !types.Identical(results.At(results.Len()-1).Type(), types.Typ[types.Bool]) {
 		return "", fmt.Errorf("%s, given function must return bool as last return type. (got %v)", name, results.String())
 	}
-	return g.SetFuncName(name, funcTyp)
+	return g.SetFuncName(name, derive.RenameBlankIdentifier(sig))
 }
 
 func (g *gen) Generate(typs []types.Type) error {

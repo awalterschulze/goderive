@@ -41,6 +41,9 @@ func true4(a, b int) (int, int, bool) {
 func true6(t *time.Time) (*time.Time, bool) {
 	return t, true
 }
+func true7(_ string) (string, bool) {
+	return "a", true
+}
 
 func TestToError(t *testing.T) {
 	e := fmt.Errorf("error")
@@ -68,6 +71,9 @@ func TestToError(t *testing.T) {
 	}
 	tm := time.Now()
 	if r0, r1 := deriveToError6(e, true6)(&tm); !(r0 == &tm && r1 == nil) {
+		t.Fatal()
+	}
+	if r0, r1 := deriveToError7(e, true7)("z"); !(r0 == "a" && r1 == nil) {
 		t.Fatal()
 	}
 }

@@ -14,6 +14,9 @@ jobs:
         with:
           go-version: 1.16.x
 
+      - name: Gofmt
+        run: make gofmt
+
       - name: Test
         run: make test
 

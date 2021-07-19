@@ -66,7 +66,7 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if !ok {
 		return "", fmt.Errorf("%s, does not return a function", name)
 	}
-	retSig = derive.RenameBlankIdentifier(retSig, "innerParam_")
+	retSig = derive.RenameBlankIdentifierWith(retSig, "innerParam_")
 	newTup := types.NewTuple(types.NewVar(retVar.Pos(), retVar.Pkg(), retVar.Name(), retSig))
 	sig = types.NewSignature(sig.Recv(), sig.Params(), newTup, sig.Variadic())
 	return g.SetFuncName(name, derive.RenameBlankIdentifier(sig))

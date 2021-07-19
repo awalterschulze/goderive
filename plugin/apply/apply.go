@@ -47,11 +47,11 @@ type gen struct {
 }
 
 func (g *gen) Add(name string, typs []types.Type) (string, error) {
-	sig, _, err := g.parseTypes(name, typs)
+	sig, lastArg, err := g.parseTypes(name, typs)
 	if err != nil {
 		return "", err
 	}
-	return g.SetFuncName(name, derive.RenameBlankIdentifier(sig), typs[1])
+	return g.SetFuncName(name, derive.RenameBlankIdentifier(sig), lastArg)
 }
 
 func (g *gen) parseTypes(name string, typs []types.Type) (sig *types.Signature, lastArg types.Type, err error) {

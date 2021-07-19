@@ -22,12 +22,14 @@ import (
 
 var blackIdentifier = "_"
 
-// RenameBlankIdentifier returns a signature that all black identified are renamed.
-func RenameBlankIdentifier(sig *types.Signature, prefixs ...string) *types.Signature {
-	prefix := "param_"
-	if len(prefixs) > 0 {
-		prefix = prefixs[0]
-	}
+// RenameBlankIdentifier returns a signature where all blank parameter names are renamed.
+func RenameBlankIdentifier(sig *types.Signature) *types.Signature {
+	return RenameBlankIdentifierWith(sig, "param_")
+}
+
+// RenameBlankIdentifierWith returns a signature where all blank parameter names are renamed.
+// The given prefix is used to rename.
+func RenameBlankIdentifierWith(sig *types.Signature, prefix string) *types.Signature {
 	params := sig.Params()
 	if !hasBlankIdentifier(params) {
 		return sig

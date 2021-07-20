@@ -57,3 +57,15 @@ func TestCurryCurried(t *testing.T) {
 		t.Fatalf("got %s != want %s", got, want)
 	}
 }
+
+func TestCurryBlankIdentifier(t *testing.T) {
+	f := func(param_1 string, _ bool, param_0 int) string {
+		return fmt.Sprintf("%s%v%d", param_1, true, param_0)
+	}
+	curried := deriveCurryBlackIdentifier(f)
+	want := `atrue1`
+	got := curried("a")(false, 1)
+	if got != want {
+		t.Fatalf("got %s != want %s", got, want)
+	}
+}

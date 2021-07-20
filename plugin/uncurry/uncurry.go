@@ -61,10 +61,15 @@ func (g *gen) Add(name string, typs []types.Type) (string, error) {
 	if sig.Results().Len() != 1 {
 		return "", fmt.Errorf("%s, expected 1 result for the input function", name)
 	}
-	if _, ok := sig.Results().At(0).Type().(*types.Signature); !ok {
+	retVar := sig.Results().At(0)
+	retSig, ok := retVar.Type().(*types.Signature)
+	if !ok {
 		return "", fmt.Errorf("%s, does not return a function", name)
 	}
-	return g.SetFuncName(name, sig)
+	retSig = derive.RenameBlankIdentifierWith(retSig, "innerParam_")
+	newTup := types.NewTuple(types.NewVar(retVar.Pos(), retVar.Pkg(), retVar.Name(), retSig))
+	sig = types.NewSignature(sig.Recv(), sig.Params(), newTup, sig.Variadic())
+	return g.SetFuncName(name, derive.RenameBlankIdentifier(sig))
 }
 
 func (g *gen) Generate(typs []types.Type) error {

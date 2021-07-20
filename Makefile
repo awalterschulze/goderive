@@ -9,7 +9,7 @@ gofmt:
 	gofmt -l -s -w .
 
 .PHONY: action
-action:
+action: gofmt
 	go version
 	make test
 	go vet ./derive/...

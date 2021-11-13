@@ -1,8 +1,10 @@
 module github.com/awalterschulze/goderive
 
-go 1.16
+go 1.17
 
 require (
-	github.com/kisielk/gotool v0.0.0-20170828042310-d6ce6262d87e
-	golang.org/x/tools v0.0.0-20170827122053-1736caf17f29
+	github.com/kisielk/gotool v1.0.0
+	golang.org/x/tools v0.1.7
 )
+
+require golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect

@@ -1,9 +1,14 @@
-# github.com/kisielk/gotool v0.0.0-20170828042310-d6ce6262d87e
+# github.com/kisielk/gotool v1.0.0
 ## explicit
 github.com/kisielk/gotool
 github.com/kisielk/gotool/internal/load
-# golang.org/x/tools v0.0.0-20170827122053-1736caf17f29
-## explicit
+# golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e
+## explicit; go 1.17
+golang.org/x/sys/execabs
+# golang.org/x/tools v0.1.7
+## explicit; go 1.17
 golang.org/x/tools/go/ast/astutil
 golang.org/x/tools/go/buildutil
+golang.org/x/tools/go/internal/cgo
 golang.org/x/tools/go/loader
+golang.org/x/tools/internal/typeparams

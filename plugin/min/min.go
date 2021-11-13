@@ -94,7 +94,7 @@ func (g *gen) genTwo(typ, typ2 types.Type) error {
 	name := g.GetFuncName(typ, typ2)
 	typeStr := g.TypeString(typ)
 	p.P("")
-	p.P("// %s returns the mimimum of the two input values.", name)
+	p.P("// %s returns the minimum of the two input values.", name)
 	p.P("func %s(a, b %s) %s {", name, typeStr, typeStr)
 	p.In()
 	switch typ.(type) {

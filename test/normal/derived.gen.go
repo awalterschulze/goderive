@@ -5528,7 +5528,7 @@ func deriveMinInt64s(list []int64, def int64) int64 {
 	return m
 }
 
-// deriveMinInt returns the mimimum of the two input values.
+// deriveMinInt returns the minimum of the two input values.
 func deriveMinInt(a, b int) int {
 	if a < b {
 		return a

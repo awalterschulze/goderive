@@ -24,7 +24,7 @@ func deriveContains(list []int, item int) bool {
 	return false
 }
 
-// deriveMin returns the mimimum of the two input values.
+// deriveMin returns the minimum of the two input values.
 func deriveMin(a, b int) int {
 	if a < b {
 		return a

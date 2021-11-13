@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package loader
+package cgo
 
 import (
 	"errors"
 	"fmt"
 	"go/build"
-	"os/exec"
+	exec "golang.org/x/sys/execabs"
 	"strings"
 )
 

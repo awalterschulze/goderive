@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"golang.org/x/tools/go/ast/astutil"
+	"golang.org/x/tools/go/internal/cgo"
 )
 
 var ignoreVendor build.ImportMode
@@ -754,7 +755,7 @@ func (conf *Config) parsePackageFiles(bp *build.Package, which rune) ([]*ast.Fil
 
 	// Preprocess CgoFiles and parse the outputs (sequentially).
 	if which == 'g' && bp.CgoFiles != nil {
-		cgofiles, err := processCgoFiles(bp, conf.fset(), conf.DisplayPath, conf.ParserMode)
+		cgofiles, err := cgo.ProcessFiles(bp, conf.fset(), conf.DisplayPath, conf.ParserMode)
 		if err != nil {
 			errs = append(errs, err)
 		} else {
@@ -779,7 +780,7 @@ func (imp *importer) doImport(from *PackageInfo, to string) (*types.Package, err
 	if to == "C" {
 		// This should be unreachable, but ad hoc packages are
 		// not currently subject to cgo preprocessing.
-		// See https://github.com/golang/go/issues/11627.
+		// See https://golang.org/issue/11627.
 		return nil, fmt.Errorf(`the loader doesn't cgo-process ad hoc packages like %q; see Go issue 11627`,
 			from.Pkg.Path())
 	}
@@ -810,7 +811,15 @@ func (imp *importer) doImport(from *PackageInfo, to string) (*types.Package, err
 	// Import of incomplete package: this indicates a cycle.
 	fromPath := from.Pkg.Path()
 	if cycle := imp.findPath(path, fromPath); cycle != nil {
-		cycle = append([]string{fromPath}, cycle...)
+		// Normalize cycle: start from alphabetically largest node.
+		pos, start := -1, ""
+		for i, s := range cycle {
+			if pos < 0 || s > start {
+				pos, start = i, s
+			}
+		}
+		cycle = append(cycle, cycle[:pos]...)[pos:] // rotate cycle to start from largest
+		cycle = append(cycle, cycle[0])             // add start node to end to show cycliness
 		return nil, fmt.Errorf("import cycle: %s", strings.Join(cycle, " -> "))
 	}
 
@@ -860,21 +869,6 @@ func (imp *importer) findPackage(importPath, fromDir string, mode build.ImportMo
 // caused these imports.
 //
 func (imp *importer) importAll(fromPath, fromDir string, imports map[string]bool, mode build.ImportMode) (infos []*PackageInfo, errors []importError) {
-	// TODO(adonovan): opt: do the loop in parallel once
-	// findPackage is non-blocking.
-	var pending []*importInfo
-	for importPath := range imports {
-		bp, err := imp.findPackage(importPath, fromDir, mode)
-		if err != nil {
-			errors = append(errors, importError{
-				path: importPath,
-				err:  err,
-			})
-			continue
-		}
-		pending = append(pending, imp.startLoad(bp))
-	}
-
 	if fromPath != "" {
 		// We're loading a set of imports.
 		//
@@ -886,29 +880,36 @@ func (imp *importer) importAll(fromPath, fromDir string, imports map[string]bool
 			deps = make(map[string]bool)
 			imp.graph[fromPath] = deps
 		}
-		for _, ii := range pending {
-			deps[ii.path] = true
+		for importPath := range imports {
+			deps[importPath] = true
 		}
 		imp.graphMu.Unlock()
 	}
 
-	for _, ii := range pending {
+	var pending []*importInfo
+	for importPath := range imports {
 		if fromPath != "" {
-			if cycle := imp.findPath(ii.path, fromPath); cycle != nil {
-				// Cycle-forming import: we must not await its
-				// completion since it would deadlock.
-				//
-				// We don't record the error in ii since
-				// the error is really associated with the
-				// cycle-forming edge, not the package itself.
-				// (Also it would complicate the
-				// invariants of importPath completion.)
+			if cycle := imp.findPath(importPath, fromPath); cycle != nil {
+				// Cycle-forming import: we must not check it
+				// since it would deadlock.
 				if trace {
 					fmt.Fprintf(os.Stderr, "import cycle: %q\n", cycle)
 				}
 				continue
 			}
 		}
+		bp, err := imp.findPackage(importPath, fromDir, mode)
+		if err != nil {
+			errors = append(errors, importError{
+				path: importPath,
+				err:  err,
+			})
+			continue
+		}
+		pending = append(pending, imp.startLoad(bp))
+	}
+
+	for _, ii := range pending {
 		ii.awaitCompletion()
 		infos = append(infos, ii.info)
 	}

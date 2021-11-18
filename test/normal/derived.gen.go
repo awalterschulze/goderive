@@ -2366,6 +2366,21 @@ func deriveDeepCopyPtrToNamedTypes(dst, src *NamedTypes) {
 	}
 }
 
+// deriveDeepCopyPtrToTime recursively copies the contents of src into dst.
+func deriveDeepCopyPtrToTime(dst, src *Time) {
+	func() {
+		field := new(time.Time)
+		deriveDeepCopy_41(field, &src.T)
+		dst.T = *field
+	}()
+	if src.P == nil {
+		dst.P = nil
+	} else {
+		dst.P = new(time.Time)
+		deriveDeepCopy_41(dst.P, src.P)
+	}
+}
+
 // deriveDeepCopyPtrToDuration recursively copies the contents of src into dst.
 func deriveDeepCopyPtrToDuration(dst, src *Duration) {
 	dst.D = src.D
@@ -2409,11 +2424,11 @@ func deriveDeepCopyPtrToDuration(dst, src *Duration) {
 		} else {
 			dst.DPs = make([]*time.Duration, len(src.DPs))
 		}
-		deriveDeepCopy_41(dst.DPs, src.DPs)
+		deriveDeepCopy_42(dst.DPs, src.DPs)
 	}
 	if src.MD != nil {
 		dst.MD = make(map[int]time.Duration, len(src.MD))
-		deriveDeepCopy_42(dst.MD, src.MD)
+		deriveDeepCopy_43(dst.MD, src.MD)
 	} else {
 		dst.MD = nil
 	}
@@ -2423,7 +2438,7 @@ func deriveDeepCopyPtrToDuration(dst, src *Duration) {
 func deriveDeepCopyPtrToNickname(dst, src *Nickname) {
 	if src.Alias != nil {
 		dst.Alias = make(map[string][]*pickle.Rick, len(src.Alias))
-		deriveDeepCopy_43(dst.Alias, src.Alias)
+		deriveDeepCopy_44(dst.Alias, src.Alias)
 	} else {
 		dst.Alias = nil
 	}
@@ -2433,7 +2448,7 @@ func deriveDeepCopyPtrToNickname(dst, src *Nickname) {
 func deriveDeepCopyPtrToPrivateEmbedded(dst, src *PrivateEmbedded) {
 	func() {
 		field := new(privateStruct)
-		deriveDeepCopy_44(field, &src.privateStruct)
+		deriveDeepCopy_45(field, &src.privateStruct)
 		dst.privateStruct = *field
 	}()
 }
@@ -4513,7 +4528,7 @@ func deriveCloneSliceOfint(src []int) []int {
 		return nil
 	}
 	dst := make([]int, len(src))
-	deriveDeepCopy_45(dst, src)
+	deriveDeepCopy_46(dst, src)
 	return dst
 }
 
@@ -4523,7 +4538,7 @@ func deriveCloneMapOfintToint(src map[int]int) map[int]int {
 		return nil
 	}
 	dst := make(map[int]int)
-	deriveDeepCopy_46(dst, src)
+	deriveDeepCopy_47(dst, src)
 	return dst
 }
 
@@ -4533,7 +4548,7 @@ func deriveClonePtrToint(src *int) *int {
 		return nil
 	}
 	dst := new(int)
-	deriveDeepCopy_47(dst, src)
+	deriveDeepCopy_48(dst, src)
 	return dst
 }
 
@@ -4553,7 +4568,7 @@ func deriveClonePtrToArray10Ofint(src *[10]int) *[10]int {
 		return nil
 	}
 	dst := new([10]int)
-	deriveDeepCopy_48(dst, src)
+	deriveDeepCopy_49(dst, src)
 	return dst
 }
 
@@ -7212,7 +7227,7 @@ func deriveDeepCopy_26(dst, src *[]int) {
 func deriveDeepCopy_27(dst, src *map[int]int) {
 	if *src != nil {
 		*dst = make(map[int]int, len(*src))
-		deriveDeepCopy_46(*dst, *src)
+		deriveDeepCopy_47(*dst, *src)
 	} else {
 		*dst = nil
 	}
@@ -7452,7 +7467,15 @@ func deriveDeepCopy_40(dst, src []MySlice) {
 }
 
 // deriveDeepCopy_41 recursively copies the contents of src into dst.
-func deriveDeepCopy_41(dst, src []*time.Duration) {
+func deriveDeepCopy_41(dst, src *time.Time) {
+	if src.IsZero() {
+		return
+	}
+	*dst = time.Unix(0, src.UnixNano()).In(src.Location())
+}
+
+// deriveDeepCopy_42 recursively copies the contents of src into dst.
+func deriveDeepCopy_42(dst, src []*time.Duration) {
 	for src_i, src_value := range src {
 		if src_value == nil {
 			dst[src_i] = nil
@@ -7463,15 +7486,15 @@ func deriveDeepCopy_41(dst, src []*time.Duration) {
 	}
 }
 
-// deriveDeepCopy_42 recursively copies the contents of src into dst.
-func deriveDeepCopy_42(dst, src map[int]time.Duration) {
+// deriveDeepCopy_43 recursively copies the contents of src into dst.
+func deriveDeepCopy_43(dst, src map[int]time.Duration) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
 	}
 }
 
-// deriveDeepCopy_43 recursively copies the contents of src into dst.
-func deriveDeepCopy_43(dst, src map[string][]*pickle.Rick) {
+// deriveDeepCopy_44 recursively copies the contents of src into dst.
+func deriveDeepCopy_44(dst, src map[string][]*pickle.Rick) {
 	for src_key, src_value := range src {
 		if src_value == nil {
 			dst[src_key] = nil
@@ -7492,13 +7515,13 @@ func deriveDeepCopy_43(dst, src map[string][]*pickle.Rick) {
 			} else {
 				dst[src_key] = make([]*pickle.Rick, len(src_value))
 			}
-			deriveDeepCopy_49(dst[src_key], src_value)
+			deriveDeepCopy_50(dst[src_key], src_value)
 		}
 	}
 }
 
-// deriveDeepCopy_44 recursively copies the contents of src into dst.
-func deriveDeepCopy_44(dst, src *privateStruct) {
+// deriveDeepCopy_45 recursively copies the contents of src into dst.
+func deriveDeepCopy_45(dst, src *privateStruct) {
 	if src.ptrfield == nil {
 		dst.ptrfield = nil
 	} else {
@@ -7507,25 +7530,25 @@ func deriveDeepCopy_44(dst, src *privateStruct) {
 	}
 }
 
-// deriveDeepCopy_45 recursively copies the contents of src into dst.
-func deriveDeepCopy_45(dst, src []int) {
+// deriveDeepCopy_46 recursively copies the contents of src into dst.
+func deriveDeepCopy_46(dst, src []int) {
 	copy(dst, src)
 }
 
-// deriveDeepCopy_46 recursively copies the contents of src into dst.
-func deriveDeepCopy_46(dst, src map[int]int) {
+// deriveDeepCopy_47 recursively copies the contents of src into dst.
+func deriveDeepCopy_47(dst, src map[int]int) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
 	}
 }
 
-// deriveDeepCopy_47 recursively copies the contents of src into dst.
-func deriveDeepCopy_47(dst, src *int) {
+// deriveDeepCopy_48 recursively copies the contents of src into dst.
+func deriveDeepCopy_48(dst, src *int) {
 	*dst = *src
 }
 
-// deriveDeepCopy_48 recursively copies the contents of src into dst.
-func deriveDeepCopy_48(dst, src *[10]int) {
+// deriveDeepCopy_49 recursively copies the contents of src into dst.
+func deriveDeepCopy_49(dst, src *[10]int) {
 	*dst = *src
 }
 
@@ -14139,8 +14162,8 @@ func deriveGoString_80(this []*pickle.Rick) string {
 	return buf.String()
 }
 
-// deriveDeepCopy_49 recursively copies the contents of src into dst.
-func deriveDeepCopy_49(dst, src []*pickle.Rick) {
+// deriveDeepCopy_50 recursively copies the contents of src into dst.
+func deriveDeepCopy_50(dst, src []*pickle.Rick) {
 	for src_i, src_value := range src {
 		if src_value == nil {
 			dst[src_i] = nil

@@ -5,8 +5,9 @@ import (
 	"strings"
 )
 
+// expensive function with two parameters.
 func findLastName(firstname string, age *int) *string {
-	// Search for a possible last name via an API
+	// Mock: Search for a possible last name via an API
 	if age == nil {
 		return nil
 	}
@@ -25,4 +26,6 @@ func main() {
 	age := 2
 	fmt.Printf("%v\n", getLastName("walter", nil))
 	fmt.Printf("%v\n", *getLastName("walter", &age))
+	// If age was not a pointer, we wouldn't need a hash function:
+	// https://github.com/awalterschulze/goderive/tree/master/example/plugin/mem
 }

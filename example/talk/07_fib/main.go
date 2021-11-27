@@ -15,5 +15,6 @@ func main() {
 	println(fib(1))
 	println(fib(5))
 	println(fib(64))
+	// yes it really works.
 	println(fib(1000))
 }

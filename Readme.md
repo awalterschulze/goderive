@@ -6,7 +6,7 @@
 
 `goderive` derives mundane golang functions that you do not want to maintain and keeps them up to date.
 
-It does this by parsing your go code for functions, which are not implemented, and then generates these functions for you by deriving their implementations from the input parameter types. 
+It does this by parsing your go code for functions, which are not implemented, and then generates these functions for you by deriving their implementations from the input parameter types.
 
 ## Examples
 
@@ -32,7 +32,7 @@ func deriveEqual(this, that *MyStruct) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Int64 == that.Int64 &&
-			((this.StringPtr == nil && that.StringPtr == nil) || 
+			((this.StringPtr == nil && that.StringPtr == nil) ||
         (this.StringPtr != nil && that.StringPtr != nil && *(this.StringPtr) == *(that.StringPtr)))
 }
 ```
@@ -73,19 +73,19 @@ Concurrency Examples:
 
 Recursive Functions:
 
-  - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal) 
+  - [Equal](http://godoc.org/github.com/awalterschulze/goderive/plugin/equal)
     - `deriveEqual(T, T) bool`
     - `deriveEqual(T) func(T) bool`
-  - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare) 
+  - [Compare](http://godoc.org/github.com/awalterschulze/goderive/plugin/compare)
     - `deriveCompare(T, T) int`
     - `deriveCompare(T) func(T) int`
-  - [DeepCopy](http://godoc.org/github.com/awalterschulze/goderive/plugin/deepcopy) 
+  - [DeepCopy](http://godoc.org/github.com/awalterschulze/goderive/plugin/deepcopy)
     - `deriveDeepCopy(dst *T, src *T)`
     - `deriveDeepCopy(dst []T, src []T)`
     - `deriveDeepCopy(dst map[A]B, src map[A]B)`
   - [Clone](http://godoc.org/github.com/awalterschulze/goderive/plugin/clone) `deriveClone(T) T`
-  - [GoString](http://godoc.org/github.com/awalterschulze/goderive/plugin/gostring) `deriveGoString(T) string` 
-  - [Hash](http://godoc.org/github.com/awalterschulze/goderive/plugin/hash) `deriveHash(T) uint64` 
+  - [GoString](http://godoc.org/github.com/awalterschulze/goderive/plugin/gostring) `deriveGoString(T) string`
+  - [Hash](http://godoc.org/github.com/awalterschulze/goderive/plugin/hash) `deriveHash(T) uint64`
 
 Set Functions:
 
@@ -93,30 +93,30 @@ Set Functions:
   - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort) `deriveSort([]T) []T`
   - [Unique](http://godoc.org/github.com/awalterschulze/goderive/plugin/unique) `deriveUnique([]T) []T`
   - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set) `deriveSet([]T) map[T]struct{}`
-  - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min) 
+  - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min)
     - `deriveMin(list []T, default T) (min T)`
     - `deriveMin(T, T) T`
-  - [Max](http://godoc.org/github.com/awalterschulze/goderive/plugin/max) 
+  - [Max](http://godoc.org/github.com/awalterschulze/goderive/plugin/max)
     - `deriveMax(list []T, default T) (max T)`
     - `deriveMax(T, T) T`
   - [Contains](http://godoc.org/github.com/awalterschulze/goderive/plugin/contains) `deriveContains([]T, T) bool`
-  - [Intersect](http://godoc.org/github.com/awalterschulze/goderive/plugin/intersect) 
+  - [Intersect](http://godoc.org/github.com/awalterschulze/goderive/plugin/intersect)
     - `deriveIntersect(a, b []T) []T`
     - `deriveIntersect(a, b map[T]struct{}) map[T]struct{}`
-  - [Union](http://godoc.org/github.com/awalterschulze/goderive/plugin/union) 
+  - [Union](http://godoc.org/github.com/awalterschulze/goderive/plugin/union)
     - `deriveUnion(a, b []T) []T`
     - `deriveUnion(a, b map[T]struct{}) map[T]struct{}`
 
 Functional Functions:
 
-  - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap) 
+  - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)
     - `deriveFmap(func(A) B, []A) []B`
-    - `deriveFmap(func(rune) B, string) []B` 
+    - `deriveFmap(func(rune) B, string) []B`
     - `deriveFmap(func(A) B, func() (A, error)) (B, error)`
     - `deriveFmap(func(A) (B, error), func() (A, error)) (func() (B, error), error)`
     - `deriveFmap(func(A), func() (A, error)) error`
     - `deriveFmap(func(A) (B, c, d, ...), func() (A, error)) (func() (B, c, d, ...), error)`
-  - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join) 
+  - [Join](http://godoc.org/github.com/awalterschulze/goderive/plugin/join)
     - `deriveJoin([][]T) []T`
     - `deriveJoin([]string) string`
     - `deriveJoin(func() (T, error), error) func() (T, error)`
@@ -129,7 +129,7 @@ Functional Functions:
   - [Curry](http://godoc.org/github.com/awalterschulze/goderive/plugin/curry) `deriveCurry(f func(A, B, ...) T) func(A) func(B, ...) T`
   - [Uncurry](http://godoc.org/github.com/awalterschulze/goderive/plugin/uncurry) `deriveUncurry(f func(A) func(B, ...) T) func(A, B, ...) T`
   - [Tuple](http://godoc.org/github.com/awalterschulze/goderive/plugin/tuple) `deriveTuple(A, B, ...) func() (A, B, ...)`
-  - [Compose](http://godoc.org/github.com/awalterschulze/goderive/plugin/compose) 
+  - [Compose](http://godoc.org/github.com/awalterschulze/goderive/plugin/compose)
     - `deriveCompose(func() (A, error), func(A) (B, error)) func() (B, error)`
     - `deriveCompose(func(A) (B, error), func(B) (C, error)) func(A) (C, error)`
     - `deriveCompose(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)`
@@ -183,7 +183,7 @@ goderive can be run from the command line:
 
 , using the same path semantics as the go tool.
 
-[You can also run goderive using go generate](https://github.com/awalterschulze/goderive/blob/master/example/gogenerate/example.go) 
+[You can also run goderive using go generate](https://github.com/awalterschulze/goderive/blob/master/example/gogenerate/example.go)
 
 [And you can customize specific function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/pluginprefix/Makefile)
 
@@ -223,3 +223,6 @@ Please let us know if you are using goderive by opening an issue or a pull reque
 
 Please let us know if you mention goderive in a blog post, talk or go experience report, so that we can add a link to our list.
 
+## Presentations
+
+  - [Talk](https://github.com/awalterschulze/goderive/blob/master/example/talk)

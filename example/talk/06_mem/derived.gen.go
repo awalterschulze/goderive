@@ -7,11 +7,7 @@ import (
 )
 
 // deriveMem returns a memoized version of the input function.
-<<<<<<< HEAD
-func deriveMem(f func(str string) *regexp.Regexp) func(str string) *regexp.Regexp {
-=======
 func deriveMem(f func(r string) *regexp.Regexp) func(r string) *regexp.Regexp {
->>>>>>> master
 	m := make(map[string]*regexp.Regexp)
 	return func(param0 string) *regexp.Regexp {
 		if v, ok := m[param0]; ok {

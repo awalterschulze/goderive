@@ -8,8 +8,11 @@ example:
 	make -C 06_mem example
 	make -C 07_fib example
 	make -C 08_hash example
+<<<<<<< HEAD
 	make -C 09_autoname example
 	make -C 10_dup example
+=======
+>>>>>>> master
 
 .PHONY: install
 install:
@@ -24,6 +27,10 @@ clean:
 	rm 05_prefix/derived.gen.go || true
 	rm 06_mem/derived.gen.go || true
 	rm 07_fib/derived.gen.go || true
+<<<<<<< HEAD
 	rm 08_hash/derived.gen.go || true
 	rm 09_autoname/derived.gen.go || true
 	rm 10_dup/derived.gen.go || true
+=======
+	rm 08_hash/derived.gen.go || true
+>>>>>>> master

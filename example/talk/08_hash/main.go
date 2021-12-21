@@ -24,8 +24,9 @@ var getLastName = deriveMem(findLastName)
 
 func main() {
 	age := 2
-	fmt.Printf("%v\n", getLastName("walter", nil))
-	fmt.Printf("%v\n", *getLastName("walter", &age))
+	fmt.Printf("%v\n", getLastName("Donna", nil))
+	fmt.Printf("%v\n", *getLastName("Ron", &age))
+	fmt.Printf("%v\n", getLastName("Donna", nil))
 	// If age was not a pointer, we wouldn't need a hash function:
 	// https://github.com/awalterschulze/goderive/tree/master/example/plugin/mem
 }

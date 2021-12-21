@@ -1,6 +1,6 @@
 .PHONY: example
 example:
-	goderive ./...
+	goderive --dedup=true --prefix="" ./...
 	go run *.go
 
 clean:

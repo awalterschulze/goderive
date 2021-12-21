@@ -1,6 +1,6 @@
 .PHONY: example
 example:
-	goderive ./...
+	goderive --autoname=true --prefix="" ./...
 	go run *.go
 
 clean:

@@ -7,7 +7,7 @@ import (
 )
 
 // Min returns the minimum of the two input values.
-func Min(a, b Person) Person {
+func Min(a, b *Person) *Person {
 	if Compare(a, b) < 0 {
 		return a
 	}
@@ -18,15 +18,7 @@ func Min(a, b Person) Person {
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func Compare(this, that Person) int {
-	return Compare_(&this, &that)
-}
-
-// Compare_ returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
-func Compare_(this, that *Person) int {
+func Compare(this, that *Person) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -39,17 +31,17 @@ func Compare_(this, that *Person) int {
 	if c := strings.Compare(this.name, that.name); c != 0 {
 		return c
 	}
-	if c := Compare_i(this.age, that.age); c != 0 {
+	if c := Compare_(this.age, that.age); c != 0 {
 		return c
 	}
 	return 0
 }
 
-// Compare_i returns:
+// Compare_ returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func Compare_i(this, that int) int {
+func Compare_(this, that int) int {
 	if this != that {
 		if this < that {
 			return -1

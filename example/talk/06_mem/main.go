@@ -6,6 +6,7 @@ import (
 )
 
 // You can memoize function results to you do not redo expensive operations.
+// Works a lot like functools.cache in python.
 var re = deriveMem(func(r string) *regexp.Regexp {
 	fmt.Printf("compiling regex <%s>\n", r)
 	return regexp.MustCompile(r)

@@ -227,7 +227,7 @@ Please let us know if you are using goderive by opening an issue or a pull reque
 
 ## Mentioned
 
-  - [Monads for Go Programmers](https://awalterschulze.github.io/blog/post/monads-for-goprogrammers/)
+  - [Monads for Go Programmers](https://medium.com/@awalterschulze/monads-for-go-programmers-6cda2b978cb1)
 
 Please let us know if you mention goderive in a blog post, talk or go experience report, so that we can add a link to our list.
 

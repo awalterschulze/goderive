@@ -228,6 +228,8 @@ Please let us know if you are using goderive by opening an issue or a pull reque
 ## Mentioned
 
   - [Monads for Go Programmers](https://medium.com/@awalterschulze/monads-for-go-programmers-6cda2b978cb1)
+  - [Golang Weekly](https://golangweekly.com/issues/174)
+  - [Reddit](https://www.reddit.com/r/programmingcirclejerk/comments/6vkkdw/this_is_what_goprogrammers_have_to_do_because/)
 
 Please let us know if you mention goderive in a blog post, talk or go experience report, so that we can add a link to our list.
 

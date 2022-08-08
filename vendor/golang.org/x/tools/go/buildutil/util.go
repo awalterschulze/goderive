@@ -37,7 +37,14 @@ func ParseFile(fset *token.FileSet, ctxt *build.Context, displayPath func(string
 	if err != nil {
 		return nil, err
 	}
-	defer rd.Close() // ignore error
+	defer func() {
+		if e := recover(); e != nil {
+			rd.Close()
+			panic(e)
+		}
+		err = rd.Close()
+	}()
+
 	if displayPath != nil {
 		file = displayPath(file)
 	}

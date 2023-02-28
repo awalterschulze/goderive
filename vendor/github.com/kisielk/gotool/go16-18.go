@@ -1,4 +1,4 @@
-//go:build go1.6,!go1.9
+// +build go1.6,!go1.9
 
 package gotool
 

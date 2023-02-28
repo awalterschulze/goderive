@@ -6,7 +6,7 @@ test:
 
 .PHONY: gofmt
 gofmt:
-	gofmt -l -s -w .
+	go fmt $(go list ./... | grep -v /vendor/)
 
 .PHONY: action
 action: gofmt

@@ -783,6 +783,10 @@ func (this *Time) Equal(that *Time) bool {
 	return deriveEqualPtrToTime(this, that)
 }
 
+func (this *Time) DeepCopy(that *Time) {
+	deriveDeepCopyPtrToTime(that, this)
+}
+
 type Duration struct {
 	D   time.Duration
 	P   *time.Duration

@@ -140,6 +140,17 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.P("%s = %s", that, this)
 		return nil
 	}
+
+	if typ.String() == "*time.Time" {
+		p.P("if src.IsZero() {")
+		p.In()
+		p.P("return")
+		p.Out()
+		p.P("}")
+		p.P(fmt.Sprintf("*%s = time.Unix(0, %s.UnixNano()).In(%[2]s.Location())", that, this))
+		return nil
+	}
+
 	switch ttyp := typ.Underlying().(type) {
 	case *types.Pointer:
 		reftyp := ttyp.Elem()

@@ -481,11 +481,20 @@ func (this *Name) Hash() uint64 {
 	return deriveHashName(this)
 }
 
+type StructWithoutMethod struct {
+	Name string
+}
+
 type Structs struct {
 	Struct             Name
 	PtrToStruct        *Name
 	SliceOfStructs     []Name
 	SliceToPtrOfStruct []*Name
+
+	StructWithoutMethod             StructWithoutMethod
+	PtrToStructWithoutMethod        *StructWithoutMethod
+	SliceOfStructWithoutMethod      []StructWithoutMethod
+	SliceToPtrOfStructWithoutMethod []*StructWithoutMethod
 }
 
 func (this *Structs) Equal(that *Structs) bool {
@@ -514,6 +523,12 @@ type MapWithStructs struct {
 	StringToPtrToName        map[string]*Name
 	StringToSliceOfName      map[string][]Name
 	StringToSliceOfPtrToName map[string][]*Name
+
+	StringToStructWithoutMethod             map[string]StructWithoutMethod
+	StructWithoutMethodToString             map[StructWithoutMethod]string
+	StringToPtrToStructWithoutMethod        map[string]*StructWithoutMethod
+	StringToSliceOfStructWithoutMethod      map[string][]StructWithoutMethod
+	StringToSliceOfPtrToStructWithoutMethod map[string][]*StructWithoutMethod
 }
 
 func (this *MapWithStructs) Equal(that *MapWithStructs) bool {
@@ -563,6 +578,7 @@ func (this *RecursiveType) Hash() uint64 {
 
 type EmbeddedStruct1 struct {
 	Name
+	StructWithoutMethod
 	*Structs
 }
 
@@ -589,6 +605,7 @@ func (this *EmbeddedStruct1) Hash() uint64 {
 type EmbeddedStruct2 struct {
 	Structs
 	*Name
+	*StructWithoutMethod
 }
 
 func (this *EmbeddedStruct2) Equal(that *EmbeddedStruct2) bool {

@@ -244,10 +244,6 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 			return nil
 		}
 	case *types.Struct:
-		if canEqual(ttyp) {
-			p.P("return %s == %s", this, that)
-			return nil
-		}
 		if _, isNamed := typ.(*types.Named); isNamed {
 			fieldStr, err := g.field("&"+this, "&"+that, types.NewPointer(typ))
 			if err != nil {
@@ -256,6 +252,12 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 			p.P("return " + fieldStr)
 			return nil
 		}
+
+		if canEqual(ttyp) {
+			p.P("return %s == %s", this, that)
+			return nil
+		}
+
 		fields := derive.Fields(g.TypesMap, ttyp, false)
 		for i, field := range fields.Fields {
 			fieldType := field.Type
@@ -422,9 +424,6 @@ func equalMethodInputParam(typ *types.Named) *types.Type {
 }
 
 func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, error) {
-	if canEqual(fieldType) {
-		return fmt.Sprintf("%s == %s", thisField, thatField), nil
-	}
 	if named, isNamed := fieldType.(*types.Named); isNamed {
 		inputType := equalMethodInputParam(named)
 		if inputType != nil {
@@ -437,6 +436,10 @@ func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, 
 				return fmt.Sprintf("%s.Equal(%s)", wrap(thisField), thatField), nil
 			}
 		}
+	}
+
+	if canEqual(fieldType) {
+		return fmt.Sprintf("%s == %s", thisField, thatField), nil
 	}
 
 	switch typ := fieldType.Underlying().(type) {

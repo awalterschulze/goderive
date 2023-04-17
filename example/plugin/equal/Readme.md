@@ -8,10 +8,20 @@ package equal
 type MyStruct struct {
 	Int64     int64
 	StringPtr *string
+	Foo       *Foo
 }
 
 func (this *MyStruct) Equal(that *MyStruct) bool {
 	return deriveEqual(this, that)
+}
+
+type Foo struct {
+	Name  string
+	other string
+}
+
+func (this *Foo) Equal(that *Foo) bool {
+	return this.Name == that.Name
 }
 ```
 
@@ -27,6 +37,7 @@ func deriveEqual(this, that *MyStruct) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Int64 == that.Int64 &&
-			((this.StringPtr == nil && that.StringPtr == nil) || (this.StringPtr != nil && that.StringPtr != nil && *(this.StringPtr) == *(that.StringPtr)))
+			((this.StringPtr == nil && that.StringPtr == nil) || (this.StringPtr != nil && that.StringPtr != nil && *(this.StringPtr) == *(that.StringPtr))) &&
+			this.Foo.Equal(that.Foo)
 }
 ```

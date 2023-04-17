@@ -531,6 +531,16 @@ func deriveGoStringStructs(this *Structs) string {
 		if this.SliceToPtrOfStruct != nil {
 			fmt.Fprintf(buf, "this.SliceToPtrOfStruct = %s\n", deriveGoString_41(this.SliceToPtrOfStruct))
 		}
+		fmt.Fprintf(buf, "this.StructWithoutMethod = %s\n", deriveGoString_S(this.StructWithoutMethod))
+		if this.PtrToStructWithoutMethod != nil {
+			fmt.Fprintf(buf, "this.PtrToStructWithoutMethod = %s\n", deriveGoString_42(this.PtrToStructWithoutMethod))
+		}
+		if this.SliceOfStructWithoutMethod != nil {
+			fmt.Fprintf(buf, "this.SliceOfStructWithoutMethod = %s\n", deriveGoString_43(this.SliceOfStructWithoutMethod))
+		}
+		if this.SliceToPtrOfStructWithoutMethod != nil {
+			fmt.Fprintf(buf, "this.SliceToPtrOfStructWithoutMethod = %s\n", deriveGoString_44(this.SliceToPtrOfStructWithoutMethod))
+		}
 		fmt.Fprintf(buf, "return this\n")
 	}
 	fmt.Fprintf(buf, "}()\n")
@@ -546,19 +556,34 @@ func deriveGoStringMapWithStructs(this *MapWithStructs) string {
 	} else {
 		fmt.Fprintf(buf, "this := &test.MapWithStructs{}\n")
 		if this.NameToString != nil {
-			fmt.Fprintf(buf, "this.NameToString = %s\n", deriveGoString_42(this.NameToString))
+			fmt.Fprintf(buf, "this.NameToString = %s\n", deriveGoString_45(this.NameToString))
 		}
 		if this.StringToName != nil {
-			fmt.Fprintf(buf, "this.StringToName = %s\n", deriveGoString_43(this.StringToName))
+			fmt.Fprintf(buf, "this.StringToName = %s\n", deriveGoString_46(this.StringToName))
 		}
 		if this.StringToPtrToName != nil {
-			fmt.Fprintf(buf, "this.StringToPtrToName = %s\n", deriveGoString_44(this.StringToPtrToName))
+			fmt.Fprintf(buf, "this.StringToPtrToName = %s\n", deriveGoString_47(this.StringToPtrToName))
 		}
 		if this.StringToSliceOfName != nil {
-			fmt.Fprintf(buf, "this.StringToSliceOfName = %s\n", deriveGoString_45(this.StringToSliceOfName))
+			fmt.Fprintf(buf, "this.StringToSliceOfName = %s\n", deriveGoString_48(this.StringToSliceOfName))
 		}
 		if this.StringToSliceOfPtrToName != nil {
-			fmt.Fprintf(buf, "this.StringToSliceOfPtrToName = %s\n", deriveGoString_46(this.StringToSliceOfPtrToName))
+			fmt.Fprintf(buf, "this.StringToSliceOfPtrToName = %s\n", deriveGoString_49(this.StringToSliceOfPtrToName))
+		}
+		if this.StringToStructWithoutMethod != nil {
+			fmt.Fprintf(buf, "this.StringToStructWithoutMethod = %s\n", deriveGoString_50(this.StringToStructWithoutMethod))
+		}
+		if this.StructWithoutMethodToString != nil {
+			fmt.Fprintf(buf, "this.StructWithoutMethodToString = %s\n", deriveGoString_51(this.StructWithoutMethodToString))
+		}
+		if this.StringToPtrToStructWithoutMethod != nil {
+			fmt.Fprintf(buf, "this.StringToPtrToStructWithoutMethod = %s\n", deriveGoString_52(this.StringToPtrToStructWithoutMethod))
+		}
+		if this.StringToSliceOfStructWithoutMethod != nil {
+			fmt.Fprintf(buf, "this.StringToSliceOfStructWithoutMethod = %s\n", deriveGoString_53(this.StringToSliceOfStructWithoutMethod))
+		}
+		if this.StringToSliceOfPtrToStructWithoutMethod != nil {
+			fmt.Fprintf(buf, "this.StringToSliceOfPtrToStructWithoutMethod = %s\n", deriveGoString_54(this.StringToSliceOfPtrToStructWithoutMethod))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -578,7 +603,7 @@ func deriveGoStringRecursiveType(this *RecursiveType) string {
 			fmt.Fprintf(buf, "this.Bytes = %#v\n", this.Bytes)
 		}
 		if this.N != nil {
-			fmt.Fprintf(buf, "this.N = %s\n", deriveGoString_47(this.N))
+			fmt.Fprintf(buf, "this.N = %s\n", deriveGoString_55(this.N))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -595,6 +620,7 @@ func deriveGoStringEmbeddedStruct1(this *EmbeddedStruct1) string {
 	} else {
 		fmt.Fprintf(buf, "this := &test.EmbeddedStruct1{}\n")
 		fmt.Fprintf(buf, "this.Name = %s\n", deriveGoString_N(this.Name))
+		fmt.Fprintf(buf, "this.StructWithoutMethod = %s\n", deriveGoString_S(this.StructWithoutMethod))
 		if this.Structs != nil {
 			fmt.Fprintf(buf, "this.Structs = %s\n", deriveGoStringStructs(this.Structs))
 		}
@@ -612,9 +638,12 @@ func deriveGoStringEmbeddedStruct2(this *EmbeddedStruct2) string {
 		fmt.Fprintf(buf, "return nil\n")
 	} else {
 		fmt.Fprintf(buf, "this := &test.EmbeddedStruct2{}\n")
-		fmt.Fprintf(buf, "this.Structs = %s\n", deriveGoString_S(this.Structs))
+		fmt.Fprintf(buf, "this.Structs = %s\n", deriveGoString_St(this.Structs))
 		if this.Name != nil {
 			fmt.Fprintf(buf, "this.Name = %s\n", deriveGoStringName(this.Name))
+		}
+		if this.StructWithoutMethod != nil {
+			fmt.Fprintf(buf, "this.StructWithoutMethod = %s\n", deriveGoString_42(this.StructWithoutMethod))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -631,9 +660,9 @@ func deriveGoStringStructWithStructFieldWithoutEqualMethod(this *StructWithStruc
 	} else {
 		fmt.Fprintf(buf, "this := &test.StructWithStructFieldWithoutEqualMethod{}\n")
 		if this.A != nil {
-			fmt.Fprintf(buf, "this.A = %s\n", deriveGoString_48(this.A))
+			fmt.Fprintf(buf, "this.A = %s\n", deriveGoString_56(this.A))
 		}
-		fmt.Fprintf(buf, "this.B = %s\n", deriveGoString_St(this.B))
+		fmt.Fprintf(buf, "this.B = %s\n", deriveGoString_Str(this.B))
 		fmt.Fprintf(buf, "return this\n")
 	}
 	fmt.Fprintf(buf, "}()\n")
@@ -649,9 +678,9 @@ func deriveGoStringStructWithStructWithFromAnotherPackage(this *StructWithStruct
 	} else {
 		fmt.Fprintf(buf, "this := &test.StructWithStructWithFromAnotherPackage{}\n")
 		if this.A != nil {
-			fmt.Fprintf(buf, "this.A = %s\n", deriveGoString_49(this.A))
+			fmt.Fprintf(buf, "this.A = %s\n", deriveGoString_57(this.A))
 		}
-		fmt.Fprintf(buf, "this.B = %s\n", deriveGoString_Str(this.B))
+		fmt.Fprintf(buf, "this.B = %s\n", deriveGoString_Stru(this.B))
 		fmt.Fprintf(buf, "return this\n")
 	}
 	fmt.Fprintf(buf, "}()\n")
@@ -668,21 +697,21 @@ func deriveGoStringEnums(this *Enums) string {
 		fmt.Fprintf(buf, "this := &test.Enums{}\n")
 		fmt.Fprintf(buf, "this.Enum = %#v\n", this.Enum)
 		if this.PtrToEnum != nil {
-			fmt.Fprintf(buf, "this.PtrToEnum = %s\n", deriveGoString_50(this.PtrToEnum))
+			fmt.Fprintf(buf, "this.PtrToEnum = %s\n", deriveGoString_58(this.PtrToEnum))
 		}
 		if this.SliceToEnum != nil {
-			fmt.Fprintf(buf, "this.SliceToEnum = %s\n", deriveGoString_51(this.SliceToEnum))
+			fmt.Fprintf(buf, "this.SliceToEnum = %s\n", deriveGoString_59(this.SliceToEnum))
 		}
 		if this.SliceToPtrToEnum != nil {
-			fmt.Fprintf(buf, "this.SliceToPtrToEnum = %s\n", deriveGoString_52(this.SliceToPtrToEnum))
+			fmt.Fprintf(buf, "this.SliceToPtrToEnum = %s\n", deriveGoString_60(this.SliceToPtrToEnum))
 		}
 		if this.MapToEnum != nil {
-			fmt.Fprintf(buf, "this.MapToEnum = %s\n", deriveGoString_53(this.MapToEnum))
+			fmt.Fprintf(buf, "this.MapToEnum = %s\n", deriveGoString_61(this.MapToEnum))
 		}
 		if this.EnumToMap != nil {
-			fmt.Fprintf(buf, "this.EnumToMap = %s\n", deriveGoString_54(this.EnumToMap))
+			fmt.Fprintf(buf, "this.EnumToMap = %s\n", deriveGoString_62(this.EnumToMap))
 		}
-		fmt.Fprintf(buf, "this.ArrayEnum = %s\n", deriveGoString_55(this.ArrayEnum))
+		fmt.Fprintf(buf, "this.ArrayEnum = %s\n", deriveGoString_63(this.ArrayEnum))
 		fmt.Fprintf(buf, "return this\n")
 	}
 	fmt.Fprintf(buf, "}()\n")
@@ -701,10 +730,10 @@ func deriveGoStringNamedTypes(this *NamedTypes) string {
 			fmt.Fprintf(buf, "this.Slice = %#v\n", this.Slice)
 		}
 		if this.PtrToSlice != nil {
-			fmt.Fprintf(buf, "this.PtrToSlice = %s\n", deriveGoString_56(this.PtrToSlice))
+			fmt.Fprintf(buf, "this.PtrToSlice = %s\n", deriveGoString_64(this.PtrToSlice))
 		}
 		if this.SliceToSlice != nil {
-			fmt.Fprintf(buf, "this.SliceToSlice = %s\n", deriveGoString_57(this.SliceToSlice))
+			fmt.Fprintf(buf, "this.SliceToSlice = %s\n", deriveGoString_65(this.SliceToSlice))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -722,16 +751,16 @@ func deriveGoStringDuration(this *Duration) string {
 		fmt.Fprintf(buf, "this := &test.Duration{}\n")
 		fmt.Fprintf(buf, "this.D = %#v\n", this.D)
 		if this.P != nil {
-			fmt.Fprintf(buf, "this.P = %s\n", deriveGoString_58(this.P))
+			fmt.Fprintf(buf, "this.P = %s\n", deriveGoString_66(this.P))
 		}
 		if this.Ds != nil {
-			fmt.Fprintf(buf, "this.Ds = %s\n", deriveGoString_59(this.Ds))
+			fmt.Fprintf(buf, "this.Ds = %s\n", deriveGoString_67(this.Ds))
 		}
 		if this.DPs != nil {
-			fmt.Fprintf(buf, "this.DPs = %s\n", deriveGoString_60(this.DPs))
+			fmt.Fprintf(buf, "this.DPs = %s\n", deriveGoString_68(this.DPs))
 		}
 		if this.MD != nil {
-			fmt.Fprintf(buf, "this.MD = %s\n", deriveGoString_61(this.MD))
+			fmt.Fprintf(buf, "this.MD = %s\n", deriveGoString_69(this.MD))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -748,7 +777,7 @@ func deriveGoStringNickname(this *Nickname) string {
 	} else {
 		fmt.Fprintf(buf, "this := &test.Nickname{}\n")
 		if this.Alias != nil {
-			fmt.Fprintf(buf, "this.Alias = %s\n", deriveGoString_62(this.Alias))
+			fmt.Fprintf(buf, "this.Alias = %s\n", deriveGoString_70(this.Alias))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -2133,39 +2162,112 @@ func deriveDeepCopyPtrToStructs(dst, src *Structs) {
 		}
 		deriveDeepCopy_28(dst.SliceToPtrOfStruct, src.SliceToPtrOfStruct)
 	}
+	dst.StructWithoutMethod = src.StructWithoutMethod
+	if src.PtrToStructWithoutMethod == nil {
+		dst.PtrToStructWithoutMethod = nil
+	} else {
+		dst.PtrToStructWithoutMethod = new(StructWithoutMethod)
+		*dst.PtrToStructWithoutMethod = *src.PtrToStructWithoutMethod
+	}
+	if src.SliceOfStructWithoutMethod == nil {
+		dst.SliceOfStructWithoutMethod = nil
+	} else {
+		if dst.SliceOfStructWithoutMethod != nil {
+			if len(src.SliceOfStructWithoutMethod) > len(dst.SliceOfStructWithoutMethod) {
+				if cap(dst.SliceOfStructWithoutMethod) >= len(src.SliceOfStructWithoutMethod) {
+					dst.SliceOfStructWithoutMethod = (dst.SliceOfStructWithoutMethod)[:len(src.SliceOfStructWithoutMethod)]
+				} else {
+					dst.SliceOfStructWithoutMethod = make([]StructWithoutMethod, len(src.SliceOfStructWithoutMethod))
+				}
+			} else if len(src.SliceOfStructWithoutMethod) < len(dst.SliceOfStructWithoutMethod) {
+				dst.SliceOfStructWithoutMethod = (dst.SliceOfStructWithoutMethod)[:len(src.SliceOfStructWithoutMethod)]
+			}
+		} else {
+			dst.SliceOfStructWithoutMethod = make([]StructWithoutMethod, len(src.SliceOfStructWithoutMethod))
+		}
+		copy(dst.SliceOfStructWithoutMethod, src.SliceOfStructWithoutMethod)
+	}
+	if src.SliceToPtrOfStructWithoutMethod == nil {
+		dst.SliceToPtrOfStructWithoutMethod = nil
+	} else {
+		if dst.SliceToPtrOfStructWithoutMethod != nil {
+			if len(src.SliceToPtrOfStructWithoutMethod) > len(dst.SliceToPtrOfStructWithoutMethod) {
+				if cap(dst.SliceToPtrOfStructWithoutMethod) >= len(src.SliceToPtrOfStructWithoutMethod) {
+					dst.SliceToPtrOfStructWithoutMethod = (dst.SliceToPtrOfStructWithoutMethod)[:len(src.SliceToPtrOfStructWithoutMethod)]
+				} else {
+					dst.SliceToPtrOfStructWithoutMethod = make([]*StructWithoutMethod, len(src.SliceToPtrOfStructWithoutMethod))
+				}
+			} else if len(src.SliceToPtrOfStructWithoutMethod) < len(dst.SliceToPtrOfStructWithoutMethod) {
+				dst.SliceToPtrOfStructWithoutMethod = (dst.SliceToPtrOfStructWithoutMethod)[:len(src.SliceToPtrOfStructWithoutMethod)]
+			}
+		} else {
+			dst.SliceToPtrOfStructWithoutMethod = make([]*StructWithoutMethod, len(src.SliceToPtrOfStructWithoutMethod))
+		}
+		deriveDeepCopy_29(dst.SliceToPtrOfStructWithoutMethod, src.SliceToPtrOfStructWithoutMethod)
+	}
 }
 
 // deriveDeepCopyPtrToMapWithStructs recursively copies the contents of src into dst.
 func deriveDeepCopyPtrToMapWithStructs(dst, src *MapWithStructs) {
 	if src.NameToString != nil {
 		dst.NameToString = make(map[Name]string, len(src.NameToString))
-		deriveDeepCopy_29(dst.NameToString, src.NameToString)
+		deriveDeepCopy_30(dst.NameToString, src.NameToString)
 	} else {
 		dst.NameToString = nil
 	}
 	if src.StringToName != nil {
 		dst.StringToName = make(map[string]Name, len(src.StringToName))
-		deriveDeepCopy_30(dst.StringToName, src.StringToName)
+		deriveDeepCopy_31(dst.StringToName, src.StringToName)
 	} else {
 		dst.StringToName = nil
 	}
 	if src.StringToPtrToName != nil {
 		dst.StringToPtrToName = make(map[string]*Name, len(src.StringToPtrToName))
-		deriveDeepCopy_31(dst.StringToPtrToName, src.StringToPtrToName)
+		deriveDeepCopy_32(dst.StringToPtrToName, src.StringToPtrToName)
 	} else {
 		dst.StringToPtrToName = nil
 	}
 	if src.StringToSliceOfName != nil {
 		dst.StringToSliceOfName = make(map[string][]Name, len(src.StringToSliceOfName))
-		deriveDeepCopy_32(dst.StringToSliceOfName, src.StringToSliceOfName)
+		deriveDeepCopy_33(dst.StringToSliceOfName, src.StringToSliceOfName)
 	} else {
 		dst.StringToSliceOfName = nil
 	}
 	if src.StringToSliceOfPtrToName != nil {
 		dst.StringToSliceOfPtrToName = make(map[string][]*Name, len(src.StringToSliceOfPtrToName))
-		deriveDeepCopy_33(dst.StringToSliceOfPtrToName, src.StringToSliceOfPtrToName)
+		deriveDeepCopy_34(dst.StringToSliceOfPtrToName, src.StringToSliceOfPtrToName)
 	} else {
 		dst.StringToSliceOfPtrToName = nil
+	}
+	if src.StringToStructWithoutMethod != nil {
+		dst.StringToStructWithoutMethod = make(map[string]StructWithoutMethod, len(src.StringToStructWithoutMethod))
+		deriveDeepCopy_35(dst.StringToStructWithoutMethod, src.StringToStructWithoutMethod)
+	} else {
+		dst.StringToStructWithoutMethod = nil
+	}
+	if src.StructWithoutMethodToString != nil {
+		dst.StructWithoutMethodToString = make(map[StructWithoutMethod]string, len(src.StructWithoutMethodToString))
+		deriveDeepCopy_36(dst.StructWithoutMethodToString, src.StructWithoutMethodToString)
+	} else {
+		dst.StructWithoutMethodToString = nil
+	}
+	if src.StringToPtrToStructWithoutMethod != nil {
+		dst.StringToPtrToStructWithoutMethod = make(map[string]*StructWithoutMethod, len(src.StringToPtrToStructWithoutMethod))
+		deriveDeepCopy_37(dst.StringToPtrToStructWithoutMethod, src.StringToPtrToStructWithoutMethod)
+	} else {
+		dst.StringToPtrToStructWithoutMethod = nil
+	}
+	if src.StringToSliceOfStructWithoutMethod != nil {
+		dst.StringToSliceOfStructWithoutMethod = make(map[string][]StructWithoutMethod, len(src.StringToSliceOfStructWithoutMethod))
+		deriveDeepCopy_38(dst.StringToSliceOfStructWithoutMethod, src.StringToSliceOfStructWithoutMethod)
+	} else {
+		dst.StringToSliceOfStructWithoutMethod = nil
+	}
+	if src.StringToSliceOfPtrToStructWithoutMethod != nil {
+		dst.StringToSliceOfPtrToStructWithoutMethod = make(map[string][]*StructWithoutMethod, len(src.StringToSliceOfPtrToStructWithoutMethod))
+		deriveDeepCopy_39(dst.StringToSliceOfPtrToStructWithoutMethod, src.StringToSliceOfPtrToStructWithoutMethod)
+	} else {
+		dst.StringToSliceOfPtrToStructWithoutMethod = nil
 	}
 }
 
@@ -2191,7 +2293,7 @@ func deriveDeepCopyPtrToRecursiveType(dst, src *RecursiveType) {
 	}
 	if src.N != nil {
 		dst.N = make(map[int]RecursiveType, len(src.N))
-		deriveDeepCopy_34(dst.N, src.N)
+		deriveDeepCopy_40(dst.N, src.N)
 	} else {
 		dst.N = nil
 	}
@@ -2200,6 +2302,7 @@ func deriveDeepCopyPtrToRecursiveType(dst, src *RecursiveType) {
 // deriveDeepCopyPtrToEmbeddedStruct1 recursively copies the contents of src into dst.
 func deriveDeepCopyPtrToEmbeddedStruct1(dst, src *EmbeddedStruct1) {
 	dst.Name = src.Name
+	dst.StructWithoutMethod = src.StructWithoutMethod
 	if src.Structs == nil {
 		dst.Structs = nil
 	} else {
@@ -2220,6 +2323,12 @@ func deriveDeepCopyPtrToEmbeddedStruct2(dst, src *EmbeddedStruct2) {
 	} else {
 		dst.Name = new(Name)
 		src.Name.DeepCopy(dst.Name)
+	}
+	if src.StructWithoutMethod == nil {
+		dst.StructWithoutMethod = nil
+	} else {
+		dst.StructWithoutMethod = new(StructWithoutMethod)
+		*dst.StructWithoutMethod = *src.StructWithoutMethod
 	}
 }
 
@@ -2256,7 +2365,7 @@ func deriveDeepCopyPtrToFieldWithStructWithPrivateFields(dst, src *FieldWithStru
 		dst.A = nil
 	} else {
 		dst.A = new(extra.PrivateFieldAndNoEqualMethod)
-		deriveDeepCopy_35(dst.A, src.A)
+		deriveDeepCopy_41(dst.A, src.A)
 	}
 }
 
@@ -2303,17 +2412,17 @@ func deriveDeepCopyPtrToEnums(dst, src *Enums) {
 		} else {
 			dst.SliceToPtrToEnum = make([]*MyEnum, len(src.SliceToPtrToEnum))
 		}
-		deriveDeepCopy_36(dst.SliceToPtrToEnum, src.SliceToPtrToEnum)
+		deriveDeepCopy_42(dst.SliceToPtrToEnum, src.SliceToPtrToEnum)
 	}
 	if src.MapToEnum != nil {
 		dst.MapToEnum = make(map[int32]MyEnum, len(src.MapToEnum))
-		deriveDeepCopy_37(dst.MapToEnum, src.MapToEnum)
+		deriveDeepCopy_43(dst.MapToEnum, src.MapToEnum)
 	} else {
 		dst.MapToEnum = nil
 	}
 	if src.EnumToMap != nil {
 		dst.EnumToMap = make(map[MyEnum]int32, len(src.EnumToMap))
-		deriveDeepCopy_38(dst.EnumToMap, src.EnumToMap)
+		deriveDeepCopy_44(dst.EnumToMap, src.EnumToMap)
 	} else {
 		dst.EnumToMap = nil
 	}
@@ -2344,7 +2453,7 @@ func deriveDeepCopyPtrToNamedTypes(dst, src *NamedTypes) {
 		dst.PtrToSlice = nil
 	} else {
 		dst.PtrToSlice = new(MySlice)
-		deriveDeepCopy_39(dst.PtrToSlice, src.PtrToSlice)
+		deriveDeepCopy_45(dst.PtrToSlice, src.PtrToSlice)
 	}
 	if src.SliceToSlice == nil {
 		dst.SliceToSlice = nil
@@ -2362,7 +2471,7 @@ func deriveDeepCopyPtrToNamedTypes(dst, src *NamedTypes) {
 		} else {
 			dst.SliceToSlice = make([]MySlice, len(src.SliceToSlice))
 		}
-		deriveDeepCopy_40(dst.SliceToSlice, src.SliceToSlice)
+		deriveDeepCopy_46(dst.SliceToSlice, src.SliceToSlice)
 	}
 }
 
@@ -2409,11 +2518,11 @@ func deriveDeepCopyPtrToDuration(dst, src *Duration) {
 		} else {
 			dst.DPs = make([]*time.Duration, len(src.DPs))
 		}
-		deriveDeepCopy_41(dst.DPs, src.DPs)
+		deriveDeepCopy_47(dst.DPs, src.DPs)
 	}
 	if src.MD != nil {
 		dst.MD = make(map[int]time.Duration, len(src.MD))
-		deriveDeepCopy_42(dst.MD, src.MD)
+		deriveDeepCopy_48(dst.MD, src.MD)
 	} else {
 		dst.MD = nil
 	}
@@ -2423,7 +2532,7 @@ func deriveDeepCopyPtrToDuration(dst, src *Duration) {
 func deriveDeepCopyPtrToNickname(dst, src *Nickname) {
 	if src.Alias != nil {
 		dst.Alias = make(map[string][]*pickle.Rick, len(src.Alias))
-		deriveDeepCopy_43(dst.Alias, src.Alias)
+		deriveDeepCopy_49(dst.Alias, src.Alias)
 	} else {
 		dst.Alias = nil
 	}
@@ -2433,7 +2542,7 @@ func deriveDeepCopyPtrToNickname(dst, src *Nickname) {
 func deriveDeepCopyPtrToPrivateEmbedded(dst, src *PrivateEmbedded) {
 	func() {
 		field := new(privateStruct)
-		deriveDeepCopy_44(field, &src.privateStruct)
+		deriveDeepCopy_50(field, &src.privateStruct)
 		dst.privateStruct = *field
 	}()
 }
@@ -3374,6 +3483,18 @@ func deriveComparePtrToStructs(this, that *Structs) int {
 	if c := deriveCompare_106(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct); c != 0 {
 		return c
 	}
+	if c := deriveCompare_107(&this.StructWithoutMethod, &that.StructWithoutMethod); c != 0 {
+		return c
+	}
+	if c := deriveCompare_107(this.PtrToStructWithoutMethod, that.PtrToStructWithoutMethod); c != 0 {
+		return c
+	}
+	if c := deriveCompare_108(this.SliceOfStructWithoutMethod, that.SliceOfStructWithoutMethod); c != 0 {
+		return c
+	}
+	if c := deriveCompare_109(this.SliceToPtrOfStructWithoutMethod, that.SliceToPtrOfStructWithoutMethod); c != 0 {
+		return c
+	}
 	return 0
 }
 
@@ -3391,19 +3512,34 @@ func deriveComparePtrToMapWithStructs(this, that *MapWithStructs) int {
 	if that == nil {
 		return 1
 	}
-	if c := deriveCompare_107(this.NameToString, that.NameToString); c != 0 {
+	if c := deriveCompare_110(this.NameToString, that.NameToString); c != 0 {
 		return c
 	}
-	if c := deriveCompare_108(this.StringToName, that.StringToName); c != 0 {
+	if c := deriveCompare_111(this.StringToName, that.StringToName); c != 0 {
 		return c
 	}
-	if c := deriveCompare_109(this.StringToPtrToName, that.StringToPtrToName); c != 0 {
+	if c := deriveCompare_112(this.StringToPtrToName, that.StringToPtrToName); c != 0 {
 		return c
 	}
-	if c := deriveCompare_110(this.StringToSliceOfName, that.StringToSliceOfName); c != 0 {
+	if c := deriveCompare_113(this.StringToSliceOfName, that.StringToSliceOfName); c != 0 {
 		return c
 	}
-	if c := deriveCompare_111(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName); c != 0 {
+	if c := deriveCompare_114(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName); c != 0 {
+		return c
+	}
+	if c := deriveCompare_115(this.StringToStructWithoutMethod, that.StringToStructWithoutMethod); c != 0 {
+		return c
+	}
+	if c := deriveCompare_116(this.StructWithoutMethodToString, that.StructWithoutMethodToString); c != 0 {
+		return c
+	}
+	if c := deriveCompare_117(this.StringToPtrToStructWithoutMethod, that.StringToPtrToStructWithoutMethod); c != 0 {
+		return c
+	}
+	if c := deriveCompare_118(this.StringToSliceOfStructWithoutMethod, that.StringToSliceOfStructWithoutMethod); c != 0 {
+		return c
+	}
+	if c := deriveCompare_119(this.StringToSliceOfPtrToStructWithoutMethod, that.StringToSliceOfPtrToStructWithoutMethod); c != 0 {
 		return c
 	}
 	return 0
@@ -3426,7 +3562,7 @@ func deriveComparePtrToRecursiveType(this, that *RecursiveType) int {
 	if c := bytes.Compare(this.Bytes, that.Bytes); c != 0 {
 		return c
 	}
-	if c := deriveCompare_112(this.N, that.N); c != 0 {
+	if c := deriveCompare_120(this.N, that.N); c != 0 {
 		return c
 	}
 	return 0
@@ -3447,6 +3583,9 @@ func deriveComparePtrToEmbeddedStruct1(this, that *EmbeddedStruct1) int {
 		return 1
 	}
 	if c := this.Name.Compare(&that.Name); c != 0 {
+		return c
+	}
+	if c := deriveCompare_107(&this.StructWithoutMethod, &that.StructWithoutMethod); c != 0 {
 		return c
 	}
 	if c := this.Structs.Compare(that.Structs); c != 0 {
@@ -3475,6 +3614,9 @@ func deriveComparePtrToEmbeddedStruct2(this, that *EmbeddedStruct2) int {
 	if c := this.Name.Compare(that.Name); c != 0 {
 		return c
 	}
+	if c := deriveCompare_107(this.StructWithoutMethod, that.StructWithoutMethod); c != 0 {
+		return c
+	}
 	return 0
 }
 
@@ -3492,10 +3634,10 @@ func deriveComparePtrToStructWithStructFieldWithoutEqualMethod(this, that *Struc
 	if that == nil {
 		return 1
 	}
-	if c := deriveCompare_113(this.A, that.A); c != 0 {
+	if c := deriveCompare_121(this.A, that.A); c != 0 {
 		return c
 	}
-	if c := deriveCompare_113(&this.B, &that.B); c != 0 {
+	if c := deriveCompare_121(&this.B, &that.B); c != 0 {
 		return c
 	}
 	return 0
@@ -3515,10 +3657,10 @@ func deriveComparePtrToStructWithStructWithFromAnotherPackage(this, that *Struct
 	if that == nil {
 		return 1
 	}
-	if c := deriveCompare_114(this.A, that.A); c != 0 {
+	if c := deriveCompare_122(this.A, that.A); c != 0 {
 		return c
 	}
-	if c := deriveCompare_114(&this.B, &that.B); c != 0 {
+	if c := deriveCompare_122(&this.B, &that.B); c != 0 {
 		return c
 	}
 	return 0
@@ -3538,7 +3680,7 @@ func deriveComparePtrToFieldWithStructWithPrivateFields(this, that *FieldWithStr
 	if that == nil {
 		return 1
 	}
-	if c := deriveCompare_115(this.A, that.A); c != 0 {
+	if c := deriveCompare_123(this.A, that.A); c != 0 {
 		return c
 	}
 	return 0
@@ -3561,22 +3703,22 @@ func deriveComparePtrToEnums(this, that *Enums) int {
 	if c := deriveCompare_M(this.Enum, that.Enum); c != 0 {
 		return c
 	}
-	if c := deriveCompare_116(this.PtrToEnum, that.PtrToEnum); c != 0 {
+	if c := deriveCompare_124(this.PtrToEnum, that.PtrToEnum); c != 0 {
 		return c
 	}
-	if c := deriveCompare_117(this.SliceToEnum, that.SliceToEnum); c != 0 {
+	if c := deriveCompare_125(this.SliceToEnum, that.SliceToEnum); c != 0 {
 		return c
 	}
-	if c := deriveCompare_118(this.SliceToPtrToEnum, that.SliceToPtrToEnum); c != 0 {
+	if c := deriveCompare_126(this.SliceToPtrToEnum, that.SliceToPtrToEnum); c != 0 {
 		return c
 	}
-	if c := deriveCompare_119(this.MapToEnum, that.MapToEnum); c != 0 {
+	if c := deriveCompare_127(this.MapToEnum, that.MapToEnum); c != 0 {
 		return c
 	}
-	if c := deriveCompare_120(this.EnumToMap, that.EnumToMap); c != 0 {
+	if c := deriveCompare_128(this.EnumToMap, that.EnumToMap); c != 0 {
 		return c
 	}
-	if c := deriveCompare_121(this.ArrayEnum, that.ArrayEnum); c != 0 {
+	if c := deriveCompare_129(this.ArrayEnum, that.ArrayEnum); c != 0 {
 		return c
 	}
 	return 0
@@ -3599,10 +3741,10 @@ func deriveComparePtrToNamedTypes(this, that *NamedTypes) int {
 	if c := deriveCompare_27(this.Slice, that.Slice); c != 0 {
 		return c
 	}
-	if c := deriveCompare_122(this.PtrToSlice, that.PtrToSlice); c != 0 {
+	if c := deriveCompare_130(this.PtrToSlice, that.PtrToSlice); c != 0 {
 		return c
 	}
-	if c := deriveCompare_123(this.SliceToSlice, that.SliceToSlice); c != 0 {
+	if c := deriveCompare_131(this.SliceToSlice, that.SliceToSlice); c != 0 {
 		return c
 	}
 	return 0
@@ -3625,16 +3767,16 @@ func deriveComparePtrToDuration(this, that *Duration) int {
 	if c := deriveCompare_D(this.D, that.D); c != 0 {
 		return c
 	}
-	if c := deriveCompare_124(this.P, that.P); c != 0 {
+	if c := deriveCompare_132(this.P, that.P); c != 0 {
 		return c
 	}
-	if c := deriveCompare_125(this.Ds, that.Ds); c != 0 {
+	if c := deriveCompare_133(this.Ds, that.Ds); c != 0 {
 		return c
 	}
-	if c := deriveCompare_126(this.DPs, that.DPs); c != 0 {
+	if c := deriveCompare_134(this.DPs, that.DPs); c != 0 {
 		return c
 	}
-	if c := deriveCompare_127(this.MD, that.MD); c != 0 {
+	if c := deriveCompare_135(this.MD, that.MD); c != 0 {
 		return c
 	}
 	return 0
@@ -3654,7 +3796,7 @@ func deriveComparePtrToNickname(this, that *Nickname) int {
 	if that == nil {
 		return 1
 	}
-	if c := deriveCompare_128(this.Alias, that.Alias); c != 0 {
+	if c := deriveCompare_136(this.Alias, that.Alias); c != 0 {
 		return c
 	}
 	return 0
@@ -3674,7 +3816,7 @@ func deriveComparePtrToPrivateEmbedded(this, that *PrivateEmbedded) int {
 	if that == nil {
 		return 1
 	}
-	if c := deriveCompare_129(&this.privateStruct, &that.privateStruct); c != 0 {
+	if c := deriveCompare_137(&this.privateStruct, &that.privateStruct); c != 0 {
 		return c
 	}
 	return 0
@@ -4142,21 +4284,30 @@ func deriveEqualPtrToName(this, that *Name) bool {
 func deriveEqualPtrToStructs(this, that *Structs) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			this.Struct == that.Struct &&
+			this.Struct.Equal(&that.Struct) &&
 			this.PtrToStruct.Equal(that.PtrToStruct) &&
 			deriveEqual_63(this.SliceOfStructs, that.SliceOfStructs) &&
-			deriveEqual_64(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct)
+			deriveEqual_64(this.SliceToPtrOfStruct, that.SliceToPtrOfStruct) &&
+			this.StructWithoutMethod == that.StructWithoutMethod &&
+			deriveEqual_65(this.PtrToStructWithoutMethod, that.PtrToStructWithoutMethod) &&
+			deriveEqual_66(this.SliceOfStructWithoutMethod, that.SliceOfStructWithoutMethod) &&
+			deriveEqual_67(this.SliceToPtrOfStructWithoutMethod, that.SliceToPtrOfStructWithoutMethod)
 }
 
 // deriveEqualPtrToMapWithStructs returns whether this and that are equal.
 func deriveEqualPtrToMapWithStructs(this, that *MapWithStructs) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqual_65(this.NameToString, that.NameToString) &&
-			deriveEqual_66(this.StringToName, that.StringToName) &&
-			deriveEqual_67(this.StringToPtrToName, that.StringToPtrToName) &&
-			deriveEqual_68(this.StringToSliceOfName, that.StringToSliceOfName) &&
-			deriveEqual_69(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName)
+			deriveEqual_68(this.NameToString, that.NameToString) &&
+			deriveEqual_69(this.StringToName, that.StringToName) &&
+			deriveEqual_70(this.StringToPtrToName, that.StringToPtrToName) &&
+			deriveEqual_71(this.StringToSliceOfName, that.StringToSliceOfName) &&
+			deriveEqual_72(this.StringToSliceOfPtrToName, that.StringToSliceOfPtrToName) &&
+			deriveEqual_73(this.StringToStructWithoutMethod, that.StringToStructWithoutMethod) &&
+			deriveEqual_74(this.StructWithoutMethodToString, that.StructWithoutMethodToString) &&
+			deriveEqual_75(this.StringToPtrToStructWithoutMethod, that.StringToPtrToStructWithoutMethod) &&
+			deriveEqual_76(this.StringToSliceOfStructWithoutMethod, that.StringToSliceOfStructWithoutMethod) &&
+			deriveEqual_77(this.StringToSliceOfPtrToStructWithoutMethod, that.StringToSliceOfPtrToStructWithoutMethod)
 }
 
 // deriveEqualPtrToRecursiveType returns whether this and that are equal.
@@ -4164,14 +4315,15 @@ func deriveEqualPtrToRecursiveType(this, that *RecursiveType) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			bytes.Equal(this.Bytes, that.Bytes) &&
-			deriveEqual_70(this.N, that.N)
+			deriveEqual_78(this.N, that.N)
 }
 
 // deriveEqualPtrToEmbeddedStruct1 returns whether this and that are equal.
 func deriveEqualPtrToEmbeddedStruct1(this, that *EmbeddedStruct1) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			this.Name == that.Name &&
+			this.Name.Equal(&that.Name) &&
+			this.StructWithoutMethod == that.StructWithoutMethod &&
 			this.Structs.Equal(that.Structs)
 }
 
@@ -4180,7 +4332,8 @@ func deriveEqualPtrToEmbeddedStruct2(this, that *EmbeddedStruct2) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Structs.Equal(&that.Structs) &&
-			this.Name.Equal(that.Name)
+			this.Name.Equal(that.Name) &&
+			deriveEqual_65(this.StructWithoutMethod, that.StructWithoutMethod)
 }
 
 // deriveEqualPtrToUnnamedStruct returns whether this and that are equal.
@@ -4194,7 +4347,7 @@ func deriveEqualPtrToUnnamedStruct(this, that *UnnamedStruct) bool {
 func deriveEqualPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructWithStructFieldWithoutEqualMethod) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqual_71(this.A, that.A) &&
+			deriveEqual_79(this.A, that.A) &&
 			this.B == that.B
 }
 
@@ -4202,7 +4355,7 @@ func deriveEqualPtrToStructWithStructFieldWithoutEqualMethod(this, that *StructW
 func deriveEqualPtrToStructWithStructWithFromAnotherPackage(this, that *StructWithStructWithFromAnotherPackage) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqual_72(this.A, that.A) &&
+			deriveEqual_80(this.A, that.A) &&
 			this.B == that.B
 }
 
@@ -4210,7 +4363,7 @@ func deriveEqualPtrToStructWithStructWithFromAnotherPackage(this, that *StructWi
 func deriveEqualPtrToFieldWithStructWithPrivateFields(this, that *FieldWithStructWithPrivateFields) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqual_73(this.A, that.A)
+			deriveEqual_81(this.A, that.A)
 }
 
 // deriveEqualPtrToEnums returns whether this and that are equal.
@@ -4218,11 +4371,11 @@ func deriveEqualPtrToEnums(this, that *Enums) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Enum == that.Enum &&
-			deriveEqual_74(this.PtrToEnum, that.PtrToEnum) &&
-			deriveEqual_75(this.SliceToEnum, that.SliceToEnum) &&
-			deriveEqual_76(this.SliceToPtrToEnum, that.SliceToPtrToEnum) &&
-			deriveEqual_77(this.MapToEnum, that.MapToEnum) &&
-			deriveEqual_78(this.EnumToMap, that.EnumToMap) &&
+			deriveEqual_82(this.PtrToEnum, that.PtrToEnum) &&
+			deriveEqual_83(this.SliceToEnum, that.SliceToEnum) &&
+			deriveEqual_84(this.SliceToPtrToEnum, that.SliceToPtrToEnum) &&
+			deriveEqual_85(this.MapToEnum, that.MapToEnum) &&
+			deriveEqual_86(this.EnumToMap, that.EnumToMap) &&
 			this.ArrayEnum == that.ArrayEnum
 }
 
@@ -4231,8 +4384,8 @@ func deriveEqualPtrToNamedTypes(this, that *NamedTypes) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			deriveEqual_8(this.Slice, that.Slice) &&
-			deriveEqual_79(this.PtrToSlice, that.PtrToSlice) &&
-			deriveEqual_80(this.SliceToSlice, that.SliceToSlice)
+			deriveEqual_87(this.PtrToSlice, that.PtrToSlice) &&
+			deriveEqual_88(this.SliceToSlice, that.SliceToSlice)
 }
 
 // deriveEqualPtrToTime returns whether this and that are equal.
@@ -4248,24 +4401,24 @@ func deriveEqualPtrToDuration(this, that *Duration) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.D == that.D &&
-			deriveEqual_81(this.P, that.P) &&
-			deriveEqual_82(this.Ds, that.Ds) &&
-			deriveEqual_83(this.DPs, that.DPs) &&
-			deriveEqual_84(this.MD, that.MD)
+			deriveEqual_89(this.P, that.P) &&
+			deriveEqual_90(this.Ds, that.Ds) &&
+			deriveEqual_91(this.DPs, that.DPs) &&
+			deriveEqual_92(this.MD, that.MD)
 }
 
 // deriveEqualPtrToNickname returns whether this and that are equal.
 func deriveEqualPtrToNickname(this, that *Nickname) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqual_85(this.Alias, that.Alias)
+			deriveEqual_93(this.Alias, that.Alias)
 }
 
 // deriveEqualPtrToPrivateEmbedded returns whether this and that are equal.
 func deriveEqualPtrToPrivateEmbedded(this, that *PrivateEmbedded) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqual_86(&this.privateStruct, &that.privateStruct)
+			deriveEqual_94(&this.privateStruct, &that.privateStruct)
 }
 
 // deriveEqualInefficientDeriveTheDerived returns whether this and that are equal.
@@ -4386,7 +4539,7 @@ func deriveEqualPtrToMapOfintToint(this, that *map[int]int) bool {
 
 // deriveEqual1 returns whether this and that are equal.
 func deriveEqual1(this, that BuiltInTypes) bool {
-	return this == that
+	return (&this).Equal(&that)
 }
 
 // deriveEqualCurry returns an equal closure, with the first parameter already filled in.
@@ -4426,14 +4579,14 @@ func deriveEqualMapTypes(this, that *SomeJson) bool {
 
 // deriveEqualVisitor returns whether this and that are equal.
 func deriveEqualVisitor(this, that Visitor) bool {
-	return deriveEqual_87(&this, &that)
+	return deriveEqual_95(&this, &that)
 }
 
 // deriveEqual returns whether this and that are equal.
 func deriveEqual(this, that *UseVendor) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
-			deriveEqual_88(this.Vendors, that.Vendors)
+			deriveEqual_96(this.Vendors, that.Vendors)
 }
 
 // deriveEqual_ returns whether this and that are equal.
@@ -4513,7 +4666,7 @@ func deriveCloneSliceOfint(src []int) []int {
 		return nil
 	}
 	dst := make([]int, len(src))
-	deriveDeepCopy_45(dst, src)
+	deriveDeepCopy_51(dst, src)
 	return dst
 }
 
@@ -4523,7 +4676,7 @@ func deriveCloneMapOfintToint(src map[int]int) map[int]int {
 		return nil
 	}
 	dst := make(map[int]int)
-	deriveDeepCopy_46(dst, src)
+	deriveDeepCopy_52(dst, src)
 	return dst
 }
 
@@ -4533,7 +4686,7 @@ func deriveClonePtrToint(src *int) *int {
 		return nil
 	}
 	dst := new(int)
-	deriveDeepCopy_47(dst, src)
+	deriveDeepCopy_53(dst, src)
 	return dst
 }
 
@@ -4553,7 +4706,7 @@ func deriveClonePtrToArray10Ofint(src *[10]int) *[10]int {
 		return nil
 	}
 	dst := new([10]int)
-	deriveDeepCopy_48(dst, src)
+	deriveDeepCopy_54(dst, src)
 	return dst
 }
 
@@ -5174,6 +5327,10 @@ func deriveHashStructs(object *Structs) uint64 {
 	h = 31*h + deriveHashName(object.PtrToStruct)
 	h = 31*h + deriveHash_101(object.SliceOfStructs)
 	h = 31*h + deriveHash_102(object.SliceToPtrOfStruct)
+	h = 31*h + deriveHash_S(object.StructWithoutMethod)
+	h = 31*h + deriveHash_103(object.PtrToStructWithoutMethod)
+	h = 31*h + deriveHash_104(object.SliceOfStructWithoutMethod)
+	h = 31*h + deriveHash_105(object.SliceToPtrOfStructWithoutMethod)
 	return h
 }
 
@@ -5183,11 +5340,16 @@ func deriveHashMapWithStructs(object *MapWithStructs) uint64 {
 		return 0
 	}
 	h := uint64(17)
-	h = 31*h + deriveHash_103(object.NameToString)
-	h = 31*h + deriveHash_104(object.StringToName)
-	h = 31*h + deriveHash_105(object.StringToPtrToName)
-	h = 31*h + deriveHash_106(object.StringToSliceOfName)
-	h = 31*h + deriveHash_107(object.StringToSliceOfPtrToName)
+	h = 31*h + deriveHash_106(object.NameToString)
+	h = 31*h + deriveHash_107(object.StringToName)
+	h = 31*h + deriveHash_108(object.StringToPtrToName)
+	h = 31*h + deriveHash_109(object.StringToSliceOfName)
+	h = 31*h + deriveHash_110(object.StringToSliceOfPtrToName)
+	h = 31*h + deriveHash_111(object.StringToStructWithoutMethod)
+	h = 31*h + deriveHash_112(object.StructWithoutMethodToString)
+	h = 31*h + deriveHash_113(object.StringToPtrToStructWithoutMethod)
+	h = 31*h + deriveHash_114(object.StringToSliceOfStructWithoutMethod)
+	h = 31*h + deriveHash_115(object.StringToSliceOfPtrToStructWithoutMethod)
 	return h
 }
 
@@ -5198,7 +5360,7 @@ func deriveHashRecursiveType(object *RecursiveType) uint64 {
 	}
 	h := uint64(17)
 	h = 31*h + deriveHash_18(object.Bytes)
-	h = 31*h + deriveHash_108(object.N)
+	h = 31*h + deriveHash_116(object.N)
 	return h
 }
 
@@ -5209,6 +5371,7 @@ func deriveHashEmbeddedStruct1(object *EmbeddedStruct1) uint64 {
 	}
 	h := uint64(17)
 	h = 31*h + deriveHash_N(object.Name)
+	h = 31*h + deriveHash_S(object.StructWithoutMethod)
 	h = 31*h + deriveHashStructs(object.Structs)
 	return h
 }
@@ -5219,8 +5382,9 @@ func deriveHashEmbeddedStruct2(object *EmbeddedStruct2) uint64 {
 		return 0
 	}
 	h := uint64(17)
-	h = 31*h + deriveHash_S(object.Structs)
+	h = 31*h + deriveHash_St(object.Structs)
 	h = 31*h + deriveHashName(object.Name)
+	h = 31*h + deriveHash_103(object.StructWithoutMethod)
 	return h
 }
 
@@ -5230,8 +5394,8 @@ func deriveHashStructWithStructFieldWithoutEqualMethod(object *StructWithStructF
 		return 0
 	}
 	h := uint64(17)
-	h = 31*h + deriveHash_109(object.A)
-	h = 31*h + deriveHash_St(object.B)
+	h = 31*h + deriveHash_117(object.A)
+	h = 31*h + deriveHash_Str(object.B)
 	return h
 }
 
@@ -5241,8 +5405,8 @@ func deriveHashStructWithStructWithFromAnotherPackage(object *StructWithStructWi
 		return 0
 	}
 	h := uint64(17)
-	h = 31*h + deriveHash_110(object.A)
-	h = 31*h + deriveHash_Str(object.B)
+	h = 31*h + deriveHash_118(object.A)
+	h = 31*h + deriveHash_Stru(object.B)
 	return h
 }
 
@@ -5253,12 +5417,12 @@ func deriveHashEnums(object *Enums) uint64 {
 	}
 	h := uint64(17)
 	h = 31*h + uint64(object.Enum)
-	h = 31*h + deriveHash_111(object.PtrToEnum)
-	h = 31*h + deriveHash_112(object.SliceToEnum)
-	h = 31*h + deriveHash_113(object.SliceToPtrToEnum)
-	h = 31*h + deriveHash_114(object.MapToEnum)
-	h = 31*h + deriveHash_115(object.EnumToMap)
-	h = 31*h + deriveHash_116(object.ArrayEnum)
+	h = 31*h + deriveHash_119(object.PtrToEnum)
+	h = 31*h + deriveHash_120(object.SliceToEnum)
+	h = 31*h + deriveHash_121(object.SliceToPtrToEnum)
+	h = 31*h + deriveHash_122(object.MapToEnum)
+	h = 31*h + deriveHash_123(object.EnumToMap)
+	h = 31*h + deriveHash_124(object.ArrayEnum)
 	return h
 }
 
@@ -5269,8 +5433,8 @@ func deriveHashNamedTypes(object *NamedTypes) uint64 {
 	}
 	h := uint64(17)
 	h = 31*h + deriveHash_25(object.Slice)
-	h = 31*h + deriveHash_117(object.PtrToSlice)
-	h = 31*h + deriveHash_118(object.SliceToSlice)
+	h = 31*h + deriveHash_125(object.PtrToSlice)
+	h = 31*h + deriveHash_126(object.SliceToSlice)
 	return h
 }
 
@@ -5281,10 +5445,10 @@ func deriveHashDuration(object *Duration) uint64 {
 	}
 	h := uint64(17)
 	h = 31*h + uint64(object.D)
-	h = 31*h + deriveHash_119(object.P)
-	h = 31*h + deriveHash_120(object.Ds)
-	h = 31*h + deriveHash_121(object.DPs)
-	h = 31*h + deriveHash_122(object.MD)
+	h = 31*h + deriveHash_127(object.P)
+	h = 31*h + deriveHash_128(object.Ds)
+	h = 31*h + deriveHash_129(object.DPs)
+	h = 31*h + deriveHash_130(object.MD)
 	return h
 }
 
@@ -5294,7 +5458,7 @@ func deriveHashNickname(object *Nickname) uint64 {
 		return 0
 	}
 	h := uint64(17)
-	h = 31*h + deriveHash_123(object.Alias)
+	h = 31*h + deriveHash_131(object.Alias)
 	return h
 }
 
@@ -5354,7 +5518,7 @@ func deriveHashPtrToArray10Ofint(object *[10]int) uint64 {
 	if object == nil {
 		return 0
 	}
-	return (31 * 17) + deriveHash_124(*object)
+	return (31 * 17) + deriveHash_132(*object)
 }
 
 // deriveHashPtrToMapOfintToint returns the hash of the object.
@@ -5639,11 +5803,11 @@ func deriveMemSet(f func(a *BuiltInTypes, b int) *BuiltInTypes) func(a *BuiltInT
 	m := make(map[uint64][]mem)
 	return func(param0 *BuiltInTypes, param1 int) *BuiltInTypes {
 		in := input{param0, param1}
-		h := deriveHash_125(in)
+		h := deriveHash_133(in)
 		vs, ok := m[h]
 		if ok {
 			for _, v := range vs {
-				if deriveEqual_89(v.in, in) {
+				if deriveEqual_97(v.in, in) {
 					return v.out
 				}
 			}
@@ -5671,11 +5835,11 @@ func deriveMemSetErr(f func(a *BuiltInTypes, b int) (*BuiltInTypes, error)) func
 	m := make(map[uint64][]mem)
 	return func(param0 *BuiltInTypes, param1 int) (*BuiltInTypes, error) {
 		in := input{param0, param1}
-		h := deriveHash_125(in)
+		h := deriveHash_133(in)
 		vs, ok := m[h]
 		if ok {
 			for _, v := range vs {
-				if deriveEqual_89(v.in, in) {
+				if deriveEqual_97(v.in, in) {
 					return v.out.Res0, v.out.Res1
 				}
 			}
@@ -5804,7 +5968,7 @@ func deriveGoString(this []*bool) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*bool, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_63(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_71(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5821,7 +5985,7 @@ func deriveGoString_(this []*byte) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*byte, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_64(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_72(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5838,7 +6002,7 @@ func deriveGoString_1(this []*complex128) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*complex128, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_65(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_73(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5855,7 +6019,7 @@ func deriveGoString_2(this []*complex64) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*complex64, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_66(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_74(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5872,7 +6036,7 @@ func deriveGoString_3(this []*float64) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*float64, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_67(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_75(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5889,7 +6053,7 @@ func deriveGoString_4(this []*float32) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*float32, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_68(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_76(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5923,7 +6087,7 @@ func deriveGoString_6(this []*int16) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*int16, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_69(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_77(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5940,7 +6104,7 @@ func deriveGoString_7(this []*int32) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*int32, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_70(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_78(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5957,7 +6121,7 @@ func deriveGoString_8(this []*int64) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*int64, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_71(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_79(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5974,7 +6138,7 @@ func deriveGoString_9(this []*int8) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*int8, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_72(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_80(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -5991,7 +6155,7 @@ func deriveGoString_10(this []*string) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*string, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_73(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_81(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -6008,7 +6172,7 @@ func deriveGoString_11(this []*uint) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uint, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_74(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_82(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -6025,7 +6189,7 @@ func deriveGoString_12(this []*uint16) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uint16, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_75(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_83(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -6042,7 +6206,7 @@ func deriveGoString_13(this []*uint32) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uint32, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_76(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_84(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -6059,7 +6223,7 @@ func deriveGoString_14(this []*uint64) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uint64, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_77(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_85(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -6076,7 +6240,7 @@ func deriveGoString_15(this []*uintptr) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*uintptr, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_78(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_86(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -6090,7 +6254,7 @@ func deriveGoString_16(this [1]*bool) string {
 	fmt.Fprintf(buf, "func() [1]*bool {\n")
 	fmt.Fprintf(buf, "this := [1]*bool{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_63(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_71(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6103,7 +6267,7 @@ func deriveGoString_17(this [2]*byte) string {
 	fmt.Fprintf(buf, "func() [2]*byte {\n")
 	fmt.Fprintf(buf, "this := [2]*byte{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_64(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_72(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6116,7 +6280,7 @@ func deriveGoString_18(this [3]*complex128) string {
 	fmt.Fprintf(buf, "func() [3]*complex128 {\n")
 	fmt.Fprintf(buf, "this := [3]*complex128{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_65(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_73(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6129,7 +6293,7 @@ func deriveGoString_19(this [4]*complex64) string {
 	fmt.Fprintf(buf, "func() [4]*complex64 {\n")
 	fmt.Fprintf(buf, "this := [4]*complex64{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_66(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_74(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6142,7 +6306,7 @@ func deriveGoString_20(this [5]*float64) string {
 	fmt.Fprintf(buf, "func() [5]*float64 {\n")
 	fmt.Fprintf(buf, "this := [5]*float64{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_67(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_75(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6155,7 +6319,7 @@ func deriveGoString_21(this [6]*float32) string {
 	fmt.Fprintf(buf, "func() [6]*float32 {\n")
 	fmt.Fprintf(buf, "this := [6]*float32{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_68(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_76(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6181,7 +6345,7 @@ func deriveGoString_23(this [8]*int16) string {
 	fmt.Fprintf(buf, "func() [8]*int16 {\n")
 	fmt.Fprintf(buf, "this := [8]*int16{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_69(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_77(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6194,7 +6358,7 @@ func deriveGoString_24(this [9]*int32) string {
 	fmt.Fprintf(buf, "func() [9]*int32 {\n")
 	fmt.Fprintf(buf, "this := [9]*int32{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_70(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_78(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6207,7 +6371,7 @@ func deriveGoString_25(this [10]*int64) string {
 	fmt.Fprintf(buf, "func() [10]*int64 {\n")
 	fmt.Fprintf(buf, "this := [10]*int64{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_71(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_79(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6220,7 +6384,7 @@ func deriveGoString_26(this [11]*int8) string {
 	fmt.Fprintf(buf, "func() [11]*int8 {\n")
 	fmt.Fprintf(buf, "this := [11]*int8{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_72(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_80(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6233,7 +6397,7 @@ func deriveGoString_27(this [12]*rune) string {
 	fmt.Fprintf(buf, "func() [12]*rune {\n")
 	fmt.Fprintf(buf, "this := [12]*rune{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_70(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_78(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6246,7 +6410,7 @@ func deriveGoString_28(this [13]*string) string {
 	fmt.Fprintf(buf, "func() [13]*string {\n")
 	fmt.Fprintf(buf, "this := [13]*string{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_73(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_81(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6259,7 +6423,7 @@ func deriveGoString_29(this [14]*uint) string {
 	fmt.Fprintf(buf, "func() [14]*uint {\n")
 	fmt.Fprintf(buf, "this := [14]*uint{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_74(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_82(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6272,7 +6436,7 @@ func deriveGoString_30(this [15]*uint16) string {
 	fmt.Fprintf(buf, "func() [15]*uint16 {\n")
 	fmt.Fprintf(buf, "this := [15]*uint16{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_75(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_83(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6285,7 +6449,7 @@ func deriveGoString_31(this [16]*uint32) string {
 	fmt.Fprintf(buf, "func() [16]*uint32 {\n")
 	fmt.Fprintf(buf, "this := [16]*uint32{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_76(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_84(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6298,7 +6462,7 @@ func deriveGoString_32(this [17]*uint64) string {
 	fmt.Fprintf(buf, "func() [17]*uint64 {\n")
 	fmt.Fprintf(buf, "this := [17]*uint64{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_77(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_85(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6311,7 +6475,7 @@ func deriveGoString_33(this [18]*uint8) string {
 	fmt.Fprintf(buf, "func() [18]*uint8 {\n")
 	fmt.Fprintf(buf, "this := [18]*uint8{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_64(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_72(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6324,7 +6488,7 @@ func deriveGoString_34(this [19]*uintptr) string {
 	fmt.Fprintf(buf, "func() [19]*uintptr {\n")
 	fmt.Fprintf(buf, "this := [19]*uintptr{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_78(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_86(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6337,7 +6501,7 @@ func deriveGoString_35(this [10]*bool) string {
 	fmt.Fprintf(buf, "func() [10]*bool {\n")
 	fmt.Fprintf(buf, "this := [10]*bool{}\n")
 	for i := range this {
-		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_63(this[i]))
+		fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_71(this[i]))
 	}
 	fmt.Fprintf(buf, "return this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -6370,7 +6534,7 @@ func deriveGoString_37(this [][]string) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([][]string, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_79(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_87(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -6455,8 +6619,68 @@ func deriveGoString_41(this []*Name) string {
 	return buf.String()
 }
 
+// deriveGoString_S returns a recursive representation of this as a valid go string.
+func deriveGoString_S(this StructWithoutMethod) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() test.StructWithoutMethod {\n")
+	fmt.Fprintf(buf, "this := &test.StructWithoutMethod{}\n")
+	fmt.Fprintf(buf, "this.Name = %#v\n", this.Name)
+	fmt.Fprintf(buf, "return *this\n")
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
 // deriveGoString_42 returns a recursive representation of this as a valid go string.
-func deriveGoString_42(this map[Name]string) string {
+func deriveGoString_42(this *StructWithoutMethod) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() *test.StructWithoutMethod {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := &test.StructWithoutMethod{}\n")
+		fmt.Fprintf(buf, "this.Name = %#v\n", this.Name)
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveGoString_43 returns a recursive representation of this as a valid go string.
+func deriveGoString_43(this []StructWithoutMethod) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() []test.StructWithoutMethod {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := make([]test.StructWithoutMethod, %d)\n", len(this))
+		for i := range this {
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_S(this[i]))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveGoString_44 returns a recursive representation of this as a valid go string.
+func deriveGoString_44(this []*StructWithoutMethod) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() []*test.StructWithoutMethod {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := make([]*test.StructWithoutMethod, %d)\n", len(this))
+		for i := range this {
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_42(this[i]))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveGoString_45 returns a recursive representation of this as a valid go string.
+func deriveGoString_45(this map[Name]string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[test.Name]string {\n")
 	if this == nil {
@@ -6475,8 +6699,8 @@ func deriveGoString_42(this map[Name]string) string {
 	return buf.String()
 }
 
-// deriveGoString_43 returns a recursive representation of this as a valid go string.
-func deriveGoString_43(this map[string]Name) string {
+// deriveGoString_46 returns a recursive representation of this as a valid go string.
+func deriveGoString_46(this map[string]Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string]test.Name {\n")
 	if this == nil {
@@ -6492,8 +6716,8 @@ func deriveGoString_43(this map[string]Name) string {
 	return buf.String()
 }
 
-// deriveGoString_44 returns a recursive representation of this as a valid go string.
-func deriveGoString_44(this map[string]*Name) string {
+// deriveGoString_47 returns a recursive representation of this as a valid go string.
+func deriveGoString_47(this map[string]*Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string]*test.Name {\n")
 	if this == nil {
@@ -6509,8 +6733,8 @@ func deriveGoString_44(this map[string]*Name) string {
 	return buf.String()
 }
 
-// deriveGoString_45 returns a recursive representation of this as a valid go string.
-func deriveGoString_45(this map[string][]Name) string {
+// deriveGoString_48 returns a recursive representation of this as a valid go string.
+func deriveGoString_48(this map[string][]Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string][]test.Name {\n")
 	if this == nil {
@@ -6526,8 +6750,8 @@ func deriveGoString_45(this map[string][]Name) string {
 	return buf.String()
 }
 
-// deriveGoString_46 returns a recursive representation of this as a valid go string.
-func deriveGoString_46(this map[string][]*Name) string {
+// deriveGoString_49 returns a recursive representation of this as a valid go string.
+func deriveGoString_49(this map[string][]*Name) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string][]*test.Name {\n")
 	if this == nil {
@@ -6543,8 +6767,96 @@ func deriveGoString_46(this map[string][]*Name) string {
 	return buf.String()
 }
 
-// deriveGoString_47 returns a recursive representation of this as a valid go string.
-func deriveGoString_47(this map[int]RecursiveType) string {
+// deriveGoString_50 returns a recursive representation of this as a valid go string.
+func deriveGoString_50(this map[string]StructWithoutMethod) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() map[string]test.StructWithoutMethod {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := make(map[string]test.StructWithoutMethod)\n")
+		for k, v := range this {
+			fmt.Fprintf(buf, "this[%#v] = %s\n", k, deriveGoString_S(v))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveGoString_51 returns a recursive representation of this as a valid go string.
+func deriveGoString_51(this map[StructWithoutMethod]string) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() map[test.StructWithoutMethod]string {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := make(map[test.StructWithoutMethod]string)\n")
+		i := 0
+		for k, v := range this {
+			fmt.Fprintf(buf, "key%d := %s\n", i, deriveGoString_S(k))
+			fmt.Fprintf(buf, "this[key%d] = %s\n", i, deriveGoString_s(v))
+			i++
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveGoString_52 returns a recursive representation of this as a valid go string.
+func deriveGoString_52(this map[string]*StructWithoutMethod) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() map[string]*test.StructWithoutMethod {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := make(map[string]*test.StructWithoutMethod)\n")
+		for k, v := range this {
+			fmt.Fprintf(buf, "this[%#v] = %s\n", k, deriveGoString_42(v))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveGoString_53 returns a recursive representation of this as a valid go string.
+func deriveGoString_53(this map[string][]StructWithoutMethod) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() map[string][]test.StructWithoutMethod {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := make(map[string][]test.StructWithoutMethod)\n")
+		for k, v := range this {
+			fmt.Fprintf(buf, "this[%#v] = %s\n", k, deriveGoString_43(v))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveGoString_54 returns a recursive representation of this as a valid go string.
+func deriveGoString_54(this map[string][]*StructWithoutMethod) string {
+	buf := bytes.NewBuffer(nil)
+	fmt.Fprintf(buf, "func() map[string][]*test.StructWithoutMethod {\n")
+	if this == nil {
+		fmt.Fprintf(buf, "return nil\n")
+	} else {
+		fmt.Fprintf(buf, "this := make(map[string][]*test.StructWithoutMethod)\n")
+		for k, v := range this {
+			fmt.Fprintf(buf, "this[%#v] = %s\n", k, deriveGoString_44(v))
+		}
+		fmt.Fprintf(buf, "return this\n")
+	}
+	fmt.Fprintf(buf, "}()\n")
+	return buf.String()
+}
+
+// deriveGoString_55 returns a recursive representation of this as a valid go string.
+func deriveGoString_55(this map[int]RecursiveType) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[int]test.RecursiveType {\n")
 	if this == nil {
@@ -6560,8 +6872,8 @@ func deriveGoString_47(this map[int]RecursiveType) string {
 	return buf.String()
 }
 
-// deriveGoString_S returns a recursive representation of this as a valid go string.
-func deriveGoString_S(this Structs) string {
+// deriveGoString_St returns a recursive representation of this as a valid go string.
+func deriveGoString_St(this Structs) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.Structs {\n")
 	fmt.Fprintf(buf, "this := &test.Structs{}\n")
@@ -6575,13 +6887,23 @@ func deriveGoString_S(this Structs) string {
 	if this.SliceToPtrOfStruct != nil {
 		fmt.Fprintf(buf, "this.SliceToPtrOfStruct = %s\n", deriveGoString_41(this.SliceToPtrOfStruct))
 	}
+	fmt.Fprintf(buf, "this.StructWithoutMethod = %s\n", deriveGoString_S(this.StructWithoutMethod))
+	if this.PtrToStructWithoutMethod != nil {
+		fmt.Fprintf(buf, "this.PtrToStructWithoutMethod = %s\n", deriveGoString_42(this.PtrToStructWithoutMethod))
+	}
+	if this.SliceOfStructWithoutMethod != nil {
+		fmt.Fprintf(buf, "this.SliceOfStructWithoutMethod = %s\n", deriveGoString_43(this.SliceOfStructWithoutMethod))
+	}
+	if this.SliceToPtrOfStructWithoutMethod != nil {
+		fmt.Fprintf(buf, "this.SliceToPtrOfStructWithoutMethod = %s\n", deriveGoString_44(this.SliceToPtrOfStructWithoutMethod))
+	}
 	fmt.Fprintf(buf, "return *this\n")
 	fmt.Fprintf(buf, "}()\n")
 	return buf.String()
 }
 
-// deriveGoString_48 returns a recursive representation of this as a valid go string.
-func deriveGoString_48(this *StructWithoutEqualMethod) string {
+// deriveGoString_56 returns a recursive representation of this as a valid go string.
+func deriveGoString_56(this *StructWithoutEqualMethod) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.StructWithoutEqualMethod {\n")
 	if this == nil {
@@ -6595,8 +6917,8 @@ func deriveGoString_48(this *StructWithoutEqualMethod) string {
 	return buf.String()
 }
 
-// deriveGoString_St returns a recursive representation of this as a valid go string.
-func deriveGoString_St(this StructWithoutEqualMethod) string {
+// deriveGoString_Str returns a recursive representation of this as a valid go string.
+func deriveGoString_Str(this StructWithoutEqualMethod) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() test.StructWithoutEqualMethod {\n")
 	fmt.Fprintf(buf, "this := &test.StructWithoutEqualMethod{}\n")
@@ -6606,8 +6928,8 @@ func deriveGoString_St(this StructWithoutEqualMethod) string {
 	return buf.String()
 }
 
-// deriveGoString_49 returns a recursive representation of this as a valid go string.
-func deriveGoString_49(this *extra.StructWithoutEqualMethod) string {
+// deriveGoString_57 returns a recursive representation of this as a valid go string.
+func deriveGoString_57(this *extra.StructWithoutEqualMethod) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *extra.StructWithoutEqualMethod {\n")
 	if this == nil {
@@ -6621,8 +6943,8 @@ func deriveGoString_49(this *extra.StructWithoutEqualMethod) string {
 	return buf.String()
 }
 
-// deriveGoString_Str returns a recursive representation of this as a valid go string.
-func deriveGoString_Str(this extra.StructWithoutEqualMethod) string {
+// deriveGoString_Stru returns a recursive representation of this as a valid go string.
+func deriveGoString_Stru(this extra.StructWithoutEqualMethod) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() extra.StructWithoutEqualMethod {\n")
 	fmt.Fprintf(buf, "this := &extra.StructWithoutEqualMethod{}\n")
@@ -6632,8 +6954,8 @@ func deriveGoString_Str(this extra.StructWithoutEqualMethod) string {
 	return buf.String()
 }
 
-// deriveGoString_50 returns a recursive representation of this as a valid go string.
-func deriveGoString_50(this *MyEnum) string {
+// deriveGoString_58 returns a recursive representation of this as a valid go string.
+func deriveGoString_58(this *MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.MyEnum {\n")
 	if this == nil {
@@ -6647,8 +6969,8 @@ func deriveGoString_50(this *MyEnum) string {
 	return buf.String()
 }
 
-// deriveGoString_51 returns a recursive representation of this as a valid go string.
-func deriveGoString_51(this []MyEnum) string {
+// deriveGoString_59 returns a recursive representation of this as a valid go string.
+func deriveGoString_59(this []MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []test.MyEnum {\n")
 	if this == nil {
@@ -6664,8 +6986,8 @@ func deriveGoString_51(this []MyEnum) string {
 	return buf.String()
 }
 
-// deriveGoString_52 returns a recursive representation of this as a valid go string.
-func deriveGoString_52(this []*MyEnum) string {
+// deriveGoString_60 returns a recursive representation of this as a valid go string.
+func deriveGoString_60(this []*MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*test.MyEnum {\n")
 	if this == nil {
@@ -6673,7 +6995,7 @@ func deriveGoString_52(this []*MyEnum) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*test.MyEnum, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_50(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_58(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -6681,8 +7003,8 @@ func deriveGoString_52(this []*MyEnum) string {
 	return buf.String()
 }
 
-// deriveGoString_53 returns a recursive representation of this as a valid go string.
-func deriveGoString_53(this map[int32]MyEnum) string {
+// deriveGoString_61 returns a recursive representation of this as a valid go string.
+func deriveGoString_61(this map[int32]MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[int32]test.MyEnum {\n")
 	if this == nil {
@@ -6698,8 +7020,8 @@ func deriveGoString_53(this map[int32]MyEnum) string {
 	return buf.String()
 }
 
-// deriveGoString_54 returns a recursive representation of this as a valid go string.
-func deriveGoString_54(this map[MyEnum]int32) string {
+// deriveGoString_62 returns a recursive representation of this as a valid go string.
+func deriveGoString_62(this map[MyEnum]int32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[test.MyEnum]int32 {\n")
 	if this == nil {
@@ -6718,8 +7040,8 @@ func deriveGoString_54(this map[MyEnum]int32) string {
 	return buf.String()
 }
 
-// deriveGoString_55 returns a recursive representation of this as a valid go string.
-func deriveGoString_55(this [2]MyEnum) string {
+// deriveGoString_63 returns a recursive representation of this as a valid go string.
+func deriveGoString_63(this [2]MyEnum) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() [2]test.MyEnum {\n")
 	fmt.Fprintf(buf, "this := [2]test.MyEnum{}\n")
@@ -6731,8 +7053,8 @@ func deriveGoString_55(this [2]MyEnum) string {
 	return buf.String()
 }
 
-// deriveGoString_56 returns a recursive representation of this as a valid go string.
-func deriveGoString_56(this *MySlice) string {
+// deriveGoString_64 returns a recursive representation of this as a valid go string.
+func deriveGoString_64(this *MySlice) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *test.MySlice {\n")
 	if this == nil {
@@ -6748,8 +7070,8 @@ func deriveGoString_56(this *MySlice) string {
 	return buf.String()
 }
 
-// deriveGoString_57 returns a recursive representation of this as a valid go string.
-func deriveGoString_57(this []MySlice) string {
+// deriveGoString_65 returns a recursive representation of this as a valid go string.
+func deriveGoString_65(this []MySlice) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []test.MySlice {\n")
 	if this == nil {
@@ -6765,8 +7087,8 @@ func deriveGoString_57(this []MySlice) string {
 	return buf.String()
 }
 
-// deriveGoString_58 returns a recursive representation of this as a valid go string.
-func deriveGoString_58(this *time.Duration) string {
+// deriveGoString_66 returns a recursive representation of this as a valid go string.
+func deriveGoString_66(this *time.Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *time.Duration {\n")
 	if this == nil {
@@ -6780,8 +7102,8 @@ func deriveGoString_58(this *time.Duration) string {
 	return buf.String()
 }
 
-// deriveGoString_59 returns a recursive representation of this as a valid go string.
-func deriveGoString_59(this []time.Duration) string {
+// deriveGoString_67 returns a recursive representation of this as a valid go string.
+func deriveGoString_67(this []time.Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []time.Duration {\n")
 	if this == nil {
@@ -6797,8 +7119,8 @@ func deriveGoString_59(this []time.Duration) string {
 	return buf.String()
 }
 
-// deriveGoString_60 returns a recursive representation of this as a valid go string.
-func deriveGoString_60(this []*time.Duration) string {
+// deriveGoString_68 returns a recursive representation of this as a valid go string.
+func deriveGoString_68(this []*time.Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*time.Duration {\n")
 	if this == nil {
@@ -6806,7 +7128,7 @@ func deriveGoString_60(this []*time.Duration) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*time.Duration, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_58(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_66(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -6814,8 +7136,8 @@ func deriveGoString_60(this []*time.Duration) string {
 	return buf.String()
 }
 
-// deriveGoString_61 returns a recursive representation of this as a valid go string.
-func deriveGoString_61(this map[int]time.Duration) string {
+// deriveGoString_69 returns a recursive representation of this as a valid go string.
+func deriveGoString_69(this map[int]time.Duration) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[int]time.Duration {\n")
 	if this == nil {
@@ -6831,8 +7153,8 @@ func deriveGoString_61(this map[int]time.Duration) string {
 	return buf.String()
 }
 
-// deriveGoString_62 returns a recursive representation of this as a valid go string.
-func deriveGoString_62(this map[string][]*pickle.Rick) string {
+// deriveGoString_70 returns a recursive representation of this as a valid go string.
+func deriveGoString_70(this map[string][]*pickle.Rick) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() map[string][]*pickle.Rick {\n")
 	if this == nil {
@@ -6840,7 +7162,7 @@ func deriveGoString_62(this map[string][]*pickle.Rick) string {
 	} else {
 		fmt.Fprintf(buf, "this := make(map[string][]*pickle.Rick)\n")
 		for k, v := range this {
-			fmt.Fprintf(buf, "this[%#v] = %s\n", k, deriveGoString_80(v))
+			fmt.Fprintf(buf, "this[%#v] = %s\n", k, deriveGoString_88(v))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -7212,7 +7534,7 @@ func deriveDeepCopy_26(dst, src *[]int) {
 func deriveDeepCopy_27(dst, src *map[int]int) {
 	if *src != nil {
 		*dst = make(map[int]int, len(*src))
-		deriveDeepCopy_46(*dst, *src)
+		deriveDeepCopy_52(*dst, *src)
 	} else {
 		*dst = nil
 	}
@@ -7231,21 +7553,33 @@ func deriveDeepCopy_28(dst, src []*Name) {
 }
 
 // deriveDeepCopy_29 recursively copies the contents of src into dst.
-func deriveDeepCopy_29(dst, src map[Name]string) {
-	for src_key, src_value := range src {
-		dst[src_key] = src_value
+func deriveDeepCopy_29(dst, src []*StructWithoutMethod) {
+	for src_i, src_value := range src {
+		if src_value == nil {
+			dst[src_i] = nil
+		} else {
+			dst[src_i] = new(StructWithoutMethod)
+			*dst[src_i] = *src_value
+		}
 	}
 }
 
 // deriveDeepCopy_30 recursively copies the contents of src into dst.
-func deriveDeepCopy_30(dst, src map[string]Name) {
+func deriveDeepCopy_30(dst, src map[Name]string) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
 	}
 }
 
 // deriveDeepCopy_31 recursively copies the contents of src into dst.
-func deriveDeepCopy_31(dst, src map[string]*Name) {
+func deriveDeepCopy_31(dst, src map[string]Name) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_32 recursively copies the contents of src into dst.
+func deriveDeepCopy_32(dst, src map[string]*Name) {
 	for src_key, src_value := range src {
 		if src_value == nil {
 			dst[src_key] = nil
@@ -7259,8 +7593,8 @@ func deriveDeepCopy_31(dst, src map[string]*Name) {
 	}
 }
 
-// deriveDeepCopy_32 recursively copies the contents of src into dst.
-func deriveDeepCopy_32(dst, src map[string][]Name) {
+// deriveDeepCopy_33 recursively copies the contents of src into dst.
+func deriveDeepCopy_33(dst, src map[string][]Name) {
 	for src_key, src_value := range src {
 		if src_value == nil {
 			dst[src_key] = nil
@@ -7286,8 +7620,8 @@ func deriveDeepCopy_32(dst, src map[string][]Name) {
 	}
 }
 
-// deriveDeepCopy_33 recursively copies the contents of src into dst.
-func deriveDeepCopy_33(dst, src map[string][]*Name) {
+// deriveDeepCopy_34 recursively copies the contents of src into dst.
+func deriveDeepCopy_34(dst, src map[string][]*Name) {
 	for src_key, src_value := range src {
 		if src_value == nil {
 			dst[src_key] = nil
@@ -7313,8 +7647,91 @@ func deriveDeepCopy_33(dst, src map[string][]*Name) {
 	}
 }
 
-// deriveDeepCopy_34 recursively copies the contents of src into dst.
-func deriveDeepCopy_34(dst, src map[int]RecursiveType) {
+// deriveDeepCopy_35 recursively copies the contents of src into dst.
+func deriveDeepCopy_35(dst, src map[string]StructWithoutMethod) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_36 recursively copies the contents of src into dst.
+func deriveDeepCopy_36(dst, src map[StructWithoutMethod]string) {
+	for src_key, src_value := range src {
+		dst[src_key] = src_value
+	}
+}
+
+// deriveDeepCopy_37 recursively copies the contents of src into dst.
+func deriveDeepCopy_37(dst, src map[string]*StructWithoutMethod) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
+		}
+		if src_value == nil {
+			dst[src_key] = nil
+		} else {
+			dst[src_key] = new(StructWithoutMethod)
+			*dst[src_key] = *src_value
+		}
+	}
+}
+
+// deriveDeepCopy_38 recursively copies the contents of src into dst.
+func deriveDeepCopy_38(dst, src map[string][]StructWithoutMethod) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
+		}
+		if src_value == nil {
+			dst[src_key] = nil
+		} else {
+			if dst[src_key] != nil {
+				if len(src_value) > len(dst[src_key]) {
+					if cap(dst[src_key]) >= len(src_value) {
+						dst[src_key] = (dst[src_key])[:len(src_value)]
+					} else {
+						dst[src_key] = make([]StructWithoutMethod, len(src_value))
+					}
+				} else if len(src_value) < len(dst[src_key]) {
+					dst[src_key] = (dst[src_key])[:len(src_value)]
+				}
+			} else {
+				dst[src_key] = make([]StructWithoutMethod, len(src_value))
+			}
+			copy(dst[src_key], src_value)
+		}
+	}
+}
+
+// deriveDeepCopy_39 recursively copies the contents of src into dst.
+func deriveDeepCopy_39(dst, src map[string][]*StructWithoutMethod) {
+	for src_key, src_value := range src {
+		if src_value == nil {
+			dst[src_key] = nil
+		}
+		if src_value == nil {
+			dst[src_key] = nil
+		} else {
+			if dst[src_key] != nil {
+				if len(src_value) > len(dst[src_key]) {
+					if cap(dst[src_key]) >= len(src_value) {
+						dst[src_key] = (dst[src_key])[:len(src_value)]
+					} else {
+						dst[src_key] = make([]*StructWithoutMethod, len(src_value))
+					}
+				} else if len(src_value) < len(dst[src_key]) {
+					dst[src_key] = (dst[src_key])[:len(src_value)]
+				}
+			} else {
+				dst[src_key] = make([]*StructWithoutMethod, len(src_value))
+			}
+			deriveDeepCopy_29(dst[src_key], src_value)
+		}
+	}
+}
+
+// deriveDeepCopy_40 recursively copies the contents of src into dst.
+func deriveDeepCopy_40(dst, src map[int]RecursiveType) {
 	for src_key, src_value := range src {
 		func() {
 			field := new(RecursiveType)
@@ -7324,8 +7741,8 @@ func deriveDeepCopy_34(dst, src map[int]RecursiveType) {
 	}
 }
 
-// deriveDeepCopy_35 recursively copies the contents of src into dst.
-func deriveDeepCopy_35(dst, src *extra.PrivateFieldAndNoEqualMethod) {
+// deriveDeepCopy_41 recursively copies the contents of src into dst.
+func deriveDeepCopy_41(dst, src *extra.PrivateFieldAndNoEqualMethod) {
 	src_v := reflect.Indirect(reflect.ValueOf(src))
 	dst_v := reflect.Indirect(reflect.ValueOf(dst))
 	*(*int64)(unsafe.Pointer(dst_v.FieldByName("number").UnsafeAddr())) = *(*int64)(unsafe.Pointer(src_v.FieldByName("number").UnsafeAddr()))
@@ -7379,8 +7796,8 @@ func deriveDeepCopy_35(dst, src *extra.PrivateFieldAndNoEqualMethod) {
 	}
 }
 
-// deriveDeepCopy_36 recursively copies the contents of src into dst.
-func deriveDeepCopy_36(dst, src []*MyEnum) {
+// deriveDeepCopy_42 recursively copies the contents of src into dst.
+func deriveDeepCopy_42(dst, src []*MyEnum) {
 	for src_i, src_value := range src {
 		if src_value == nil {
 			dst[src_i] = nil
@@ -7391,22 +7808,22 @@ func deriveDeepCopy_36(dst, src []*MyEnum) {
 	}
 }
 
-// deriveDeepCopy_37 recursively copies the contents of src into dst.
-func deriveDeepCopy_37(dst, src map[int32]MyEnum) {
+// deriveDeepCopy_43 recursively copies the contents of src into dst.
+func deriveDeepCopy_43(dst, src map[int32]MyEnum) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
 	}
 }
 
-// deriveDeepCopy_38 recursively copies the contents of src into dst.
-func deriveDeepCopy_38(dst, src map[MyEnum]int32) {
+// deriveDeepCopy_44 recursively copies the contents of src into dst.
+func deriveDeepCopy_44(dst, src map[MyEnum]int32) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
 	}
 }
 
-// deriveDeepCopy_39 recursively copies the contents of src into dst.
-func deriveDeepCopy_39(dst, src *MySlice) {
+// deriveDeepCopy_45 recursively copies the contents of src into dst.
+func deriveDeepCopy_45(dst, src *MySlice) {
 	if *src == nil {
 		*dst = nil
 	} else {
@@ -7427,8 +7844,8 @@ func deriveDeepCopy_39(dst, src *MySlice) {
 	}
 }
 
-// deriveDeepCopy_40 recursively copies the contents of src into dst.
-func deriveDeepCopy_40(dst, src []MySlice) {
+// deriveDeepCopy_46 recursively copies the contents of src into dst.
+func deriveDeepCopy_46(dst, src []MySlice) {
 	for src_i, src_value := range src {
 		if src_value == nil {
 			dst[src_i] = nil
@@ -7451,8 +7868,8 @@ func deriveDeepCopy_40(dst, src []MySlice) {
 	}
 }
 
-// deriveDeepCopy_41 recursively copies the contents of src into dst.
-func deriveDeepCopy_41(dst, src []*time.Duration) {
+// deriveDeepCopy_47 recursively copies the contents of src into dst.
+func deriveDeepCopy_47(dst, src []*time.Duration) {
 	for src_i, src_value := range src {
 		if src_value == nil {
 			dst[src_i] = nil
@@ -7463,15 +7880,15 @@ func deriveDeepCopy_41(dst, src []*time.Duration) {
 	}
 }
 
-// deriveDeepCopy_42 recursively copies the contents of src into dst.
-func deriveDeepCopy_42(dst, src map[int]time.Duration) {
+// deriveDeepCopy_48 recursively copies the contents of src into dst.
+func deriveDeepCopy_48(dst, src map[int]time.Duration) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
 	}
 }
 
-// deriveDeepCopy_43 recursively copies the contents of src into dst.
-func deriveDeepCopy_43(dst, src map[string][]*pickle.Rick) {
+// deriveDeepCopy_49 recursively copies the contents of src into dst.
+func deriveDeepCopy_49(dst, src map[string][]*pickle.Rick) {
 	for src_key, src_value := range src {
 		if src_value == nil {
 			dst[src_key] = nil
@@ -7492,13 +7909,13 @@ func deriveDeepCopy_43(dst, src map[string][]*pickle.Rick) {
 			} else {
 				dst[src_key] = make([]*pickle.Rick, len(src_value))
 			}
-			deriveDeepCopy_49(dst[src_key], src_value)
+			deriveDeepCopy_55(dst[src_key], src_value)
 		}
 	}
 }
 
-// deriveDeepCopy_44 recursively copies the contents of src into dst.
-func deriveDeepCopy_44(dst, src *privateStruct) {
+// deriveDeepCopy_50 recursively copies the contents of src into dst.
+func deriveDeepCopy_50(dst, src *privateStruct) {
 	if src.ptrfield == nil {
 		dst.ptrfield = nil
 	} else {
@@ -7507,25 +7924,25 @@ func deriveDeepCopy_44(dst, src *privateStruct) {
 	}
 }
 
-// deriveDeepCopy_45 recursively copies the contents of src into dst.
-func deriveDeepCopy_45(dst, src []int) {
+// deriveDeepCopy_51 recursively copies the contents of src into dst.
+func deriveDeepCopy_51(dst, src []int) {
 	copy(dst, src)
 }
 
-// deriveDeepCopy_46 recursively copies the contents of src into dst.
-func deriveDeepCopy_46(dst, src map[int]int) {
+// deriveDeepCopy_52 recursively copies the contents of src into dst.
+func deriveDeepCopy_52(dst, src map[int]int) {
 	for src_key, src_value := range src {
 		dst[src_key] = src_value
 	}
 }
 
-// deriveDeepCopy_47 recursively copies the contents of src into dst.
-func deriveDeepCopy_47(dst, src *int) {
+// deriveDeepCopy_53 recursively copies the contents of src into dst.
+func deriveDeepCopy_53(dst, src *int) {
 	*dst = *src
 }
 
-// deriveDeepCopy_48 recursively copies the contents of src into dst.
-func deriveDeepCopy_48(dst, src *[10]int) {
+// deriveDeepCopy_54 recursively copies the contents of src into dst.
+func deriveDeepCopy_54(dst, src *[10]int) {
 	*dst = *src
 }
 
@@ -10099,7 +10516,7 @@ func deriveCompare_103(this, that *[4]int) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompare_130(*this, *that)
+	return deriveCompare_138(*this, *that)
 }
 
 // deriveCompare_104 returns:
@@ -10116,7 +10533,7 @@ func deriveCompare_104(this, that *map[int]int) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompare_131(*this, *that)
+	return deriveCompare_139(*this, *that)
 }
 
 // deriveCompare_105 returns:
@@ -10179,7 +10596,83 @@ func deriveCompare_106(this, that []*Name) int {
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_107(this, that map[Name]string) int {
+func deriveCompare_107(this, that *StructWithoutMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if c := strings.Compare(this.Name, that.Name); c != 0 {
+		return c
+	}
+	return 0
+}
+
+// deriveCompare_108 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_108(this, that []StructWithoutMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompare_107(&this[i], &that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+// deriveCompare_109 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_109(this, that []*StructWithoutMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	for i := 0; i < len(this); i++ {
+		if c := deriveCompare_107(this[i], that[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+
+// deriveCompare_110 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_110(this, that map[Name]string) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10214,11 +10707,11 @@ func deriveCompare_107(this, that map[Name]string) int {
 	return 0
 }
 
-// deriveCompare_108 returns:
+// deriveCompare_111 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_108(this, that map[string]Name) int {
+func deriveCompare_111(this, that map[string]Name) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10253,11 +10746,11 @@ func deriveCompare_108(this, that map[string]Name) int {
 	return 0
 }
 
-// deriveCompare_109 returns:
+// deriveCompare_112 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_109(this, that map[string]*Name) int {
+func deriveCompare_112(this, that map[string]*Name) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10292,11 +10785,11 @@ func deriveCompare_109(this, that map[string]*Name) int {
 	return 0
 }
 
-// deriveCompare_110 returns:
+// deriveCompare_113 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_110(this, that map[string][]Name) int {
+func deriveCompare_113(this, that map[string][]Name) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10331,11 +10824,11 @@ func deriveCompare_110(this, that map[string][]Name) int {
 	return 0
 }
 
-// deriveCompare_111 returns:
+// deriveCompare_114 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_111(this, that map[string][]*Name) int {
+func deriveCompare_114(this, that map[string][]*Name) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10370,11 +10863,11 @@ func deriveCompare_111(this, that map[string][]*Name) int {
 	return 0
 }
 
-// deriveCompare_112 returns:
+// deriveCompare_115 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_112(this, that map[int]RecursiveType) int {
+func deriveCompare_115(this, that map[string]StructWithoutMethod) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10390,8 +10883,203 @@ func deriveCompare_112(this, that map[int]RecursiveType) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedInts(deriveKeys_12(this))
-	thatkeys := deriveSortedInts(deriveKeys_12(that))
+	thiskeys := deriveSortedStrings(deriveKeys_12(this))
+	thatkeys := deriveSortedStrings(deriveKeys_12(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompare_107(&thisvalue, &thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+// deriveCompare_116 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_116(this, that map[StructWithoutMethod]string) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSort_5(deriveKeys_13(this))
+	thatkeys := deriveSort_5(deriveKeys_13(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := strings.Compare(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := deriveCompare_107(&thiskey, &thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+// deriveCompare_117 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_117(this, that map[string]*StructWithoutMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedStrings(deriveKeys_14(this))
+	thatkeys := deriveSortedStrings(deriveKeys_14(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompare_107(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+// deriveCompare_118 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_118(this, that map[string][]StructWithoutMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedStrings(deriveKeys_15(this))
+	thatkeys := deriveSortedStrings(deriveKeys_15(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompare_108(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+// deriveCompare_119 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_119(this, that map[string][]*StructWithoutMethod) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedStrings(deriveKeys_16(this))
+	thatkeys := deriveSortedStrings(deriveKeys_16(that))
+	for i, thiskey := range thiskeys {
+		thatkey := thatkeys[i]
+		if thiskey == thatkey {
+			thisvalue := this[thiskey]
+			thatvalue := that[thatkey]
+			if c := deriveCompare_109(thisvalue, thatvalue); c != 0 {
+				return c
+			}
+		} else {
+			if c := strings.Compare(thiskey, thatkey); c != 0 {
+				return c
+			}
+		}
+	}
+	return 0
+}
+
+// deriveCompare_120 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_120(this, that map[int]RecursiveType) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if len(this) != len(that) {
+		if len(this) < len(that) {
+			return -1
+		}
+		return 1
+	}
+	thiskeys := deriveSortedInts(deriveKeys_17(this))
+	thatkeys := deriveSortedInts(deriveKeys_17(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -10409,11 +11097,11 @@ func deriveCompare_112(this, that map[int]RecursiveType) int {
 	return 0
 }
 
-// deriveCompare_113 returns:
+// deriveCompare_121 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_113(this, that *StructWithoutEqualMethod) int {
+func deriveCompare_121(this, that *StructWithoutEqualMethod) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10429,11 +11117,11 @@ func deriveCompare_113(this, that *StructWithoutEqualMethod) int {
 	return 0
 }
 
-// deriveCompare_114 returns:
+// deriveCompare_122 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_114(this, that *extra.StructWithoutEqualMethod) int {
+func deriveCompare_122(this, that *extra.StructWithoutEqualMethod) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10449,11 +11137,11 @@ func deriveCompare_114(this, that *extra.StructWithoutEqualMethod) int {
 	return 0
 }
 
-// deriveCompare_115 returns:
+// deriveCompare_123 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_115(this, that *extra.PrivateFieldAndNoEqualMethod) int {
+func deriveCompare_123(this, that *extra.PrivateFieldAndNoEqualMethod) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10477,7 +11165,7 @@ func deriveCompare_115(this, that *extra.PrivateFieldAndNoEqualMethod) int {
 	if c := deriveCompare_44(*(*[]*int64)(unsafe.Pointer(thisv.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(thatv.FieldByName("numberpts").UnsafeAddr()))); c != 0 {
 		return c
 	}
-	if c := deriveCompare_114(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr()))); c != 0 {
+	if c := deriveCompare_122(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr()))); c != 0 {
 		return c
 	}
 	return 0
@@ -10498,11 +11186,11 @@ func deriveCompare_M(this, that MyEnum) int {
 	return 0
 }
 
-// deriveCompare_116 returns:
+// deriveCompare_124 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_116(this, that *MyEnum) int {
+func deriveCompare_124(this, that *MyEnum) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10515,11 +11203,11 @@ func deriveCompare_116(this, that *MyEnum) int {
 	return deriveCompare_M(*this, *that)
 }
 
-// deriveCompare_117 returns:
+// deriveCompare_125 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_117(this, that []MyEnum) int {
+func deriveCompare_125(this, that []MyEnum) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10543,11 +11231,11 @@ func deriveCompare_117(this, that []MyEnum) int {
 	return 0
 }
 
-// deriveCompare_118 returns:
+// deriveCompare_126 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_118(this, that []*MyEnum) int {
+func deriveCompare_126(this, that []*MyEnum) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10564,18 +11252,18 @@ func deriveCompare_118(this, that []*MyEnum) int {
 		return 1
 	}
 	for i := 0; i < len(this); i++ {
-		if c := deriveCompare_116(this[i], that[i]); c != 0 {
+		if c := deriveCompare_124(this[i], that[i]); c != 0 {
 			return c
 		}
 	}
 	return 0
 }
 
-// deriveCompare_119 returns:
+// deriveCompare_127 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_119(this, that map[int32]MyEnum) int {
+func deriveCompare_127(this, that map[int32]MyEnum) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10591,8 +11279,8 @@ func deriveCompare_119(this, that map[int32]MyEnum) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort_5(deriveKeys_13(this))
-	thatkeys := deriveSort_5(deriveKeys_13(that))
+	thiskeys := deriveSort_6(deriveKeys_18(this))
+	thatkeys := deriveSort_6(deriveKeys_18(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -10610,11 +11298,11 @@ func deriveCompare_119(this, that map[int32]MyEnum) int {
 	return 0
 }
 
-// deriveCompare_120 returns:
+// deriveCompare_128 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_120(this, that map[MyEnum]int32) int {
+func deriveCompare_128(this, that map[MyEnum]int32) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10630,8 +11318,8 @@ func deriveCompare_120(this, that map[MyEnum]int32) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSort_6(deriveKeys_14(this))
-	thatkeys := deriveSort_6(deriveKeys_14(that))
+	thiskeys := deriveSort_7(deriveKeys_19(this))
+	thatkeys := deriveSort_7(deriveKeys_19(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -10649,11 +11337,11 @@ func deriveCompare_120(this, that map[MyEnum]int32) int {
 	return 0
 }
 
-// deriveCompare_121 returns:
+// deriveCompare_129 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_121(this, that [2]MyEnum) int {
+func deriveCompare_129(this, that [2]MyEnum) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
 			return -1
@@ -10668,11 +11356,11 @@ func deriveCompare_121(this, that [2]MyEnum) int {
 	return 0
 }
 
-// deriveCompare_122 returns:
+// deriveCompare_130 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_122(this, that *MySlice) int {
+func deriveCompare_130(this, that *MySlice) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10685,11 +11373,11 @@ func deriveCompare_122(this, that *MySlice) int {
 	return deriveCompare_27(*this, *that)
 }
 
-// deriveCompare_123 returns:
+// deriveCompare_131 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_123(this, that []MySlice) int {
+func deriveCompare_131(this, that []MySlice) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10728,11 +11416,11 @@ func deriveCompare_D(this, that time.Duration) int {
 	return 0
 }
 
-// deriveCompare_124 returns:
+// deriveCompare_132 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_124(this, that *time.Duration) int {
+func deriveCompare_132(this, that *time.Duration) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10745,11 +11433,11 @@ func deriveCompare_124(this, that *time.Duration) int {
 	return deriveCompare_D(*this, *that)
 }
 
-// deriveCompare_125 returns:
+// deriveCompare_133 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_125(this, that []time.Duration) int {
+func deriveCompare_133(this, that []time.Duration) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10773,11 +11461,11 @@ func deriveCompare_125(this, that []time.Duration) int {
 	return 0
 }
 
-// deriveCompare_126 returns:
+// deriveCompare_134 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_126(this, that []*time.Duration) int {
+func deriveCompare_134(this, that []*time.Duration) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10794,18 +11482,18 @@ func deriveCompare_126(this, that []*time.Duration) int {
 		return 1
 	}
 	for i := 0; i < len(this); i++ {
-		if c := deriveCompare_124(this[i], that[i]); c != 0 {
+		if c := deriveCompare_132(this[i], that[i]); c != 0 {
 			return c
 		}
 	}
 	return 0
 }
 
-// deriveCompare_127 returns:
+// deriveCompare_135 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_127(this, that map[int]time.Duration) int {
+func deriveCompare_135(this, that map[int]time.Duration) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10821,8 +11509,8 @@ func deriveCompare_127(this, that map[int]time.Duration) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedInts(deriveKeys_15(this))
-	thatkeys := deriveSortedInts(deriveKeys_15(that))
+	thiskeys := deriveSortedInts(deriveKeys_20(this))
+	thatkeys := deriveSortedInts(deriveKeys_20(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
@@ -10840,11 +11528,11 @@ func deriveCompare_127(this, that map[int]time.Duration) int {
 	return 0
 }
 
-// deriveCompare_128 returns:
+// deriveCompare_136 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_128(this, that map[string][]*pickle.Rick) int {
+func deriveCompare_136(this, that map[string][]*pickle.Rick) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -10860,14 +11548,14 @@ func deriveCompare_128(this, that map[string][]*pickle.Rick) int {
 		}
 		return 1
 	}
-	thiskeys := deriveSortedStrings(deriveKeys_16(this))
-	thatkeys := deriveSortedStrings(deriveKeys_16(that))
+	thiskeys := deriveSortedStrings(deriveKeys_21(this))
+	thatkeys := deriveSortedStrings(deriveKeys_21(that))
 	for i, thiskey := range thiskeys {
 		thatkey := thatkeys[i]
 		if thiskey == thatkey {
 			thisvalue := this[thiskey]
 			thatvalue := that[thatkey]
-			if c := deriveCompare_132(thisvalue, thatvalue); c != 0 {
+			if c := deriveCompare_140(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -10879,11 +11567,11 @@ func deriveCompare_128(this, that map[string][]*pickle.Rick) int {
 	return 0
 }
 
-// deriveCompare_129 returns:
+// deriveCompare_137 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_129(this, that *privateStruct) int {
+func deriveCompare_137(this, that *privateStruct) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -11832,7 +12520,7 @@ func deriveEqual_63(this, that []Name) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(this[i] == that[i]) {
+		if !(this[i].Equal(&that[i])) {
 			return false
 		}
 	}
@@ -11856,39 +12544,22 @@ func deriveEqual_64(this, that []*Name) bool {
 }
 
 // deriveEqual_65 returns whether this and that are equal.
-func deriveEqual_65(this, that map[Name]string) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
-			return false
-		}
-	}
-	return true
+func deriveEqual_65(this, that *StructWithoutMethod) bool {
+	return (this == nil && that == nil) ||
+		this != nil && that != nil &&
+			this.Name == that.Name
 }
 
 // deriveEqual_66 returns whether this and that are equal.
-func deriveEqual_66(this, that map[string]Name) bool {
+func deriveEqual_66(this, that []StructWithoutMethod) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
 	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v == thatv) {
+	for i := 0; i < len(this); i++ {
+		if !(this[i] == that[i]) {
 			return false
 		}
 	}
@@ -11896,19 +12567,15 @@ func deriveEqual_66(this, that map[string]Name) bool {
 }
 
 // deriveEqual_67 returns whether this and that are equal.
-func deriveEqual_67(this, that map[string]*Name) bool {
+func deriveEqual_67(this, that []*StructWithoutMethod) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
 	if len(this) != len(that) {
 		return false
 	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(v.Equal(thatv)) {
+	for i := 0; i < len(this); i++ {
+		if !(deriveEqual_65(this[i], that[i])) {
 			return false
 		}
 	}
@@ -11916,7 +12583,7 @@ func deriveEqual_67(this, that map[string]*Name) bool {
 }
 
 // deriveEqual_68 returns whether this and that are equal.
-func deriveEqual_68(this, that map[string][]Name) bool {
+func deriveEqual_68(this, that map[Name]string) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -11928,7 +12595,7 @@ func deriveEqual_68(this, that map[string][]Name) bool {
 		if !ok {
 			return false
 		}
-		if !(deriveEqual_63(v, thatv)) {
+		if !(v == thatv) {
 			return false
 		}
 	}
@@ -11936,27 +12603,7 @@ func deriveEqual_68(this, that map[string][]Name) bool {
 }
 
 // deriveEqual_69 returns whether this and that are equal.
-func deriveEqual_69(this, that map[string][]*Name) bool {
-	if this == nil || that == nil {
-		return this == nil && that == nil
-	}
-	if len(this) != len(that) {
-		return false
-	}
-	for k, v := range this {
-		thatv, ok := that[k]
-		if !ok {
-			return false
-		}
-		if !(deriveEqual_64(v, thatv)) {
-			return false
-		}
-	}
-	return true
-}
-
-// deriveEqual_70 returns whether this and that are equal.
-func deriveEqual_70(this, that map[int]RecursiveType) bool {
+func deriveEqual_69(this, that map[string]Name) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -11975,22 +12622,202 @@ func deriveEqual_70(this, that map[int]RecursiveType) bool {
 	return true
 }
 
+// deriveEqual_70 returns whether this and that are equal.
+func deriveEqual_70(this, that map[string]*Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v.Equal(thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
 // deriveEqual_71 returns whether this and that are equal.
-func deriveEqual_71(this, that *StructWithoutEqualMethod) bool {
+func deriveEqual_71(this, that map[string][]Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(deriveEqual_63(v, thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+// deriveEqual_72 returns whether this and that are equal.
+func deriveEqual_72(this, that map[string][]*Name) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(deriveEqual_64(v, thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+// deriveEqual_73 returns whether this and that are equal.
+func deriveEqual_73(this, that map[string]StructWithoutMethod) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+// deriveEqual_74 returns whether this and that are equal.
+func deriveEqual_74(this, that map[StructWithoutMethod]string) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v == thatv) {
+			return false
+		}
+	}
+	return true
+}
+
+// deriveEqual_75 returns whether this and that are equal.
+func deriveEqual_75(this, that map[string]*StructWithoutMethod) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(deriveEqual_65(v, thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+// deriveEqual_76 returns whether this and that are equal.
+func deriveEqual_76(this, that map[string][]StructWithoutMethod) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(deriveEqual_66(v, thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+// deriveEqual_77 returns whether this and that are equal.
+func deriveEqual_77(this, that map[string][]*StructWithoutMethod) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(deriveEqual_67(v, thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+// deriveEqual_78 returns whether this and that are equal.
+func deriveEqual_78(this, that map[int]RecursiveType) bool {
+	if this == nil || that == nil {
+		return this == nil && that == nil
+	}
+	if len(this) != len(that) {
+		return false
+	}
+	for k, v := range this {
+		thatv, ok := that[k]
+		if !ok {
+			return false
+		}
+		if !(v.Equal(&thatv)) {
+			return false
+		}
+	}
+	return true
+}
+
+// deriveEqual_79 returns whether this and that are equal.
+func deriveEqual_79(this, that *StructWithoutEqualMethod) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Num == that.Num
 }
 
-// deriveEqual_72 returns whether this and that are equal.
-func deriveEqual_72(this, that *extra.StructWithoutEqualMethod) bool {
+// deriveEqual_80 returns whether this and that are equal.
+func deriveEqual_80(this, that *extra.StructWithoutEqualMethod) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Number == that.Number
 }
 
-// deriveEqual_73 returns whether this and that are equal.
-func deriveEqual_73(this, that *extra.PrivateFieldAndNoEqualMethod) bool {
+// deriveEqual_81 returns whether this and that are equal.
+func deriveEqual_81(this, that *extra.PrivateFieldAndNoEqualMethod) bool {
 	thisv := reflect.Indirect(reflect.ValueOf(this))
 	thatv := reflect.Indirect(reflect.ValueOf(that))
 	return (this == nil && that == nil) ||
@@ -11999,11 +12826,11 @@ func deriveEqual_73(this, that *extra.PrivateFieldAndNoEqualMethod) bool {
 			deriveEqual_8(*(*[]int64)(unsafe.Pointer(thisv.FieldByName("numbers").UnsafeAddr())), *(*[]int64)(unsafe.Pointer(thatv.FieldByName("numbers").UnsafeAddr()))) &&
 			((*(**int64)(unsafe.Pointer(thisv.FieldByName("ptr").UnsafeAddr())) == nil && *(**int64)(unsafe.Pointer(thatv.FieldByName("ptr").UnsafeAddr())) == nil) || (*(**int64)(unsafe.Pointer(thisv.FieldByName("ptr").UnsafeAddr())) != nil && *(**int64)(unsafe.Pointer(thatv.FieldByName("ptr").UnsafeAddr())) != nil && *(*(**int64)(unsafe.Pointer(thisv.FieldByName("ptr").UnsafeAddr()))) == *(*(**int64)(unsafe.Pointer(thatv.FieldByName("ptr").UnsafeAddr()))))) &&
 			deriveEqual_25(*(*[]*int64)(unsafe.Pointer(thisv.FieldByName("numberpts").UnsafeAddr())), *(*[]*int64)(unsafe.Pointer(thatv.FieldByName("numberpts").UnsafeAddr()))) &&
-			deriveEqual_72(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr())))
+			deriveEqual_80(*(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thisv.FieldByName("strct").UnsafeAddr())), *(**extra.StructWithoutEqualMethod)(unsafe.Pointer(thatv.FieldByName("strct").UnsafeAddr())))
 }
 
-// deriveEqual_74 returns whether this and that are equal.
-func deriveEqual_74(this, that *MyEnum) bool {
+// deriveEqual_82 returns whether this and that are equal.
+func deriveEqual_82(this, that *MyEnum) bool {
 	if this == nil && that == nil {
 		return true
 	}
@@ -12013,8 +12840,8 @@ func deriveEqual_74(this, that *MyEnum) bool {
 	return false
 }
 
-// deriveEqual_75 returns whether this and that are equal.
-func deriveEqual_75(this, that []MyEnum) bool {
+// deriveEqual_83 returns whether this and that are equal.
+func deriveEqual_83(this, that []MyEnum) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12029,8 +12856,8 @@ func deriveEqual_75(this, that []MyEnum) bool {
 	return true
 }
 
-// deriveEqual_76 returns whether this and that are equal.
-func deriveEqual_76(this, that []*MyEnum) bool {
+// deriveEqual_84 returns whether this and that are equal.
+func deriveEqual_84(this, that []*MyEnum) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12038,15 +12865,15 @@ func deriveEqual_76(this, that []*MyEnum) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_74(this[i], that[i])) {
+		if !(deriveEqual_82(this[i], that[i])) {
 			return false
 		}
 	}
 	return true
 }
 
-// deriveEqual_77 returns whether this and that are equal.
-func deriveEqual_77(this, that map[int32]MyEnum) bool {
+// deriveEqual_85 returns whether this and that are equal.
+func deriveEqual_85(this, that map[int32]MyEnum) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12065,8 +12892,8 @@ func deriveEqual_77(this, that map[int32]MyEnum) bool {
 	return true
 }
 
-// deriveEqual_78 returns whether this and that are equal.
-func deriveEqual_78(this, that map[MyEnum]int32) bool {
+// deriveEqual_86 returns whether this and that are equal.
+func deriveEqual_86(this, that map[MyEnum]int32) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12085,8 +12912,8 @@ func deriveEqual_78(this, that map[MyEnum]int32) bool {
 	return true
 }
 
-// deriveEqual_79 returns whether this and that are equal.
-func deriveEqual_79(this, that *MySlice) bool {
+// deriveEqual_87 returns whether this and that are equal.
+func deriveEqual_87(this, that *MySlice) bool {
 	if this == nil && that == nil {
 		return true
 	}
@@ -12107,8 +12934,8 @@ func deriveEqual_79(this, that *MySlice) bool {
 	return false
 }
 
-// deriveEqual_80 returns whether this and that are equal.
-func deriveEqual_80(this, that []MySlice) bool {
+// deriveEqual_88 returns whether this and that are equal.
+func deriveEqual_88(this, that []MySlice) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12123,8 +12950,8 @@ func deriveEqual_80(this, that []MySlice) bool {
 	return true
 }
 
-// deriveEqual_81 returns whether this and that are equal.
-func deriveEqual_81(this, that *time.Duration) bool {
+// deriveEqual_89 returns whether this and that are equal.
+func deriveEqual_89(this, that *time.Duration) bool {
 	if this == nil && that == nil {
 		return true
 	}
@@ -12134,8 +12961,8 @@ func deriveEqual_81(this, that *time.Duration) bool {
 	return false
 }
 
-// deriveEqual_82 returns whether this and that are equal.
-func deriveEqual_82(this, that []time.Duration) bool {
+// deriveEqual_90 returns whether this and that are equal.
+func deriveEqual_90(this, that []time.Duration) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12150,8 +12977,8 @@ func deriveEqual_82(this, that []time.Duration) bool {
 	return true
 }
 
-// deriveEqual_83 returns whether this and that are equal.
-func deriveEqual_83(this, that []*time.Duration) bool {
+// deriveEqual_91 returns whether this and that are equal.
+func deriveEqual_91(this, that []*time.Duration) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12159,15 +12986,15 @@ func deriveEqual_83(this, that []*time.Duration) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_81(this[i], that[i])) {
+		if !(deriveEqual_89(this[i], that[i])) {
 			return false
 		}
 	}
 	return true
 }
 
-// deriveEqual_84 returns whether this and that are equal.
-func deriveEqual_84(this, that map[int]time.Duration) bool {
+// deriveEqual_92 returns whether this and that are equal.
+func deriveEqual_92(this, that map[int]time.Duration) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12186,8 +13013,8 @@ func deriveEqual_84(this, that map[int]time.Duration) bool {
 	return true
 }
 
-// deriveEqual_85 returns whether this and that are equal.
-func deriveEqual_85(this, that map[string][]*pickle.Rick) bool {
+// deriveEqual_93 returns whether this and that are equal.
+func deriveEqual_93(this, that map[string][]*pickle.Rick) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12199,30 +13026,30 @@ func deriveEqual_85(this, that map[string][]*pickle.Rick) bool {
 		if !ok {
 			return false
 		}
-		if !(deriveEqual_90(v, thatv)) {
+		if !(deriveEqual_98(v, thatv)) {
 			return false
 		}
 	}
 	return true
 }
 
-// deriveEqual_86 returns whether this and that are equal.
-func deriveEqual_86(this, that *privateStruct) bool {
+// deriveEqual_94 returns whether this and that are equal.
+func deriveEqual_94(this, that *privateStruct) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			((this.ptrfield == nil && that.ptrfield == nil) || (this.ptrfield != nil && that.ptrfield != nil && *(this.ptrfield) == *(that.ptrfield)))
 }
 
-// deriveEqual_87 returns whether this and that are equal.
-func deriveEqual_87(this, that *Visitor) bool {
+// deriveEqual_95 returns whether this and that are equal.
+func deriveEqual_95(this, that *Visitor) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			((this.UserName == nil && that.UserName == nil) || (this.UserName != nil && that.UserName != nil && *(this.UserName) == *(that.UserName))) &&
 			this.RemoteAddr == that.RemoteAddr
 }
 
-// deriveEqual_88 returns whether this and that are equal.
-func deriveEqual_88(this, that []*vendortest.AVendoredObject) bool {
+// deriveEqual_96 returns whether this and that are equal.
+func deriveEqual_96(this, that []*vendortest.AVendoredObject) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -12230,15 +13057,15 @@ func deriveEqual_88(this, that []*vendortest.AVendoredObject) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_91(this[i], that[i])) {
+		if !(deriveEqual_99(this[i], that[i])) {
 			return false
 		}
 	}
 	return true
 }
 
-// deriveEqual_89 returns whether this and that are equal.
-func deriveEqual_89(this, that struct {
+// deriveEqual_97 returns whether this and that are equal.
+func deriveEqual_97(this, that struct {
 	Param0 *BuiltInTypes
 	Param1 int
 }) bool {
@@ -12283,13 +13110,19 @@ func deriveSort_4(list []Name) []Name {
 }
 
 // deriveSort_5 sorts the slice inplace and also returns it.
-func deriveSort_5(list []int32) []int32 {
-	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
+func deriveSort_5(list []StructWithoutMethod) []StructWithoutMethod {
+	sort.Slice(list, func(i, j int) bool { return deriveCompare_S(list[i], list[j]) < 0 })
 	return list
 }
 
 // deriveSort_6 sorts the slice inplace and also returns it.
-func deriveSort_6(list []MyEnum) []MyEnum {
+func deriveSort_6(list []int32) []int32 {
+	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
+	return list
+}
+
+// deriveSort_7 sorts the slice inplace and also returns it.
+func deriveSort_7(list []MyEnum) []MyEnum {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
@@ -12412,8 +13245,8 @@ func deriveKeys_11(m map[string][]*Name) []string {
 }
 
 // deriveKeys_12 returns the keys of the input map as a slice.
-func deriveKeys_12(m map[int]RecursiveType) []int {
-	keys := make([]int, 0, len(m))
+func deriveKeys_12(m map[string]StructWithoutMethod) []string {
+	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
@@ -12421,8 +13254,8 @@ func deriveKeys_12(m map[int]RecursiveType) []int {
 }
 
 // deriveKeys_13 returns the keys of the input map as a slice.
-func deriveKeys_13(m map[int32]MyEnum) []int32 {
-	keys := make([]int32, 0, len(m))
+func deriveKeys_13(m map[StructWithoutMethod]string) []StructWithoutMethod {
+	keys := make([]StructWithoutMethod, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
@@ -12430,8 +13263,8 @@ func deriveKeys_13(m map[int32]MyEnum) []int32 {
 }
 
 // deriveKeys_14 returns the keys of the input map as a slice.
-func deriveKeys_14(m map[MyEnum]int32) []MyEnum {
-	keys := make([]MyEnum, 0, len(m))
+func deriveKeys_14(m map[string]*StructWithoutMethod) []string {
+	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
@@ -12439,8 +13272,8 @@ func deriveKeys_14(m map[MyEnum]int32) []MyEnum {
 }
 
 // deriveKeys_15 returns the keys of the input map as a slice.
-func deriveKeys_15(m map[int]time.Duration) []int {
-	keys := make([]int, 0, len(m))
+func deriveKeys_15(m map[string][]StructWithoutMethod) []string {
+	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
 	}
@@ -12448,7 +13281,52 @@ func deriveKeys_15(m map[int]time.Duration) []int {
 }
 
 // deriveKeys_16 returns the keys of the input map as a slice.
-func deriveKeys_16(m map[string][]*pickle.Rick) []string {
+func deriveKeys_16(m map[string][]*StructWithoutMethod) []string {
+	keys := make([]string, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_17 returns the keys of the input map as a slice.
+func deriveKeys_17(m map[int]RecursiveType) []int {
+	keys := make([]int, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_18 returns the keys of the input map as a slice.
+func deriveKeys_18(m map[int32]MyEnum) []int32 {
+	keys := make([]int32, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_19 returns the keys of the input map as a slice.
+func deriveKeys_19(m map[MyEnum]int32) []MyEnum {
+	keys := make([]MyEnum, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_20 returns the keys of the input map as a slice.
+func deriveKeys_20(m map[int]time.Duration) []int {
+	keys := make([]int, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// deriveKeys_21 returns the keys of the input map as a slice.
+func deriveKeys_21(m map[string][]*pickle.Rick) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
 		keys = append(keys, key)
@@ -13489,7 +14367,7 @@ func deriveHash_100(object *[4]int) uint64 {
 	if object == nil {
 		return 0
 	}
-	return (31 * 17) + deriveHash_126(*object)
+	return (31 * 17) + deriveHash_134(*object)
 }
 
 // deriveHash_N returns the hash of the object.
@@ -13521,8 +14399,47 @@ func deriveHash_102(object []*Name) uint64 {
 	return h
 }
 
+// deriveHash_S returns the hash of the object.
+func deriveHash_S(object StructWithoutMethod) uint64 {
+	return deriveHash_103(&object)
+}
+
 // deriveHash_103 returns the hash of the object.
-func deriveHash_103(object map[Name]string) uint64 {
+func deriveHash_103(object *StructWithoutMethod) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	h = 31*h + deriveHash_s(object.Name)
+	return h
+}
+
+// deriveHash_104 returns the hash of the object.
+func deriveHash_104(object []StructWithoutMethod) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_S(object[i])
+	}
+	return h
+}
+
+// deriveHash_105 returns the hash of the object.
+func deriveHash_105(object []*StructWithoutMethod) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_103(object[i])
+	}
+	return h
+}
+
+// deriveHash_106 returns the hash of the object.
+func deriveHash_106(object map[Name]string) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13534,8 +14451,8 @@ func deriveHash_103(object map[Name]string) uint64 {
 	return h
 }
 
-// deriveHash_104 returns the hash of the object.
-func deriveHash_104(object map[string]Name) uint64 {
+// deriveHash_107 returns the hash of the object.
+func deriveHash_107(object map[string]Name) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13547,8 +14464,8 @@ func deriveHash_104(object map[string]Name) uint64 {
 	return h
 }
 
-// deriveHash_105 returns the hash of the object.
-func deriveHash_105(object map[string]*Name) uint64 {
+// deriveHash_108 returns the hash of the object.
+func deriveHash_108(object map[string]*Name) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13560,8 +14477,8 @@ func deriveHash_105(object map[string]*Name) uint64 {
 	return h
 }
 
-// deriveHash_106 returns the hash of the object.
-func deriveHash_106(object map[string][]Name) uint64 {
+// deriveHash_109 returns the hash of the object.
+func deriveHash_109(object map[string][]Name) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13573,8 +14490,8 @@ func deriveHash_106(object map[string][]Name) uint64 {
 	return h
 }
 
-// deriveHash_107 returns the hash of the object.
-func deriveHash_107(object map[string][]*Name) uint64 {
+// deriveHash_110 returns the hash of the object.
+func deriveHash_110(object map[string][]*Name) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13586,26 +14503,91 @@ func deriveHash_107(object map[string][]*Name) uint64 {
 	return h
 }
 
-// deriveHash_108 returns the hash of the object.
-func deriveHash_108(object map[int]RecursiveType) uint64 {
+// deriveHash_111 returns the hash of the object.
+func deriveHash_111(object map[string]StructWithoutMethod) uint64 {
 	if object == nil {
 		return 0
 	}
 	h := uint64(17)
-	for _, k := range deriveSortedInts(deriveKeys_12(object)) {
+	for _, k := range deriveSortedStrings(deriveKeys_12(object)) {
+		h = 31*h + deriveHash_s(k)
+		h = 31*h + deriveHash_S(object[k])
+	}
+	return h
+}
+
+// deriveHash_112 returns the hash of the object.
+func deriveHash_112(object map[StructWithoutMethod]string) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSort_5(deriveKeys_13(object)) {
+		h = 31*h + deriveHash_S(k)
+		h = 31*h + deriveHash_s(object[k])
+	}
+	return h
+}
+
+// deriveHash_113 returns the hash of the object.
+func deriveHash_113(object map[string]*StructWithoutMethod) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_14(object)) {
+		h = 31*h + deriveHash_s(k)
+		h = 31*h + deriveHash_103(object[k])
+	}
+	return h
+}
+
+// deriveHash_114 returns the hash of the object.
+func deriveHash_114(object map[string][]StructWithoutMethod) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_15(object)) {
+		h = 31*h + deriveHash_s(k)
+		h = 31*h + deriveHash_104(object[k])
+	}
+	return h
+}
+
+// deriveHash_115 returns the hash of the object.
+func deriveHash_115(object map[string][]*StructWithoutMethod) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_16(object)) {
+		h = 31*h + deriveHash_s(k)
+		h = 31*h + deriveHash_105(object[k])
+	}
+	return h
+}
+
+// deriveHash_116 returns the hash of the object.
+func deriveHash_116(object map[int]RecursiveType) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedInts(deriveKeys_17(object)) {
 		h = 31*h + uint64(k)
 		h = 31*h + deriveHash_R(object[k])
 	}
 	return h
 }
 
-// deriveHash_S returns the hash of the object.
-func deriveHash_S(object Structs) uint64 {
+// deriveHash_St returns the hash of the object.
+func deriveHash_St(object Structs) uint64 {
 	return deriveHashStructs(&object)
 }
 
-// deriveHash_109 returns the hash of the object.
-func deriveHash_109(object *StructWithoutEqualMethod) uint64 {
+// deriveHash_117 returns the hash of the object.
+func deriveHash_117(object *StructWithoutEqualMethod) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13614,13 +14596,13 @@ func deriveHash_109(object *StructWithoutEqualMethod) uint64 {
 	return h
 }
 
-// deriveHash_St returns the hash of the object.
-func deriveHash_St(object StructWithoutEqualMethod) uint64 {
-	return deriveHash_109(&object)
+// deriveHash_Str returns the hash of the object.
+func deriveHash_Str(object StructWithoutEqualMethod) uint64 {
+	return deriveHash_117(&object)
 }
 
-// deriveHash_110 returns the hash of the object.
-func deriveHash_110(object *extra.StructWithoutEqualMethod) uint64 {
+// deriveHash_118 returns the hash of the object.
+func deriveHash_118(object *extra.StructWithoutEqualMethod) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13629,100 +14611,13 @@ func deriveHash_110(object *extra.StructWithoutEqualMethod) uint64 {
 	return h
 }
 
-// deriveHash_Str returns the hash of the object.
-func deriveHash_Str(object extra.StructWithoutEqualMethod) uint64 {
-	return deriveHash_110(&object)
-}
-
-// deriveHash_111 returns the hash of the object.
-func deriveHash_111(object *MyEnum) uint64 {
-	if object == nil {
-		return 0
-	}
-	return (31 * 17) + uint64(*object)
-}
-
-// deriveHash_112 returns the hash of the object.
-func deriveHash_112(object []MyEnum) uint64 {
-	if object == nil {
-		return 0
-	}
-	h := uint64(17)
-	for i := 0; i < len(object); i++ {
-		h = 31*h + uint64(object[i])
-	}
-	return h
-}
-
-// deriveHash_113 returns the hash of the object.
-func deriveHash_113(object []*MyEnum) uint64 {
-	if object == nil {
-		return 0
-	}
-	h := uint64(17)
-	for i := 0; i < len(object); i++ {
-		h = 31*h + deriveHash_111(object[i])
-	}
-	return h
-}
-
-// deriveHash_114 returns the hash of the object.
-func deriveHash_114(object map[int32]MyEnum) uint64 {
-	if object == nil {
-		return 0
-	}
-	h := uint64(17)
-	for _, k := range deriveSort_5(deriveKeys_13(object)) {
-		h = 31*h + uint64(k)
-		h = 31*h + uint64(object[k])
-	}
-	return h
-}
-
-// deriveHash_115 returns the hash of the object.
-func deriveHash_115(object map[MyEnum]int32) uint64 {
-	if object == nil {
-		return 0
-	}
-	h := uint64(17)
-	for _, k := range deriveSort_6(deriveKeys_14(object)) {
-		h = 31*h + uint64(k)
-		h = 31*h + uint64(object[k])
-	}
-	return h
-}
-
-// deriveHash_116 returns the hash of the object.
-func deriveHash_116(object [2]MyEnum) uint64 {
-	h := uint64(17)
-	for i := 0; i < len(object); i++ {
-		h = 31*h + uint64(object[i])
-	}
-	return h
-}
-
-// deriveHash_117 returns the hash of the object.
-func deriveHash_117(object *MySlice) uint64 {
-	if object == nil {
-		return 0
-	}
-	return (31 * 17) + deriveHash_25(*object)
-}
-
-// deriveHash_118 returns the hash of the object.
-func deriveHash_118(object []MySlice) uint64 {
-	if object == nil {
-		return 0
-	}
-	h := uint64(17)
-	for i := 0; i < len(object); i++ {
-		h = 31*h + deriveHash_25(object[i])
-	}
-	return h
+// deriveHash_Stru returns the hash of the object.
+func deriveHash_Stru(object extra.StructWithoutEqualMethod) uint64 {
+	return deriveHash_118(&object)
 }
 
 // deriveHash_119 returns the hash of the object.
-func deriveHash_119(object *time.Duration) uint64 {
+func deriveHash_119(object *MyEnum) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13730,7 +14625,7 @@ func deriveHash_119(object *time.Duration) uint64 {
 }
 
 // deriveHash_120 returns the hash of the object.
-func deriveHash_120(object []time.Duration) uint64 {
+func deriveHash_120(object []MyEnum) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13742,7 +14637,7 @@ func deriveHash_120(object []time.Duration) uint64 {
 }
 
 // deriveHash_121 returns the hash of the object.
-func deriveHash_121(object []*time.Duration) uint64 {
+func deriveHash_121(object []*MyEnum) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -13754,12 +14649,12 @@ func deriveHash_121(object []*time.Duration) uint64 {
 }
 
 // deriveHash_122 returns the hash of the object.
-func deriveHash_122(object map[int]time.Duration) uint64 {
+func deriveHash_122(object map[int32]MyEnum) uint64 {
 	if object == nil {
 		return 0
 	}
 	h := uint64(17)
-	for _, k := range deriveSortedInts(deriveKeys_15(object)) {
+	for _, k := range deriveSort_6(deriveKeys_18(object)) {
 		h = 31*h + uint64(k)
 		h = 31*h + uint64(object[k])
 	}
@@ -13767,25 +14662,20 @@ func deriveHash_122(object map[int]time.Duration) uint64 {
 }
 
 // deriveHash_123 returns the hash of the object.
-func deriveHash_123(object map[string][]*pickle.Rick) uint64 {
+func deriveHash_123(object map[MyEnum]int32) uint64 {
 	if object == nil {
 		return 0
 	}
 	h := uint64(17)
-	for _, k := range deriveSortedStrings(deriveKeys_16(object)) {
-		h = 31*h + deriveHash_s(k)
-		h = 31*h + deriveHash_127(object[k])
+	for _, k := range deriveSort_7(deriveKeys_19(object)) {
+		h = 31*h + uint64(k)
+		h = 31*h + uint64(object[k])
 	}
 	return h
 }
 
-// deriveHash_p returns the hash of the object.
-func deriveHash_p(object privateStruct) uint64 {
-	return deriveHash_128(&object)
-}
-
 // deriveHash_124 returns the hash of the object.
-func deriveHash_124(object [10]int) uint64 {
+func deriveHash_124(object [2]MyEnum) uint64 {
 	h := uint64(17)
 	for i := 0; i < len(object); i++ {
 		h = 31*h + uint64(object[i])
@@ -13794,7 +14684,99 @@ func deriveHash_124(object [10]int) uint64 {
 }
 
 // deriveHash_125 returns the hash of the object.
-func deriveHash_125(object struct {
+func deriveHash_125(object *MySlice) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + deriveHash_25(*object)
+}
+
+// deriveHash_126 returns the hash of the object.
+func deriveHash_126(object []MySlice) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_25(object[i])
+	}
+	return h
+}
+
+// deriveHash_127 returns the hash of the object.
+func deriveHash_127(object *time.Duration) uint64 {
+	if object == nil {
+		return 0
+	}
+	return (31 * 17) + uint64(*object)
+}
+
+// deriveHash_128 returns the hash of the object.
+func deriveHash_128(object []time.Duration) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_129 returns the hash of the object.
+func deriveHash_129(object []*time.Duration) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + deriveHash_127(object[i])
+	}
+	return h
+}
+
+// deriveHash_130 returns the hash of the object.
+func deriveHash_130(object map[int]time.Duration) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedInts(deriveKeys_20(object)) {
+		h = 31*h + uint64(k)
+		h = 31*h + uint64(object[k])
+	}
+	return h
+}
+
+// deriveHash_131 returns the hash of the object.
+func deriveHash_131(object map[string][]*pickle.Rick) uint64 {
+	if object == nil {
+		return 0
+	}
+	h := uint64(17)
+	for _, k := range deriveSortedStrings(deriveKeys_21(object)) {
+		h = 31*h + deriveHash_s(k)
+		h = 31*h + deriveHash_135(object[k])
+	}
+	return h
+}
+
+// deriveHash_p returns the hash of the object.
+func deriveHash_p(object privateStruct) uint64 {
+	return deriveHash_136(&object)
+}
+
+// deriveHash_132 returns the hash of the object.
+func deriveHash_132(object [10]int) uint64 {
+	h := uint64(17)
+	for i := 0; i < len(object); i++ {
+		h = 31*h + uint64(object[i])
+	}
+	return h
+}
+
+// deriveHash_133 returns the hash of the object.
+func deriveHash_133(object struct {
 	Param0 *BuiltInTypes
 	Param1 int
 }) uint64 {
@@ -13804,8 +14786,8 @@ func deriveHash_125(object struct {
 	return h
 }
 
-// deriveGoString_63 returns a recursive representation of this as a valid go string.
-func deriveGoString_63(this *bool) string {
+// deriveGoString_71 returns a recursive representation of this as a valid go string.
+func deriveGoString_71(this *bool) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *bool {\n")
 	if this == nil {
@@ -13819,8 +14801,8 @@ func deriveGoString_63(this *bool) string {
 	return buf.String()
 }
 
-// deriveGoString_64 returns a recursive representation of this as a valid go string.
-func deriveGoString_64(this *byte) string {
+// deriveGoString_72 returns a recursive representation of this as a valid go string.
+func deriveGoString_72(this *byte) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *byte {\n")
 	if this == nil {
@@ -13834,8 +14816,8 @@ func deriveGoString_64(this *byte) string {
 	return buf.String()
 }
 
-// deriveGoString_65 returns a recursive representation of this as a valid go string.
-func deriveGoString_65(this *complex128) string {
+// deriveGoString_73 returns a recursive representation of this as a valid go string.
+func deriveGoString_73(this *complex128) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *complex128 {\n")
 	if this == nil {
@@ -13849,8 +14831,8 @@ func deriveGoString_65(this *complex128) string {
 	return buf.String()
 }
 
-// deriveGoString_66 returns a recursive representation of this as a valid go string.
-func deriveGoString_66(this *complex64) string {
+// deriveGoString_74 returns a recursive representation of this as a valid go string.
+func deriveGoString_74(this *complex64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *complex64 {\n")
 	if this == nil {
@@ -13864,8 +14846,8 @@ func deriveGoString_66(this *complex64) string {
 	return buf.String()
 }
 
-// deriveGoString_67 returns a recursive representation of this as a valid go string.
-func deriveGoString_67(this *float64) string {
+// deriveGoString_75 returns a recursive representation of this as a valid go string.
+func deriveGoString_75(this *float64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *float64 {\n")
 	if this == nil {
@@ -13879,8 +14861,8 @@ func deriveGoString_67(this *float64) string {
 	return buf.String()
 }
 
-// deriveGoString_68 returns a recursive representation of this as a valid go string.
-func deriveGoString_68(this *float32) string {
+// deriveGoString_76 returns a recursive representation of this as a valid go string.
+func deriveGoString_76(this *float32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *float32 {\n")
 	if this == nil {
@@ -13894,8 +14876,8 @@ func deriveGoString_68(this *float32) string {
 	return buf.String()
 }
 
-// deriveGoString_69 returns a recursive representation of this as a valid go string.
-func deriveGoString_69(this *int16) string {
+// deriveGoString_77 returns a recursive representation of this as a valid go string.
+func deriveGoString_77(this *int16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int16 {\n")
 	if this == nil {
@@ -13909,8 +14891,8 @@ func deriveGoString_69(this *int16) string {
 	return buf.String()
 }
 
-// deriveGoString_70 returns a recursive representation of this as a valid go string.
-func deriveGoString_70(this *int32) string {
+// deriveGoString_78 returns a recursive representation of this as a valid go string.
+func deriveGoString_78(this *int32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int32 {\n")
 	if this == nil {
@@ -13924,8 +14906,8 @@ func deriveGoString_70(this *int32) string {
 	return buf.String()
 }
 
-// deriveGoString_71 returns a recursive representation of this as a valid go string.
-func deriveGoString_71(this *int64) string {
+// deriveGoString_79 returns a recursive representation of this as a valid go string.
+func deriveGoString_79(this *int64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int64 {\n")
 	if this == nil {
@@ -13939,8 +14921,8 @@ func deriveGoString_71(this *int64) string {
 	return buf.String()
 }
 
-// deriveGoString_72 returns a recursive representation of this as a valid go string.
-func deriveGoString_72(this *int8) string {
+// deriveGoString_80 returns a recursive representation of this as a valid go string.
+func deriveGoString_80(this *int8) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *int8 {\n")
 	if this == nil {
@@ -13954,8 +14936,8 @@ func deriveGoString_72(this *int8) string {
 	return buf.String()
 }
 
-// deriveGoString_73 returns a recursive representation of this as a valid go string.
-func deriveGoString_73(this *string) string {
+// deriveGoString_81 returns a recursive representation of this as a valid go string.
+func deriveGoString_81(this *string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *string {\n")
 	if this == nil {
@@ -13969,8 +14951,8 @@ func deriveGoString_73(this *string) string {
 	return buf.String()
 }
 
-// deriveGoString_74 returns a recursive representation of this as a valid go string.
-func deriveGoString_74(this *uint) string {
+// deriveGoString_82 returns a recursive representation of this as a valid go string.
+func deriveGoString_82(this *uint) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint {\n")
 	if this == nil {
@@ -13984,8 +14966,8 @@ func deriveGoString_74(this *uint) string {
 	return buf.String()
 }
 
-// deriveGoString_75 returns a recursive representation of this as a valid go string.
-func deriveGoString_75(this *uint16) string {
+// deriveGoString_83 returns a recursive representation of this as a valid go string.
+func deriveGoString_83(this *uint16) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint16 {\n")
 	if this == nil {
@@ -13999,8 +14981,8 @@ func deriveGoString_75(this *uint16) string {
 	return buf.String()
 }
 
-// deriveGoString_76 returns a recursive representation of this as a valid go string.
-func deriveGoString_76(this *uint32) string {
+// deriveGoString_84 returns a recursive representation of this as a valid go string.
+func deriveGoString_84(this *uint32) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint32 {\n")
 	if this == nil {
@@ -14014,8 +14996,8 @@ func deriveGoString_76(this *uint32) string {
 	return buf.String()
 }
 
-// deriveGoString_77 returns a recursive representation of this as a valid go string.
-func deriveGoString_77(this *uint64) string {
+// deriveGoString_85 returns a recursive representation of this as a valid go string.
+func deriveGoString_85(this *uint64) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uint64 {\n")
 	if this == nil {
@@ -14029,8 +15011,8 @@ func deriveGoString_77(this *uint64) string {
 	return buf.String()
 }
 
-// deriveGoString_78 returns a recursive representation of this as a valid go string.
-func deriveGoString_78(this *uintptr) string {
+// deriveGoString_86 returns a recursive representation of this as a valid go string.
+func deriveGoString_86(this *uintptr) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *uintptr {\n")
 	if this == nil {
@@ -14044,8 +15026,8 @@ func deriveGoString_78(this *uintptr) string {
 	return buf.String()
 }
 
-// deriveGoString_79 returns a recursive representation of this as a valid go string.
-func deriveGoString_79(this []string) string {
+// deriveGoString_87 returns a recursive representation of this as a valid go string.
+func deriveGoString_87(this []string) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []string {\n")
 	if this == nil {
@@ -14075,7 +15057,7 @@ func deriveGoString_R(this RecursiveType) string {
 		fmt.Fprintf(buf, "this.Bytes = %#v\n", this.Bytes)
 	}
 	if this.N != nil {
-		fmt.Fprintf(buf, "this.N = %s\n", deriveGoString_47(this.N))
+		fmt.Fprintf(buf, "this.N = %s\n", deriveGoString_55(this.N))
 	}
 	fmt.Fprintf(buf, "return *this\n")
 	fmt.Fprintf(buf, "}()\n")
@@ -14122,8 +15104,8 @@ func deriveGoString_D(this time.Duration) string {
 	return buf.String()
 }
 
-// deriveGoString_80 returns a recursive representation of this as a valid go string.
-func deriveGoString_80(this []*pickle.Rick) string {
+// deriveGoString_88 returns a recursive representation of this as a valid go string.
+func deriveGoString_88(this []*pickle.Rick) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() []*pickle.Rick {\n")
 	if this == nil {
@@ -14131,7 +15113,7 @@ func deriveGoString_80(this []*pickle.Rick) string {
 	} else {
 		fmt.Fprintf(buf, "this := make([]*pickle.Rick, %d)\n", len(this))
 		for i := range this {
-			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_81(this[i]))
+			fmt.Fprintf(buf, "this[%d] = %s\n", i, deriveGoString_89(this[i]))
 		}
 		fmt.Fprintf(buf, "return this\n")
 	}
@@ -14139,8 +15121,8 @@ func deriveGoString_80(this []*pickle.Rick) string {
 	return buf.String()
 }
 
-// deriveDeepCopy_49 recursively copies the contents of src into dst.
-func deriveDeepCopy_49(dst, src []*pickle.Rick) {
+// deriveDeepCopy_55 recursively copies the contents of src into dst.
+func deriveDeepCopy_55(dst, src []*pickle.Rick) {
 	for src_i, src_value := range src {
 		if src_value == nil {
 			dst[src_i] = nil
@@ -14159,11 +15141,11 @@ func deriveCompare_s(this, that string) int {
 	return strings.Compare(this, that)
 }
 
-// deriveCompare_130 returns:
+// deriveCompare_138 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_130(this, that [4]int) int {
+func deriveCompare_138(this, that [4]int) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
 			return -1
@@ -14178,11 +15160,11 @@ func deriveCompare_130(this, that [4]int) int {
 	return 0
 }
 
-// deriveCompare_131 returns:
+// deriveCompare_139 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_131(this, that map[int]int) int {
+func deriveCompare_139(this, that map[int]int) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -14217,11 +15199,11 @@ func deriveCompare_131(this, that map[int]int) int {
 	return 0
 }
 
-// deriveCompare_132 returns:
+// deriveCompare_140 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_132(this, that []*pickle.Rick) int {
+func deriveCompare_140(this, that []*pickle.Rick) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -14238,7 +15220,7 @@ func deriveCompare_132(this, that []*pickle.Rick) int {
 		return 1
 	}
 	for i := 0; i < len(this); i++ {
-		if c := deriveCompare_133(this[i], that[i]); c != 0 {
+		if c := deriveCompare_141(this[i], that[i]); c != 0 {
 			return c
 		}
 	}
@@ -14253,8 +15235,16 @@ func deriveCompare_N(this, that Name) int {
 	return (&this).Compare(&that)
 }
 
-// deriveEqual_90 returns whether this and that are equal.
-func deriveEqual_90(this, that []*pickle.Rick) bool {
+// deriveCompare_S returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_S(this, that StructWithoutMethod) int {
+	return deriveCompare_107(&this, &that)
+}
+
+// deriveEqual_98 returns whether this and that are equal.
+func deriveEqual_98(this, that []*pickle.Rick) bool {
 	if this == nil || that == nil {
 		return this == nil && that == nil
 	}
@@ -14262,22 +15252,22 @@ func deriveEqual_90(this, that []*pickle.Rick) bool {
 		return false
 	}
 	for i := 0; i < len(this); i++ {
-		if !(deriveEqual_92(this[i], that[i])) {
+		if !(deriveEqual_100(this[i], that[i])) {
 			return false
 		}
 	}
 	return true
 }
 
-// deriveEqual_91 returns whether this and that are equal.
-func deriveEqual_91(this, that *vendortest.AVendoredObject) bool {
+// deriveEqual_99 returns whether this and that are equal.
+func deriveEqual_99(this, that *vendortest.AVendoredObject) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Name == that.Name
 }
 
-// deriveHash_126 returns the hash of the object.
-func deriveHash_126(object [4]int) uint64 {
+// deriveHash_134 returns the hash of the object.
+func deriveHash_134(object [4]int) uint64 {
 	h := uint64(17)
 	for i := 0; i < len(object); i++ {
 		h = 31*h + uint64(object[i])
@@ -14290,20 +15280,20 @@ func deriveHash_R(object RecursiveType) uint64 {
 	return deriveHashRecursiveType(&object)
 }
 
-// deriveHash_127 returns the hash of the object.
-func deriveHash_127(object []*pickle.Rick) uint64 {
+// deriveHash_135 returns the hash of the object.
+func deriveHash_135(object []*pickle.Rick) uint64 {
 	if object == nil {
 		return 0
 	}
 	h := uint64(17)
 	for i := 0; i < len(object); i++ {
-		h = 31*h + deriveHash_129(object[i])
+		h = 31*h + deriveHash_137(object[i])
 	}
 	return h
 }
 
-// deriveHash_128 returns the hash of the object.
-func deriveHash_128(object *privateStruct) uint64 {
+// deriveHash_136 returns the hash of the object.
+func deriveHash_136(object *privateStruct) uint64 {
 	if object == nil {
 		return 0
 	}
@@ -14312,8 +15302,8 @@ func deriveHash_128(object *privateStruct) uint64 {
 	return h
 }
 
-// deriveGoString_81 returns a recursive representation of this as a valid go string.
-func deriveGoString_81(this *pickle.Rick) string {
+// deriveGoString_89 returns a recursive representation of this as a valid go string.
+func deriveGoString_89(this *pickle.Rick) string {
 	buf := bytes.NewBuffer(nil)
 	fmt.Fprintf(buf, "func() *pickle.Rick {\n")
 	if this == nil {
@@ -14327,11 +15317,11 @@ func deriveGoString_81(this *pickle.Rick) string {
 	return buf.String()
 }
 
-// deriveCompare_133 returns:
+// deriveCompare_141 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_133(this, that *pickle.Rick) int {
+func deriveCompare_141(this, that *pickle.Rick) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -14347,15 +15337,15 @@ func deriveCompare_133(this, that *pickle.Rick) int {
 	return 0
 }
 
-// deriveEqual_92 returns whether this and that are equal.
-func deriveEqual_92(this, that *pickle.Rick) bool {
+// deriveEqual_100 returns whether this and that are equal.
+func deriveEqual_100(this, that *pickle.Rick) bool {
 	return (this == nil && that == nil) ||
 		this != nil && that != nil &&
 			this.Portal == that.Portal
 }
 
-// deriveHash_129 returns the hash of the object.
-func deriveHash_129(object *pickle.Rick) uint64 {
+// deriveHash_137 returns the hash of the object.
+func deriveHash_137(object *pickle.Rick) uint64 {
 	if object == nil {
 		return 0
 	}

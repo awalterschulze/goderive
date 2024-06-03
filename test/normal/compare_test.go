@@ -128,3 +128,31 @@ func TestCompareCurry(t *testing.T) {
 		t.Fatalf("compare: got %d want %d", c, 1)
 	}
 }
+
+func TestCompareStringAlias(t *testing.T) {
+	this := stringAlias("aaa")
+	that := stringAlias("bbb")
+	if c := deriveCompareStringAlias(this, this); c != 0 {
+		t.Fatalf("compare: got %d want %d", c, 0)
+	}
+	if c := deriveCompareStringAlias(this, that); c != -1 {
+		t.Fatalf("compare: got %d want %d", c, 0)
+	}
+	if c := deriveCompareStringAlias(that, this); c != 1 {
+		t.Fatalf("compare: got %d want %d", c, 0)
+	}
+}
+
+func TestCompareStringAliasField(t *testing.T) {
+	this := StructWithStringAlias{stringAlias("aaa")}
+	that := StructWithStringAlias{stringAlias("bbb")}
+	if c := deriveCompareStructWithStringAlias(this, this); c != 0 {
+		t.Fatalf("compare: got %d want %d", c, 0)
+	}
+	if c := deriveCompareStructWithStringAlias(this, that); c != -1 {
+		t.Fatalf("compare: got %d want %d", c, 0)
+	}
+	if c := deriveCompareStructWithStringAlias(that, this); c != 1 {
+		t.Fatalf("compare: got %d want %d", c, 0)
+	}
+}

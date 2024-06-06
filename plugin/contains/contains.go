@@ -17,14 +17,14 @@
 // The deriveContains function returns whether a value is contained in a slice.
 //   func deriveContains([]T, T) bool
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains
+// Example: https://github.com/ndeloof/goderive/tree/master/example/plugin/contains
 package contains
 
 import (
 	"fmt"
 	"go/types"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new contains plugin.

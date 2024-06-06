@@ -13,7 +13,7 @@ example:
 
 .PHONY: install
 install:
-	go install github.com/awalterschulze/goderive
+	go install github.com/ndeloof/goderive
 
 .PHONY: clean
 clean:

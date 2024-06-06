@@ -16,14 +16,14 @@
 //
 // The deriveKeys function returns a map's keys as a slice.
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/keys
+// Example: https://github.com/ndeloof/goderive/tree/master/example/plugin/keys
 package keys
 
 import (
 	"fmt"
 	"go/types"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new keys plugin.

@@ -19,8 +19,8 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/awalterschulze/goderive/test/extra"
-	"github.com/awalterschulze/goderive/test/nickname"
+	"github.com/ndeloof/goderive/test/extra"
+	"github.com/ndeloof/goderive/test/nickname"
 )
 
 type Empty struct{}

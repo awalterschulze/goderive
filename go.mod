@@ -1,4 +1,4 @@
-module github.com/awalterschulze/goderive
+module github.com/ndeloof/goderive
 
 go 1.17
 

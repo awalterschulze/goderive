@@ -17,7 +17,7 @@
 // The deriveUnique function returns a list of unique elements.
 //   deriveUnique([]T) []T
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique
+// Example: https://github.com/ndeloof/goderive/tree/master/example/plugin/unique
 //
 // deriveUnique mutates the list in place.
 package unique
@@ -26,7 +26,7 @@ import (
 	"fmt"
 	"go/types"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new unique plugin.

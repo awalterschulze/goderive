@@ -31,7 +31,7 @@
 //	- unnamed structs, which are not comparable with the == operator
 //
 // Example output can be found here:
-// https://github.com/awalterschulze/goderive/tree/master/example/plugin/hash
+// https://github.com/ndeloof/goderive/tree/master/example/plugin/hash
 //
 // This plugin has been tested thoroughly.
 package hash
@@ -41,7 +41,7 @@ import (
 	"go/types"
 	"strings"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new hash plugin.

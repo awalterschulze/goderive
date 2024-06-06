@@ -28,5 +28,5 @@ func main() {
 	fmt.Printf("%v\n", *getLastName("Ron", &age))
 	fmt.Printf("%v\n", getLastName("Donna", nil))
 	// If age was not a pointer, we wouldn't need a hash function:
-	// https://github.com/awalterschulze/goderive/tree/master/example/plugin/mem
+	// https://github.com/ndeloof/goderive/tree/master/example/plugin/mem
 }

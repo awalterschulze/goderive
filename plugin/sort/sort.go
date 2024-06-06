@@ -17,7 +17,7 @@
 // The deriveSort function is useful for deterministically ranging over maps when used with deriveKeys.
 // deriveSort supports only the types that deriveCompare supports, since it uses it for sorting.
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/sort
+// Example: https://github.com/ndeloof/goderive/tree/master/example/plugin/sort
 //
 // Even though sort returns a list it also mutates the input list.
 package sort
@@ -26,7 +26,7 @@ import (
 	"fmt"
 	"go/types"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new sort plugin.

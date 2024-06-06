@@ -5,8 +5,8 @@ package test
 import (
 	"bytes"
 	"fmt"
-	extra "github.com/awalterschulze/goderive/test/extra"
-	pickle "github.com/awalterschulze/goderive/test/nickname"
+	extra "github.com/ndeloof/goderive/test/extra"
+	pickle "github.com/ndeloof/goderive/test/nickname"
 	"math"
 	"reflect"
 	"sort"

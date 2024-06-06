@@ -16,14 +16,14 @@
 //   func deriveIntersect([]T, []T) []T
 //   func deriveIntersect(map[T]struct{}, map[T]struct{}) map[T]struct{}
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/intersect
+// Example: https://github.com/ndeloof/goderive/tree/master/example/plugin/intersect
 package intersect
 
 import (
 	"fmt"
 	"go/types"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new keys plugin.

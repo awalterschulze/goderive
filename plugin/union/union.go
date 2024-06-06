@@ -16,14 +16,14 @@
 //   func deriveUnion([]T, []T) []T
 //   func deriveUnion(map[T]struct{}, map[T]struct{}) map[T]struct{}
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/union
+// Example: https://github.com/ndeloof/goderive/tree/master/example/plugin/union
 package union
 
 import (
 	"fmt"
 	"go/types"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new keys plugin.

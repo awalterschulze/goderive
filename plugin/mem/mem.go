@@ -26,7 +26,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new mem plugin.

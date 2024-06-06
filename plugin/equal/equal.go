@@ -62,7 +62,7 @@
 //	- unnamed structs, which are not comparable with the == operator
 //
 // Example output can be found here:
-// https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal
+// https://github.com/ndeloof/goderive/tree/master/example/plugin/equal
 //
 // This plugin has been tested thoroughly.
 package equal
@@ -72,7 +72,7 @@ import (
 	"go/types"
 	"strings"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new equal plugin.

@@ -59,7 +59,7 @@
 //	- unnamed structs
 //
 // Example output can be found here:
-// https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring
+// https://github.com/ndeloof/goderive/tree/master/example/plugin/gostring
 //
 // This plugin has been tested thoroughly.
 package gostring
@@ -68,7 +68,7 @@ import (
 	"fmt"
 	"go/types"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new gostring plugin.

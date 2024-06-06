@@ -21,7 +21,7 @@
 //    deriveCompose(func(A...) (B..., error), ..., func(C...) (D..., error)) func(A...) (D..., error)
 //
 // Example output can be found here:
-// https://github.com/awalterschulze/goderive/tree/master/example/plugin/compose
+// https://github.com/ndeloof/goderive/tree/master/example/plugin/compose
 package compose
 
 import (
@@ -30,7 +30,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new compose plugin.

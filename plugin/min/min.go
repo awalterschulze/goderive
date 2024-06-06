@@ -28,14 +28,14 @@
 //
 // A default value is provided for the empty list.
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/min
+// Example: https://github.com/ndeloof/goderive/tree/master/example/plugin/min
 package min
 
 import (
 	"fmt"
 	"go/types"
 
-	"github.com/awalterschulze/goderive/derive"
+	"github.com/ndeloof/goderive/derive"
 )
 
 // NewPlugin creates a new min plugin.

@@ -10,7 +10,7 @@ I will do my best to guide you, whatever your skill level.
 **In all cases please open an issue** to discuss your idea or issue, before doing any work.
 I don't have time to do the work myself, so don't worry about losing the chance to implement your idea.
 
-If it is your first time contributing and don't have an idea of your own, then you can start with the list of [good first issues](https://github.com/awalterschulze/goderive/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+If it is your first time contributing and don't have an idea of your own, then you can start with the list of [good first issues](https://github.com/ndeloof/goderive/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 ## Contributing a new Function or Plugin
 
@@ -22,11 +22,11 @@ A good function idea, is typically a function with parametric types, where the t
   * Start by copying and renaming a plugin in the plugin folder, that you find to most closely represent your idea.
   * Rename the package and update all comments to reflect your function name.
   * Put your name in the Copyright of the plugin.
-  * Add your plugin to the list of plugins in [main.go](https://github.com/awalterschulze/goderive/blob/master/main.go#L64)
-  * Add your function to the [Readme.md, like all the others](https://github.com/awalterschulze/goderive/blob/master/Readme.md#functions)
-  * Add an example, see [Contributing Examples](https://github.com/awalterschulze/goderive/blob/master/Contributing.md#contributing-examples)
+  * Add your plugin to the list of plugins in [main.go](https://github.com/ndeloof/goderive/blob/master/main.go#L64)
+  * Add your function to the [Readme.md, like all the others](https://github.com/ndeloof/goderive/blob/master/Readme.md#functions)
+  * Add an example, see [Contributing Examples](https://github.com/ndeloof/goderive/blob/master/Contributing.md#contributing-examples)
   
-Now that all the plumbing is done you are your going to start by implementing your `NewPlugin` function, which is done with a helper function from the [derive](https://github.com/awalterschulze/goderive/blob/master/derive/plugin.go#L52) package:
+Now that all the plumbing is done you are your going to start by implementing your `NewPlugin` function, which is done with a helper function from the [derive](https://github.com/ndeloof/goderive/blob/master/derive/plugin.go#L52) package:
 
 ```go
 func NewPlugin() derive.Plugin {
@@ -34,7 +34,7 @@ func NewPlugin() derive.Plugin {
 }
 ```
 
-Next your `New` function that is referenced in `derive.NewPlugin` needs to have the following signature and return a [derive.Generator](https://github.com/awalterschulze/goderive/blob/master/derive/plugin.go#L30)
+Next your `New` function that is referenced in `derive.NewPlugin` needs to have the following signature and return a [derive.Generator](https://github.com/ndeloof/goderive/blob/master/derive/plugin.go#L30)
 
 ```go
 func New(typesMap derive.TypesMap, p derive.Printer, deps map[string]derive.Dependency) derive.Generator {
@@ -55,7 +55,7 @@ type Generator interface {
 }
 ```
 
-It also requires you to implement [derive.TypesMap](https://github.com/awalterschulze/goderive/blob/master/derive/typesmap.go#L27), which is luckily passed to you in `New`, so you can simply embed it in your implemention of the `Generator`.
+It also requires you to implement [derive.TypesMap](https://github.com/ndeloof/goderive/blob/master/derive/typesmap.go#L27), which is luckily passed to you in `New`, so you can simply embed it in your implemention of the `Generator`.
 
 You also want to say the `Printer` as this will be useful for printing your function to a file later.
 
@@ -106,7 +106,7 @@ And then when you are happy that this will result in the successful generation o
 SetFuncName(name string, typs ...types.Type) (newName string, err error)
 ```
 
-[SetFuncName](https://github.com/awalterschulze/goderive/blob/master/derive/typesmap.go#L94) takes the function name provided by the user and the input types that make this function unique.  This can be the original types passed in by the user, or simply the single type that makes this function unique.
+[SetFuncName](https://github.com/ndeloof/goderive/blob/master/derive/typesmap.go#L94) takes the function name provided by the user and the input types that make this function unique.  This can be the original types passed in by the user, or simply the single type that makes this function unique.
 
 For example: `deriveAny(func (T) bool, []T) bool` only requires `T` and does not need to know that the first argument is a function or that the section argument is a slice.
 
@@ -163,7 +163,7 @@ func (g *gen) Generate(typs []types.Type) error {
 ### Test
 
 Next you want to add a test.
-Usually this is done in the [test/normal](https://github.com/awalterschulze/goderive/tree/master/test/normal) folder.
+Usually this is done in the [test/normal](https://github.com/ndeloof/goderive/tree/master/test/normal) folder.
 Create a new test file for your plugin and write a test for an example use case where you use your generated function.
 Finally run `make test`.
 When all of this is working, please create a pull request.
@@ -172,12 +172,12 @@ This is already a good time to get feedback, before creating an example.
 ### Don't Repeat Yourself
 
 The DRY principle is great in programming, but in Go we violate this rule more often than in other languages, because of the lack of generics.  Even without this limitation it is still a balance and not every function is a great library function.
-Having said that the [derive](https://godoc.org/github.com/awalterschulze/goderive/derive) library contains quite a few functions, to help with generating code.  Some example include:
+Having said that the [derive](https://godoc.org/github.com/ndeloof/goderive/derive) library contains quite a few functions, to help with generating code.  Some example include:
 
-  * [Zero](https://godoc.org/github.com/awalterschulze/goderive/derive#Zero) returns the zero value as a string, for a given type.
-  * [Fields](https://godoc.org/github.com/awalterschulze/goderive/derive#Fields) is useful for generating code that operates on structs.
-  * [TypesMap](https://godoc.org/github.com/awalterschulze/goderive/derive#TypesMap) is the go to for anything that requires more context.
-  * [IsError](https://godoc.org/github.com/awalterschulze/goderive/derive#IsError) returns whether a type implements the Error interface.
+  * [Zero](https://godoc.org/github.com/ndeloof/goderive/derive#Zero) returns the zero value as a string, for a given type.
+  * [Fields](https://godoc.org/github.com/ndeloof/goderive/derive#Fields) is useful for generating code that operates on structs.
+  * [TypesMap](https://godoc.org/github.com/ndeloof/goderive/derive#TypesMap) is the go to for anything that requires more context.
+  * [IsError](https://godoc.org/github.com/ndeloof/goderive/derive#IsError) returns whether a type implements the Error interface.
 
 ## Contributing Examples
 

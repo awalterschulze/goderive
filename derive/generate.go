@@ -167,6 +167,7 @@ func newPackage(program *loader.Program, pkgInfo *loader.PackageInfo, plugins []
 			if err != nil {
 				return nil, fmt.Errorf("opening %s: %v", fileInfo.fullpath, err)
 			}
+			defer f.Close()
 			if err := format.Node(f, program.Fset, fileInfo.astFile); err != nil {
 				return nil, fmt.Errorf("formatting %s: %v", fileInfo.fullpath, err)
 			}

@@ -84,3 +84,22 @@ func TestDeepCopyMapNilEntry(t *testing.T) {
 		t.Fatalf("want %v got %v\n this = %#v, that = %#v\n", want, got, this, that)
 	}
 }
+
+func TestDeepCopyCustomMap(t *testing.T) {
+	this := customMap{
+		"a": "A",
+	}
+	that := customMap{}
+	deepcopy(this, that)
+	if that["a"] != "copy of A" {
+		t.Fatalf("expected use of customMap.DeepCopy")
+	}
+}
+
+type customMap map[string]string
+
+func (c customMap) DeepCopy(to customMap) {
+	for k, v := range c {
+		to[k] = "copy of " + v
+	}
+}

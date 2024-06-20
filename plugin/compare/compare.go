@@ -251,7 +251,11 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 	case *types.Basic:
 		switch ttyp.Kind() {
 		case types.String:
-			p.P("return %s.Compare(%s, %s)", g.stringsPkg(), this, that)
+			if types.Identical(typ, ttyp) {
+				p.P("return %s.Compare(%s, %s)", g.stringsPkg(), this, that)
+			} else {
+				p.P("return %s.Compare(string(%s), string(%s))", g.stringsPkg(), this, that)
+			}
 		case types.Complex128, types.Complex64:
 			p.P("if thisr, thatr := real(%s), real(%s); thisr == thatr {", this, that)
 			p.In()
@@ -473,7 +477,11 @@ func (g *gen) field(thisField, thatField string, fieldType types.Type) (string, 
 	switch typ := fieldType.Underlying().(type) {
 	case *types.Basic:
 		if typ.Kind() == types.String {
-			return fmt.Sprintf("%s.Compare(%s, %s)", g.stringsPkg(), thisField, thatField), nil
+			if types.Identical(fieldType, typ) {
+				return fmt.Sprintf("%s.Compare(%s, %s)", g.stringsPkg(), thisField, thatField), nil
+			} else {
+				return fmt.Sprintf("%s.Compare(string(%s), string(%s))", g.stringsPkg(), thisField, thatField), nil
+			}
 		}
 		return fmt.Sprintf("%s(%s, %s)", g.GetFuncName(fieldType, fieldType), thisField, thatField), nil
 	case *types.Pointer:

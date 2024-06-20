@@ -20,6 +20,10 @@ func true5(lt *LocalType) (*LocalType, bool) {
 	return lt, true
 }
 
+type StructWithStringAlias struct {
+	Field stringAlias
+}
+
 type DeriveTheDerived struct {
 	Field int
 }

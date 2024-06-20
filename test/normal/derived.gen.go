@@ -3884,6 +3884,22 @@ func deriveCompareCurryComplex64(this complex128) func(complex128) int {
 	}
 }
 
+// deriveCompareStringAlias returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompareStringAlias(this, that stringAlias) int {
+	return strings.Compare(string(this), string(that))
+}
+
+// deriveCompareStructWithStringAlias returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompareStructWithStringAlias(this, that StructWithStringAlias) int {
+	return deriveCompare_138(&this, &that)
+}
+
 // deriveCompareDeriveTheDerived returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
@@ -10516,7 +10532,7 @@ func deriveCompare_103(this, that *[4]int) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompare_138(*this, *that)
+	return deriveCompare_139(*this, *that)
 }
 
 // deriveCompare_104 returns:
@@ -10533,7 +10549,7 @@ func deriveCompare_104(this, that *map[int]int) int {
 	if that == nil {
 		return 1
 	}
-	return deriveCompare_139(*this, *that)
+	return deriveCompare_140(*this, *that)
 }
 
 // deriveCompare_105 returns:
@@ -11555,7 +11571,7 @@ func deriveCompare_136(this, that map[string][]*pickle.Rick) int {
 		if thiskey == thatkey {
 			thisvalue := this[thiskey]
 			thatvalue := that[thatkey]
-			if c := deriveCompare_140(thisvalue, thatvalue); c != 0 {
+			if c := deriveCompare_141(thisvalue, thatvalue); c != 0 {
 				return c
 			}
 		} else {
@@ -11582,6 +11598,26 @@ func deriveCompare_137(this, that *privateStruct) int {
 		return 1
 	}
 	if c := deriveCompare_8(this.ptrfield, that.ptrfield); c != 0 {
+		return c
+	}
+	return 0
+}
+
+// deriveCompare_138 returns:
+//   * 0 if this and that are equal,
+//   * -1 is this is smaller and
+//   * +1 is this is bigger.
+func deriveCompare_138(this, that *StructWithStringAlias) int {
+	if this == nil {
+		if that == nil {
+			return 0
+		}
+		return -1
+	}
+	if that == nil {
+		return 1
+	}
+	if c := strings.Compare(string(this.Field), string(that.Field)); c != 0 {
 		return c
 	}
 	return 0
@@ -15141,11 +15177,11 @@ func deriveCompare_s(this, that string) int {
 	return strings.Compare(this, that)
 }
 
-// deriveCompare_138 returns:
+// deriveCompare_139 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_138(this, that [4]int) int {
+func deriveCompare_139(this, that [4]int) int {
 	if len(this) != len(that) {
 		if len(this) < len(that) {
 			return -1
@@ -15160,11 +15196,11 @@ func deriveCompare_138(this, that [4]int) int {
 	return 0
 }
 
-// deriveCompare_139 returns:
+// deriveCompare_140 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_139(this, that map[int]int) int {
+func deriveCompare_140(this, that map[int]int) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -15199,11 +15235,11 @@ func deriveCompare_139(this, that map[int]int) int {
 	return 0
 }
 
-// deriveCompare_140 returns:
+// deriveCompare_141 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_140(this, that []*pickle.Rick) int {
+func deriveCompare_141(this, that []*pickle.Rick) int {
 	if this == nil {
 		if that == nil {
 			return 0
@@ -15220,7 +15256,7 @@ func deriveCompare_140(this, that []*pickle.Rick) int {
 		return 1
 	}
 	for i := 0; i < len(this); i++ {
-		if c := deriveCompare_141(this[i], that[i]); c != 0 {
+		if c := deriveCompare_142(this[i], that[i]); c != 0 {
 			return c
 		}
 	}
@@ -15317,11 +15353,11 @@ func deriveGoString_89(this *pickle.Rick) string {
 	return buf.String()
 }
 
-// deriveCompare_141 returns:
+// deriveCompare_142 returns:
 //   * 0 if this and that are equal,
 //   * -1 is this is smaller and
 //   * +1 is this is bigger.
-func deriveCompare_141(this, that *pickle.Rick) int {
+func deriveCompare_142(this, that *pickle.Rick) int {
 	if this == nil {
 		if that == nil {
 			return 0

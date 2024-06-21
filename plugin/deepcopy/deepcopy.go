@@ -369,7 +369,10 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("%s = make(%s, len(%s))", thatField, g.TypeString(typ), thisField)
 		p.Out()
 		p.P("}") // not nil
-		if canCopy(typ.Elem()) {
+		named, isNamed := fieldType.(*types.Named)
+		if isNamed && hasDeepCopyMethod(named) {
+			p.P("%s.DeepCopy(%s)", wrap(thisField), thatField)
+		} else if canCopy(typ.Elem()) {
 			p.P("copy(%s, %s)", thatField, thisField)
 		} else {
 			p.P("%s(%s, %s)", g.GetFuncName(typ), thatField, thisField)
@@ -381,7 +384,12 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("if %s != nil {", thisField)
 		p.In()
 		p.P("%s = make(%s, len(%s))", thatField, g.TypeString(typ), thisField)
-		p.P("%s(%s, %s)", g.GetFuncName(typ), thatField, thisField)
+		named, isNamed := fieldType.(*types.Named)
+		if isNamed && hasDeepCopyMethod(named) {
+			p.P("%s.DeepCopy(%s)", wrap(thisField), thatField)
+		} else {
+			p.P("%s(%s, %s)", g.GetFuncName(typ), thatField, thisField)
+		}
 		p.Out()
 		p.P("} else {")
 		p.In()

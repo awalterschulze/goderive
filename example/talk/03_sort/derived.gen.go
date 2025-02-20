@@ -14,17 +14,17 @@ func Sort(list []Person) []Person {
 }
 
 // Compare returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func Compare(this, that Person) int {
 	return Compare_(&this, &that)
 }
 
 // Compare_ returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func Compare_(this, that *Person) int {
 	if this == nil {
 		if that == nil {
@@ -45,9 +45,9 @@ func Compare_(this, that *Person) int {
 }
 
 // Compare_i returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func Compare_i(this, that int) int {
 	if this != that {
 		if this < that {

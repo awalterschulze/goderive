@@ -31,9 +31,9 @@ import (
 )
 
 // deriveCompare returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func deriveCompare(this, that *MyStruct) int {
 	if this == nil {
 		if that == nil {
@@ -54,9 +54,9 @@ func deriveCompare(this, that *MyStruct) int {
 }
 
 // deriveCompare_ returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func deriveCompare_(this, that int64) int {
 	if this != that {
 		if this < that {
@@ -69,9 +69,9 @@ func deriveCompare_(this, that int64) int {
 }
 
 // deriveCompare_1 returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func deriveCompare_1(this, that *string) int {
 	if this == nil {
 		if that == nil {
@@ -86,9 +86,9 @@ func deriveCompare_1(this, that *string) int {
 }
 
 // deriveCompare_s returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func deriveCompare_s(this, that string) int {
 	return strings.Compare(this, that)
 }

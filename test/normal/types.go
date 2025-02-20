@@ -2,8 +2,6 @@ package test
 
 import (
 	"reflect"
-
-	"vendortest"
 )
 
 type intAlias int
@@ -42,10 +40,6 @@ func (kv KeyValue) Equal(that KeyValue) bool {
 type Visitor struct {
 	UserName   *string
 	RemoteAddr string
-}
-
-type UseVendor struct {
-	Vendors []*vendortest.AVendoredObject
 }
 
 type Adder struct {

@@ -40,17 +40,17 @@ func deriveMins(list []boat, def boat) boat {
 }
 
 // deriveCompare returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func deriveCompare(this, that boat) int {
 	return deriveCompare_(&this, &that)
 }
 
 // deriveCompare_ returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func deriveCompare_(this, that *boat) int {
 	if this == nil {
 		if that == nil {
@@ -68,9 +68,9 @@ func deriveCompare_(this, that *boat) int {
 }
 
 // deriveCompare_i returns:
-//   * 0 if this and that are equal,
-//   * -1 is this is smaller and
-//   * +1 is this is bigger.
+//   - 0 if this and that are equal,
+//   - -1 is this is smaller and
+//   - +1 is this is bigger.
 func deriveCompare_i(this, that int) int {
 	if this != that {
 		if this < that {

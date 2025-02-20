@@ -15,12 +15,13 @@
 // Package compare contains the implementation of the compare plugin, which generates the deriveCompare function.
 //
 // The deriveCompare function is a maintainable and fast way to implement fast Less functions.
-//   deriveCompare(T, T) bool
-//   deriveCompare(T) func(T) bool
+//
+//	deriveCompare(T, T) bool
+//	deriveCompare(T) func(T) bool
 //
 // When goderive walks over your code it is looking for a function that:
-//  - was not implemented (or was previously derived) and
-//  - has a predefined prefix.
+//   - was not implemented (or was previously derived) and
+//   - has a predefined prefix.
 //
 // In the following code the deriveCompare function will be found, because
 // it was not implemented and it has a prefix deriveCompare.
@@ -42,18 +43,19 @@
 //	}
 //
 // Supported types:
-//	- basic types
-//	- named structs
-//	- slices
-//	- maps
-//	- pointers to these types
-//	- private fields of structs in external packages (using reflect and unsafe)
-//	- and many more
+//   - basic types
+//   - named structs
+//   - slices
+//   - maps
+//   - pointers to these types
+//   - private fields of structs in external packages (using reflect and unsafe)
+//   - and many more
+//
 // Unsupported types:
-//	- chan
-//	- interface
-//	- function
-//	- unnamed structs, which are not comparable with the == operator
+//   - chan
+//   - interface
+//   - function
+//   - unnamed structs, which are not comparable with the == operator
 //
 // Example output can be found here:
 // https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal
@@ -158,9 +160,9 @@ func (g *gen) genCurriedFunc(typ types.Type) error {
 	typeStr := g.TypeString(typ)
 	p.P("")
 	p.P("// %s returns a curried compare function, which returns:", g.GetFuncName(typ))
-	p.P("//   * 0 if this and that are equal,")
-	p.P("//   * -1 is this is smaller and")
-	p.P("//   * +1 is this is bigger.")
+	p.P("//   - 0 if this and that are equal,")
+	p.P("//   - -1 is this is smaller and")
+	p.P("//   - +1 is this is bigger.")
 	p.P("func %s(this %s) func(%s) int {", g.GetFuncName(typ), typeStr, typeStr)
 	p.In()
 	p.P("return func(that %s) int {", typeStr)
@@ -181,9 +183,9 @@ func (g *gen) genFunc(typs []types.Type) error {
 	typeStr := g.TypeString(typs[0])
 	p.P("")
 	p.P("// %s returns:", g.GetFuncName(typs...))
-	p.P("//   * 0 if this and that are equal,")
-	p.P("//   * -1 is this is smaller and")
-	p.P("//   * +1 is this is bigger.")
+	p.P("//   - 0 if this and that are equal,")
+	p.P("//   - -1 is this is smaller and")
+	p.P("//   - +1 is this is bigger.")
 	p.P("func %s(this, that %s) int {", g.GetFuncName(typs...), typeStr)
 	p.In()
 	if err := g.genStatement(typs[0], "this", "that"); err != nil {

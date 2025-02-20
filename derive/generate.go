@@ -248,7 +248,7 @@ func (pkg *pkg) Generate() (bool, error) {
 			g := pkg.generators[plugin.Name()]
 			for _, typs := range g.ToGenerate() {
 				if err := g.Generate(typs); err != nil {
-					return false, fmt.Errorf("Generator Error: " + plugin.Name() + ":" + err.Error())
+					return false, fmt.Errorf("Generator Error: %s:%v", plugin.Name(), err.Error())
 				}
 				generated = true
 			}

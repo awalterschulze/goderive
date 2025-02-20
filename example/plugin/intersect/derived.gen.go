@@ -4,6 +4,8 @@ package intersect
 
 // deriveIntersect returns the intersection of the two lists' values
 // It assumes that the first list only contains unique items.
+//
+// Deprecated: In favour of generics.
 func deriveIntersect(this, that []int) []int {
 	intersect := make([]int, 0, deriveMin(len(this), len(that)))
 	for i, v := range this {
@@ -15,6 +17,8 @@ func deriveIntersect(this, that []int) []int {
 }
 
 // deriveContains returns whether the item is contained in the list.
+//
+// Deprecated: In favour of generics.
 func deriveContains(list []int, item int) bool {
 	for _, v := range list {
 		if v == item {
@@ -25,6 +29,8 @@ func deriveContains(list []int, item int) bool {
 }
 
 // deriveMin returns the minimum of the two input values.
+//
+// Deprecated: In favour of generics.
 func deriveMin(a, b int) int {
 	if a < b {
 		return a

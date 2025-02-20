@@ -41,6 +41,8 @@ func deriveCompare(this, that boat) int {
 }
 
 // deriveMax returns the maximum of the two input values.
+//
+// Deprecated: In favour of generics.
 func deriveMax(a, b int) int {
 	if a > b {
 		return a
@@ -49,6 +51,8 @@ func deriveMax(a, b int) int {
 }
 
 // deriveMaxs returns the maximum value from the input list and the default value, if the list is empty.
+//
+// Deprecated: In favour of generics.
 func deriveMaxs(list []boat, def boat) boat {
 	if len(list) == 0 {
 		return def

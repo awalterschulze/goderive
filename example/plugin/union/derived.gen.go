@@ -4,6 +4,8 @@ package union
 
 // deriveUnique returns a list containing only the unique items from the input list.
 // It does this by reusing the input list.
+//
+// Deprecated: In favour of generics.
 func deriveUnique(list []*Person) []*Person {
 	if len(list) == 0 {
 		return nil
@@ -33,6 +35,8 @@ func deriveUnique(list []*Person) []*Person {
 }
 
 // deriveFilter returns a list of all items in the list that matches the predicate.
+//
+// Deprecated: In favour of generics.
 func deriveFilter(predicate func(*Person) bool, list []*Person) []*Person {
 	j := 0
 	for i, elem := range list {
@@ -48,6 +52,8 @@ func deriveFilter(predicate func(*Person) bool, list []*Person) []*Person {
 
 // deriveUnion returns the union of the items of the two input lists.
 // It does this by append items to the first list.
+//
+// Deprecated: In favour of generics.
 func deriveUnion(this, that []*Person) []*Person {
 	for i, v := range that {
 		if !deriveContains(this, v) {
@@ -77,6 +83,8 @@ func deriveHash(object *Person) uint64 {
 }
 
 // deriveContains returns whether the item is contained in the list.
+//
+// Deprecated: In favour of generics.
 func deriveContains(list []*Person, item *Person) bool {
 	for _, v := range list {
 		if deriveEqual(v, item) {

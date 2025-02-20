@@ -13,8 +13,9 @@
 //  limitations under the License.
 
 // Package union contains the implementation of the union plugin, which generates the deriveUnion function.
-//   func deriveUnion([]T, []T) []T
-//   func deriveUnion(map[T]struct{}, map[T]struct{}) map[T]struct{}
+//
+//	func deriveUnion([]T, []T) []T
+//	func deriveUnion(map[T]struct{}, map[T]struct{}) map[T]struct{}
 //
 // Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/union
 package union
@@ -85,6 +86,8 @@ func (g *gen) genMap(typ *types.Map) error {
 	p.P("")
 	p.P("// %s returns the union of two maps, with respect to the keys.", name)
 	p.P("// It does this by adding the keys to the first map.")
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(union, that map[%s]struct{}) map[%s]struct{} {", name, typeStr, typeStr)
 	p.In()
 	p.P("for k := range that {")
@@ -106,6 +109,8 @@ func (g *gen) genSlice(typ *types.Slice) error {
 	p.P("")
 	p.P("// %s returns the union of the items of the two input lists.", name)
 	p.P("// It does this by append items to the first list.")
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(this, that []%s) []%s {", name, typeStr, typeStr)
 	p.In()
 	p.P("for i, v := range that {")

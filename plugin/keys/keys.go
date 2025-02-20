@@ -71,6 +71,8 @@ func (g *gen) genFuncFor(typ *types.Map) error {
 	keyTypeStr := g.TypeString(keyType)
 	p.P("")
 	p.P("// %s returns the keys of the input map as a slice.", name)
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(m %s) []%s {", name, typeStr, keyTypeStr)
 	p.In()
 	p.P("keys := make([]%s, 0, len(m))", keyTypeStr)

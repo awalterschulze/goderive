@@ -7,6 +7,8 @@ import (
 )
 
 // Min returns the minimum of the two input values.
+//
+// Deprecated: In favour of generics.
 func Min(a, b *Person) *Person {
 	if Compare(a, b) < 0 {
 		return a

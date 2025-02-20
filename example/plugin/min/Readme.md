@@ -32,6 +32,8 @@ goderive will generate the following code:
 package min
 
 // deriveFilter returns a list of all items in the list that matches the predicate.
+//
+// Deprecated: In favour of generics.
 func deriveFilter(predicate func(boat) bool, list []boat) []boat {
 	j := 0
 	for i, elem := range list {
@@ -46,6 +48,8 @@ func deriveFilter(predicate func(boat) bool, list []boat) []boat {
 }
 
 // deriveMin returns the minimum of the two input values.
+//
+// Deprecated: In favour of generics.
 func deriveMin(a, b int) int {
 	if a < b {
 		return a
@@ -54,6 +58,8 @@ func deriveMin(a, b int) int {
 }
 
 // deriveMins returns the minimum value from the list, or the default value if the list is empty.
+//
+// Deprecated: In favour of generics.
 func deriveMins(list []boat, def boat) boat {
 	if len(list) == 0 {
 		return def

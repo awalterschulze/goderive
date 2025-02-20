@@ -15,7 +15,8 @@
 // Package unique contains the implementation of the unique plugin, which generates the deriveUnique function.
 //
 // The deriveUnique function returns a list of unique elements.
-//   deriveUnique([]T) []T
+//
+//	deriveUnique([]T) []T
 //
 // Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique
 //
@@ -81,6 +82,8 @@ func (g *gen) genFuncFor(typ *types.Slice) error {
 	p.P("")
 	p.P("// %s returns a list containing only the unique items from the input list.", name)
 	p.P("// It does this by reusing the input list.")
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(list %s) %s {", name, typeStr, typeStr)
 	p.In()
 	p.P("if len(list) == 0 {")

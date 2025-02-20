@@ -15,7 +15,8 @@
 // Package any contains the implementation of the any plugin, which generates the deriveAny function.
 //
 // The deriveAny function applies a predicate to each element of a list, returning a whether any of the items matched the predicate.
-//   func deriveAny(func (T) bool, []T) bool
+//
+//	func deriveAny(func (T) bool, []T) bool
 package any
 
 import (
@@ -88,6 +89,8 @@ func (g *gen) genFuncFor(in types.Type) error {
 	inStr := g.TypeString(in)
 	p.P("")
 	p.P("// %s reports whether the predicate returns true for any of the elements in the given slice.", g.GetFuncName(in))
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(pred func(%s) bool, list []%s) bool {", g.GetFuncName(in), inStr, inStr)
 	p.In()
 	p.P("for _, elem := range list {")

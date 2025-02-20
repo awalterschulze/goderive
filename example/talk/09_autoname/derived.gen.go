@@ -3,6 +3,8 @@
 package main
 
 // Min returns the minimum of the two input values.
+//
+// Deprecated: In favour of generics.
 func Min(a, b int) int {
 	if a < b {
 		return a
@@ -11,6 +13,8 @@ func Min(a, b int) int {
 }
 
 // Min_ returns the minimum of the two input values.
+//
+// Deprecated: In favour of generics.
 func Min_(a, b uint) uint {
 	if a < b {
 		return a

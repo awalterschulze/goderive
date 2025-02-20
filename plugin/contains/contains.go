@@ -15,7 +15,8 @@
 // Package contains contains the implementation of the contains plugin, which generates the deriveContains function.
 //
 // The deriveContains function returns whether a value is contained in a slice.
-//   func deriveContains([]T, T) bool
+//
+//	func deriveContains([]T, T) bool
 //
 // Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains
 package contains
@@ -100,6 +101,8 @@ func (g *gen) genFuncFor(typ *types.Slice) error {
 	typeStr := g.TypeString(etyp)
 	p.P("")
 	p.P("// %s returns whether the item is contained in the list.", name)
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(list []%s, item %s) bool {", name, typeStr, typeStr)
 	p.In()
 	p.P("for _, v := range list {")

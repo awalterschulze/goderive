@@ -7,12 +7,16 @@ import (
 )
 
 // Sort sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func Sort(list []string) []string {
 	sort.Strings(list)
 	return list
 }
 
 // Keys returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func Keys(m map[string]Person) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {

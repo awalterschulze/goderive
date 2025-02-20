@@ -59,6 +59,8 @@ func deriveCompare(this, that []*MyStruct) int {
 }
 
 // deriveSort sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort(list []*MyStruct) []*MyStruct {
 	sort.Slice(list, func(i, j int) bool { return deriveCompare_(list[i], list[j]) < 0 })
 	return list

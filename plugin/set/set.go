@@ -13,7 +13,8 @@
 //  limitations under the License.
 
 // Package set contains the implementation of the set plugin, which generates the deriveSet function.
-//   func deriveSet([]T) map[T]struct{}
+//
+//	func deriveSet([]T) map[T]struct{}
 //
 // Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/set
 package set
@@ -68,6 +69,8 @@ func (g *gen) genFuncFor(typ *types.Slice) error {
 	typeStr := g.TypeString(typ.Elem())
 	p.P("")
 	p.P("// %s returns the input list as a map with the items of the list as the keys of the map.", name)
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(list []%s) map[%s]struct{} {", name, typeStr, typeStr)
 	p.In()
 	p.P("set := make(map[%s]struct{}, len(list))", typeStr)

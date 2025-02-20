@@ -15,7 +15,8 @@
 // Package filter contains the implementation of the filter plugin, which generates the deriveFilter function.
 //
 // The deriveFilter function applies a predicate to each element of a list, returning a list of filtered results in the same order.
-//   func deriveFilter(func (T) bool, []T) []T
+//
+//	func deriveFilter(func (T) bool, []T) []T
 package filter
 
 import (
@@ -89,6 +90,8 @@ func (g *gen) genFuncFor(in types.Type) error {
 	name := g.GetFuncName(in)
 	p.P("")
 	p.P("// %s returns a list of all items in the list that matches the predicate.", name)
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(predicate func(%s) bool, list []%s) []%s {", name, inStr, inStr, inStr)
 	p.In()
 	p.P("j := 0")

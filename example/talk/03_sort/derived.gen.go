@@ -8,6 +8,8 @@ import (
 )
 
 // Sort sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func Sort(list []Person) []Person {
 	sort.Slice(list, func(i, j int) bool { return Compare(list[i], list[j]) < 0 })
 	return list

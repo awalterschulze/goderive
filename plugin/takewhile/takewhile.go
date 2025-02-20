@@ -15,7 +15,8 @@
 // Package takewhile contains the implementation of the takewhile plugin, which generates the deriveTakeWhile function.
 //
 // The deriveTakeWhile function returns the elements of the input list until the predicate fails.
-//   func deriveTakeWhile(func (T) bool, []T) []T
+//
+//	func deriveTakeWhile(func (T) bool, []T) []T
 package takewhile
 
 import (
@@ -89,6 +90,8 @@ func (g *gen) genFuncFor(in types.Type) error {
 	inStr := g.TypeString(in)
 	p.P("")
 	p.P("// %s returns the prefix of the list, where each item matches the predicate.", name)
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(predicate func(%s) bool, list []%s) []%s {", name, inStr, inStr, inStr)
 	p.In()
 	p.P("out := make([]%s, 0, len(list))", inStr)

@@ -13,8 +13,9 @@
 //  limitations under the License.
 
 // Package intersect contains the implementation of the intersect plugin, which generates the deriveIntersect function.
-//   func deriveIntersect([]T, []T) []T
-//   func deriveIntersect(map[T]struct{}, map[T]struct{}) map[T]struct{}
+//
+//	func deriveIntersect([]T, []T) []T
+//	func deriveIntersect(map[T]struct{}, map[T]struct{}) map[T]struct{}
 //
 // Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/intersect
 package intersect
@@ -86,6 +87,8 @@ func (g *gen) genMap(typ *types.Map) error {
 	typeStr := g.TypeString(typ.Key())
 	p.P("")
 	p.P("// %s returns the intersection of the two maps' keys.", name)
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(this, that map[%s]struct{}) map[%s]struct{} {", name, typeStr, typeStr)
 	p.In()
 	minFunc := g.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])
@@ -113,6 +116,8 @@ func (g *gen) genSlice(typ *types.Slice) error {
 	p.P("")
 	p.P("// %s returns the intersection of the two lists' values", name)
 	p.P("// It assumes that the first list only contains unique items.")
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(this, that []%s) []%s {", name, typeStr, typeStr)
 	p.In()
 	minFunc := g.min.GetFuncName(types.Typ[types.Int], types.Typ[types.Int])

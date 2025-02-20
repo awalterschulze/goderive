@@ -15,16 +15,19 @@
 // Package max contains the implementation of the max plugin, which generates the deriveMax function.
 //
 // The deriveMax function returns the maximum of two arguments.
-//   func deriveMax(T, T) T
+//
+//	func deriveMax(T, T) T
 //
 // deriveMax is a generic version of
-//   math.Max(x, y float64) float64
+//
+//	math.Max(x, y float64) float64
 //
 // deriveMax is preferable over abusing math.Max, for not float64 types:
 // https://mrekucci.blogspot.nl/2015/07/dont-abuse-mathmax-mathmin.html
 //
 // It can also return the maximum element in a list.
-//   func deriveMax(list []T, default T) (max T)
+//
+//	func deriveMax(list []T, default T) (max T)
 //
 // A default value is provided for the empty list.
 //
@@ -95,6 +98,8 @@ func (g *gen) genTwo(typ, typ2 types.Type) error {
 	name := g.GetFuncName(typ, typ2)
 	p.P("")
 	p.P("// %s returns the maximum of the two input values.", name)
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(a, b %s) %s {", name, typeStr, typeStr)
 	p.In()
 	switch typ.(type) {
@@ -121,6 +126,8 @@ func (g *gen) genSlice(typ *types.Slice, typ2 types.Type) error {
 	typeStr := g.TypeString(etyp)
 	p.P("")
 	p.P("// %s returns the maximum value from the input list and the default value, if the list is empty.", name)
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(list []%s, def %s) %s {", name, typeStr, typeStr, typeStr)
 	p.In()
 	p.P("if len(list) == 0 {")

@@ -76,6 +76,8 @@ func (g *gen) genFuncFor(typ *types.Slice) error {
 	typeStr := g.TypeString(typ)
 	p.P("")
 	p.P("// %s sorts the slice inplace and also returns it.", name)
+	p.P("//")
+	p.P("// Deprecated: In favour of generics.")
 	p.P("func %s(list %s) %s {", name, typeStr, typeStr)
 	p.In()
 	if err := g.printSortFunc(typ); err != nil {

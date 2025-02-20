@@ -17,6 +17,8 @@ import (
 )
 
 // deriveTakeWhile returns the prefix of the list, where each item matches the predicate.
+//
+// Deprecated: In favour of generics.
 func deriveTakeWhile(predicate func(int) bool, list []int) []int {
 	out := make([]int, 0, len(list))
 	for i, elem := range list {
@@ -29,6 +31,8 @@ func deriveTakeWhile(predicate func(int) bool, list []int) []int {
 }
 
 // deriveIntersectSetOfInt64s returns the intersection of the two maps' keys.
+//
+// Deprecated: In favour of generics.
 func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{} {
 	intersect := make(map[int64]struct{}, deriveMinInt(len(this), len(that)))
 	for k := range this {
@@ -41,6 +45,8 @@ func deriveIntersectSetOfInt64s(this, that map[int64]struct{}) map[int64]struct{
 
 // deriveIntersectOfInt64s returns the intersection of the two lists' values
 // It assumes that the first list only contains unique items.
+//
+// Deprecated: In favour of generics.
 func deriveIntersectOfInt64s(this, that []int64) []int64 {
 	intersect := make([]int64, 0, deriveMinInt(len(this), len(that)))
 	for i, v := range this {
@@ -2561,6 +2567,8 @@ func deriveDeepCopyPtrToStructOfStructs(dst, src *StructOfStructs) {
 }
 
 // deriveContainsInt64s returns whether the item is contained in the list.
+//
+// Deprecated: In favour of generics.
 func deriveContainsInt64s(list []int64, item int64) bool {
 	for _, v := range list {
 		if v == item {
@@ -2571,6 +2579,8 @@ func deriveContainsInt64s(list []int64, item int64) bool {
 }
 
 // deriveContainsStruct returns whether the item is contained in the list.
+//
+// Deprecated: In favour of generics.
 func deriveContainsStruct(list []*BuiltInTypes, item *BuiltInTypes) bool {
 	for _, v := range list {
 		if deriveEqualPtrToBuiltInTypes(v, item) {
@@ -2581,6 +2591,8 @@ func deriveContainsStruct(list []*BuiltInTypes, item *BuiltInTypes) bool {
 }
 
 // deriveContainsStructPtr returns whether the item is contained in the list.
+//
+// Deprecated: In favour of generics.
 func deriveContainsStructPtr(list []PtrToBuiltInTypes, item PtrToBuiltInTypes) bool {
 	for _, v := range list {
 		if deriveEqual(v, item) {
@@ -3921,6 +3933,8 @@ func deriveCompareDeriveTheDerived(this, that *DeriveTheDerived) int {
 
 // deriveUniqueInt64s returns a list containing only the unique items from the input list.
 // It does this by reusing the input list.
+//
+// Deprecated: In favour of generics.
 func deriveUniqueInt64s(list []int64) []int64 {
 	if len(list) == 0 {
 		return nil
@@ -3930,6 +3944,8 @@ func deriveUniqueInt64s(list []int64) []int64 {
 
 // deriveUniqueStructs returns a list containing only the unique items from the input list.
 // It does this by reusing the input list.
+//
+// Deprecated: In favour of generics.
 func deriveUniqueStructs(list []*BuiltInTypes) []*BuiltInTypes {
 	if len(list) == 0 {
 		return nil
@@ -3960,6 +3976,8 @@ func deriveUniqueStructs(list []*BuiltInTypes) []*BuiltInTypes {
 
 // deriveUniqueStructsPtrs returns a list containing only the unique items from the input list.
 // It does this by reusing the input list.
+//
+// Deprecated: In favour of generics.
 func deriveUniqueStructsPtrs(list []PtrToBuiltInTypes) []PtrToBuiltInTypes {
 	if len(list) == 0 {
 		return nil
@@ -3989,6 +4007,8 @@ func deriveUniqueStructsPtrs(list []PtrToBuiltInTypes) []PtrToBuiltInTypes {
 }
 
 // deriveFilter returns a list of all items in the list that matches the predicate.
+//
+// Deprecated: In favour of generics.
 func deriveFilter(predicate func(int) bool, list []int) []int {
 	j := 0
 	for i, elem := range list {
@@ -4003,6 +4023,8 @@ func deriveFilter(predicate func(int) bool, list []int) []int {
 }
 
 // deriveFilterJudy returns a list of all items in the list that matches the predicate.
+//
+// Deprecated: In favour of generics.
 func deriveFilterJudy(predicate func(string) bool, list []string) []string {
 	j := 0
 	for i, elem := range list {
@@ -4018,6 +4040,8 @@ func deriveFilterJudy(predicate func(string) bool, list []string) []string {
 
 // deriveUnionSetOfInt64s returns the union of two maps, with respect to the keys.
 // It does this by adding the keys to the first map.
+//
+// Deprecated: In favour of generics.
 func deriveUnionSetOfInt64s(union, that map[int64]struct{}) map[int64]struct{} {
 	for k := range that {
 		union[k] = struct{}{}
@@ -4027,6 +4051,8 @@ func deriveUnionSetOfInt64s(union, that map[int64]struct{}) map[int64]struct{} {
 
 // deriveUnionOfInt64s returns the union of the items of the two input lists.
 // It does this by append items to the first list.
+//
+// Deprecated: In favour of generics.
 func deriveUnionOfInt64s(this, that []int64) []int64 {
 	for i, v := range that {
 		if !deriveContainsInt64s(this, v) {
@@ -4771,54 +4797,72 @@ func deriveApplyBlankIdentifier(f func(a string, param_1 bool, c int) string, c 
 }
 
 // deriveSortedInts sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSortedInts(list []int) []int {
 	sort.Ints(list)
 	return list
 }
 
 // deriveSortInt64s sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSortInt64s(list []int64) []int64 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
 // deriveSortStructs sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSortStructs(list []*BuiltInTypes) []*BuiltInTypes {
 	sort.Slice(list, func(i, j int) bool { return deriveComparePtrToBuiltInTypes(list[i], list[j]) < 0 })
 	return list
 }
 
 // deriveSortedSliceIntAlias sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSortedSliceIntAlias(list []intAlias) []intAlias {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
 // deriveSortedSliceStringAlias sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSortedSliceStringAlias(list []stringAlias) []stringAlias {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
 // deriveSortedSliceFloat64Alias sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSortedSliceFloat64Alias(list []float64Alias) []float64Alias {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
 // deriveSortedStrings sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSortedStrings(list []string) []string {
 	sort.Strings(list)
 	return list
 }
 
 // deriveSortedStringKeyAlias sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSortedStringKeyAlias(list []stringKeyAlias) []stringKeyAlias {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
 // deriveKeysForInt64s returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
 	keys := make([]int64, 0, len(m))
 	for key := range m {
@@ -4828,6 +4872,8 @@ func deriveKeysForInt64s(m map[int64]struct{}) []int64 {
 }
 
 // deriveKeysForFmap returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeysForFmap(m map[int]string) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
@@ -4837,6 +4883,8 @@ func deriveKeysForFmap(m map[int]string) []int {
 }
 
 // deriveKeysForMapStringToString returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeysForMapStringToString(m map[string]string) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -4846,6 +4894,8 @@ func deriveKeysForMapStringToString(m map[string]string) []string {
 }
 
 // deriveKeysForMapStringAliasToString returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeysForMapStringAliasToString(m map[stringKeyAlias]string) []stringKeyAlias {
 	keys := make([]stringKeyAlias, 0, len(m))
 	for key := range m {
@@ -4855,6 +4905,8 @@ func deriveKeysForMapStringAliasToString(m map[stringKeyAlias]string) []stringKe
 }
 
 // deriveKeysForMapStringToStringAlias returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeysForMapStringToStringAlias(m map[string]stringAlias) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -4864,6 +4916,8 @@ func deriveKeysForMapStringToStringAlias(m map[string]stringAlias) []string {
 }
 
 // deriveKeysForMapIntToInt64 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeysForMapIntToInt64(m map[int]int64) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
@@ -4873,6 +4927,8 @@ func deriveKeysForMapIntToInt64(m map[int]int64) []int {
 }
 
 // deriveKeysForMapInt64ToInt64 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeysForMapInt64ToInt64(m map[int64]int64) []int64 {
 	keys := make([]int64, 0, len(m))
 	for key := range m {
@@ -5677,6 +5733,8 @@ func deriveFlipBlankIdentifier(f func(a string, param_1 bool, c int) string) fun
 }
 
 // deriveSetInt64s returns the input list as a map with the items of the list as the keys of the map.
+//
+// Deprecated: In favour of generics.
 func deriveSetInt64s(list []int64) map[int64]struct{} {
 	set := make(map[int64]struct{}, len(list))
 	for _, v := range list {
@@ -5686,6 +5744,8 @@ func deriveSetInt64s(list []int64) map[int64]struct{} {
 }
 
 // deriveMinInt64s returns the minimum value from the list, or the default value if the list is empty.
+//
+// Deprecated: In favour of generics.
 func deriveMinInt64s(list []int64, def int64) int64 {
 	if len(list) == 0 {
 		return def
@@ -5701,6 +5761,8 @@ func deriveMinInt64s(list []int64, def int64) int64 {
 }
 
 // deriveMinInt returns the minimum of the two input values.
+//
+// Deprecated: In favour of generics.
 func deriveMinInt(a, b int) int {
 	if a < b {
 		return a
@@ -5709,6 +5771,8 @@ func deriveMinInt(a, b int) int {
 }
 
 // deriveMinStructs returns the minimum value from the list, or the default value if the list is empty.
+//
+// Deprecated: In favour of generics.
 func deriveMinStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	if len(list) == 0 {
 		return def
@@ -5859,6 +5923,8 @@ func deriveMemSetErr(f func(a *BuiltInTypes, b int) (*BuiltInTypes, error)) func
 }
 
 // deriveMaxInt64s returns the maximum value from the input list and the default value, if the list is empty.
+//
+// Deprecated: In favour of generics.
 func deriveMaxInt64s(list []int64, def int64) int64 {
 	if len(list) == 0 {
 		return def
@@ -5874,6 +5940,8 @@ func deriveMaxInt64s(list []int64, def int64) int64 {
 }
 
 // deriveMaxInt returns the maximum of the two input values.
+//
+// Deprecated: In favour of generics.
 func deriveMaxInt(a, b int) int {
 	if a > b {
 		return a
@@ -5882,6 +5950,8 @@ func deriveMaxInt(a, b int) int {
 }
 
 // deriveMaxStructs returns the maximum value from the input list and the default value, if the list is empty.
+//
+// Deprecated: In favour of generics.
 func deriveMaxStructs(list []*BuiltInTypes, def *BuiltInTypes) *BuiltInTypes {
 	if len(list) == 0 {
 		return def
@@ -5911,6 +5981,8 @@ func deriveDup(c chan int) (c1, c2 <-chan int) {
 }
 
 // deriveAny reports whether the predicate returns true for any of the elements in the given slice.
+//
+// Deprecated: In favour of generics.
 func deriveAny(pred func(int) bool, list []int) bool {
 	for _, elem := range list {
 		if pred(elem) {
@@ -5921,6 +5993,8 @@ func deriveAny(pred func(int) bool, list []int) bool {
 }
 
 // deriveAnyEqualCurry reports whether the predicate returns true for any of the elements in the given slice.
+//
+// Deprecated: In favour of generics.
 func deriveAnyEqualCurry(pred func(*BuiltInTypes) bool, list []*BuiltInTypes) bool {
 	for _, elem := range list {
 		if pred(elem) {
@@ -5931,6 +6005,8 @@ func deriveAnyEqualCurry(pred func(*BuiltInTypes) bool, list []*BuiltInTypes) bo
 }
 
 // deriveAll reports whether the predicate returns true for all of the elements in the given slice.
+//
+// Deprecated: In favour of generics.
 func deriveAll(predicate func(int) bool, slice []int) bool {
 	for _, elem := range slice {
 		if !predicate(elem) {
@@ -13086,60 +13162,80 @@ func deriveEqual_95(this, that struct {
 }
 
 // deriveSort sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort(list []uint8) []uint8 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
 // deriveSort_ sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort_(list []bool) []bool {
 	sort.Slice(list, func(i, j int) bool { return deriveCompare(list[i], list[j]) < 0 })
 	return list
 }
 
 // deriveSort_1 sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort_1(list []complex128) []complex128 {
 	sort.Slice(list, func(i, j int) bool { return deriveCompareComplex64(list[i], list[j]) < 0 })
 	return list
 }
 
 // deriveSort_2 sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort_2(list []float64) []float64 {
 	sort.Float64s(list)
 	return list
 }
 
 // deriveSort_3 sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort_3(list []uint16) []uint16 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
 // deriveSort_4 sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort_4(list []Name) []Name {
 	sort.Slice(list, func(i, j int) bool { return deriveCompare_N(list[i], list[j]) < 0 })
 	return list
 }
 
 // deriveSort_5 sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort_5(list []StructWithoutMethod) []StructWithoutMethod {
 	sort.Slice(list, func(i, j int) bool { return deriveCompare_S(list[i], list[j]) < 0 })
 	return list
 }
 
 // deriveSort_6 sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort_6(list []int32) []int32 {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
 // deriveSort_7 sorts the slice inplace and also returns it.
+//
+// Deprecated: In favour of generics.
 func deriveSort_7(list []MyEnum) []MyEnum {
 	sort.Slice(list, func(i, j int) bool { return list[i] < list[j] })
 	return list
 }
 
 // deriveKeys returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys(m map[int]int) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
@@ -13149,6 +13245,8 @@ func deriveKeys(m map[int]int) []int {
 }
 
 // deriveKeys_ returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_(m map[string]uint32) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13158,6 +13256,8 @@ func deriveKeys_(m map[string]uint32) []string {
 }
 
 // deriveKeys_1 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_1(m map[uint8]int64) []uint8 {
 	keys := make([]uint8, 0, len(m))
 	for key := range m {
@@ -13167,6 +13267,8 @@ func deriveKeys_1(m map[uint8]int64) []uint8 {
 }
 
 // deriveKeys_2 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_2(m map[bool]string) []bool {
 	keys := make([]bool, 0, len(m))
 	for key := range m {
@@ -13176,6 +13278,8 @@ func deriveKeys_2(m map[bool]string) []bool {
 }
 
 // deriveKeys_3 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_3(m map[string]bool) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13185,6 +13289,8 @@ func deriveKeys_3(m map[string]bool) []string {
 }
 
 // deriveKeys_4 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_4(m map[complex128]complex64) []complex128 {
 	keys := make([]complex128, 0, len(m))
 	for key := range m {
@@ -13194,6 +13300,8 @@ func deriveKeys_4(m map[complex128]complex64) []complex128 {
 }
 
 // deriveKeys_5 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_5(m map[float64]uint32) []float64 {
 	keys := make([]float64, 0, len(m))
 	for key := range m {
@@ -13203,6 +13311,8 @@ func deriveKeys_5(m map[float64]uint32) []float64 {
 }
 
 // deriveKeys_6 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_6(m map[uint16]uint8) []uint16 {
 	keys := make([]uint16, 0, len(m))
 	for key := range m {
@@ -13212,6 +13322,8 @@ func deriveKeys_6(m map[uint16]uint8) []uint16 {
 }
 
 // deriveKeys_7 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_7(m map[Name]string) []Name {
 	keys := make([]Name, 0, len(m))
 	for key := range m {
@@ -13221,6 +13333,8 @@ func deriveKeys_7(m map[Name]string) []Name {
 }
 
 // deriveKeys_8 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_8(m map[string]Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13230,6 +13344,8 @@ func deriveKeys_8(m map[string]Name) []string {
 }
 
 // deriveKeys_9 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_9(m map[string]*Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13239,6 +13355,8 @@ func deriveKeys_9(m map[string]*Name) []string {
 }
 
 // deriveKeys_10 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_10(m map[string][]Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13248,6 +13366,8 @@ func deriveKeys_10(m map[string][]Name) []string {
 }
 
 // deriveKeys_11 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_11(m map[string][]*Name) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13257,6 +13377,8 @@ func deriveKeys_11(m map[string][]*Name) []string {
 }
 
 // deriveKeys_12 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_12(m map[string]StructWithoutMethod) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13266,6 +13388,8 @@ func deriveKeys_12(m map[string]StructWithoutMethod) []string {
 }
 
 // deriveKeys_13 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_13(m map[StructWithoutMethod]string) []StructWithoutMethod {
 	keys := make([]StructWithoutMethod, 0, len(m))
 	for key := range m {
@@ -13275,6 +13399,8 @@ func deriveKeys_13(m map[StructWithoutMethod]string) []StructWithoutMethod {
 }
 
 // deriveKeys_14 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_14(m map[string]*StructWithoutMethod) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13284,6 +13410,8 @@ func deriveKeys_14(m map[string]*StructWithoutMethod) []string {
 }
 
 // deriveKeys_15 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_15(m map[string][]StructWithoutMethod) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13293,6 +13421,8 @@ func deriveKeys_15(m map[string][]StructWithoutMethod) []string {
 }
 
 // deriveKeys_16 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_16(m map[string][]*StructWithoutMethod) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -13302,6 +13432,8 @@ func deriveKeys_16(m map[string][]*StructWithoutMethod) []string {
 }
 
 // deriveKeys_17 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_17(m map[int]RecursiveType) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
@@ -13311,6 +13443,8 @@ func deriveKeys_17(m map[int]RecursiveType) []int {
 }
 
 // deriveKeys_18 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_18(m map[int32]MyEnum) []int32 {
 	keys := make([]int32, 0, len(m))
 	for key := range m {
@@ -13320,6 +13454,8 @@ func deriveKeys_18(m map[int32]MyEnum) []int32 {
 }
 
 // deriveKeys_19 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_19(m map[MyEnum]int32) []MyEnum {
 	keys := make([]MyEnum, 0, len(m))
 	for key := range m {
@@ -13329,6 +13465,8 @@ func deriveKeys_19(m map[MyEnum]int32) []MyEnum {
 }
 
 // deriveKeys_20 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_20(m map[int]time.Duration) []int {
 	keys := make([]int, 0, len(m))
 	for key := range m {
@@ -13338,6 +13476,8 @@ func deriveKeys_20(m map[int]time.Duration) []int {
 }
 
 // deriveKeys_21 returns the keys of the input map as a slice.
+//
+// Deprecated: In favour of generics.
 func deriveKeys_21(m map[string][]*pickle.Rick) []string {
 	keys := make([]string, 0, len(m))
 	for key := range m {

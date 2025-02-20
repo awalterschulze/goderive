@@ -91,26 +91,6 @@ Recursive Functions:
   - [GoString](http://godoc.org/github.com/awalterschulze/goderive/plugin/gostring) `deriveGoString(T) string`
   - [Hash](http://godoc.org/github.com/awalterschulze/goderive/plugin/hash) `deriveHash(T) uint64`
 
-Set Functions:
-
-  - [Keys](http://godoc.org/github.com/awalterschulze/goderive/plugin/keys) `deriveKeys(map[K]V) []K`
-  - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort) `deriveSort([]T) []T`
-  - [Unique](http://godoc.org/github.com/awalterschulze/goderive/plugin/unique) `deriveUnique([]T) []T`
-  - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set) `deriveSet([]T) map[T]struct{}`
-  - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min)
-    - `deriveMin(list []T, default T) (min T)`
-    - `deriveMin(T, T) T`
-  - [Max](http://godoc.org/github.com/awalterschulze/goderive/plugin/max)
-    - `deriveMax(list []T, default T) (max T)`
-    - `deriveMax(T, T) T`
-  - [Contains](http://godoc.org/github.com/awalterschulze/goderive/plugin/contains) `deriveContains([]T, T) bool`
-  - [Intersect](http://godoc.org/github.com/awalterschulze/goderive/plugin/intersect)
-    - `deriveIntersect(a, b []T) []T`
-    - `deriveIntersect(a, b map[T]struct{}) map[T]struct{}`
-  - [Union](http://godoc.org/github.com/awalterschulze/goderive/plugin/union)
-    - `deriveUnion(a, b []T) []T`
-    - `deriveUnion(a, b map[T]struct{}) map[T]struct{}`
-
 Functional Functions:
 
   - [Fmap](http://godoc.org/github.com/awalterschulze/goderive/plugin/fmap)
@@ -125,10 +105,6 @@ Functional Functions:
     - `deriveJoin([]string) string`
     - `deriveJoin(func() (T, error), error) func() (T, error)`
     - `deriveJoin(func() (T, ..., error), error) func() (T, ..., error)`
-  - [Filter](http://godoc.org/github.com/awalterschulze/goderive/plugin/filter) `deriveFilter(pred func(T) bool, []T) []T`
-  - [All](http://godoc.org/github.com/awalterschulze/goderive/plugin/all) `deriveAll(pred func(T) bool, []T) bool`
-  - [Any](http://godoc.org/github.com/awalterschulze/goderive/plugin/any) `deriveAny(pred func(T) bool, []T) bool`
-  - [TakeWhile](http://godoc.org/github.com/awalterschulze/goderive/plugin/takewhile) `deriveTakeWhile(pred func(T) bool, []T) []T`
   - [Flip](http://godoc.org/github.com/awalterschulze/goderive/plugin/flip) `deriveFlip(f func(A, B, ...) T) func(B, A, ...) T`
   - [Curry](http://godoc.org/github.com/awalterschulze/goderive/plugin/curry) `deriveCurry(f func(A, B, ...) T) func(A) func(B, ...) T`
   - [Uncurry](http://godoc.org/github.com/awalterschulze/goderive/plugin/uncurry) `deriveUncurry(f func(A) func(B, ...) T) func(A, B, ...) T`
@@ -162,6 +138,30 @@ Concurrency Functions:
     - `deriveDo(func() (A, error), func (B, error)) (A, B, error)`
   - [Dup](http://godoc.org/github.com/awalterschulze/goderive/plugin/dup)
     - `deriveDup(c <-chan T) (c1, c2 <-chan T)`
+
+Deprecated in favour of generics:
+
+  - [Keys](http://godoc.org/github.com/awalterschulze/goderive/plugin/keys) `deriveKeys(map[K]V) []K`
+  - [Sort](http://godoc.org/github.com/awalterschulze/goderive/plugin/sort) `deriveSort([]T) []T`
+  - [Unique](http://godoc.org/github.com/awalterschulze/goderive/plugin/unique) `deriveUnique([]T) []T`
+  - [Set](http://godoc.org/github.com/awalterschulze/goderive/plugin/set) `deriveSet([]T) map[T]struct{}`
+  - [Min](http://godoc.org/github.com/awalterschulze/goderive/plugin/min)
+    - `deriveMin(list []T, default T) (min T)`
+    - `deriveMin(T, T) T`
+  - [Max](http://godoc.org/github.com/awalterschulze/goderive/plugin/max)
+    - `deriveMax(list []T, default T) (max T)`
+    - `deriveMax(T, T) T`
+  - [Contains](http://godoc.org/github.com/awalterschulze/goderive/plugin/contains) `deriveContains([]T, T) bool`
+  - [Intersect](http://godoc.org/github.com/awalterschulze/goderive/plugin/intersect)
+    - `deriveIntersect(a, b []T) []T`
+    - `deriveIntersect(a, b map[T]struct{}) map[T]struct{}`
+  - [Union](http://godoc.org/github.com/awalterschulze/goderive/plugin/union)
+    - `deriveUnion(a, b []T) []T`
+    - `deriveUnion(a, b map[T]struct{}) map[T]struct{}`
+  - [Filter](http://godoc.org/github.com/awalterschulze/goderive/plugin/filter) `deriveFilter(pred func(T) bool, []T) []T`
+  - [All](http://godoc.org/github.com/awalterschulze/goderive/plugin/all) `deriveAll(pred func(T) bool, []T) bool`
+  - [Any](http://godoc.org/github.com/awalterschulze/goderive/plugin/any) `deriveAny(pred func(T) bool, []T) bool`
+  - [TakeWhile](http://godoc.org/github.com/awalterschulze/goderive/plugin/takewhile) `deriveTakeWhile(pred func(T) bool, []T) []T`
 
 When goderive walks over your code it is looking for a function that:
   - was not implemented (or was previously derived) and

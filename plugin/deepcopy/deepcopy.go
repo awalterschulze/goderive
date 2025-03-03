@@ -145,15 +145,25 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		reftyp := ttyp.Elem()
 		g.TypeString(reftyp)
 		thisref, thatref := "*"+this, "*"+that
+
+		var objGetter derive.ObjectGetter
 		named, isNamed := reftyp.(*types.Named)
+		if isNamed {
+			objGetter = named
+		}
+		alias, isAlias := reftyp.(*types.Alias)
+		if isAlias {
+			objGetter = alias
+		}
+
 		strct, isStruct := reftyp.Underlying().(*types.Struct)
 		if !isStruct {
 			if err := g.genField(reftyp, thisref, thatref); err != nil {
 				return err
 			}
 			return nil
-		} else if isNamed {
-			external := g.TypesMap.IsExternal(named)
+		} else if isNamed || isAlias {
+			external := g.TypesMap.IsExternal(objGetter)
 			fields := derive.Fields(g.TypesMap, strct, external)
 			if len(fields.Fields) > 0 {
 				thisv := prepend(this, "v")
@@ -231,6 +241,8 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 		p.Out()
 		p.P("}")
 		return nil
+	default:
+		return fmt.Errorf("unsupported deepcopy underlying type: %s", g.TypeString(ttyp))
 	}
 	return fmt.Errorf("unsupported deepcopy type: %s", g.TypeString(typ))
 }

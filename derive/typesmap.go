@@ -32,8 +32,13 @@ type TypesMap interface {
 	Prefix() string
 	TypeString(typ types.Type) string
 	FieldStrings(fields []*types.Var) ([]string, error)
-	IsExternal(typ *types.Named) bool
+	IsExternal(typ ObjectGetter) bool
 	Done() bool
+}
+
+// ObjectGetter is implemented by both [types.Named] and [types.Alias].
+type ObjectGetter interface {
+	Obj() *types.TypeName
 }
 
 type typesMap struct {
@@ -86,7 +91,7 @@ func (tm *typesMap) TypeStringBypass(typ types.Type) string {
 	return types.TypeString(types.Default(typ), bypassQual)
 }
 
-func (tm *typesMap) IsExternal(typ *types.Named) bool {
+func (tm *typesMap) IsExternal(typ ObjectGetter) bool {
 	q := tm.qual(typ.Obj().Pkg())
 	return q != ""
 }

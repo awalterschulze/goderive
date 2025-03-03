@@ -424,6 +424,6 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("}()")
 		return nil
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
-		return fmt.Errorf("unsupported field type %s", g.TypeString(fieldType))
+		return fmt.Errorf("unsupported field type %s %s", thisField, g.TypeString(fieldType))
 	}
 }

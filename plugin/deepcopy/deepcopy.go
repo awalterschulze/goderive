@@ -409,7 +409,9 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("}")
 		return nil
 	case *types.Struct:
-		p.P("func() {")
+		// Confine field copy to a new block to prevent ghosting `field` variable.
+		// Required especially because `field` variable name is static and is overwritten/different types if you have more than one field.
+		p.P("{")
 		p.In()
 		p.P("field := new(%s)", g.TypeString(fieldType))
 		named, isNamed := fieldType.(*types.Named)
@@ -420,7 +422,7 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		}
 		p.P("%s = *field", thatField)
 		p.Out()
-		p.P("}()")
+		p.P("}")
 		return nil
 	default: // *Chan, *Tuple, *Signature, *Interface, *types.Basic.Kind() == types.UntypedNil, *Struct
 		return fmt.Errorf("unsupported field type %s %s", thisField, g.TypeString(fieldType))

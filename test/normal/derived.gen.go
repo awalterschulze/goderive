@@ -2318,11 +2318,11 @@ func deriveDeepCopyPtrToEmbeddedStruct1(dst, src *EmbeddedStruct1) {
 
 // deriveDeepCopyPtrToEmbeddedStruct2 recursively copies the contents of src into dst.
 func deriveDeepCopyPtrToEmbeddedStruct2(dst, src *EmbeddedStruct2) {
-	func() {
+	{
 		field := new(Structs)
 		src.Structs.DeepCopy(field)
 		dst.Structs = *field
-	}()
+	}
 	if src.Name == nil {
 		dst.Name = nil
 	} else {
@@ -2545,25 +2545,25 @@ func deriveDeepCopyPtrToNickname(dst, src *Nickname) {
 
 // deriveDeepCopyPtrToPrivateEmbedded recursively copies the contents of src into dst.
 func deriveDeepCopyPtrToPrivateEmbedded(dst, src *PrivateEmbedded) {
-	func() {
+	{
 		field := new(privateStruct)
 		deriveDeepCopy_50(field, &src.privateStruct)
 		dst.privateStruct = *field
-	}()
+	}
 }
 
 // deriveDeepCopyPtrToStructOfStructs recursively copies the contents of src into dst.
 func deriveDeepCopyPtrToStructOfStructs(dst, src *StructOfStructs) {
-	func() {
+	{
 		field := new(Structs)
 		src.S1.DeepCopy(field)
 		dst.S1 = *field
-	}()
-	func() {
+	}
+	{
 		field := new(Structs)
 		src.S2.DeepCopy(field)
 		dst.S2 = *field
-	}()
+	}
 }
 
 // deriveDeepCopySimpleStruct recursively copies the contents of src into dst.
@@ -7822,11 +7822,11 @@ func deriveDeepCopy_39(dst, src map[string][]*StructWithoutMethod) {
 // deriveDeepCopy_40 recursively copies the contents of src into dst.
 func deriveDeepCopy_40(dst, src map[int]RecursiveType) {
 	for src_key, src_value := range src {
-		func() {
+		{
 			field := new(RecursiveType)
 			src_value.DeepCopy(field)
 			dst[src_key] = *field
-		}()
+		}
 	}
 }
 

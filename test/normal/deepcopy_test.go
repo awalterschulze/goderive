@@ -103,3 +103,27 @@ func (c customMap) DeepCopy(to customMap) {
 		to[k] = "copy of " + v
 	}
 }
+
+type SimpleStruct struct {
+	Level int
+}
+
+func (this *SimpleStruct) DeepCopy(that *SimpleStruct) {
+	deriveDeepCopySimpleStruct(that, this)
+}
+
+type aliasToStruct = SimpleStruct
+
+func TestDeepCopyAlias(t *testing.T) {
+	this := &aliasToStruct{
+		Level: 99,
+	}
+
+	that := &aliasToStruct{}
+
+	deepcopy(this, that)
+
+	if that.Level != this.Level {
+		t.Error("expected level to use copied value")
+	}
+}

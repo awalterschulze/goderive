@@ -143,7 +143,6 @@ func (g *gen) genStatement(typ types.Type, this, that string) error {
 	switch ttyp := typ.Underlying().(type) {
 	case *types.Pointer:
 		reftyp := ttyp.Elem()
-		g.TypeString(reftyp)
 		thisref, thatref := "*"+this, "*"+that
 
 		var objGetter derive.ObjectGetter

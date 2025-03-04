@@ -2566,6 +2566,11 @@ func deriveDeepCopyPtrToStructOfStructs(dst, src *StructOfStructs) {
 	}()
 }
 
+// deriveDeepCopySimpleStruct recursively copies the contents of src into dst.
+func deriveDeepCopySimpleStruct(dst, src *SimpleStruct) {
+	dst.Level = src.Level
+}
+
 // deriveContainsInt64s returns whether the item is contained in the list.
 //
 // Deprecated: In favour of generics.

@@ -15,59 +15,70 @@
 // Package do contains the implementation of the do plugin, which generates the deriveDo function.
 //
 // The deriveDo function executes a list of functions concurrently and returns their results.
-//   deriveDo(func() (A, error), func (B, error)) (A, B, error)
+//
+//	deriveDo(func() (A, error), func (B, error)) (A, B, error)
+//
 // Each function is executed in a go routine and the first error is returned.
 // It waits for all functions to complete.
 //
 // The concept is stolen from applicative do in haskell or rather haxl.
 // http://simonmar.github.io/bib/papers/applicativedo.pdf
 // The applicative do rewrites the monadic do notation:
-//   do {
-//       a <- f
-//       b <- g
-//       return (f, g)
-//   }
+//
+//	do {
+//	    a <- f
+//	    b <- g
+//	    return (f, g)
+//	}
+//
 // To:
-//   (,) <$> f <*> g
+//
+//	(,) <$> f <*> g
+//
 // When it detects that the functions do not depend on one another.
 // Haskell type signatures that will hopefully help to explain.
 // Fmap:
-//   <$> :: (a -> b) -> m a -> m b
+//
+//	<$> :: (a -> b) -> m a -> m b
+//
 // Ap:
-//   <*> :: m (a -> b) -> m a -> m b
+//
+//	<*> :: m (a -> b) -> m a -> m b
 //
 // In go this could be:
-//   func newTuple(a A, b B) func() (A, B) {
-//       return func() (A, B) {
-//           return a, b
-//       }
-//   }
-//   deriveAp(
-//       deriveFmap(
-//           newTuple,
-//           f,
-//       )
-//       g,
-//   )
-//   func deriveFmap(
-//       newTuple func(A, B) func() (A, B),
-//       f func() (A, error),
-//       ) func(B) (func() (A, B), error) {
-//           return func(b B) (func() (A, B), error) {
-//               a, err := f()
-//               if err != nil {
-//                   return nil, err
-//               }
-//               return newTuple(a, b), nil
-//           }
-//   }
-//   func deriveAp(fmapped func(B) (func() (A, B), error), g func() (B, error)) (func() (A, B), error) {
-//       b, err := g()
-//       if err != nil {
-//           return nil, err
-//       }
-//       return fmapped(b)
-//   }
+//
+//	func newTuple(a A, b B) func() (A, B) {
+//	    return func() (A, B) {
+//	        return a, b
+//	    }
+//	}
+//	deriveAp(
+//	    deriveFmap(
+//	        newTuple,
+//	        f,
+//	    )
+//	    g,
+//	)
+//	func deriveFmap(
+//	    newTuple func(A, B) func() (A, B),
+//	    f func() (A, error),
+//	    ) func(B) (func() (A, B), error) {
+//	        return func(b B) (func() (A, B), error) {
+//	            a, err := f()
+//	            if err != nil {
+//	                return nil, err
+//	            }
+//	            return newTuple(a, b), nil
+//	        }
+//	}
+//	func deriveAp(fmapped func(B) (func() (A, B), error), g func() (B, error)) (func() (A, B), error) {
+//	    b, err := g()
+//	    if err != nil {
+//	        return nil, err
+//	    }
+//	    return fmapped(b)
+//	}
+//
 // derviveDo builds on this, but requires the programmer to explicitly call deriveDo
 //
 // Example output can be found here:

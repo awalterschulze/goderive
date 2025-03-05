@@ -15,10 +15,11 @@
 // Package compose contains the implementation of the compose plugin, which generates the deriveCompose function.
 //
 // The deriveCompose function composes multiple functions that return an error into one function.
-//    deriveCompose(func() (A, error), func(A) (B, error)) func() (B, error)
-//    deriveCompose(func(A) (B, error), func(B) (C, error)) func(A) (C, error)
-//    deriveCompose(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)
-//    deriveCompose(func(A...) (B..., error), ..., func(C...) (D..., error)) func(A...) (D..., error)
+//
+//	deriveCompose(func() (A, error), func(A) (B, error)) func() (B, error)
+//	deriveCompose(func(A) (B, error), func(B) (C, error)) func(A) (C, error)
+//	deriveCompose(func(A...) (B..., error), func(B...) (C..., error)) func(A...) (C..., error)
+//	deriveCompose(func(A...) (B..., error), ..., func(C...) (D..., error)) func(A...) (D..., error)
 //
 // Example output can be found here:
 // https://github.com/awalterschulze/goderive/tree/master/example/plugin/compose

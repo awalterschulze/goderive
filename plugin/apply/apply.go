@@ -15,7 +15,8 @@
 // Package apply contains the implementation of the apply plugin, which generates the deriveApply function.
 //
 // The deriveApply function applies the given argument to a given function and returns a function which requires filling in the other arguments.
-//   deriveApply(f func(...A, B) C, B) func(...A) C
+//
+//	deriveApply(f func(...A, B) C, B) func(...A) C
 package apply
 
 import (

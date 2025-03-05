@@ -15,7 +15,8 @@
 // Package dup contains the implementation of the dup plugin, which generates the deriveDup function.
 //
 // The deriveDup duplicates messages received on c to both c1 and c2.
-//   deriveDup(c <-chan T) (c1, c2 <-chan T)
+//
+//	deriveDup(c <-chan T) (c1, c2 <-chan T)
 package dup
 
 import (

@@ -18,8 +18,8 @@
 // The deriveGoString function does a recursive print, even printing pointer values, unlike the default %#v operand.
 //
 // When goderive walks over your code it is looking for a function that:
-//  - was not implemented (or was previously derived) and
-//  - has a predefined prefix.
+//   - was not implemented (or was previously derived) and
+//   - has a predefined prefix.
 //
 // In the following code the deriveGoString function will be found, because
 // it was not implemented and it has a prefix deriveGoString.
@@ -45,18 +45,19 @@
 // GoString does a recursive print, even printing pointer values, unlike the default %#v operand.
 //
 // Supported types:
-//	- basic types
-//	- named structs
-//	- slices
-//	- maps
-//	- pointers to these types
-//	- and many more
+//   - basic types
+//   - named structs
+//   - slices
+//   - maps
+//   - pointers to these types
+//   - and many more
+//
 // Unsupported types:
-//	- chan
-//	- interface
-//	- function
-//	- private fields
-//	- unnamed structs
+//   - chan
+//   - interface
+//   - function
+//   - private fields
+//   - unnamed structs
 //
 // Example output can be found here:
 // https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring

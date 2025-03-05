@@ -46,9 +46,10 @@ type plugin struct {
 
 // NewPlugin is used by a plugin library to create a plugin, that can be added to the Plugins list.
 // For example:
-//   func NewPlugin() derive.Plugin {
-//     return derive.NewPlugin("all", "deriveAll", New)
-//   }
+//
+//	func NewPlugin() derive.Plugin {
+//	  return derive.NewPlugin("all", "deriveAll", New)
+//	}
 func NewPlugin(name, prefix string, newFunc func(typesMap TypesMap, p Printer, deps map[string]Dependency) Generator) Plugin {
 	return &plugin{
 		name:    name,

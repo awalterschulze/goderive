@@ -15,20 +15,22 @@
 // Package hash contains the implementation of the hash plugin, which generates the deriveHash function.
 //
 // The deriveHash function is returns a hash of the input object.
-//   deriveHash(T) uint64
+//
+//	deriveHash(T) uint64
 //
 // Supported types:
-//	- basic types
-//	- named structs
-//	- slices
-//	- maps
-//	- pointers to these types
-//	- and many more
+//   - basic types
+//   - named structs
+//   - slices
+//   - maps
+//   - pointers to these types
+//   - and many more
+//
 // Unsupported types:
-//	- chan
-//	- interface
-//	- function
-//	- unnamed structs, which are not comparable with the == operator
+//   - chan
+//   - interface
+//   - function
+//   - unnamed structs, which are not comparable with the == operator
 //
 // Example output can be found here:
 // https://github.com/awalterschulze/goderive/tree/master/example/plugin/hash

@@ -15,12 +15,13 @@
 // Package equal contains the implementation of the equal plugin, which generates the deriveEqual function.
 //
 // The deriveEqual function is a faster alternative to reflect.DeepEqual.
-//   deriveEqual(T, T) bool
-//   deriveEqual(T) func(T) bool
+//
+//	deriveEqual(T, T) bool
+//	deriveEqual(T) func(T) bool
 //
 // When goderive walks over your code it is looking for a function that:
-//  - was not implemented (or was previously derived) and
-//  - has a predefined prefix.
+//   - was not implemented (or was previously derived) and
+//   - has a predefined prefix.
 //
 // In the following code the deriveEqual function will be found, because
 // it was not implemented and it has a prefix deriveEqual.
@@ -48,18 +49,19 @@
 //	}
 //
 // Supported types:
-//	- basic types
-//	- named structs
-//	- slices
-//	- maps
-//	- pointers to these types
-//	- private fields of structs in external packages (using reflect and unsafe)
-//	- and many more
+//   - basic types
+//   - named structs
+//   - slices
+//   - maps
+//   - pointers to these types
+//   - private fields of structs in external packages (using reflect and unsafe)
+//   - and many more
+//
 // Unsupported types:
-//	- chan
-//	- interface
-//	- function
-//	- unnamed structs, which are not comparable with the == operator
+//   - chan
+//   - interface
+//   - function
+//   - unnamed structs, which are not comparable with the == operator
 //
 // Example output can be found here:
 // https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal

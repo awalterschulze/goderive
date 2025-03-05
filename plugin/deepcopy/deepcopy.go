@@ -17,8 +17,8 @@
 // The deriveDeepCopy function is a maintainable and fast way to implement fast copy functions.
 //
 // When goderive walks over your code it is looking for a function that:
-//  - was not implemented (or was previously derived) and
-//  - has a predefined prefix.
+//   - was not implemented (or was previously derived) and
+//   - has a predefined prefix.
 //
 // In the following code the deriveDeepCopy function will be found, because
 // it was not implemented and it has a prefix deriveDeepCopy.
@@ -29,7 +29,7 @@
 //	import "sort"
 //
 //	type MyStruct struct {
-// 		Int64     int64
+//		Int64     int64
 //		StringPtr *string
 //	}
 //
@@ -43,25 +43,27 @@
 //	}
 //
 // The initial type that is passed into deriveDeepCopy needs to have a reference type:
-//	- pointer
-//	- slice
-//	- map
+//   - pointer
+//   - slice
+//   - map
+//
 // , otherwise we are not able to modify the input parameter and then what are you really copying,
 // but as we go deeper we support most types.
 //
 // Supported types:
-//	- basic types
-//	- named structs
-//	- slices
-//	- maps
-//	- pointers to these types
-//	- private fields of structs in external packages (using reflect and unsafe)
-//	- and many more
+//   - basic types
+//   - named structs
+//   - slices
+//   - maps
+//   - pointers to these types
+//   - private fields of structs in external packages (using reflect and unsafe)
+//   - and many more
+//
 // Unsupported types:
-//	- chan
-//	- interface
-//	- function
-//	- unnamed structs, which are not comparable with the == operator
+//   - chan
+//   - interface
+//   - function
+//   - unnamed structs, which are not comparable with the == operator
 //
 // Example output can be found here:
 // https://github.com/awalterschulze/goderive/tree/master/example/plugin/deepcopy

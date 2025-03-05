@@ -15,7 +15,8 @@
 // Package traverse contains the implementation of the traverse plugin, which generates the deriveTraverse function.
 //
 // The deriveTraverse function applies a given function to each element of a list, returning a list of results in the same order or an error.
-//   deriveTraverse(func(A) (B, error), []A) ([]B, error)
+//
+//	deriveTraverse(func(A) (B, error), []A) ([]B, error)
 package traverse
 
 import (

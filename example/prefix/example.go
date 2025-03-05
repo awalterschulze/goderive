@@ -2,7 +2,7 @@
 // have to start with default "deriveEqual" prefix.
 // in the Makefile we can see the goderive command being called:
 //
-//   goderive --prefix="generate" ./...
+//	goderive --prefix="generate" ./...
 //
 // This sets the new prefix to "generate".
 package prefix

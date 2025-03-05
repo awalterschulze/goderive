@@ -296,7 +296,31 @@ func canCopy(tt types.Type) bool {
 	return false
 }
 
-func hasDeepCopyMethod(typ *types.Named) bool {
+// namedOrInterface is implemented by [types.Named] and [types.Interface].
+type namedOrInterface interface {
+	NumMethods() int
+	Method(i int) *types.Func
+}
+
+// DeepCopyable is implemented by types which support thier own `DeepCopy` method.
+type DeepCopyable[T any] interface {
+	// DeepCopy deeply copies the current value to [dst].
+	// All fields on [dst] should be updated.
+	DeepCopy(dst T)
+}
+
+// hasDeepCopyMethod returns true if [typ] implements [DeepCopyable].
+func hasDeepCopyMethod(input types.Type) bool {
+	var typ namedOrInterface
+	if named, isNamed := input.(*types.Named); isNamed {
+		typ = named
+	} else if alias, isAlias := input.(*types.Alias); isAlias {
+		// Check Rhs recursively if incase there are multiple aliases being used.
+		return hasDeepCopyMethod(alias.Rhs())
+	} else {
+		return false
+	}
+
 	for i := 0; i < typ.NumMethods(); i++ {
 		meth := typ.Method(i)
 		if meth.Name() != "DeepCopy" {
@@ -335,7 +359,7 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.In()
 		ref := typ.Elem()
 		p.P("%s = new(%s)", thatField, g.TypeString(typ.Elem()))
-		if named, ok := ref.(*types.Named); ok && hasDeepCopyMethod(named) {
+		if hasDeepCopyMethod(ref) {
 			p.P("%s.DeepCopy(%s)", wrap(thisField), thatField)
 		} else if canCopy(typ.Elem()) {
 			p.P("*%s = *%s", thatField, thisField)
@@ -380,8 +404,7 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("%s = make(%s, len(%s))", thatField, g.TypeString(typ), thisField)
 		p.Out()
 		p.P("}") // not nil
-		named, isNamed := fieldType.(*types.Named)
-		if isNamed && hasDeepCopyMethod(named) {
+		if hasDeepCopyMethod(fieldType) {
 			p.P("%s.DeepCopy(%s)", wrap(thisField), thatField)
 		} else if canCopy(typ.Elem()) {
 			p.P("copy(%s, %s)", thatField, thisField)
@@ -395,8 +418,7 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("if %s != nil {", thisField)
 		p.In()
 		p.P("%s = make(%s, len(%s))", thatField, g.TypeString(typ), thisField)
-		named, isNamed := fieldType.(*types.Named)
-		if isNamed && hasDeepCopyMethod(named) {
+		if hasDeepCopyMethod(fieldType) {
 			p.P("%s.DeepCopy(%s)", wrap(thisField), thatField)
 		} else {
 			p.P("%s(%s, %s)", g.GetFuncName(typ), thatField, thisField)
@@ -414,8 +436,7 @@ func (g *gen) genField(fieldType types.Type, thisField, thatField string) error 
 		p.P("{")
 		p.In()
 		p.P("field := new(%s)", g.TypeString(fieldType))
-		named, isNamed := fieldType.(*types.Named)
-		if isNamed && hasDeepCopyMethod(named) {
+		if hasDeepCopyMethod(fieldType) {
 			p.P("%s.DeepCopy(field)", wrap(thisField))
 		} else {
 			p.P("%s(field, &%s)", g.GetFuncName(types.NewPointer(fieldType)), wrap(thisField))

@@ -104,22 +104,48 @@ func (c customMap) DeepCopy(to customMap) {
 	}
 }
 
-type SimpleStruct struct {
+type SimpleStructWithDeepCopy struct {
 	Level int
 }
 
-func (this *SimpleStruct) DeepCopy(that *SimpleStruct) {
-	deriveDeepCopySimpleStruct(that, this)
+func (this *SimpleStructWithDeepCopy) DeepCopy(that *SimpleStructWithDeepCopy) {
+	deriveDeepCopySimpleStructWithDeepCopy(that, this)
 }
 
-type aliasToStruct = SimpleStruct
+// Check DeepCopy defined on aliased struct
+type aliasToSimpleStructWithDeepCopy = SimpleStructWithDeepCopy
 
 func TestDeepCopyAlias(t *testing.T) {
-	this := &aliasToStruct{
+	this := &aliasToSimpleStructWithDeepCopy{
 		Level: 99,
 	}
 
-	that := &aliasToStruct{}
+	that := &aliasToSimpleStructWithDeepCopy{}
+
+	deepcopy(this, that)
+
+	if that.Level != this.Level {
+		t.Error("expected level to use copied value")
+	}
+}
+
+type SimpleStructWithoutDeepCopy struct {
+	Level int
+}
+
+type aliasWithMethod = SimpleStructWithoutDeepCopy
+
+// Check method defined on alias.
+func (this *aliasWithMethod) DeepCopy(that *aliasWithMethod) {
+	deriveDeepCopyAliasWithMethod(that, this)
+}
+
+func TestDeepCopyAliasWithMethod(t *testing.T) {
+	this := &aliasWithMethod{
+		Level: 99,
+	}
+
+	that := &aliasWithMethod{}
 
 	deepcopy(this, that)
 

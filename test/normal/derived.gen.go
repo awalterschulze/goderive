@@ -2566,8 +2566,13 @@ func deriveDeepCopyPtrToStructOfStructs(dst, src *StructOfStructs) {
 	}
 }
 
-// deriveDeepCopySimpleStruct recursively copies the contents of src into dst.
-func deriveDeepCopySimpleStruct(dst, src *SimpleStruct) {
+// deriveDeepCopySimpleStructWithDeepCopy recursively copies the contents of src into dst.
+func deriveDeepCopySimpleStructWithDeepCopy(dst, src *SimpleStructWithDeepCopy) {
+	dst.Level = src.Level
+}
+
+// deriveDeepCopyAliasWithMethod recursively copies the contents of src into dst.
+func deriveDeepCopyAliasWithMethod(dst, src *aliasWithMethod) {
 	dst.Level = src.Level
 }
 

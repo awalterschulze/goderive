@@ -15,7 +15,8 @@
 // Package toerror contains the implementation of the toerror plugin, which generates the deriveToError function.
 //
 // The deriveToError function transforms return type of a function from (B..., bool) into (B..., error).
-//   deriveToError(e error, f func(A...) (B..., bool)) func(A...) (B..., error)
+//
+//	deriveToError(e error, f func(A...) (B..., bool)) func(A...) (B..., error)
 package toerror
 
 import (

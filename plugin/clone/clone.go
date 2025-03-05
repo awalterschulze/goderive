@@ -15,22 +15,25 @@
 // Package clone contains the implementation of the clone plugin, which generates the deriveClone function.
 //
 // The deriveClone function is a maintainable and fast way to implement fast"ish" clone functions.
-//   func deriveClone(T) T
+//
+//	func deriveClone(T) T
+//
 // I say fast"ish", since deriveClone creates a totally new copy of the value, whereas deepcopy reuses as much as of the memory that has been allocated by the destintation value.
 //
 // Supported types:
-//	- basic types
-//	- named structs
-//	- slices
-//	- maps
-//	- pointers to these types
-//	- private fields of structs in external packages (using reflect and unsafe)
-//	- and many more
+//   - basic types
+//   - named structs
+//   - slices
+//   - maps
+//   - pointers to these types
+//   - private fields of structs in external packages (using reflect and unsafe)
+//   - and many more
+//
 // Unsupported types:
-//	- chan
-//	- interface
-//	- function
-//	- unnamed structs, which are not comparable with the == operator
+//   - chan
+//   - interface
+//   - function
+//   - unnamed structs, which are not comparable with the == operator
 package clone
 
 import (

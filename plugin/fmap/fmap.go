@@ -15,18 +15,23 @@
 // Package fmap contains the implementation of the fmap plugin, which generates the deriveFmap function.
 //
 // The deriveFmap function applies a given function to each element of a list, returning a list of results in the same order.
-//   deriveFmap(func(A) B, []A) []B
-//   deriveFmap(func(rune) B, string) []B
+//
+//	deriveFmap(func(A) B, []A) []B
+//	deriveFmap(func(rune) B, string) []B
 //
 // deriveFmap can also be applied to a function that returns a value and an error.
-//   deriveFmap(func(A) B, func() (A, error)) (B, error)
-//   deriveFmap(func(A) (B, error), func() (A, error)) (func() (B, error), error)
-//   deriveFmap(func(A), func() (A, error)) error
-//   deriveFmap(func(A) (B, c, d, ...), func() (A, error)) (func() (B, c, d, ...), error)
+//
+//	deriveFmap(func(A) B, func() (A, error)) (B, error)
+//	deriveFmap(func(A) (B, error), func() (A, error)) (func() (B, error), error)
+//	deriveFmap(func(A), func() (A, error)) error
+//	deriveFmap(func(A) (B, c, d, ...), func() (A, error)) (func() (B, c, d, ...), error)
+//
 // deriveFmap will propagate the error and not apply the first function to the result of the second function, if the second function returns an error.
 //
 // deriveFmap can also be applied to a channel.
-//   deriveFmap(func(A) B, <-chan A) <-chan B
+//
+//	deriveFmap(func(A) B, <-chan A) <-chan B
+//
 // deriveFmap will return the output channel immediately and start up a go routine in the background to process the incoming channel.
 package fmap
 

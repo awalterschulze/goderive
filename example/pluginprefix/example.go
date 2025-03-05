@@ -2,7 +2,7 @@
 // have to start with default "deriveEqual" prefix.
 // in the Makefile we can see the goderive command being called:
 //
-//   goderive --pluginprefix="equal=eq" ./...
+//	goderive --pluginprefix="equal=eq" ./...
 //
 // This sets the new prefix to "eq".
 package pluginprefix

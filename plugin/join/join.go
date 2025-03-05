@@ -15,22 +15,28 @@
 // Package join contains the implementation of the join plugin, which generates the deriveJoin function.
 //
 // The deriveJoin function joins a slice of slices into a single slice.
-//    deriveJoin([][]T) []T
-//    deriveJoin([]string) string
+//
+//	deriveJoin([][]T) []T
+//	deriveJoin([]string) string
 //
 // The deriveJoin function also joins two tuples, both with errors, into a single tuple with a single error.
-//    deriveJoin(func() (T, error), error) func() (T, error)
-//    deriveJoin(func() error, error) func() error
-//    deriveJoin(func() (T, ..., error), error) func() (T, ..., error)
+//
+//	deriveJoin(func() (T, error), error) func() (T, error)
+//	deriveJoin(func() error, error) func() error
+//	deriveJoin(func() (T, ..., error), error) func() (T, ..., error)
 //
 // The deriveJoin function can also join channels
-//    deriveJoin(<-chan <-chan T) <-chan T
-//    deriveJoin(chan <-chan T) <-chan T
-//    deriveJoin([]<-chan T) <-chan T
-//    deriveJoin([]chan T) <-chan T
+//
+//	deriveJoin(<-chan <-chan T) <-chan T
+//	deriveJoin(chan <-chan T) <-chan T
+//	deriveJoin([]<-chan T) <-chan T
+//	deriveJoin([]chan T) <-chan T
+//
 // deriveJoin immediately return the output channel and start up a go routine to process the main incoming channel.
 // It will then start up a go routine to listen on every new incoming channel and send those events to the outgoing channel.
-//    deriveJoin(chan T, chan T, ...) <-chan T
+//
+//	deriveJoin(chan T, chan T, ...) <-chan T
+//
 // deriveJoin with a variable number of channels as parameter will do a select over those channels, until all are closed.
 package join
 

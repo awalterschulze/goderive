@@ -15,8 +15,8 @@
 // Package mem contains the implementation of the mem plugin, which generates the deriveMem function.
 //
 // The deriveMem function returns a memoized version of the input function.
-//   func deriveMem(func(A) B) func(A) B
 //
+//	func deriveMem(func(A) B) func(A) B
 package mem
 
 import (

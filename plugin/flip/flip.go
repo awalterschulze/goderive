@@ -15,7 +15,8 @@
 // Package flip contains the implementation of the flip plugin, which generates the deriveFlip function.
 //
 // The deriveFlip function flips the first two parameters of the input function.
-//   deriveFlip(f func(A, B, ...) T) func(B, A, ...) T
+//
+//	deriveFlip(f func(A, B, ...) T) func(B, A, ...) T
 package flip
 
 import (

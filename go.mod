@@ -1,6 +1,6 @@
 module awalterschulze.org/go/goderive
 
-go 1.24
+go 1.26.3
 
 require (
 	github.com/kisielk/gotool v1.0.0

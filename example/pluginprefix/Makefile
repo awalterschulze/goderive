@@ -1,5 +1,5 @@
 .PHONY: example
 example:
-	go install github.com/awalterschulze/goderive
+	go install awalterschulze.org/go/goderive
 	goderive --pluginprefix="equal=eq" ./...
 	go test -v ./...

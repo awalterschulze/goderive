@@ -1,4 +1,4 @@
-module github.com/awalterschulze/goderive
+module awalterschulze.org/go/goderive
 
 go 1.24
 

@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"go/types"
 
-	"github.com/awalterschulze/goderive/derive"
+	"awalterschulze.org/go/goderive/derive"
 )
 
 // NewPlugin creates a new dup plugin.

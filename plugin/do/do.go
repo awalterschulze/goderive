@@ -91,7 +91,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/awalterschulze/goderive/derive"
+	"awalterschulze.org/go/goderive/derive"
 )
 
 // NewPlugin creates a new do plugin.

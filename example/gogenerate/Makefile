@@ -1,5 +1,5 @@
 .PHONY: example
 example:
-	go install github.com/awalterschulze/goderive
+	go install awalterschulze.org/go/goderive
 	go generate ./...
 	go test -v ./...

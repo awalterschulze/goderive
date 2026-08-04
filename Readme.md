@@ -182,7 +182,7 @@ These flags respectively make sure that your functions have unique names and tha
 
 install the latest version of goderive globally using:
 
-`go install github.com/awalterschulze/goderive@latest`
+`go install awalterschulze.org/go/goderive@latest`
 
 goderive can be run from the command line:
 

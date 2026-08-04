@@ -1,5 +1,3 @@
-awalterschulze.org/go/goderive v0.5.1 h1:H2XNRDw0Ordwj/pgLAVqQgDC1LQWP7L99ofOs72bjqg=
-awalterschulze.org/go/goderive v0.5.1/go.mod h1:DLlff0SRVo846CBrp8nXuXJ4mdWA92ai5CYTr+LV/II=
 github.com/kisielk/gotool v1.0.0 h1:AV2c/EiW3KqPNT9ZKl07ehoAGi4C5/01Cfbblndcapg=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 golang.org/x/mod v0.8.0 h1:LUYupSeNrTNCGzR/hVBk2NHZO4hXcVaW1k4Qx7rjPx8=

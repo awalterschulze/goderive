@@ -82,7 +82,7 @@
 // derviveDo builds on this, but requires the programmer to explicitly call deriveDo
 //
 // Example output can be found here:
-// https://github.com/awalterschulze/goderive/tree/master/example/plugin/do
+// https://github.com/awalterschulze/goderive/tree/main/example/plugin/do
 package do
 
 import (

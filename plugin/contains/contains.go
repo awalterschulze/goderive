@@ -18,7 +18,7 @@
 //
 //	func deriveContains([]T, T) bool
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains
+// Example: https://github.com/awalterschulze/goderive/tree/main/example/plugin/contains
 package contains
 
 import (

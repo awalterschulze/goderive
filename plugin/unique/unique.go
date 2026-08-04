@@ -18,7 +18,7 @@
 //
 //	deriveUnique([]T) []T
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique
+// Example: https://github.com/awalterschulze/goderive/tree/main/example/plugin/unique
 //
 // deriveUnique mutates the list in place.
 package unique

@@ -42,35 +42,35 @@ func deriveEqual(this, that *MyStruct) bool {
 
 Recursive Examples:
 
-  - [Equal](https://github.com/awalterschulze/goderive/tree/master/example/plugin/equal)
-  - [Compare](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compare)
-  - [DeepCopy](https://github.com/awalterschulze/goderive/tree/master/example/plugin/deepcopy)
-  - [GoString](https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring)
-  - [Hash](https://github.com/awalterschulze/goderive/tree/master/example/plugin/hash)
+  - [Equal](https://github.com/awalterschulze/goderive/tree/main/example/plugin/equal)
+  - [Compare](https://github.com/awalterschulze/goderive/tree/main/example/plugin/compare)
+  - [DeepCopy](https://github.com/awalterschulze/goderive/tree/main/example/plugin/deepcopy)
+  - [GoString](https://github.com/awalterschulze/goderive/tree/main/example/plugin/gostring)
+  - [Hash](https://github.com/awalterschulze/goderive/tree/main/example/plugin/hash)
 
 Set Examples:
 
-  - [Keys](https://github.com/awalterschulze/goderive/tree/master/example/plugin/keys)
-  - [Sort](https://github.com/awalterschulze/goderive/tree/master/example/plugin/sort)
-  - [Unique](https://github.com/awalterschulze/goderive/tree/master/example/plugin/unique)
-  - [Set](https://github.com/awalterschulze/goderive/tree/master/example/plugin/set)
-  - [Min](https://github.com/awalterschulze/goderive/tree/master/example/plugin/min)
-  - [Max](https://github.com/awalterschulze/goderive/tree/master/example/plugin/max)
-  - [Contains](https://github.com/awalterschulze/goderive/tree/master/example/plugin/contains)
-  - [Intersect](https://github.com/awalterschulze/goderive/tree/master/example/plugin/intersect)
-  - [Union](https://github.com/awalterschulze/goderive/tree/master/example/plugin/union)
+  - [Keys](https://github.com/awalterschulze/goderive/tree/main/example/plugin/keys)
+  - [Sort](https://github.com/awalterschulze/goderive/tree/main/example/plugin/sort)
+  - [Unique](https://github.com/awalterschulze/goderive/tree/main/example/plugin/unique)
+  - [Set](https://github.com/awalterschulze/goderive/tree/main/example/plugin/set)
+  - [Min](https://github.com/awalterschulze/goderive/tree/main/example/plugin/min)
+  - [Max](https://github.com/awalterschulze/goderive/tree/main/example/plugin/max)
+  - [Contains](https://github.com/awalterschulze/goderive/tree/main/example/plugin/contains)
+  - [Intersect](https://github.com/awalterschulze/goderive/tree/main/example/plugin/intersect)
+  - [Union](https://github.com/awalterschulze/goderive/tree/main/example/plugin/union)
 
 Functional Examples:
 
-  - [Compose](https://github.com/awalterschulze/goderive/tree/master/example/plugin/compose)
-  - [Mem](https://github.com/awalterschulze/goderive/tree/master/example/plugin/mem)
-  - [Traverse](https://github.com/awalterschulze/goderive/tree/master/example/plugin/traverse)
-  - [ToError](https://github.com/awalterschulze/goderive/tree/master/example/plugin/toerror)
+  - [Compose](https://github.com/awalterschulze/goderive/tree/main/example/plugin/compose)
+  - [Mem](https://github.com/awalterschulze/goderive/tree/main/example/plugin/mem)
+  - [Traverse](https://github.com/awalterschulze/goderive/tree/main/example/plugin/traverse)
+  - [ToError](https://github.com/awalterschulze/goderive/tree/main/example/plugin/toerror)
 
 Concurrency Examples:
 
-  - [Pipeline](https://github.com/awalterschulze/goderive/tree/master/example/plugin/pipeline)
-  - [Do](https://github.com/awalterschulze/goderive/tree/master/example/plugin/do)
+  - [Pipeline](https://github.com/awalterschulze/goderive/tree/main/example/plugin/pipeline)
+  - [Do](https://github.com/awalterschulze/goderive/tree/main/example/plugin/do)
 
 ## Functions
 
@@ -190,11 +190,11 @@ goderive can be run from the command line:
 
 , using the same path semantics as the go tool.
 
-[You can also run goderive using go generate](https://github.com/awalterschulze/goderive/blob/master/example/gogenerate/example.go)
+[You can also run goderive using go generate](https://github.com/awalterschulze/goderive/blob/main/example/gogenerate/example.go)
 
-[And you can customize specific function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/pluginprefix/Makefile)
+[And you can customize specific function prefixes](https://github.com/awalterschulze/goderive/blob/main/example/pluginprefix/Makefile)
 
-[Or you can customize all function prefixes](https://github.com/awalterschulze/goderive/blob/master/example/prefix/Makefile)
+[Or you can customize all function prefixes](https://github.com/awalterschulze/goderive/blob/main/example/prefix/Makefile)
 
 You can let goderive rename your functions using the `-autoname` and `-dedup` flags.
 If these flags are not used, goderive will not touch your code and rather return an error.
@@ -205,7 +205,7 @@ The derive package allows you to create your own code generator plugins, see all
 
 You can also create your own vanity binary.
 Including your own generators and/or customization of function prefixes, etc.
-This should be easy to figure out by looking at [main.go](https://github.com/awalterschulze/goderive/blob/master/main.go)
+This should be easy to figure out by looking at [main.go](https://github.com/awalterschulze/goderive/blob/main/main.go)
 
 ## Inspired By
 
@@ -218,9 +218,9 @@ This should be easy to figure out by looking at [main.go](https://github.com/awa
 These projects use goderive:
 
   - [DC/OS](https://github.com/dcos/dcos-cli/blob/af0434c0ca80cee7152a1880770dc878501b9ac5/pkg/httpclient/derived.gen.go)
-  - [katydid](https://github.com/katydid/katydid/blob/master/relapse/ast/derived.gen.go)
-  - [go-geom](https://github.com/twpayne/go-geom/blob/master/derived.gen.go)
-  - [gominikanren](https://github.com/awalterschulze/gominikanren/blob/master/micro/derived.gen.go)
+  - [katydid](https://github.com/katydid/katydid/blob/main/relapse/ast/derived.gen.go)
+  - [go-geom](https://github.com/twpayne/go-geom/blob/main/derived.gen.go)
+  - [gominikanren](https://github.com/awalterschulze/gominikanren/blob/main/micro/derived.gen.go)
 
 Please let us know if you are using goderive by opening an issue or a pull request that adds your project to the list.
 
@@ -235,4 +235,4 @@ Please let us know if you mention goderive in a blog post, talk or go experience
 
 ## Presentations
 
-  - 2021-12: [goderive: Code generation with Gonads](https://www.youtube.com/watch?v=qFYByoGFIUE) - Go Cape Town meetup ([code examples](https://github.com/awalterschulze/goderive/blob/master/example/talk))
+  - 2021-12: [goderive: Code generation with Gonads](https://www.youtube.com/watch?v=qFYByoGFIUE) - Go Cape Town meetup ([code examples](https://github.com/awalterschulze/goderive/blob/main/example/talk))

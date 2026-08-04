@@ -60,7 +60,7 @@
 //   - unnamed structs
 //
 // Example output can be found here:
-// https://github.com/awalterschulze/goderive/tree/master/example/plugin/gostring
+// https://github.com/awalterschulze/goderive/tree/main/example/plugin/gostring
 //
 // This plugin has been tested thoroughly.
 package gostring

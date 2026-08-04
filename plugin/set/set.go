@@ -16,7 +16,7 @@
 //
 //	func deriveSet([]T) map[T]struct{}
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/set
+// Example: https://github.com/awalterschulze/goderive/tree/main/example/plugin/set
 package set
 
 import (

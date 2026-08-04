@@ -66,7 +66,7 @@
 //   - unnamed structs, which are not comparable with the == operator
 //
 // Example output can be found here:
-// https://github.com/awalterschulze/goderive/tree/master/example/plugin/deepcopy
+// https://github.com/awalterschulze/goderive/tree/main/example/plugin/deepcopy
 //
 // This plugin has been tested thoroughly.
 package deepcopy

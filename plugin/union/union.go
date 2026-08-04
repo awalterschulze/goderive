@@ -17,7 +17,7 @@
 //	func deriveUnion([]T, []T) []T
 //	func deriveUnion(map[T]struct{}, map[T]struct{}) map[T]struct{}
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/union
+// Example: https://github.com/awalterschulze/goderive/tree/main/example/plugin/union
 package union
 
 import (

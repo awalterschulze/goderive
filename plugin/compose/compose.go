@@ -22,7 +22,7 @@
 //	deriveCompose(func(A...) (B..., error), ..., func(C...) (D..., error)) func(A...) (D..., error)
 //
 // Example output can be found here:
-// https://github.com/awalterschulze/goderive/tree/master/example/plugin/compose
+// https://github.com/awalterschulze/goderive/tree/main/example/plugin/compose
 package compose
 
 import (

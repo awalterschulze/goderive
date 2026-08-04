@@ -31,7 +31,7 @@
 //
 // A default value is provided for the empty list.
 //
-// Example: https://github.com/awalterschulze/goderive/tree/master/example/plugin/max
+// Example: https://github.com/awalterschulze/goderive/tree/main/example/plugin/max
 package max
 
 import (

@@ -190,6 +190,21 @@ goderive can be run from the command line:
 
 , using the same path semantics as the go tool.
 
+You can also use `go.mod`:
+
+```
+module test
+
+go 1.26.3
+
+tool awalterschulze.org/go/goderive
+```
+
+And then run it using `go tool`:
+```
+go tool goderive ./...
+```
+
 [You can also run goderive using go generate](https://github.com/awalterschulze/goderive/blob/main/example/gogenerate/example.go)
 
 [And you can customize specific function prefixes](https://github.com/awalterschulze/goderive/blob/main/example/pluginprefix/Makefile)

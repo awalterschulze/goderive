@@ -1,7 +1,7 @@
 # goderive
 
 [![Build Status](https://github.com/awalterschulze/goderive/actions/workflows/go.yaml/badge.svg?branch=main)](https://github.com/awalterschulze/goderive/actions)
-[![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square.svg)](https://godoc.org/github.com/awalterschulze/goderive)
+[![GoDoc](https://godoc.org/awalterschulze.org/go/goderive?status.svg)](https://godoc.org/awalterschulze.org/go/goderive)
 
 `goderive` derives mundane golang functions that you do not want to maintain and keeps them up to date.
 

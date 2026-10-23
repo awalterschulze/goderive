@@ -1,10 +1,10 @@
 .PHONY: example
 example:
 	make clean
-	go install awalterschulze.org/go/goderive
+	go install go.awalterschulze.org/goderive
 	goderive ./...
 	go test -v ./...
-	go install awalterschulze.org/go/goderive/example/plugin/cmd/goderive-genreadme
+	go install go.awalterschulze.org/goderive/example/plugin/cmd/goderive-genreadme
 	goderive-genreadme .
 
 .PHONY: clean

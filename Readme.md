@@ -1,7 +1,7 @@
 # goderive
 
 [![Build Status](https://github.com/awalterschulze/goderive/actions/workflows/go.yaml/badge.svg?branch=main)](https://github.com/awalterschulze/goderive/actions)
-[![GoDoc](https://godoc.org/awalterschulze.org/go/goderive?status.svg)](https://godoc.org/awalterschulze.org/go/goderive)
+[![GoDoc](https://godoc.org/go.awalterschulze.org/goderive?status.svg)](https://godoc.org/go.awalterschulze.org/goderive)
 
 `goderive` derives mundane golang functions that you do not want to maintain and keeps them up to date.
 
@@ -182,7 +182,7 @@ These flags respectively make sure that your functions have unique names and tha
 
 install the latest version of goderive globally using:
 
-`go install awalterschulze.org/go/goderive@latest`
+`go install go.awalterschulze.org/goderive@latest`
 
 goderive can be run from the command line:
 
@@ -197,7 +197,7 @@ module test
 
 go 1.26.3
 
-tool awalterschulze.org/go/goderive
+tool go.awalterschulze.org/goderive
 ```
 
 And then run it using `go tool`:

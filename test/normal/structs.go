@@ -19,8 +19,8 @@ import (
 	"reflect"
 	"time"
 
-	"awalterschulze.org/go/goderive/test/extra"
-	pickle "awalterschulze.org/go/goderive/test/nickname"
+	"go.awalterschulze.org/goderive/test/extra"
+	pickle "go.awalterschulze.org/goderive/test/nickname"
 )
 
 type Empty struct{}

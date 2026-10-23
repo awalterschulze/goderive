@@ -1,4 +1,4 @@
-module awalterschulze.org/go/goderive
+module go.awalterschulze.org/goderive
 
 go 1.26.3
 

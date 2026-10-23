@@ -3,10 +3,10 @@
 package test
 
 import (
-	extra "awalterschulze.org/go/goderive/test/extra"
-	pickle "awalterschulze.org/go/goderive/test/nickname"
 	"bytes"
 	"fmt"
+	extra "go.awalterschulze.org/goderive/test/extra"
+	pickle "go.awalterschulze.org/goderive/test/nickname"
 	"math"
 	"reflect"
 	"sort"

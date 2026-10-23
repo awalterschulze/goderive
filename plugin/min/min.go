@@ -38,7 +38,7 @@ import (
 	"fmt"
 	"go/types"
 
-	"awalterschulze.org/go/goderive/derive"
+	"go.awalterschulze.org/goderive/derive"
 )
 
 // NewPlugin creates a new min plugin.
